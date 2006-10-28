@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE JCSP-CONFIG SYSTEM "jcsp-config.dtd">
+<JCSP-CONFIG xmlns="http://www.josreview.com/">
+	<SETTINGS>
+	</SETTINGS>
+	<SERVICES>
+		<SERVICE name="cns" class="jcsp.net.CNSService" run="TRUE">
+			<ADDRESS_SETTING name="address" protocolid="TCPIP" value="127.0.0.1:7890"/>
+		</SERVICE>
+		<SERVICE name="dynamic_class_loading" class="jcsp.net.DynamicClassLoader" run="TRUE">
+		</SERVICE>
+	</SERVICES>
+	<PLUGINS>
+		<PLUGIN name="UIFactory" classname="jcsp.net.UIFactory"/>
+	</PLUGINS>
+	<PROTOCOLS>
+		<PROTOCOL id="TCPIP" name="TCP/IP" idclass="jcsp.net.TCPIPv4.TCPIPv4ProtocolID">
+			<SPECS>
+				<MAXSPEED value="9500000"/>
+				<WIRELESS value="FALSE" />
+				<RELIABLE value="TRUE"/>
+				<CONNECTION-ORIENTED value="TRUE"/>
+			</SPECS>
+		</PROTOCOL>
+	</PROTOCOLS>
+	<ADDRESSES>
+		<ADDRESS protocolid="TCPIP" value="127.0.0.1" unique="FALSE">
+		</ADDRESS>
+	</ADDRESSES>
+	<NODE_SPECS>
+		<MAXSPEED value="750"/>
+		<MEMORY value="128"/>
+	</NODE_SPECS>
+	<LINK_PROFILES>
+		<LINK_PROFILE name="Fast Internet" requireExactMatch="TRUE">
+			<LINK_REQS>
+				<LINK_MINSPEED value="500000" />
+				<LINK_REQ_PROTOCOL protocolid="TCPIP" />
+			</LINK_REQS>
+		</LINK_PROFILE>
+  	</LINK_PROFILES>
+</JCSP-CONFIG>

@@ -1,0 +1,26 @@
+<JCSP-CONFIG>
+	<PLUGINS>
+		<PLUGIN name="UIFactory" classname="com.quickstone.jcsp.net.UIFactory"/>
+	</PLUGINS>
+	<PROTOCOLS>
+        <PROTOCOL id="TCPIP" name="TCP/IP" idclass="com.quickstone.jcsp.net.tcpip.TCPIPProtocolID">
+			<SPECS>
+				<MAXSPEED value="9500000"/>
+				<WIRELESS value="FALSE" />
+				<RELIABLE value="TRUE"/>
+				<CONNECTION-ORIENTED value="TRUE"/>
+			</SPECS>
+		</PROTOCOL>
+	</PROTOCOLS>
+	<ADDRESSES>
+        <ADDRESS protocolid="TCPIP" value="127.0.0.1:7890" unique="FALSE"/>
+	</ADDRESSES>
+	<LINK_PROFILES>
+		<LINK_PROFILE name="Fast Internet" requireExactMatch="TRUE">
+			<LINK_REQS>
+				<LINK_MINSPEED value="500000" />
+				<LINK_REQ_PROTOCOL protocolid="TCPIP" />
+			</LINK_REQS>
+		</LINK_PROFILE>
+  	</LINK_PROFILES>
+</JCSP-CONFIG>

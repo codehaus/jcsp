@@ -1,0 +1,69 @@
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //  JCSP ("CSP for Java") Libraries                                 //
+    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //                2001-2004 Quickstone Technologies Limited.        //
+    //                                                                  //
+    //  This library is free software; you can redistribute it and/or   //
+    //  modify it under the terms of the GNU Lesser General Public      //
+    //  License as published by the Free Software Foundation; either    //
+    //  version 2.1 of the License, or (at your option) any later       //
+    //  version.                                                        //
+    //                                                                  //
+    //  This library is distributed in the hope that it will be         //
+    //  useful, but WITHOUT ANY WARRANTY; without even the implied      //
+    //  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR         //
+    //  PURPOSE. See the GNU Lesser General Public License for more     //
+    //  details.                                                        //
+    //                                                                  //
+    //  You should have received a copy of the GNU Lesser General       //
+    //  Public License along with this library; if not, write to the    //
+    //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
+    //  Boston, MA 02111-1307, USA.                                     //
+    //                                                                  //
+    //  Author contact: P.H.Welch@ukc.ac.uk                             //
+    //                  mailbox@quickstone.com                          //
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+package org.jcsp.demos.jcspchat;
+
+
+import javax.swing.*;
+import java.awt.geom.*;
+import java.awt.event.*;
+import javax.swing.event.*;
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+
+/**
+ * @author Quickstone Technologies Limited
+ */
+public class FillColorButton extends JButton {
+  private Dimension d;
+  private DrawingSettings ds;
+
+  public FillColorButton(DrawingSettings ds) {
+    super();
+    this.ds =ds;
+    //this.setContentAreaFilled(false);
+    //this.setHorizontalTextPosition(AbstractButton.LEFT);
+    //this.setVerticalTextPosition(AbstractButton.TOP);
+    d = new Dimension (26,18);
+    this.setSize(d);
+    this.setPreferredSize(d);
+    this.setMinimumSize(d);
+    this.setMaximumSize(d);
+    this.setBorder(BorderFactory.createEmptyBorder(4,4,4,8));
+    this.setBorderPainted(true);
+  }
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+
+    g.setColor(ds.getFillColor());
+    g.fillRect(3,3,20,12);
+    g.setColor(Color.black);
+    g.drawRect(3,3,20,12);
+  }
+}

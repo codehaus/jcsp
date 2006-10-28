@@ -1,0 +1,13 @@
+<body>
+<p>Supports the remote spawning of processes at other nodes. A local proxy process strategy is used which
+attempts to create similar effects to running the process locally. For example the <code>run</code> method
+of the proxy will not complete until the <code>run</code> of the remote process completes so that a
+conventional <code>Parallel</code> can be used to synchronize on process termination. Also, any exceptions
+raised by the remote process will be similarly raised at the local machine.</p>
+
+<p>Refer to the description of <code>RemoteProcess</code> for examples of use. Refer to
+<code>SpawnerService</code> for details of starting the server process to support the spawning of
+additional JVMs at a node.</p>
+
+<p>This package is currently in a beta state and the API may be subject to changes.</p>
+</body>

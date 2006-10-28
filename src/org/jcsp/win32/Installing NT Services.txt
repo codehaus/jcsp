@@ -1,0 +1,32 @@
+Installing NT Services
+========================
+
+
+If you have the resource kit (or windows XP) installed it is recommended that you use the SC command to
+install the service. In the absence of this, there is an executable file called SVCCTRL which can
+install and/or remove NT services.
+
+The com.quickstone.win32.dll file should be copied to the WINNT\System32 folder for the
+Java service wrapper to work.
+
+To install the CNS service type:
+
+	svcctrl install "JCSP.NET:TCPIPCNSServer" "java com.quickstone.jcsp.net.tcpip.TCPIPCNSServerNT"
+
+If present, configuration parameters will be read from the file "JCSPNetCNSService.xml" in the
+WINNT\System32 folder. A template for this file can be found in "src\com\quickstone\jcsp\net\tcpip".
+
+To install the spawning service type:
+
+	svcctrl install "JCSP.NET:SpawnerService" "java.com.quickstone.jcsp.net.remote.SpawnerServiceNT"
+
+If present, configuration parameters will be read from the file "JCSPNetSpawnerService.xml" in the
+WINNT\System32 folder. A template for this file can be found in "src\com\quickstone\jcsp\net\remote".
+	
+To remove these type:
+
+	svcctrl remove "JCSP.NET:TCPIPCNSServer"
+	svcctrl remove "JCSP.NET:SpawnerService"
+	
+Note that the system CLASSPATH variable must be set appropriately for these services to start. Error
+code 1053 is typical of a fault in the classpath.
