@@ -4,19 +4,19 @@ primitives of CSP.
 
 <H2>Processes, Networks and Synchronisation</H3>
 In JCSP, a <I>process</I> is an instance of a class implementing the
-{@link com.quickstone.jcsp.lang.CSProcess} interface - its behaviour being determined
+{@link org.jcsp.lang.CSProcess} interface - its behaviour being determined
 by the implementation of its <TT>run()</TT> method.  Processes may be composed
-in {@link com.quickstone.jcsp.lang.Sequence} or {@link com.quickstone.jcsp.lang.Parallel} (or {@link com.quickstone.jcsp.lang.PriParallel}),
+in {@link org.jcsp.lang.Sequence} or {@link org.jcsp.lang.Parallel} (or {@link org.jcsp.lang.PriParallel}),
 the result of this composition being another process.  Processes may also be spawned
-to run concurrently with the spawning process - see {@link com.quickstone.jcsp.lang.ProcessManager}.
+to run concurrently with the spawning process - see {@link org.jcsp.lang.ProcessManager}.
 A collection of parallel processes is called a <I>network</I>.
 <P>
 Processes encapsulate both data and algorithms.  Parallel processes interact
-<I>either</I> by synchronised communication along {@link com.quickstone.jcsp.lang.Channel}s
+<I>either</I> by synchronised communication along {@link org.jcsp.lang.Channel}s
 (the cleanest and simplest way) <I>or</I> by synchronised access to shared
 objects.  The latter synchronisation may be achieved through channel signals
-or by a range of other JCSP primitives (such as {@link com.quickstone.jcsp.lang.Barrier},
-{@link com.quickstone.jcsp.lang.Bucket} or {@link com.quickstone.jcsp.lang.Crew}).
+or by a range of other JCSP primitives (such as {@link org.jcsp.lang.Barrier},
+{@link org.jcsp.lang.Bucket} or {@link org.jcsp.lang.Crew}).
 
 <H2>Channels</H3>
 Channels come in two varieties: those that carry <TT>Object</TT> references and
@@ -26,31 +26,31 @@ so far, do not seem to be needed in practice.
 
 <H3>Channels (from the Point of View of a Process)</H3>
 Processes should drive their channels through <I>channel interfaces</I>:
-{@link com.quickstone.jcsp.lang.ChannelInput} / {@link com.quickstone.jcsp.lang.ChannelOutput} (for <TT>Object</TT> channels)
-and {@link com.quickstone.jcsp.lang.ChannelInputInt} / {@link com.quickstone.jcsp.lang.ChannelOutputInt} (for <TT>int</TT> channels).
+{@link org.jcsp.lang.ChannelInput} / {@link org.jcsp.lang.ChannelOutput} (for <TT>Object</TT> channels)
+and {@link org.jcsp.lang.ChannelInputInt} / {@link org.jcsp.lang.ChannelOutputInt} (for <TT>int</TT> channels).
 <P>
-Processes may passively wait for a number of events using {@link com.quickstone.jcsp.lang.Alternative}.
+Processes may passively wait for a number of events using {@link org.jcsp.lang.Alternative}.
 These events include <I>channel inputs</I>
-({@link com.quickstone.jcsp.lang.AltingChannelInput} / {@link com.quickstone.jcsp.lang.AltingChannelInputInt}),
+({@link org.jcsp.lang.AltingChannelInput} / {@link org.jcsp.lang.AltingChannelInputInt}),
 <I>channel accepts</I>
-({@link com.quickstone.jcsp.lang.AltingChannelAccept}),
-<I>timeouts</I> ({@link com.quickstone.jcsp.lang.CSTimer}) and <I>skips</I> ({@link com.quickstone.jcsp.lang.Skip}).
-If more than one event is ready, an {@link com.quickstone.jcsp.lang.Alternative#select() <I>arbitrary</I>},
-{@link com.quickstone.jcsp.lang.Alternative#priSelect() <I>prioritised</I>}
-or {@link com.quickstone.jcsp.lang.Alternative#select() <I>fair</I>} choice can be made between them.
-The <I>super-interface</I> for all these ALTable events is {@link com.quickstone.jcsp.lang.Guard}.
+({@link org.jcsp.lang.AltingChannelAccept}),
+<I>timeouts</I> ({@link org.jcsp.lang.CSTimer}) and <I>skips</I> ({@link org.jcsp.lang.Skip}).
+If more than one event is ready, an {@link org.jcsp.lang.Alternative#select() <I>arbitrary</I>},
+{@link org.jcsp.lang.Alternative#priSelect() <I>prioritised</I>}
+or {@link org.jcsp.lang.Alternative#select() <I>fair</I>} choice can be made between them.
+The <I>super-interface</I> for all these ALTable events is {@link org.jcsp.lang.Guard}.
 
 <H3>Channels (from the Point of View of a Network)</H3>
-Actual channels must be constructed by the {@link com.quickstone.jcsp.lang.Parallel} network builder
+Actual channels must be constructed by the {@link org.jcsp.lang.Parallel} network builder
 and passed to the processes needing them (usually via their constructors).
 Four varieties are available for <TT>Object</TT> channels:
-{@link com.quickstone.jcsp.lang.One2OneChannel}, {@link com.quickstone.jcsp.lang.Any2OneChannel},
-{@link com.quickstone.jcsp.lang.One2AnyChannel} and {@link com.quickstone.jcsp.lang.Any2AnyChannel}.
+{@link org.jcsp.lang.One2OneChannel}, {@link org.jcsp.lang.Any2OneChannel},
+{@link org.jcsp.lang.One2AnyChannel} and {@link org.jcsp.lang.Any2AnyChannel}.
 Similarly, four varieties are available for <TT>int</TT> channels:
-{@link com.quickstone.jcsp.lang.One2OneChannelInt}, {@link com.quickstone.jcsp.lang.Any2OneChannelInt},
-{@link com.quickstone.jcsp.lang.One2AnyChannelInt} and {@link com.quickstone.jcsp.lang.Any2AnyChannelInt}.
+{@link org.jcsp.lang.One2OneChannelInt}, {@link org.jcsp.lang.Any2OneChannelInt},
+{@link org.jcsp.lang.One2AnyChannelInt} and {@link org.jcsp.lang.Any2AnyChannelInt}.
 Please note that the last two in each set are <I>not</I> broadcasting channels
-- broadcasting has to be achieved by active processes (e.g. {@link com.quickstone.jcsp.plugNplay.Delta}).
+- broadcasting has to be achieved by active processes (e.g. {@link org.jcsp.plugNplay.Delta}).
 <P>
 Note that the default semantics for all the above channels are zero-buffering and full
 synchronisation.  This means that a writer to a channel will wait for a matching reader
@@ -59,13 +59,13 @@ for its partner.  Various forms of buffering can be introduced by splicing activ
 buffer processes into these channels.  However, because this is a common need,
 JCSP provides a range of <I>plug-ins</I> that can be used to create channels
 with the common varieties of buffering:
-{@link com.quickstone.jcsp.util.Buffer <I>blocking FIFO</I>},
-{@link com.quickstone.jcsp.util.OverWriteOldestBuffer <I>overwriting (oldest) FIFO</I>},
-{@link com.quickstone.jcsp.util.OverWritingBuffer <I>overwriting (latest) FIFO</I>} and
-{@link com.quickstone.jcsp.util.InfiniteBuffer <I>infinite FIFO</I>}.
+{@link org.jcsp.util.Buffer <I>blocking FIFO</I>},
+{@link org.jcsp.util.OverWriteOldestBuffer <I>overwriting (oldest) FIFO</I>},
+{@link org.jcsp.util.OverWritingBuffer <I>overwriting (latest) FIFO</I>} and
+{@link org.jcsp.util.InfiniteBuffer <I>infinite FIFO</I>}.
 That set of <I>plug-ins</I> is for <TT>Object</TT> channels and comes from
-the {@link com.quickstone.jcsp.util} package.
-A similar set for <TT>int</TT> channels is provided in {@link com.quickstone.jcsp.util.ints}.
+the {@link org.jcsp.util} package.
+A similar set for <TT>int</TT> channels is provided in {@link org.jcsp.util.ints}.
 <P>
 It is the network builder's responsibility to decide whether to use 1-1, any-1,
 1-any or any-any channels and whether to incorporate buffered semantics in them.
@@ -81,14 +81,14 @@ matched by a sequence of channel read(s) and write (at the server end).
 <P>
 The client process sees a server-specific method interface and invokes it in the normal
 way - however, the invocation will block until the server chooses to accept the call.
-The server sees the {@link com.quickstone.jcsp.lang.ChannelAccept} interface - invoking
-an {@link com.quickstone.jcsp.lang.ChannelAccept#accept <TT>accept</TT>} will block until the client
+The server sees the {@link org.jcsp.lang.ChannelAccept} interface - invoking
+an {@link org.jcsp.lang.ChannelAccept#accept <TT>accept</TT>} will block until the client
 makes a call.
 <P>
 The network builder constructs a server-specific actual call channel by sub-classing
 from one of 
-{@link com.quickstone.jcsp.lang.One2OneCallChannel}, {@link com.quickstone.jcsp.lang.Any2OneCallChannel},
-{@link com.quickstone.jcsp.lang.One2AnyCallChannel} and {@link com.quickstone.jcsp.lang.Any2AnyCallChannel}.
+{@link org.jcsp.lang.One2OneCallChannel}, {@link org.jcsp.lang.Any2OneCallChannel},
+{@link org.jcsp.lang.One2AnyCallChannel} and {@link org.jcsp.lang.Any2AnyCallChannel}.
 Precise rules for making this extension are given in their documentation.
 
 

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -68,7 +68,7 @@ import org.jcsp.lang.*;
  * after every cycle.  In this way, it fills one packet while the process
  * receiving its output consumes the other one.  This is safe so long as that
  * receiving process agrees to the above rules.
- * See the <I>Low Level</I> example in {@link com.quickstone.jcsp.lang.Parallel} for the details
+ * See the <I>Low Level</I> example in {@link org.jcsp.lang.Parallel} for the details
  * of this implementation.
  * <P>
  * <I>Note:</I> the above two constraints should work naturally with most applications.

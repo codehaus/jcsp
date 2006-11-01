@@ -1,9 +1,9 @@
 <JCSP-CONFIG>
 	<PLUGINS>
-		<PLUGIN name="UIFactory" classname="com.quickstone.jcsp.net.UIFactory"/>
+		<PLUGIN name="UIFactory" classname="org.jcsp.net.UIFactory"/>
 	</PLUGINS>
 	<PROTOCOLS>
-        <PROTOCOL id="TCPIP" name="TCP/IP" idclass="com.quickstone.jcsp.net.tcpip.TCPIPProtocolID">
+        <PROTOCOL id="TCPIP" name="TCP/IP" idclass="org.jcsp.net.tcpip.TCPIPProtocolID">
 			<SPECS>
 				<MAXSPEED value="9500000"/>
 				<WIRELESS value="FALSE" />

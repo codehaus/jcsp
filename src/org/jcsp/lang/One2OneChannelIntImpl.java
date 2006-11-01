@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -83,6 +83,9 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
 
     /** The Alternative class that controls the selection */
     protected Alternative alt;
+    
+    /** Flag to deal with a spurious wakeup during a write */
+    private boolean spuriousWakeUp = true;
 
     /*************Methods from One2OneChannelInt******************************/
 
@@ -121,64 +124,67 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      *
      * @return the integer read from the channel.
      */
-    public int read()
-    {
-        synchronized (rwMonitor)
-        {
-            if (empty)
-            {
-                empty = false;
-                try
-                {
-                    rwMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from One2OneChannelIntImpl.read ()\n" +
-                            e.toString());
-                }
+    public int read () {
+        synchronized (rwMonitor) {
+          if (empty) {
+            empty = false;
+            try {
+              rwMonitor.wait ();
+    	  while (!empty) {
+    	    if (Spurious.logging) {
+    	      SpuriousLog.record (SpuriousLog.One2OneChannelIntRead);
+    	    }
+    	    rwMonitor.wait ();
+    	  }
             }
-            else
-                empty = true;
-            rwMonitor.notify();
-            return hold;
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException (
+                "*** Thrown from One2OneChannelInt.read ()\n" + e.toString ()
+              );
+            }
+          } else {
+            empty = true;
+          }
+          spuriousWakeUp = false;
+          rwMonitor.notify ();
+          return hold;
         }
-    }
+      }
 
     /**
      * Writes an <TT>int</TT> to the channel.
      *
      * @param value the integer to write to the channel.
      */
-    public void write(int value)
-    {
-        synchronized (rwMonitor)
-        {
-            hold = value;
-            if (empty)
-            {
-                empty = false;
-                if (alt != null)
-                    alt.schedule();
+    public void write (int value) {
+        synchronized (rwMonitor) {
+          hold = value;
+          if (empty) {
+            empty = false;
+            if (alt != null) {
+              alt.schedule ();
             }
-            else
-            {
-                empty = true;
-                rwMonitor.notify();
-            }
-            try
-            {
-                rwMonitor.wait();
-            }
-            catch (InterruptedException e)
-            {
-                throw new ProcessInterruptedError
-                        ("*** Thrown from One2OneChannelIntImpl.write (int)\n" +
-                        e.toString());
-            }
+          } else {
+            empty = true;
+            rwMonitor.notify ();
+          }
+          try {
+            rwMonitor.wait ();
+    	while (spuriousWakeUp) {
+    	  if (Spurious.logging) {
+    	    SpuriousLog.record (SpuriousLog.One2OneChannelIntWrite);
+    	  }
+    	  rwMonitor.wait ();
+    	}
+    	spuriousWakeUp = true;
+          }
+          catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from One2OneChannelInt.write (int)\n" + e.toString ()
+            );
+          }
         }
-    }
+      }
 
     /**
      * turns on Alternative selection for the channel. Returns true if the

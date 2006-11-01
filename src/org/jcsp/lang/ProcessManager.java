@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -189,7 +189,7 @@ public class ProcessManager implements CSProcess
                 }
                 catch (Throwable e)
                 {
-                    Parallel.uncaughtException("com.quickstone.jcsp.lang.ProcessManager", e);
+                    Parallel.uncaughtException("org.jcsp.lang.ProcessManager", e);
                 }
                 finally
                 {
@@ -231,8 +231,21 @@ public class ProcessManager implements CSProcess
 
     /**
      * Stop (permanently) the managed process.
+     * 
+     * This method now calls interrupt(), which will not always stop the process.
+     * 
+     * @deprecated
      */
     public void stop()
+    {
+        interrupt();
+    }
+    
+    /**
+     * Interrupt the managed process.  This will usually cause the process to throw a 
+     * {@link ProcessInterruptedException}, which will likely halt the process.
+     */
+    public void interrupt()
     {
         thread.interrupt();
     }
@@ -248,7 +261,7 @@ public class ProcessManager implements CSProcess
         }
         catch (InterruptedException e)
         {
-            throw new ProcessInterruptedError("Joining process " + process);
+            throw new ProcessInterruptedException("Joining process " + process);
         }
     }
 

@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -105,51 +105,56 @@ class BufferedOne2AnyChannel extends One2AnyChannelImpl
      *
      * @return the object read from the Channel.
      */
-    public Object read()
-    {
-        synchronized (readMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                if (data.getState() == ChannelDataStore.EMPTY)
-                    try
-                    {
-                        rwMonitor.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        throw new ProcessInterruptedError
-                                ("*** Thrown from One2AnyChannelImpl.read ()\n" +
-                                e.toString());
-                    }
-                rwMonitor.notify();
-                return data.get();
+    public Object read () {
+      synchronized (readMonitor) {
+        synchronized (rwMonitor) {
+          if (data.getState () == ChannelDataStore.EMPTY) {
+            try {
+              rwMonitor.wait ();
+  	    while (data.getState () == ChannelDataStore.EMPTY) {
+  	      if (Spurious.logging) {
+  	        SpuriousLog.record (SpuriousLog.One2AnyChannelXRead);
+  	      }
+  	      rwMonitor.wait ();
+  	    }
             }
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException (
+                "*** Thrown from One2AnyChannel.read ()\n" + e.toString ()
+              );
+            }
+          }
+          rwMonitor.notify ();
+          return data.get ();
         }
+      }
     }
 
     /**
-     * Writes an <TT>Object</TT> to the channel. Only one writer is allowed.
+     * Writes an <TT>Object</TT> to the channel. only one writer is allowed.
      *
      * @param value The object to write to the channel.
      */
-    public void write(Object value)
-    {
-        synchronized (rwMonitor)
-        {
-            data.put(value);
-            rwMonitor.notify();
-            if (data.getState() == ChannelDataStore.FULL)
-                try
-                {
-                    rwMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from One2AnyChannelImpl.write (Object)\n" +
-                            e.toString());
-                }
+    public void write (Object value) {
+      synchronized (rwMonitor) {
+        data.put (value);
+        rwMonitor.notify ();
+        if (data.getState () == ChannelDataStore.FULL) {
+          try {
+            rwMonitor.wait ();
+  	  while (data.getState () == ChannelDataStore.FULL) {
+  	    if (Spurious.logging) {
+  	      SpuriousLog.record (SpuriousLog.One2AnyChannelXWrite);
+  	    }
+  	    rwMonitor.wait ();
+  	  }
+          }
+  	catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from One2AnyChannel.write (Object)\n" + e.toString ()
+            );
+          }
         }
+      }
     }
 }

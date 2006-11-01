@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -95,7 +95,7 @@ import org.jcsp.lang.*;
  * of the streams from which they were sourced.  To get that indication,
  * we can either use {@link MultiplexInt} or <I>sign</I> each <TT>int</TT>
  * stream to be multiplexed with {@link SignInt} and multiplex with
- * {@link com.quickstone.jcsp.plugNplay.Plex}.
+ * {@link org.jcsp.plugNplay.Plex}.
  * <P>
  * <H2>Implemntation Note</H2>
  * For information, here is the <TT>run</TT> method for this process:

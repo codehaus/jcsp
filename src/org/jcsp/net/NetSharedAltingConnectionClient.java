@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -34,7 +34,7 @@ import org.jcsp.util.Buffer;
 /**
  * <p>
  * Defines a class whose instances should be
- * <code>{@link com.quickstone.jcsp.lang.SharedAltingConnectionClient}</code>
+ * <code>{@link org.jcsp.lang.SharedAltingConnectionClient}</code>
  * that connect to a <code>ConnectionServer</code> over a JCSP.NET
  * network.
  * </p>
@@ -101,7 +101,7 @@ public class NetSharedAltingConnectionClient extends SharedAltingConnectionClien
     *
     * @return the <code>NetChannelLocation</code> object.
     *
-    * @see com.quickstone.jcsp.net.Networked#getChannelLocation()
+    * @see org.jcsp.net.Networked#getChannelLocation()
     */
    public NetChannelLocation getChannelLocation()
    {

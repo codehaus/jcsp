@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -46,25 +46,27 @@ import org.jcsp.util.ints.*;
 
 class Any2OneChannelIntImpl extends AltingChannelInputInt implements SharedChannelOutputInt, Any2OneChannelInt, Serializable
 {
-    /** The monitor synchronising reader and writer on this channel */
-    protected Object rwMonitor = new Object();
+	/** The monitor synchronising reader and writer on this channel */
+	  protected Object rwMonitor = new Object ();
 
-    /** The (invisible-to-users) buffer used to store the data for the channel */
-    private int hold;
+	  /** The (invisible-to-users) buffer used to store the data for the channel */
+	  private int hold;
 
-    /** The synchronisation flag */
-    private boolean empty = true;
+	  /** The synchronisation flag */
+	  private boolean empty = true;
 
-    /** The Alternative class that controls the selection */
-    protected Alternative alt;
+	  /** The Alternative class that controls the selection */
+	  protected Alternative alt;
 
-    /** The monitor on which writers must synchronize */
-    protected final Object writeMonitor = new Object();
+	  /** The monitor on which writers must synchronize */
+	  protected final Object writeMonitor = new Object ();
 
+	  /** Flag to deal with a spurious wakeup during a write */
+	  private boolean spuriousWakeUp = true;
+	  
+	      /*************Methods from Any2OneChannelInt******************************/
 
-    /*************Methods from Any2OneChannelInt******************************/
-
-    /**
+	  /**
      * Returns the <code>AltingChannelInputInt</code> object to use for this
      * channel. As <code>Any2OneChannelIntImpl</code> implements
      * <code>AltingChannelInputInt</code> itself, this method simply returns
@@ -96,156 +98,150 @@ class Any2OneChannelIntImpl extends AltingChannelInputInt implements SharedChann
 
 
     /**
-     * Reads an <TT>int</TT> from the channel.
-     *
-     * @return the integer read from the channel.
-     */
-    public int read()
-    {
-        synchronized (rwMonitor)
-        {
-            if (empty)
-            {
-                empty = false;
-                try
-                {
-                    rwMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from Any2OneChannelIntImpl.read ()\n"
-                            + e.toString());
-                }
-            }
-            else
-                empty = true;
-            rwMonitor.notify();
-            return hold;
-        }
-    }
+	   * Reads an <TT>int</TT> from the channel.
+	   *
+	   * @return the integer read from the channel.
+	   */
+	  public int read () {
+	    synchronized (rwMonitor) {
+	      if (empty) {
+	        empty = false;
+	        try {
+	          rwMonitor.wait ();
+		  while (!empty) {
+		    if (Spurious.logging) {
+		      SpuriousLog.record (SpuriousLog.Any2OneChannelIntRead);
+		    }
+		    rwMonitor.wait ();
+		  }
+	        }
+	        catch (InterruptedException e) {
+	          throw new ProcessInterruptedException ("*** Thrown from Any2OneChannelInt.read ()\n"
+	                                             + e.toString ());
+	        }
+	      } else {
+	        empty = true;
+	      }
+	      spuriousWakeUp = false;
+	      rwMonitor.notify ();
+	      return hold;
+	    }
+	  }
 
-    /**
-     * Writes an <TT>int</TT> to the Channel. This method also ensures only one
-     * of the writers can actually be writing at any time. All other writers
-     * are blocked until it completes the write.
-     *
-     * @param value The integer to write to the Channel.
-     */
-    public void write(int value)
-    {
-        synchronized (writeMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                hold = value;
-                if (empty)
-                {
-                    empty = false;
-                    if (alt != null)
-                        alt.schedule();
-                }
-                else
-                {
-                    empty = true;
-                    rwMonitor.notify();
-                }
-                try
-                {
-                    rwMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from Any2OneChannelIntImpl.write (int)\n"
-                            + e.toString());
-                }
-            }
-        }
-    }
+	  /**
+	   * Writes an <TT>int</TT> to the Channel. This method also ensures only one
+	   * of the writers can actually be writing at any time. All other writers
+	   * are blocked until it completes the write.
+	   *
+	   * @param value The integer to write to the Channel.
+	   */
+	  public void write (int value) {
+	    synchronized (writeMonitor) {
+	      synchronized (rwMonitor) {
+	        hold = value;
+	        if (empty) {
+	          empty = false;
+	          if (alt != null) {
+	            alt.schedule ();
+	          }
+	        } else {
+	          empty = true;
+	          rwMonitor.notify ();
+	        }
+	        try {
+	          rwMonitor.wait ();
+		  while (spuriousWakeUp) {
+		    if (Spurious.logging) {
+		      SpuriousLog.record (SpuriousLog.Any2OneChannelIntWrite);
+		    }
+		    rwMonitor.wait ();
+		  }
+		  spuriousWakeUp = true;
+	        }
+	        catch (InterruptedException e) {
+	          throw new ProcessInterruptedException ("*** Thrown from Any2OneChannelInt.write (int)\n"
+	                                             + e.toString ());
+	        }
+	      }
+	    }
+	  }
 
-    /**
-     * turns on Alternative selection for the channel. Returns true if the
-     * channel has data that can be read immediately.
-     * <P>
-     * <I>Note: this method should only be called by the Alternative class</I>
-     *
-     * @param alt the Alternative class which will control the selection
-     * @return true if the channel has data that can be read, else false
-     */
-    boolean enable(Alternative alt)
-    {
-        synchronized (rwMonitor)
-        {
-            if (empty)
-            {
-                this.alt = alt;
-                return false;
-            }
-            else
-                return true;
-        }
-    }
+	  /**
+	   * turns on Alternative selection for the channel. Returns true if the
+	   * channel has data that can be read immediately.
+	   * <P>
+	   * <I>Note: this method should only be called by the Alternative class</I>
+	   *
+	   * @param alt the Alternative class which will control the selection
+	   * @return true if the channel has data that can be read, else false
+	   */
+	  boolean enable (Alternative alt) {
+	    synchronized (rwMonitor) {
+	      if (empty) {
+	        this.alt = alt;
+	        return false;
+	      }
+	      else {
+	        return true;
+	      }
+	    }
+	  }
 
-    /**
-     * turns off Alternative selection for the channel. Returns true if the
-     * channel contained data that can be read.
-     * <P>
-     * <I>Note: this method should only be called by the Alternative class</I>
-     *
-     * @return true if the channel has data that can be read, else false
-     */
-    boolean disable()
-    {
-        synchronized (rwMonitor)
-        {
-            alt = null;
-            return !empty;
-        }
-    }
+	  /**
+	   * turns off Alternative selection for the channel. Returns true if the
+	   * channel contained data that can be read.
+	   * <P>
+	   * <I>Note: this method should only be called by the Alternative class</I>
+	   *
+	   * @return true if the channel has data that can be read, else false
+	   */
+	  boolean disable () {
+	    synchronized (rwMonitor) {
+	      alt = null;
+	      return !empty;
+	    }
+	  }
 
-    /**
-     * Returns whether there is data pending on this channel.
-     * <P>
-     * <I>Note: if there is, it won't go away until you read it.  But if there
-     * isn't, there may be some by the time you check the result of this method.</I>
-     * <P>
-     * This method is provided for convenience.  Its functionality can be provided
-     * by <I>Pri Alting</I> the channel against a <TT>SKIP</TT> guard, although
-     * at greater run-time and syntactic cost.  For example, the following code
-     * fragment:
-     * <PRE>
-     *   if (c.pending ()) {
-     *     int x = c.read ();
-     *     ...  do something with x
-     *   } else (
-     *     ...  do something else
-     *   }
-     * </PRE>
-     * is equivalent to:
-     * <PRE>
-     *   if (c_pending.priSelect () == 0) {
-     *     int x = c.read ();
-     *     ...  do something with x
-     *   } else (
-     *     ...  do something else
-     * }
-     * </PRE>
-     * where earlier would have had to have been declared:
-     * <PRE>
-     * final Alternative c_pending =
-     *   new Alternative (new Guard[] {c, new Skip ()});
-     * </PRE>
-     *
-     * @return state of the channel.
-     */
-    public boolean pending()
-    {
-        synchronized (rwMonitor)
-        {
-            return !empty;
-        }
-    }
+	  /**
+	   * Returns whether there is data pending on this channel.
+	   * <P>
+	   * <I>Note: if there is, it won't go away until you read it.  But if there
+	   * isn't, there may be some by the time you check the result of this method.</I>
+	   * <P>
+	   * This method is provided for convenience.  Its functionality can be provided
+	   * by <I>Pri Alting</I> the channel against a <TT>SKIP</TT> guard, although
+	   * at greater run-time and syntactic cost.  For example, the following code
+	   * fragment:
+	   * <PRE>
+	   *   if (c.pending ()) {
+	   *     int x = c.read ();
+	   *     ...  do something with x
+	   *   } else (
+	   *     ...  do something else
+	   *   }
+	   * </PRE>
+	   * is equivalent to:
+	   * <PRE>
+	   *   if (c_pending.priSelect () == 0) {
+	   *     int x = c.read ();
+	   *     ...  do something with x
+	   *   } else (
+	   *     ...  do something else
+	   * }
+	   * </PRE>
+	   * where earlier would have had to have been declared:
+	   * <PRE>
+	   * final Alternative c_pending =
+	   *   new Alternative (new Guard[] {c, new Skip ()});
+	   * </PRE>
+	   *
+	   * @return state of the channel.
+	   */
+	  public boolean pending () {
+	    synchronized (rwMonitor) {
+	      return !empty;
+	    }
+	  }
 
     /**
      * Creates an array of Any2OneChannelIntImpl.

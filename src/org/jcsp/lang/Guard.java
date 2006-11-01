@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -33,7 +33,7 @@ package org.jcsp.lang;
  * <H2>Description</H2>
  * <TT>Guard</TT> defines an abstract interface to be implemented by events competing
  * for selection by a process executing an {@link Alternative}.  Its methods have
- * only <I>package</I> visibility within <TT>com.quickstone.jcsp.lang</TT> and are of no concern to
+ * only <I>package</I> visibility within <TT>org.jcsp.lang</TT> and are of no concern to
  * <I>users</I> of this package.  Currently, JCSP supports channel inputs, accepts,
  * timeouts and skips as guards.
  * <P>

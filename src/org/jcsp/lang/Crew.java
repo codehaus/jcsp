@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -238,7 +238,7 @@ package org.jcsp.lang;
  * (nor to any objects referred to within <TT>A</TT>) in the future - unless, of course,
  * the original reference to <TT>A</TT> is passed back.  In this way, the reference acts
  * as a <I>unique token</I>, possesion of which must be held before access is allowed.
- * See also {@link com.quickstone.jcsp.plugNplay.Paraplex} for a <I>double buffering</I> adaptation of this.
+ * See also {@link org.jcsp.plugNplay.Paraplex} for a <I>double buffering</I> adaptation of this.
  * <P>
  * Such patterns give us safe, secure and dynamic forms of <I>Exclusive Read Exclusive
  * Write</I> (EREW) sharing which, along with the dynamic CREW provided by this class,
@@ -398,6 +398,8 @@ public class Crew
     private final Any2OneChannelIntImpl request = new Any2OneChannelIntImpl();
     private final One2OneChannelIntImpl writerControl = new One2OneChannelIntImpl();
     private final Any2OneChannelIntImpl readerRelease = new Any2OneChannelIntImpl();
+    
+    ///TODO make this poison the existing channels, once poison is added
     private final Any2OneChannelIntImpl poison = new Any2OneChannelIntImpl();
 
     private final ProcessManager manager =

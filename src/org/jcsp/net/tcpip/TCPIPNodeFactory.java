@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -38,7 +38,7 @@ import org.jcsp.net.security.*;
  * <p>Default factory for simple initialisations using the TCPIPv4 protocol package.</p>
  *
  * <p>Other constructors can be used to specify a particular CNS server. The default behaviour will
- * extract a CNS server from the system property "com.quickstone.jcsp.tcpip.DefaultCNSServer" with the server specified
+ * extract a CNS server from the system property "org.jcsp.tcpip.DefaultCNSServer" with the server specified
  * as a name or IP address with optional port number.</p>
  *
  * <p>If built with 1.4 or higher the user preferences will also be checked but only if a

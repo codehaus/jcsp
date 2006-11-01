@@ -1,0 +1,205 @@
+
+  /*************************************************************************
+  *                                                                        *
+  *  JCSP ("CSP for Java") libraries                                       *
+  *  Copyright (C) 1996-2006 Peter Welch and Paul Austin.                  *
+  *                                                                        *
+  *  This library is free software; you can redistribute it and/or         *
+  *  modify it under the terms of the GNU Lesser General Public            *
+  *  License as published by the Free Software Foundation; either          *
+  *  version 2.1 of the License, or (at your option) any later version.    *
+  *                                                                        *
+  *  This library is distributed in the hope that it will be useful,       *
+  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+  *  Lesser General Public License for more details.                       *
+  *                                                                        *
+  *  You should have received a copy of the GNU Lesser General Public      *
+  *  License along with this library; if not, write to the Free Software   *
+  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,  *
+  *  USA.                                                                  *
+  *                                                                        *
+  *  Author contact: P.H.Welch@ukc.ac.uk                                   *
+  *                                                                        *
+  *************************************************************************/
+
+package org.jcsp.lang;
+
+class AltingBarrierBase {       // package-only visible class
+
+  /**
+   * All front-ends are chained off here.  Each process enrolled must have one,
+   * and only one, of these.
+   */
+  private AltingBarrier frontEnds = null;
+
+  /** The number of processes enrolled. */
+  private int enrolled = 0;
+
+  /** The number of processes not yet offered to sync on this barrier. */
+  private int countdown = 0;
+  
+  /*
+   * This creates, and returns, more front-ends to be held by newly enrolling
+   * processes.  Initially, none exist - so this must be called at least once.
+   * <P>
+   * <I>Note: except for the first time, this method should only be called by
+   * an AltingBarrier synchronised on this AltingBarrierBase.</I>
+   * 
+   * @param n the number of front-ends to be created.
+   *
+   * @return the new front-ends.
+   * 
+   */
+  AltingBarrier[] expand (int n) {
+    AltingBarrier[] ab = new AltingBarrier[n];
+    for (int i = 0; i < n; i++) {
+      frontEnds = new AltingBarrier (this, frontEnds);
+      ab[i] = frontEnds;
+    }
+    enrolled += n;
+    countdown += n;
+    return ab;
+  }
+
+  /**
+   * This removes the given <i>front-ends</i> chained to this <i>alting</i> barrier.
+   * <P>
+   * <I>Note: this method should only be called by an AltingBarrier synchronised
+   * on this AltingBarrierBase.</I>
+   *
+   * @param ab the <i>front-ends</i> being discarded from this barrier.
+   *   This array must be unaltered from one previously delivered by
+   *   an {@link #expand expand}.
+   */
+  void contract (AltingBarrier[] ab) {
+    // assume: (ab != null) && (ab.length > 0)
+    AltingBarrier first = ab[0];
+    AltingBarrier fa = null;
+    AltingBarrier fb = frontEnds;
+    while ((fb != null) && (fb != first)) {
+      fa = fb;
+      fb = fb.next;
+    }
+    if (fb == null) {
+      throw new AltingBarrierError (
+        "\n*** Could not find first front-end in AltingBarrier contract."
+      );
+    }
+    // deduce: (fb == ab[0]) && (fb != null)
+    // deduce: (fa == null) || (fa.next == fb)
+    // deduce: (fa == null) <==> (frontEnds == ab[0])
+    // deduce: (fa != null) <==> (fa.next == ab[0])
+    for (int i = 1; i < ab.length; i++) {
+      // invariant: (fb == ab[i-1]) && (fb != null)
+      fb = fb.next;
+      if (fb == null) {
+        throw new AltingBarrierError (
+          "\n*** Could not find second (or later) front-end in AltingBarrier contract."
+        );
+      }
+      if (fb != ab[i]) {
+        throw new AltingBarrierError (
+          "\n*** Removal array in AltingBarrier contract not one delivered by expand."
+        );
+      }
+      // deduce: (fb == ab[i]) && (fb != null)
+    }
+    // deduce: (fb == ab[(ab.length) - 1]) && (fb != null)
+    if (fa == null) {
+      frontEnds = fb.next;
+    } else {
+      fa.next = fb.next;
+    }
+    enrolled -= ab.length;
+    countdown -= ab.length;
+    if (countdown == 0) {
+      countdown = enrolled;
+      if (enrolled > 0) {
+        AltingBarrierCoordinate.startEnable ();
+        AltingBarrierCoordinate.startDisable (enrolled);
+        AltingBarrier fe = frontEnds;
+        while (fe != null) {
+          fe.schedule ();
+	  fe = fe.next;
+        }
+      }
+    }
+  }
+
+  /**
+   * Record the offer to synchronise.
+   * <P>
+   * <I>Note: this method should only be called by an AltingBarrier synchronised
+   * on this AltingBarrierBase.</I>
+   *
+   * @return true if all the offers are in.
+   */
+  boolean enable () {
+    countdown--;
+    if (countdown == 0) {
+      countdown = enrolled;
+      AltingBarrierCoordinate.startDisable (enrolled);
+      AltingBarrier fe = frontEnds;
+      while (fe != null) {
+        fe.schedule ();
+	fe = fe.next;
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Withdraw the offer to synchronise.
+   * <P>
+   * <I>Note: this method should only be called by an AltingBarrier synchronised
+   * on this AltingBarrierBase.</I>
+   *
+   * @return true all the offers are in.
+   */
+  boolean disable () {
+    if (countdown == enrolled) {
+      return true;
+    } else {
+      countdown++;
+      return false;
+    }
+  }
+
+  /**
+   * Record resignation.
+   * <P>
+   * <I>Note: this method should only be called by an AltingBarrier synchronised
+   * on this AltingBarrierBase.</I>
+   */
+  void resign () {
+    enrolled--;
+    countdown--;
+    if (countdown == 0) {
+      countdown = enrolled;
+      if (enrolled > 0) {
+        AltingBarrierCoordinate.startEnable ();
+        AltingBarrierCoordinate.startDisable (enrolled);
+        AltingBarrier fe = frontEnds;
+        while (fe != null) {
+          fe.schedule ();
+	  fe = fe.next;
+        }
+      }
+    }
+  }
+
+  /**
+   * Record re-enrollment.
+   * <P>
+   * <I>Note: this method should only be called by an AltingBarrier synchronised
+   * on this AltingBarrierBase.</I>
+   */
+  void enroll () {
+    enrolled++;
+    countdown++;
+  }
+
+}

@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -225,7 +225,7 @@ package org.jcsp.lang;
  * There are two ways to fix this.  The first is to accept that the <TT>Parallel</TT>
  * process created by <TT>parMultiply</TT> remains local to it (and, hence, un-reusable)
  * and, explicitly, to unpark and terminate its unwanted threads.  This can be done by
- * invoking {@link com.quickstone.jcsp.lang.Parallel#releaseAllThreads <TT>releaseAllThreads</TT>} on
+ * invoking {@link org.jcsp.lang.Parallel#releaseAllThreads <TT>releaseAllThreads</TT>} on
  * the <TT>Parallel</TT> after it has been <TT>run</TT> - the memory associated with
  * those threads will be released.  A temporary name for the process needs to be
  * assigned and the last executable line of <A HREF="#parMultiply"><TT>parMultiply</TT></A>

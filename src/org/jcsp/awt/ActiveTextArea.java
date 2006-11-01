@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -147,7 +147,7 @@ import org.jcsp.lang.*;
  * <H2>Example</H2>
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.util.*;
+ * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
  * import java.awt.*;
  * <I></I>

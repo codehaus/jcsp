@@ -1,8 +1,9 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
+	//                2006      Neil Brown                              //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
     //  modify it under the terms of the GNU Lesser General Public      //
@@ -22,7 +23,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -34,7 +35,7 @@ import java.io.Serializable;
  * This enables <I>bucket</I> synchronisation between a set of processes.
  * <P>
  * <A HREF="#constructor_summary">Shortcut to the Constructor and Method Summaries.</A>
- *
+ * 
  * <H2>Description</H2>
  * A <I>bucket</I> is a non-deterministic cousin of a {@link Barrier}.  A bucket is
  * somewhere to {@link #fallInto <TT>fallInto</TT>} when a process needs somewhere to park
@@ -57,7 +58,7 @@ import java.io.Serializable;
  * synchronisation primitive added to
  * the <A HREF="http://www.hensa.ac.uk/parallel/occam/projects/occam-for-all/kroc/">KRoC</A>
  * <B>occam</B> language system.
- *
+ * 
  * <H2>Implementation Note</H2>
  * The {@link #fallInto <TT>fallInto</TT>} and {@link #flush <TT>flush</TT>}
  * methods of <TT>Bucket</TT> are just a re-badging of the
@@ -72,7 +73,7 @@ import java.io.Serializable;
  * the monitor lock before it can exit the <TT>synchronized</TT> region.
  * Future JCSP implementations of <TT>Bucket</TT> will look to follow <B>occam</B> kernels
  * and reduce the overheads of both <TT>fallInto</TT> and <TT>flush</TT> to <TT>O(1)</TT>.
- *
+ * 
  * <H2>A Simple Example</H2>
  * This consists of 10 workers, one bucket and one flusher:
  * <p><IMG SRC="doc-files\Bucket1.gif"></p>
@@ -196,7 +197,7 @@ import java.io.Serializable;
  * <I></I>
  * }
  * </PRE>
- *
+ * 
  * <A NAME="Dingbats">
  * <H2>The Flying Dingbats</H2>
  * This consists of <I>many</I> buckets, a <I>single</I> bucket keeper (responsible for
@@ -358,78 +359,108 @@ import java.io.Serializable;
  * </P>
  *
  * @see org.jcsp.lang.Barrier
- *
+ * 
  * @author P.H.Welch
  */
 
 public class Bucket implements Serializable
 {
-    /**
-     * The number of processes currently enrolled on this bucket.
-     */
-    private int nHolding = 0;
+  /**
+   * The number of processes currently enrolled on this bucket.
+   */
+  private int nHolding = 0;
+  
+  /**
+   * The monitor lock used for synchronization
+   */
+  private final Object bucketLock = new Object();
+  
+  /**
+   * Barrier uses an even/odd flag because the barrier cannot sync without every process
+   * Bucket can happily keep working while old processes are waiting around, so a flag is not enough
+   * Instead, a count must be used.  Theoretically this is unsafe, but the likelihood of the bucket
+   * completing 4 *billion* cycles before the process wakes up is somewhat slim.
+   */
+  private int bucketCycle = 0;
 
-    /**
-     * Fall into the bucket.
-     * The process doing this will be blocked until the next {@link #flush}.
-     */
-    public synchronized void fallInto()
+  /**
+   * Fall into the bucket.
+   * The process doing this will be blocked until the next {@link #flush}.
+   */
+    public void fallInto()
     {
-        nHolding++;
-        try
-        {
-            wait();
-        }
-        catch (InterruptedException e)
-        {
-            throw new ProcessInterruptedError
-                    ("*** Thrown from Bucket.fallInto ()\n"
-                    + e.toString());
-        }
-    }
+    	synchronized (bucketLock)
+    	{
+    		nHolding++;
+    		// System.out.println ("Bucket.fallInto : " + nHolding);
+    		try 
+    		{
+    			int  spuriousCycle = bucketCycle;
+    			bucketLock.wait ();
+    			while (spuriousCycle == bucketCycle) 
+    			{
+    			    if (Spurious.logging) {
+    			      SpuriousLog.record (SpuriousLog.BucketSync);
+    			    }
+    			    bucketLock.wait ();
+    		    }
+    		}
+    		catch (InterruptedException e) 
+    		{
+    			throw new ProcessInterruptedException ("*** Thrown from Bucket.fallInto ()\n"
+                                         + e.toString ());
+    		}
+    	}
+  }
 
-    /**
-     * <P>
-     * Flush the bucket.  All held processes will be released.
-     * It returns the number that were released.
-     * </p>
-     * @return the number of processes flushed.
-     */
-    public synchronized int flush()
-    {
-        notifyAll();
-        final int tmp = nHolding;
-        nHolding = 0;
-        return tmp;
-    }
+  /**
+   * Flush the bucket.  All held processes will be released.
+   * It returns the number that were released.
+   * <P>
+   * @return the number of processes flushed.
+   */
+  public int flush () 
+  {
+	  synchronized (bucketLock)
+	  {
+		  // System.out.println ("Bucket.flush : " + nHolding);
+		  final int tmp = nHolding;
+		  nHolding = 0;
+		  bucketCycle += 1;
+		  notifyAll ();		  
+		  return tmp;
+	  }
+  }
 
-    /**
-     * <p>
-     * This returns the number of processes currently held in the bucket.
-     * Note that this number is <I>volatile</I> - for information only!
-     * By the time the invoker of this method receives it, it might have changed (because
-     * of further processes falling into the bucket or someone flushing it).
-     * </P>
-     * @return the number of processes currently held in the bucket.
-     */
-    public synchronized int holding()
-    {
-        return nHolding;
-    }
+  /**
+   * This returns the number of processes currently held in the bucket.
+   * Note that this number is <I>volatile</I> - for information only!
+   * By the time the invoker of this method receives it, it might have changed (because
+   * of further processes falling into the bucket or someone flushing it).
+   * <P>
+   * @return the number of processes currently held in the bucket.
+   */
+  public int holding () 
+  {
+	  synchronized (bucketLock)
+	  {
+		  return nHolding;
+	  }
+  }
 
-    /**
-     * <p>
-     * Creates an array of Buckets.
-     * </P>
-     *
-     * @param n the number of <TT>Bucket</TT>s to create in the array
-     * @return the array of <TT>Bucket</TT>s
-     */
-    public static Bucket[] create(int n)
-    {
-        Bucket[] buckets = new Bucket[n];
-        for (int i = 0; i < n; i++)
-            buckets[i] = new Bucket();
-        return buckets;
+  /**
+   * Creates an array of Buckets.
+   * <P>
+   *
+   * @param n the number of <TT>Bucket</TT>s to create in the array
+   * @return the array of <TT>Bucket</TT>s
+   */
+  public static Bucket[] create (int n) {
+    Bucket[] buckets = new Bucket[n];
+    for (int i = 0; i < n; i++) {
+      buckets[i] = new Bucket ();
     }
+    return buckets;
+  }
+
 }

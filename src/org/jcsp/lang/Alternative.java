@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -46,7 +46,7 @@ package org.jcsp.lang;
  * that need to <I>Alt</I> over more than one set of guards will need a separate
  * <TT>Alternative</TT> instance for each set.
  * <P>
- * Five types of <TT>Guard</TT> are provided in <TT>com.quickstone.jcsp.lang</TT>:
+ * Five types of <TT>Guard</TT> are provided in <TT>org.jcsp.lang</TT>:
  * <UL>
  *   <LI>
  *      {@link AltingChannelInput}: <I>object channel input</I> --
@@ -139,7 +139,7 @@ package org.jcsp.lang;
  * starved if lower-indexed channels were continually demanding service.
  * If <TT>select</TT> were used, no starvation analysis is possible.
  * The <TT>select</TT> mechanism should only be used when starvation is not an issue.
- *
+ * 
  * <H3><A NAME="FairMuxTime">A Fair Multiplexor with a Timeout</H3>
  * This examples demonstrates a process that <I>fairly</I> multiplexes traffic
  * from its input channels to its single output channel, but which timeouts
@@ -499,7 +499,7 @@ package org.jcsp.lang;
  * its <TT>supply</TT> and <TT>request</TT> <I>channels</I> if it can't cope, leaving
  * the supplying or requesting processes waiting harmlessly on those channels.
  * The service responses can assume their run-time set <I>pre-conditions</I> and have
- * independent - and trivial - logic.  When circumstances permit,
+ * independent -- and trivial -- logic.  When circumstances permit,
  * the blocked processes are serviced in the normal way.
  * </P>
  * <H2>Implementation Footnote</H2>
@@ -533,7 +533,7 @@ package org.jcsp.lang;
  * concept means working at a similar level of difficulty for application programs.
  * One of the goals of JCSP is to protect users from ever having to work at that level,
  * providing instead a range of CSP primitives whose ease of use scales well with
- * application complexity - and in whose implementation those monitor complexities
+ * application complexity -- and in whose implementation those monitor complexities
  * are correctly distilled and hidden.
  *
  * @see org.jcsp.lang.Guard
@@ -542,464 +542,670 @@ package org.jcsp.lang;
  * @see org.jcsp.lang.AltingChannelAccept
  * @see org.jcsp.lang.CSTimer
  * @see org.jcsp.lang.Skip
- *
+ * 
  * @author P.H.Welch and P.D.Austin
  */
 //}}}
 
 public class Alternative
 {
-    /** The monitor synchronising the writers and alting reader */
-    protected Object altMonitor = new Object();
+  /** The monitor synchronising the writers and alting reader */
+  protected Object altMonitor = new Object ();
+  
+  private static final int enabling = 0;
+  private static final int waiting = 1;
+  private static final int ready = 2;
+  private static final int inactive = 3;
+  
+  /** The state of the ALTing process. */
+  private int state = inactive;
 
-    private static final int enabling = 0;
-    private static final int waiting = 1;
-    private static final int ready = 2;
-    private static final int inactive = 3;
+  /** The array of guard events from which we are selecting. */
+  private final Guard[] guard;
 
-    /** The state of the ALTing process. */
-    private int state = inactive;
+  /** The index of the guard with highest priority for the next select. */
+  private int favourite = 0;  // invariant: 0 <= favourite < guard.length
 
-    /** The array of guard events from which we are selecting. */
-    private final Guard[] guard;
+  /** The index of the selected guard. */
+  private int selected;       // after the enable/disable sequence :
+                              //    0 <= selected < guard.length
 
-    /** The index of the guard with highest priority for the next select. */
-    private int favourite = 0; // invariant: 0 <= favourite < guard.length
+  private final int NONE_SELECTED = -1;
 
-    /** The index of the selected guard. */
-    private int selected; // invariant: 0 <= selected < guard.length
+  /** This indicates whether an AltingBarrier is one of the Guards. */
+  private boolean barrierPresent;
+  
+  /** This flag is set by a successful AltingBarrier enable/disable. */
+  private boolean barrierTrigger = false;
 
-    private final int NONE_SELECTED = -1;
+  /** The index of a selected AltingBarrier. */
+  private int barrierSelected;
+  
+  /**
+   * This is the index variable used during the enable/disable sequences.
+   * This has been made global to simplify the call-back (setTimeout) from
+   * a CSTimer that is being enabled.  That call-back sets the timeout, msecs
+   * and timeIndex variables below.  The latter variable is needed only to
+   * work around the bug that Java wait-with-timeouts sometimes return early.
+   */
+  private int enableIndex;
 
-    /**
-     * This is the index variable used during the enable/disable sequences.
-     * This has been made global to simplify the call-back (setTimeout) from
-     * a CSTimer that is being enabled.  That call-back sets the timeout, msecs
-     * and timeIndex variables below.  The latter variable is needed only to
-     * work around the bug that Java wait-with-timeouts sometimes return early.
-     */
-    private int enableIndex;
+  /** This flag is set if one of the enabled guards was a CSTimer guard. */
+  private boolean timeout = false;
 
-    /** This flag is set if one of the enabled guards was a CSTimer guard. */
-    private boolean timeout = false;
+  /** If one or more guards were CSTimers, this holds the earliest timeout. */
+  private long msecs;
 
-    /** If one or more guards were CSTimers, this holds the earliest timeout. */
-    private long msecs;
+  /**
+   * If one or more guards were CSTimers, this holds the index of the one
+   * with the earliest timeout.
+   */
+  private int timeIndex;
 
-    /**
-     * If one or more guards were CSTimers, this holds the index of the one
-     * with the earliest timeout.
-     */
-    private int timeIndex;
-
-    /**
-     * Construct an <TT>Alternative</TT> object operating on the {@link Guard}
-     * array of events.  Supported guard events are channel inputs
-     * ({@link AltingChannelInput} and {@link AltingChannelInputInt}),
-     * CALL channel accepts ({@link AltingChannelAccept}),
-     * timeouts ({@link CSTimer}) and skips ({@link Skip}).
-     * <P>
-     *
-     * @param guard the event guards over which the select operations will be made.
-     */
+  /**
+   * Construct an <TT>Alternative</TT> object operating on the {@link Guard}
+   * array of events.  Supported guard events are channel inputs
+   * ({@link AltingChannelInput} and {@link AltingChannelInputInt}),
+   * CALL channel accepts ({@link AltingChannelAccept}),
+   * timeouts ({@link CSTimer}) and skips ({@link Skip}).
+   * <P>
+   *
+   * @param guard the event guards over which the select operations will be made.
+   */
     public Alternative(final Guard[] guard)
     {
-        this.guard = guard;
-    }
+    	this.guard = guard;
+	    for (int i = 0; i < guard.length; i++)
+	    {
+	    	if (guard[i] instanceof AltingBarrier) 
+	    	{
+		        barrierPresent = true;
+				return;
+      		}
+    	}
+	    barrierPresent = false;
+	}
 
-    /**
-     * Returns the index of one of the ready guards. The method will block
-     * until one of the guards becomes ready.  If more than one is ready,
-     * an <I>arbitrary</I> choice is made.
-     */
+  /**
+   * Returns the index of one of the ready guards. The method will block
+   * until one of the guards becomes ready.  If more than one is ready,
+   * an <I>arbitrary</I> choice is made.
+   */
     public final int select()
     {
-        return fairSelect(); // a legal implementation of arbitrary choice!
-    }
+	    return fairSelect ();  // a legal implementation of arbitrary choice!
+	}
 
-    /**
-     * Returns the index of one of the ready guards. The method will block
-     * until one of the guards becomes ready.  If more than one is ready,
-     * the one with the lowest index is selected.
-     */
-    public final int priSelect()
+  /**
+   * Returns the index of one of the ready guards. The method will block
+   * until one of the guards becomes ready.  If more than one is ready,
+   * the one with the lowest index is selected.
+   */
+  public final int priSelect () 
+  {
+    if (barrierPresent) 
     {
-        state = enabling;
-        favourite = 0;
-        enableGuards();
-        synchronized (altMonitor)
-        {
-            if (state == enabling)
-            {
-                state = waiting;
-                try
-                {
-                    if (timeout)
-                    {
-                        long delay = msecs - System.currentTimeMillis();
-                        if (delay > 0) altMonitor.wait(delay);
-                    }
-                    else
-                    {
-                        altMonitor.wait();
-                    }
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from Alternative.priSelect ()\n" +
-                             e.toString());
-                }
-                state = ready;
-            }
-        }
-        disableGuards();
-        state = inactive;
-        timeout = false;
-        return selected;
+      throw new AlternativeError (
+        "*** Cannot 'priSelect' with an AltingBarrier in the Guard array"
+      );
     }
-
-    /**
-     * Returns the index of one of the ready guards. The method will block
-     * until one of the guards becomes ready.  Consequetive invocations will
-     * service the guards `fairly' in the case when many guards are always
-     * ready.  <I>Implementation note: the last guard serviced has the lowest
-     * priority next time around.</I>
-     */
-    public final int fairSelect()
-    {
-        state = enabling;
-        enableGuards();
-        synchronized (altMonitor)
-        {
-            if (state == enabling)
-            {
-                state = waiting;
-                try
-                {
-                    if (timeout)
-                    {
-                        long delay = msecs - System.currentTimeMillis();
-                        // NOTE: below is code that demonstrates whether wait (delay)
-                        // sometimes returns early!  Because this happens in some JVMs,
-                        // we are forced into a workaround - see disableGuards ().
-                        //   long now = System.currentTimeMillis ();
-                        //   long delay = msecs - now;
-                        if (delay > 0)
-                            altMonitor.wait(delay);
-                        //   long then = System.currentTimeMillis ();
-                        //   System.out.println ("*** fairSelect: " + msecs +
-                        //                       ", " + now + ", " + delay +
-                        //                       ", " + then);
-                    }
-                    else
-                        altMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from Alternative.fairSelect/select ()\n" +
-                             e.toString());
-                }
-                state = ready;
-            }
+    state = enabling;
+    favourite = 0;
+    enableGuards ();
+    synchronized (altMonitor) {
+      if (state == enabling) {
+        state = waiting;
+        try {
+          if (timeout) {
+            long delay = msecs - System.currentTimeMillis ();
+            if (delay > Spurious.earlyTimeout) {
+	      altMonitor.wait (delay);
+/*
+	      while ((state == waiting) &&
+	             ((delay = (msecs - System.currentTimeMillis ()))
+		      > Spurious.earlyTimeout)) {
+                if (Spurious.logging) {
+	          SpuriousLog.record (SpuriousLog.AlternativeSelectWithTimeout);
+	        }
+	        altMonitor.wait (delay);
+	      }
+	      if ((state == waiting) && (delay > 0)) {
+	        if (Spurious.logging) {
+	          SpuriousLog.incEarlyTimeouts ();
+	        }
+              }
+*/
+	      while (state == waiting) {
+	        delay = msecs - System.currentTimeMillis ();
+		if (delay > Spurious.earlyTimeout) {
+		  if (Spurious.logging) {
+	            SpuriousLog.record (SpuriousLog.AlternativeSelectWithTimeout);
+	          }
+	          altMonitor.wait (delay);
+		}
+		else {
+		  if ((delay > 0) && (Spurious.logging)) {
+	            SpuriousLog.incEarlyTimeouts ();
+	          }
+	          break;
+		}
+	      }		  
+// System.out.println (state + " [" + delay + "]");
+	    }
+          } else {
+            altMonitor.wait ();
+	    while (state == waiting) {
+	      if (Spurious.logging) {
+	        SpuriousLog.record (SpuriousLog.AlternativeSelect);
+	      }
+	      altMonitor.wait ();
+	    }
+          }
         }
-        disableGuards();
-        state = inactive;
-        favourite = selected + 1;
-        if (favourite == guard.length)
-            favourite = 0;
-        timeout = false;
-        return selected;
+        catch (InterruptedException e) {
+          throw new ProcessInterruptedException (
+	    "*** Thrown from Alternative.priSelect ()\n" + e.toString ()
+	  );
+        }
+        state = ready;
+      }
     }
+    disableGuards ();
+    state = inactive;
+    timeout = false;
+    return selected;
+  }
 
-    /**
-     * Returns the index of one of the ready guards whose <TT>preCondition</TT>
-     * index is true. The method will block until one of these guards becomes
-     * ready.  If more than one is ready, an <I>arbitrary</I> choice is made.
-     * <P>
-     * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
-     * same as that of the array of guards with which this object was constructed.</I>
-     * <P>
-     *
-     * @param preCondition the guards from which to select
-     */
-    public final int select(boolean[] preCondition)
-    {
-        return fairSelect(preCondition); // a legal implementation of arbitrary choice!
+  /**
+   * Returns the index of one of the ready guards. The method will block
+   * until one of the guards becomes ready.  Consequetive invocations will
+   * service the guards `fairly' in the case when many guards are always
+   * ready.  <I>Implementation note: the last guard serviced has the lowest
+   * priority next time around.</I>
+   */
+  public final int fairSelect () {
+    state = enabling;
+    enableGuards ();
+    synchronized (altMonitor) {
+      if (state == enabling) {
+        state = waiting;
+        try {
+          if (timeout) {
+            long delay = msecs - System.currentTimeMillis ();
+            // NOTE: below is code that demonstrates whether wait (delay)
+            // sometimes returns early!  Because this happens in some JVMs,
+            // we are forced into a workaround - see disableGuards ().
+            //   long now = System.currentTimeMillis ();
+            //   long delay = msecs - now;
+            if (delay > Spurious.earlyTimeout) {
+	      altMonitor.wait (delay);
+/*
+	      while ((state == waiting) &&
+	             ((delay = msecs - System.currentTimeMillis ())
+		      > Spurious.earlyTimeout)) {
+                if (Spurious.logging) {
+	          SpuriousLog.record (SpuriousLog.AlternativeSelectWithTimeout);
+	        }
+	        altMonitor.wait (delay);
+	      }
+	      if ((state == waiting) && (delay > 0)) {
+	        if (Spurious.logging) {
+	          SpuriousLog.incEarlyTimeouts ();
+	        }
+              }
+*/
+	      while (state == waiting) {
+	        delay = msecs - System.currentTimeMillis ();
+		if (delay > Spurious.earlyTimeout) {
+		  if (Spurious.logging) {
+	            SpuriousLog.record (SpuriousLog.AlternativeSelectWithTimeout);
+	          }
+	          altMonitor.wait (delay);
+		}
+		else {
+		  if ((delay > 0) && (Spurious.logging)) {
+	            SpuriousLog.incEarlyTimeouts ();
+	          }
+	          break;
+		}
+	      }		  
+	    }
+            //   long then = System.currentTimeMillis ();
+            //   System.out.println ("*** fairSelect: " + msecs +
+            //                       ", " + now + ", " + delay +
+            //                       ", " + then);
+          } else {
+            altMonitor.wait ();
+	    while (state == waiting) {
+	      if (Spurious.logging) {
+	        SpuriousLog.record (SpuriousLog.AlternativeSelect);
+	      }
+	      altMonitor.wait ();
+	    }
+          }
+        }
+        catch (InterruptedException e) {
+          throw new ProcessInterruptedException (
+	    "*** Thrown from Alternative.fairSelect/select ()\n" + e.toString ()
+	  );
+        }
+        state = ready;
+      }
     }
+    disableGuards ();
+    state = inactive;
+    favourite = selected + 1;
+    if (favourite == guard.length) 
+    	favourite = 0;
+    timeout = false;
+    return selected;
+  }
 
-    /**
-     * Returns the index of one of the ready guards whose <TT>preCondition</TT>
-     * index is true. The method will block until one of these guards becomes
-     * ready.  If more than one is ready, the one with the lowest index is selected.
-     * <P>
-     * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
-     * same as that of the array of guards with which this object was constructed.</I>
-     * <P>
-     *
-     * @param preCondition the guards from which to select
-     */
-    public final int priSelect(boolean[] preCondition)
-    {
-        if (preCondition.length != guard.length)
-            throw new IllegalArgumentException
-                    ("*** com.quickstone.jcsp.lang.Alternative.select called with a preCondition array\n" +
-                    "*** whose length does not match its guard array");
-        state = enabling;
-        favourite = 0;
-        enableGuards(preCondition);
-        synchronized (altMonitor)
-        {
-            if (state == enabling)
-            {
-                state = waiting;
-                try
-                {
-                    if (timeout)
-                    {
-                        long delay = msecs - System.currentTimeMillis();
-                        if (delay > 0)
-                            altMonitor.wait(delay);
-                    }
-                    else
-                        altMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from Alternative.priSelect (boolean[])\n" +
-                             e.toString());
-                }
-                state = ready;
-            }
-        }
-        disableGuards(preCondition);
-        state = inactive;
-        timeout = false;
-        return selected;
+  /**
+   * Enables the guards for selection.  If any of the guards are ready,
+   * it sets selected to the ready guard's index, state to ready and returns.
+   * Otherwise, it sets selected to NONE_SELECTED and returns.
+   */
+  private final void enableGuards () {
+    if (barrierPresent) {
+      AltingBarrierCoordinate.startEnable ();
     }
-
-    /**
-     * Returns the index of one of the ready guards whose <TT>preCondition</TT> index
-     * is true. The method will block until one of these guards becomes ready.
-     * Consequetive invocations will service the guards `fairly' in the case
-     * when many guards are always ready.  <I>Implementation note: the last
-     * guard serviced has the lowest priority next time around.</I>
-     * <P>
-     * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
-     * same as that of the array of guards with which this object was constructed.</I>
-     * <P>
-     *
-     * @param preCondition the guards from which to select
-     */
-    public final int fairSelect(boolean[] preCondition)
-    {
-        if (preCondition.length != guard.length)
-            throw new IllegalArgumentException
-                    ("*** com.quickstone.jcsp.lang.Alternative.select called with a preCondition array\n" +
-                    "*** whose length does not match its guard array");
-        state = enabling;
-        enableGuards(preCondition);
-        synchronized (altMonitor)
-        {
-            if (state == enabling)
-            {
-                state = waiting;
-                try
-                {
-                    if (timeout)
-                    {
-                        long delay = msecs - System.currentTimeMillis();
-                        if (delay > 0) altMonitor.wait(delay);
-                    }
-                    else
-                        altMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from Alternative.fairSelect/select (boolean[])\n" +
-                            e.toString());
-                }
-                state = ready;
-            }
-        }
-        disableGuards(preCondition);
-        state = inactive;
-        favourite = selected + 1;
-        if (favourite == guard.length)
-            favourite = 0;
-        timeout = false;
-        return selected;
-    }
-
-    /**
-     * Enables the guards for selection.  If any of the guards are ready,
-     * it sets selected to the ready guard's index, state to ready and returns.
-     * Otherwise, it sets selected to NONE_SELECTED and returns.
-     */
-    private final void enableGuards()
-    {
-        for (enableIndex = favourite; enableIndex < guard.length; enableIndex++)
-        {
-            if (guard[enableIndex].enable(this))
-            {
-                selected = enableIndex;
-                state = ready;
-                return;
-            }
-        }
-        for (enableIndex = 0; enableIndex < favourite; enableIndex++)
-        {
-            if (guard[enableIndex].enable(this))
-            {
-                selected = enableIndex;
-                state = ready;
-                return;
-            }
-        }
-        selected = NONE_SELECTED;
+    barrierSelected = NONE_SELECTED;
+    for (enableIndex = favourite; enableIndex < guard.length; enableIndex++) {
+      if (guard[enableIndex].enable (this)) {
+        // System.out.println ("ENABLE " + enableIndex + " SUCCEED");
+        selected = enableIndex;
+        state = ready;
+	if (barrierTrigger) {
+	  barrierSelected = selected;
+          barrierTrigger = false;
+	}
         return;
+      }
+      // } else {
+        // System.out.println ("ENABLE " + enableIndex + " FAIL");
+      // }
     }
+    for (enableIndex = 0; enableIndex < favourite; enableIndex++) {
+      if (guard[enableIndex].enable (this)) {
+        // System.out.println ("ENABLE " + enableIndex + " SUCCEED");
+        selected = enableIndex;
+        state = ready;
+	if (barrierTrigger) {
+	  barrierSelected = selected;
+          barrierTrigger = false;
+	}
+        return;
+      }
+      // } else {
+        // System.out.println ("ENABLE " + enableIndex + " FAIL");
+      // }
+    }
+    selected = NONE_SELECTED;
+    if (barrierPresent) {
+      AltingBarrierCoordinate.finishEnable ();
+    }
+  }
 
-    /**
-     * Disables the guards for selection.  Sets selected to the index of
-     * the ready guard, taking care of priority/fair choice.
-     */
-    private void disableGuards()
-    {
-        if (selected != favourite) // else there is nothing to disable
-        {
-            int startIndex = (selected == NONE_SELECTED) ? favourite - 1 : selected - 1;
-            if (startIndex < favourite)
-            {
-                for (int i = startIndex; i >= 0; i--)
-                {
-                    if (guard[i].disable())
-                        selected = i;
-                }
-                startIndex = guard.length - 1;
-            }
-            for (int i = startIndex; i >= favourite; i--)
-            {
-                if (guard[i].disable())
-                    selected = i;
-            }
-            if (selected == NONE_SELECTED)
-                // System.out.println ("disableGuards: NONE_SELECTED ==> " + timeIndex);
-                // NOTE: this is a work-around for Java wait-with-timeouts sometimes
-                // returning early.  If this did not happen, we would not get here!
-                selected = timeIndex;
+  /**
+   * Disables the guards for selection.  Sets selected to the index of
+   * the ready guard, taking care of priority/fair choice.
+   */
+  private void disableGuards () {
+    if (selected != favourite) {    // else there is nothing to disable
+      int startIndex = (selected == NONE_SELECTED) ? favourite - 1: selected - 1;
+      if (startIndex < favourite) {
+        for (int i = startIndex; i >= 0; i--) {
+          if (guard[i].disable ()) {
+            selected = i;
+	    if (barrierTrigger) {
+	      if (barrierSelected != NONE_SELECTED) {
+	        throw new JCSP_InternalError (
+		  "*** Second AltingBarrier completed in ALT sequence: " +
+		  barrierSelected + " and " + i
+		);
+	      }
+	      barrierSelected = selected;
+              barrierTrigger = false;
+	    }
+          }
         }
+        startIndex = guard.length - 1;
+      }
+      for (int i = startIndex; i >= favourite; i--) {
+        if (guard[i].disable ()) {
+          selected = i;
+	  if (barrierTrigger) {
+	    if (barrierSelected != NONE_SELECTED) {
+	      throw new JCSP_InternalError (
+	        "\n*** Second AltingBarrier completed in ALT sequence: " +
+		barrierSelected + " and " + i
+	      );
+	    }
+	    barrierSelected = selected;
+            barrierTrigger = false;
+	  }
+        }
+      }
+      if (selected == NONE_SELECTED) {
+        // System.out.println ("disableGuards: NONE_SELECTED ==> " + timeIndex);
+        // NOTE: this is a work-around for Java wait-with-timeouts sometimes
+        // returning early.  If this did not happen, we would not get here!
+        selected = timeIndex;
+      } 
     }
+    if (barrierSelected != NONE_SELECTED) {        // We must choose a barrier sync
+      selected = barrierSelected;                  // if one is ready - so that all
+      AltingBarrierCoordinate.finishDisable ();    // parties make the same choice.
+    }
+  }
 
-    /**
-     * Enables the guards for selection.  The preCondition must be true for
-     * an guard to be selectable.  If any of the guards are ready, it sets
-     * selected to the ready guard's index, state to ready and returns.
-     * Otherwise, it sets selected to NONE_SELECTED and returns.
-     * <P>
-     *
-     * @return true if and only if one of the guards is ready
-     */
-    private final void enableGuards(boolean[] preCondition)
-    {
-        for (enableIndex = favourite; enableIndex < guard.length; enableIndex++)
-        {
-            if (preCondition[enableIndex] && guard[enableIndex].enable(this))
-            {
-                selected = enableIndex;
-                state = ready;
-                return;
-            }
-        }
-        for (enableIndex = 0; enableIndex < favourite; enableIndex++)
-        {
-            if (preCondition[enableIndex] && guard[enableIndex].enable(this))
-            {
-                selected = enableIndex;
-                state = ready;
-                return;
-            }
-        }
-        selected = NONE_SELECTED;
+  /**
+   * This is the call-back from enabling a CSTimer guard.  It is part of the
+   * work-around for Java wait-with-timeouts sometimes returning early.
+   * It is still in the flow of control of the ALTing process.
+   */
+  void setTimeout (long msecs) {
+    if (timeout) {
+      if (msecs < this.msecs) {
+        this.msecs = msecs;
+        timeIndex = enableIndex;
+      }
+    } else {
+      timeout = true;
+      this.msecs = msecs;
+      timeIndex = enableIndex;
     }
+  }
 
-    /**
-     * Disables the guards for selection.  The preCondition must be true for
-     * an guard to be selectable.  Sets selected to the index of the ready guard,
-     * taking care of priority/fair choice.
-     */
-    private void disableGuards(boolean[] preCondition)
-    {
-        if (selected != favourite)  // else there is nothing to disable
-        {
-            int startIndex = (selected == NONE_SELECTED) ? favourite - 1 : selected - 1;
-            if (startIndex < favourite)
-            {
-                for (int i = startIndex; i >= 0; i--)
-                {
-                    if (preCondition[i] && guard[i].disable())
-                        selected = i;
-                }
-                startIndex = guard.length - 1;
-            }
-            for (int i = startIndex; i >= favourite; i--)
-            {
-                if (preCondition[i] && guard[i].disable())
-                    selected = i;
-            }
-            if (selected == NONE_SELECTED)
-                // System.out.println ("disableGuards: NONE_SELECTED ==> " + timeIndex);
-                // NOTE: this is a work-around for Java wait-with-timeouts sometimes
-                // returning early.  If this did not happen, we would not get here!
-                selected = timeIndex;
-        }
-    }
+  /**
+   * This is a call-back from an AltingBarrier.
+   * It is still in the flow of control of the ALTing process.
+   */
+  void setBarrierTrigger () {
+    barrierTrigger = true;
+  }
 
-    /**
-     * This is the call-back from a CSTimer guard.
-     * It is still in the flow of control of the ALTing process.
-     */
-    void setTimeout(long msecs)
-    {
-        if (timeout)
-        {
-            if (msecs < this.msecs)
-            {
-                this.msecs = msecs;
-                timeIndex = enableIndex;
-            }
-        }
-        else
-        {
-            timeout = true;
-            this.msecs = msecs;
-            timeIndex = enableIndex;
-        }
+  /**
+   * This is the wake-up call to the process ALTing on guards controlled
+   * by this object.  It is in the flow of control of a process writing
+   * to an enabled channel guard.
+   */
+  void schedule () {
+    synchronized (altMonitor) {
+      switch (state) {
+        case enabling:
+          state = ready;
+        break;
+        case waiting:
+          state = ready;
+          altMonitor.notify ();
+        break;
+        // case ready: case inactive:
+        // break
+      }
     }
+  }
 
-    /**
-     * This is the wake-up call to the process ALTing on guards controlled
-     * by this object.  It is in the flow of control of a process writing
-     * to an enabled channel guard.
-     */
-    void schedule()
-    {
-        synchronized (altMonitor)
-        {
-            switch (state)
-            {
-            case enabling:
-                state = ready;
-                break;
-            case waiting:
-                state = ready;
-                altMonitor.notify();
-                break;
-            // case ready: case inactive:
-            }
-        }
+
+  /////////////////// The pre-conditioned versions of select ///////////////////
+
+
+  /**
+   * Returns the index of one of the ready guards whose <TT>preCondition</TT>
+   * index is true. The method will block until one of these guards becomes
+   * ready.  If more than one is ready, an <I>arbitrary</I> choice is made.
+   * <P>
+   * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
+   * same as that of the array of guards with which this object was constructed.</I>
+   * <P>
+   *
+   * @param preCondition the guards from which to select
+   */
+  public final int select (boolean[] preCondition) {
+    return fairSelect (preCondition);  // a legal implementation of arbitrary choice!
+  }
+
+  /**
+   * Returns the index of one of the ready guards whose <TT>preCondition</TT>
+   * index is true. The method will block until one of these guards becomes
+   * ready.  If more than one is ready, the one with the lowest index is selected.
+   * <P>
+   * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
+   * same as that of the array of guards with which this object was constructed.</I>
+   * <P>
+   *
+   * @param preCondition the guards from which to select
+   */
+  public final int priSelect (boolean[] preCondition) {
+    if (barrierPresent) {
+      throw new AlternativeError (
+        "*** Cannot 'priSelect' with an AltingBarrier in the Guard array"
+      );
     }
+    if (preCondition.length != guard.length) {
+      throw new IllegalArgumentException (
+        "*** jcsp.lang.Alternative.select called with a preCondition array\n" +
+        "*** whose length does not match its guard array"
+      );
+    }
+    state = enabling;
+    favourite = 0;
+    enableGuards (preCondition);
+    synchronized (altMonitor) {
+      if (state == enabling) {
+        state = waiting;
+        try {
+          if (timeout) {
+            long delay = msecs - System.currentTimeMillis ();
+            if (delay > Spurious.earlyTimeout) {
+	      altMonitor.wait (delay);
+	      while (state == waiting) {
+	        delay = msecs - System.currentTimeMillis ();
+		if (delay > Spurious.earlyTimeout) {
+		  if (Spurious.logging) {
+	            SpuriousLog.record (SpuriousLog.AlternativeSelectWithTimeout);
+	          }
+	          altMonitor.wait (delay);
+		}
+		else {
+		  if ((delay > 0) && (Spurious.logging)) {
+	            SpuriousLog.incEarlyTimeouts ();
+	          }
+	          break;
+		}
+	      }
+	    }
+          } else {
+            altMonitor.wait ();
+	    while (state == waiting) {
+	      if (Spurious.logging) {
+	        SpuriousLog.record (SpuriousLog.AlternativeSelect);
+	      }
+	      altMonitor.wait ();
+	    }
+          }
+        }
+        catch (InterruptedException e) {
+          throw new ProcessInterruptedException (
+	    "*** Thrown from Alternative.priSelect (boolean[])\n" + e.toString ()
+	  );
+        }
+        state = ready;
+      }
+    }
+    disableGuards (preCondition);
+    state = inactive;
+    timeout = false;
+    return selected;
+  }
+
+  /**
+   * Returns the index of one of the ready guards whose <TT>preCondition</TT> index
+   * is true. The method will block until one of these guards becomes ready.
+   * Consequetive invocations will service the guards `fairly' in the case
+   * when many guards are always ready.  <I>Implementation note: the last
+   * guard serviced has the lowest priority next time around.</I>
+   * <P>
+   * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
+   * same as that of the array of guards with which this object was constructed.</I>
+   * <P>
+   *
+   * @param preCondition the guards from which to select
+   */
+  public final int fairSelect (boolean[] preCondition) {
+    if (preCondition.length != guard.length) {
+      throw new IllegalArgumentException (
+        "*** jcsp.lang.Alternative.select called with a preCondition array\n" +
+        "*** whose length does not match its guard array"
+      );
+    }
+    state = enabling;
+    enableGuards (preCondition);
+    synchronized (altMonitor) {
+      if (state == enabling) {
+        state = waiting;
+        try {
+          if (timeout) {
+            long delay = msecs - System.currentTimeMillis ();
+            if (delay > Spurious.earlyTimeout) {
+	      altMonitor.wait (delay);
+	      while (state == waiting) {
+	        delay = msecs - System.currentTimeMillis ();
+		if (delay > Spurious.earlyTimeout) {
+		  if (Spurious.logging) {
+	            SpuriousLog.record (SpuriousLog.AlternativeSelectWithTimeout);
+	          }
+	          altMonitor.wait (delay);
+		}
+		else {
+		  if ((delay > 0) && (Spurious.logging)) {
+	            SpuriousLog.incEarlyTimeouts ();
+	          }
+	          break;
+		}
+	      }
+	    }
+          } else {
+            altMonitor.wait ();
+	    while (state == waiting) {
+	      if (Spurious.logging) {
+	        SpuriousLog.record (SpuriousLog.AlternativeSelect);
+	      }
+	      altMonitor.wait ();
+	    }
+          }
+        }
+        catch (InterruptedException e) {
+          throw new ProcessInterruptedException (
+	    "*** Thrown from Alternative.fairSelect/select (boolean[])\n" + e.toString ()
+          );
+        }
+        state = ready;
+      }
+    }
+    disableGuards (preCondition);
+    state = inactive;
+    favourite = selected + 1;
+    if (favourite == guard.length) favourite = 0;
+    timeout = false;
+    return selected;
+  }
+
+  /**
+   * Enables the guards for selection.  The preCondition must be true for
+   * an guard to be selectable.  If any of the guards are ready, it sets
+   * selected to the ready guard's index, state to ready and returns.
+   * Otherwise, it sets selected to NONE_SELECTED and returns.
+   * <P>
+   *
+   * @return true if and only if one of the guards is ready
+   */
+  private final void enableGuards (boolean[] preCondition) {
+    if (barrierPresent) {
+      AltingBarrierCoordinate.startEnable ();
+    }
+    barrierSelected = NONE_SELECTED;
+    for (enableIndex = favourite; enableIndex < guard.length; enableIndex++) {
+      if (preCondition[enableIndex] && guard[enableIndex].enable (this)) {
+        selected = enableIndex;
+        state = ready;
+	if (barrierTrigger) {
+	  barrierSelected = selected;
+          barrierTrigger = false;
+	}
+        return;
+      }
+    }
+    for (enableIndex = 0; enableIndex < favourite; enableIndex++) {
+      if (preCondition[enableIndex] && guard[enableIndex].enable (this)) {
+        selected = enableIndex;
+        state = ready;
+	if (barrierTrigger) {
+	  barrierSelected = selected;
+          barrierTrigger = false;
+	}
+        return;
+      }
+    }
+    selected = NONE_SELECTED;
+    if (barrierPresent) {
+      AltingBarrierCoordinate.finishEnable ();
+    }
+  }
+
+  /**
+   * Disables the guards for selection.  The preCondition must be true for
+   * an guard to be selectable.  Sets selected to the index of the ready guard,
+   * taking care of priority/fair choice.
+   */
+  private void disableGuards (boolean[] preCondition) {
+    if (selected != favourite) {    // else there is nothing to disable
+      int startIndex = (selected == NONE_SELECTED) ? favourite - 1: selected - 1;
+      if (startIndex < favourite) {
+        for (int i = startIndex; i >= 0; i--) {
+          if (preCondition[i] && guard[i].disable ()) {
+            selected = i;
+	    if (barrierTrigger) {
+	      if (barrierSelected != NONE_SELECTED) {
+	        throw new JCSP_InternalError (
+		  "*** Second AltingBarrier completed in ALT sequence: " +
+		  barrierSelected + " and " + i
+		);
+	      }
+	      barrierSelected = selected;
+              barrierTrigger = false;
+	    }
+          }
+        }
+        startIndex = guard.length - 1;
+      }
+      for (int i = startIndex; i >= favourite; i--) {
+        if (preCondition[i] && guard[i].disable ()) {
+          selected = i;
+	  if (barrierTrigger) {
+	    if (barrierSelected != NONE_SELECTED) {
+	      throw new JCSP_InternalError (
+	        "*** Second AltingBarrier completed in ALT sequence: " +
+		barrierSelected + " and " + i
+	      );
+	    }
+	    barrierSelected = selected;
+            barrierTrigger = false;
+	  }
+        }
+      }
+      if (selected == NONE_SELECTED) {
+        // System.out.println ("disableGuards: NONE_SELECTED ==> " + timeIndex);
+        // NOTE: this is a work-around for Java wait-with-timeouts sometimes
+        // returning early.  If this did not happen, we would not get here!
+        selected = timeIndex;
+      }
+    }
+    if (barrierSelected != NONE_SELECTED) {        // We must choose a barrier sync
+      selected = barrierSelected;                  // if one is ready - so that all
+      AltingBarrierCoordinate.finishDisable ();    // parties make the same choice.
+    }
+  }
+
 }

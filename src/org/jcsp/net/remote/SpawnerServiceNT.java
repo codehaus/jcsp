@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -32,7 +32,7 @@ import org.jcsp.win32.*;
 
 /**
  * <p>Wraps up the <code>SpawnerService</code> as an NT service. To install the service, register the
- * path <code>java com.quickstone.jcsp.net.remote.SpawnerServiceNT</code> with the service name
+ * path <code>java org.jcsp.net.remote.SpawnerServiceNT</code> with the service name
  * <code>JCSP.NET:SpawnerService</code>.</p>
  *
  * @author Quickstone Technologies Limited

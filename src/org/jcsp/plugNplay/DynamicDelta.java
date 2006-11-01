@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -68,9 +68,9 @@ import org.jcsp.lang.*;
  *   </TR>
  *   <TR>
  *     <TH>in</TH>
- *     <TD>com.quickstone.jcsp.lang.ChannelOutput</TD>
+ *     <TD>org.jcsp.lang.ChannelOutput</TD>
  *     <TD>
- *       The configure Channel accepts Objects of type {@link com.quickstone.jcsp.lang.ChannelOutput} only.
+ *       The configure Channel accepts Objects of type {@link org.jcsp.lang.ChannelOutput} only.
  *     </TD>
  *   </TR>
  *   <TR>

@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -202,7 +202,7 @@ import java.util.*;
  * input and, then, terminates.  Each time it is run (<TT>parInput.run</TT> inside
  * the loop), all those sub-processes run concurrently -- the parallel run terminating
  * when, and only when, all those sub-processes have terminated.  See the documentation
- * of {@link com.quickstone.jcsp.plugNplay.ints.ParaplexInt} for the motivation for this low-level concurrency (and for
+ * of {@link org.jcsp.plugNplay.ints.ParaplexInt} for the motivation for this low-level concurrency (and for
  * the <I>double-buffering</I>).
  * </P>
  * <H2>Implementation Note</H2>
@@ -259,7 +259,7 @@ public class Parallel implements CSProcess
     /**
      * The threads created by <I>all</I> <TT>Parallel</TT> and {@link ProcessManager} objects.
      */
-    private static final HashSet allParThreads = new HashSet();
+    private static final Set allParThreads = Collections.synchronizedSet(new HashSet());
 
     /**
      * Indicates that the <TT>destroy()</TT> method has already been called.
@@ -302,7 +302,7 @@ public class Parallel implements CSProcess
         {
             if (!destroyCalled)
             {
-                System.out.println("*** com.quickstone.jcsp.lang.Parallel: stopping " +
+                System.out.println("*** org.jcsp.lang.Parallel: stopping " +
                                    allParThreads.size() + " threads");
                 for (Iterator i = allParThreads.iterator(); i.hasNext(); )
                 {
@@ -313,7 +313,7 @@ public class Parallel implements CSProcess
                     }
                     catch (SecurityException e)
                     {
-                        System.out.println("*** com.quickstone.jcsp.lang.Parallel: couldn't stop thread " +
+                        System.out.println("*** org.jcsp.lang.Parallel: couldn't stop thread " +
                                            t + " - security exception");
                     }
                 }
@@ -635,7 +635,7 @@ public class Parallel implements CSProcess
 
             try {
                 myProcess.run();
-            } catch (ProcessInterruptedError e) {
+            } catch (ProcessInterruptedException e) {
                 // If this was raised then we must propogate the interrupt signal to other processes
                 synchronized (sync) {
                     for (int i = 0; i < nThreads; i++) {
@@ -643,14 +643,14 @@ public class Parallel implements CSProcess
                             parThreads[i].interrupt();
                         } catch (Throwable t) {
                             System.out.println(
-                                    "*** com.quickstone.jcsp.lang.Parallel: couldn't stop thread "
+                                    "*** org.jcsp.lang.Parallel: couldn't stop thread "
                                     + t
                                     + " - security exception");
                         }
                     }
                 }
             } catch (Throwable e) {
-                uncaughtException("com.quickstone.jcsp.lang.Parallel", e);
+                uncaughtException("org.jcsp.lang.Parallel", e);
             }
 
             barrier.sync();

@@ -6,15 +6,15 @@ and a writer have to be ready for a communication to proceed.  Whoever
 gets to the communication point first has to wait for the other party.
 <P>
 This package provides a variety of classes conforming
-to the {@link com.quickstone.jcsp.util.ints.ChannelDataStoreInt} interface.
+to the {@link org.jcsp.util.ints.ChannelDataStoreInt} interface.
 These classes can be used as <I>plug-ins</I> to the <TT>static</TT> channel
-{@link com.quickstone.jcsp.lang.ChannelInt#createOne2One(com.quickstone.jcsp.util.ints.ChannelDataStoreInt) <TT>create</TT>}
+{@link org.jcsp.lang.One2OneChannelInt#create(org.jcsp.util.ints.ChannelDataStoreInt) <TT>create</TT>}
 methods to customise its semantics.  Classes are provided for blocking FIFO buffers,
 overwriting buffers (losing either the newest or oldest data) and
 infinite (within the realms of your virtual memory) buffers.
 <P>
 Users may write and use their own implementations of
-the {@link com.quickstone.jcsp.util.ints.ChannelDataStoreInt} interface, but
+the {@link org.jcsp.util.ints.ChannelDataStoreInt} interface, but
 great care must be taken to specify its semantics.
 It should not normally be necessary to do this.
 </body>

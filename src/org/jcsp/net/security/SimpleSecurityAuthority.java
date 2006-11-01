@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -70,7 +70,7 @@ public class SimpleSecurityAuthority implements SecurityService
    
    /**
     * Creates a new simple authority. The current username will be found from the preferences if
-    * available under the "user" variable. The system property "com.quickstone.jcsp.net.security.user"
+    * available under the "user" variable. The system property "org.jcsp.net.security.user"
     * will be checked first and take preference. If no user is found the name "default_user" is assumed.
     */
    public SimpleSecurityAuthority()

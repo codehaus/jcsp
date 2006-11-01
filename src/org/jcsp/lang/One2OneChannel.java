@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -47,7 +47,7 @@ package org.jcsp.lang;
  * A factory pattern is used to create channel instances. The <tt>create</tt> methods of {@link Channel}
  * allow creation of channels, arrays of channels and channels with varying semantics such as
  * buffering with a user-defined capacity or overwriting with various policies.
- * Standard examples are given in the <TT>com.quickstone.jcsp.util</TT> package, but
+ * Standard examples are given in the <TT>org.jcsp.util</TT> package, but
  * <I>careful users</I> may write their own.
  * <P>
  * Other static <TT>create</TT> methods allows the user to create fully

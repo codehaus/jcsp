@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -123,7 +123,7 @@ class ParThread extends Thread
                 }
                 catch (Throwable e)
                 {
-                    Parallel.uncaughtException("com.quickstone.jcsp.lang.Parallel", e);
+                    Parallel.uncaughtException("org.jcsp.lang.Parallel", e);
                 }
                 barrier.resign();
                 park.sync();
@@ -131,7 +131,7 @@ class ParThread extends Thread
         }
         catch (Throwable t)
         {
-            Parallel.uncaughtException("com.quickstone.jcsp.lang.Parallel", t);
+            Parallel.uncaughtException("org.jcsp.lang.Parallel", t);
         }
         finally
         {

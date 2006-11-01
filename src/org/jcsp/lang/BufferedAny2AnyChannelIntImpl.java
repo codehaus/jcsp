@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -107,28 +107,29 @@ class BufferedAny2AnyChannelIntImpl extends Any2AnyChannelIntImpl
      *
      * @return the integer read from the Channel.
      */
-    public int read()
-    {
-        synchronized (readMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                if (data.getState() == ChannelDataStoreInt.EMPTY)
-                    try
-                    {
-                        rwMonitor.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        throw new ProcessInterruptedError
-                                (
-                                "*** Thrown from Any2AnyChannelIntImpl.read ()\n" +
-                                e.toString());
-                    }
-                rwMonitor.notify();
-                return data.get();
+    public int read () {
+      synchronized (readMonitor) {
+        synchronized (rwMonitor) {
+          if (data.getState () == ChannelDataStoreInt.EMPTY) {
+            try {
+              rwMonitor.wait ();
+  	    while (data.getState () == ChannelDataStoreInt.EMPTY) {
+  	      if (Spurious.logging) {
+  	        SpuriousLog.record (SpuriousLog.Any2AnyChannelIntXRead);
+  	      }
+  	      rwMonitor.wait ();
+  	    }
             }
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException (
+                "*** Thrown from Any2AnyChannelInt.read ()\n" + e.toString ()
+              );
+            }
+          }
+          rwMonitor.notify ();
+          return data.get ();
         }
+      }
     }
 
     /**
@@ -138,26 +139,28 @@ class BufferedAny2AnyChannelIntImpl extends Any2AnyChannelIntImpl
      *
      * @param value The integer to write to the channel.
      */
-    public void write(int value)
-    {
-        synchronized (writeMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                data.put(value);
-                rwMonitor.notify();
-                if (data.getState() == ChannelDataStoreInt.FULL)
-                    try
-                    {
-                        rwMonitor.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        throw new ProcessInterruptedError
-                                ("*** Thrown from Any2AnyChannelIntImpl.write (int)\n" +
-                                e.toString());
-                    }
+    public void write (int value) {
+      synchronized (writeMonitor) {
+        synchronized (rwMonitor) {
+          data.put (value);
+          rwMonitor.notify ();
+          if (data.getState () == ChannelDataStoreInt.FULL) {
+            try {
+              rwMonitor.wait ();
+  	    while (data.getState () == ChannelDataStoreInt.FULL) {
+  	      if (Spurious.logging) {
+  	        SpuriousLog.record (SpuriousLog.Any2AnyChannelIntXWrite);
+  	      }
+  	      rwMonitor.wait ();
+              }
             }
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException (
+                "*** Thrown from Any2AnyChannelInt.write (int)\n" + e.toString ()
+              );
+            }
+          }
         }
+      }
     }
 }

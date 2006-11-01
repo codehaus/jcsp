@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -364,99 +364,134 @@ import java.io.Serializable;
 
 public class Barrier implements Serializable
 {
-    /**
-     * The number of processes currently enrolled on this barrier.
-     */
-    private int nEnrolled = 0;
+  /**
+   * The number of processes currently enrolled on this barrier.
+   */
+  private int nEnrolled = 0;
 
-    /**
-     * The number of processes currently enrolled on this barrier and who have not yet
-     * synchronised in this cycle.
-     */
-    private int countDown = 0;
+  /**
+   * The number of processes currently enrolled on this barrier and who have not yet
+   * synchronised in this cycle.
+   */
+  private int countDown = 0;
 
-    /**
-     * Construct a barrier initially associated with no processes.
-     */
+  /**
+   * The monitor lock used for synchronisation.
+   */
+  private Object barrierLock = new Object ();
+
+  /**
+   * The even/odd flag used to detect spurious wakeups.
+   */
+  private boolean evenOddCycle = true;      // could be initialised to false ...
+
+  /**
+   * Construct a barrier initially associated with no processes.
+   */
     public Barrier()
     {
-    }
+  }
 
-    /**
-     * Construct a barrier (initially) associated with <TT>nEnrolled</TT> processes.
-     *
-     * @param nEnrolled the number of processes (initially) associated with this barrier.
-     */
+  /**
+   * Construct a barrier (initially) associated with <TT>nEnrolled</TT> processes.
+   *
+   * @param nEnrolled the number of processes (initially) associated with this barrier.
+   */
     public Barrier(final int nEnrolled)
     {
-        this.nEnrolled = nEnrolled;
+    this.nEnrolled = nEnrolled;
+    countDown = nEnrolled;
+//System.out.println ("Barrier.constructor : " + nEnrolled + ", " + countDown);
+  }
+
+  /**
+   * Reset this barrier to be associated with <TT>nEnrolled</TT> processes.
+   * This must only be done at a time when no processes are active on the barrier.
+   *
+   * @param nEnrolled the number of processes reset to this barrier.
+   */
+  public void reset (final int nEnrolled) {
+    if (nEnrolled < 0) {
+      throw new IllegalArgumentException (
+        "*** Attempt to set a negative enrollment on a barrier\n"
+      );
+    }
+    synchronized (barrierLock) {
+      this.nEnrolled = nEnrolled;
+      countDown = nEnrolled;
+    }
+//System.out.println ("Barrier.reset : " + nEnrolled + ", " + countDown);
+  }
+
+  /**
+   * Synchronise the invoking process on this barrier.
+   * <I>Any</I> process synchronising on this barrier will be blocked until <I>all</I>
+   * processes associated with the barrier have synchronised (or resigned).
+   */
+  public void sync () {
+    synchronized (barrierLock) {
+      countDown--;
+//System.out.println ("Barrier.sync : " + nEnrolled + ", " + countDown);
+      if (countDown > 0) {
+        try {
+          boolean spuriousCycle = evenOddCycle;
+          barrierLock.wait ();
+	  while (spuriousCycle == evenOddCycle) {
+	    if (Spurious.logging) {
+	      SpuriousLog.record (SpuriousLog.BarrierSync);
+	    }
+	    barrierLock.wait ();
+          }	  
+        }
+        catch (InterruptedException e) {
+          throw new ProcessInterruptedException (
+	    "*** Thrown from Barrier.sync ()\n" + e.toString ()
+	  );
+        }
+      } else {
         countDown = nEnrolled;
+        evenOddCycle = !evenOddCycle;         // to detect spurious wakeups  :(
+//System.out.println ("Barrier.sync : " + nEnrolled + ", " + countDown);
+        barrierLock.notifyAll ();
+      }
     }
+  }
 
-    /**
-     * Reset this barrier to be associated with <TT>nEnrolled</TT> processes.
-     * This must only be done at a time when no processes are active on the barrier.
-     *
-     * @param nEnrolled the number of processes reset to this barrier.
-     */
-    public synchronized void reset(final int nEnrolled)
-    {
-        this.nEnrolled = nEnrolled;
+  /**
+   * Associate the invoking process with this barrier.
+   */
+  public void enroll () {
+    synchronized (barrierLock) {
+      nEnrolled++;
+      countDown++;
+    }
+//System.out.println ("Barrier.enroll : " + nEnrolled + ", " + countDown);
+  }
+
+  /**
+   * Disassociate the invoking process from this barrier.
+   * Note that if the resigner is the last process associated with the barrier
+   * not to have invoked a {@link #sync sync}, its resignation <I>completes</I>
+   * the barrier (as though it has invoked a <TT>sync</TT>) and releases all
+   * the remaining associated processes.
+   */
+  public void resign () {
+    synchronized (barrierLock) {
+      nEnrolled--;
+      countDown--;
+//System.out.println ("Barrier.resign : " + nEnrolled + ", " + countDown);
+      if (countDown == 0) {
         countDown = nEnrolled;
+        evenOddCycle = !evenOddCycle;         // to detect spurious wakeups  :(
+//System.out.println ("Barrier.resign : " + nEnrolled + ", " + countDown);
+        barrierLock.notifyAll ();
+      }
+      else if (countDown < 0) {
+        throw new BarrierError (
+	  "*** A process has resigned on a barrier without first enrolling\n"
+	);
+      }
     }
+  }
 
-    /**
-     * Synchronise the invoking process on this barrier.
-     * <I>Any</I> process synchronising on this barrier will be blocked until <I>all</I>
-     * processes associated with the barrier have synchronised (or resigned).
-     */
-    public synchronized void sync()
-    {
-        countDown--;
-        if (countDown > 0)
-        {
-            try
-            {
-                wait();
-            }
-            catch (InterruptedException e)
-            {
-                throw new ProcessInterruptedError
-                        ("*** Thrown from Barrier.sync ()\n"
-                        + e.toString());
-            }
-        }
-        else
-        {
-            countDown = nEnrolled;
-            notifyAll();
-        }
-    }
-
-    /**
-     * Associate the invoking process with this barrier.
-     */
-    public synchronized void enroll()
-    {
-        nEnrolled++;
-        countDown++;
-    }
-
-    /**
-     * Disassociate the invoking process from this barrier.
-     * Note that if the resigner is the last process associated with the barrier
-     * not to have invoked a {@link #sync sync}, its resignation <I>completes</I>
-     * the barrier (as though it has invoked a <TT>sync</TT>) and releases all
-     * the remaining associated processes.
-     */
-    public synchronized void resign()
-    {
-        nEnrolled--;
-        countDown--;
-        if (countDown <= 0)
-        {
-            countDown = nEnrolled;
-            notifyAll();
-        }
-    }
 }

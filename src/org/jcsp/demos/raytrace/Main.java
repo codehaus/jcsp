@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -92,9 +92,9 @@ public class Main {
 		}
 		
 		// Establish the NET channels
-		final NetAltingChannelInput workers2demux = CNS.createNet2One ("com.quickstone.jcsp.demos.raytrace.demux");
-		final NetAltingChannelInput workerJoin = CNS.createNet2One ("com.quickstone.jcsp.demos.raytrace.join");
-		final NetAltingChannelInput workerLeave = CNS.createNet2One ("com.quickstone.jcsp.demos.raytrace.leave");
+		final NetAltingChannelInput workers2demux = CNS.createNet2One ("org.jcsp.demos.raytrace.demux");
+		final NetAltingChannelInput workerJoin = CNS.createNet2One ("org.jcsp.demos.raytrace.join");
+		final NetAltingChannelInput workerLeave = CNS.createNet2One ("org.jcsp.demos.raytrace.leave");
 		System.out.println ("Main: waiting for initial worker");
 		NetChannelLocation ncl = (NetChannelLocation)workerJoin.read ();
 		final NetChannelOutput[] toWorkers = new NetChannelOutput [] { NetChannelEnd.createOne2Net (ncl) };

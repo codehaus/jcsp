@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -412,7 +412,7 @@ public class ActiveTextEnterArea implements CSProcess
    /**
     * This is used to get the <TT>ActiveTextArea</TT> within this component
     * so that it can be configured (using {@link java.awt.TextArea} or
-    * {@link com.quickstone.jcsp.awt.ActiveTextArea} methods) or added to some container.
+    * {@link org.jcsp.awt.ActiveTextArea} methods) or added to some container.
     * For example, event channels can be added by invoking
     * <TT>getActiveTextArea().add</TT><I>XXX</I><TT>EventChannel(...)</TT>.
     * <P>

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -299,7 +299,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * <P>
     * Alternatively, the {@link Paintable <TT>Paintable</TT>} object may be set dynamically
     * by sending an appropriate {@link GraphicsProtocol.SetPaintable} object down the
-    * {@link ActiveCanvas#setGraphicsChannels(com.quickstone.jcsp.lang.ChannelInput,com.quickstone.jcsp.lang.ChannelOutput) toGraphics}
+    * {@link ActiveCanvas#setGraphicsChannels(org.jcsp.lang.ChannelInput,org.jcsp.lang.ChannelOutput) toGraphics}
     * channel.
     * <P>
     *
@@ -315,7 +315,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * This method is used by the JVM <I>event thread</I> -- it is not really for public
     * consumption.  If {@link ActiveCanvas#setPaintable setPaintable} has been invoked
     * on this canvas or a {@link GraphicsProtocol.SetPaintable} object has been sent down
-    * the {@link ActiveCanvas#setGraphicsChannels(com.quickstone.jcsp.lang.ChannelInput,com.quickstone.jcsp.lang.ChannelOutput) toGraphics}
+    * the {@link ActiveCanvas#setGraphicsChannels(org.jcsp.lang.ChannelInput,org.jcsp.lang.ChannelOutput) toGraphics}
     * channel, this method uses the supplied {@link Paintable <TT>Paintable</TT>} object
     * to do the painting.
     * <P>
@@ -332,7 +332,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * This method is used by the JVM <I>event thread</I> -- it is not really for public
     * consumption.  If {@link ActiveCanvas#setPaintable setPaintable} has been invoked
     * on this canvas or a {@link GraphicsProtocol.SetPaintable} object has been sent down
-    * the {@link ActiveCanvas#setGraphicsChannels(com.quickstone.jcsp.lang.ChannelInput,com.quickstone.jcsp.lang.ChannelOutput) toGraphics}
+    * the {@link ActiveCanvas#setGraphicsChannels(org.jcsp.lang.ChannelInput,org.jcsp.lang.ChannelOutput) toGraphics}
     * channel, this method uses the supplied {@link Paintable <TT>Paintable</TT>} object
     * to do the updating.
     * <P>

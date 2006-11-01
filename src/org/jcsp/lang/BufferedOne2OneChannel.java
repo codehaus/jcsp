@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -80,28 +80,31 @@ class BufferedOne2OneChannel extends One2OneChannelImpl
     }
 
     /**
-     * Reads an object from the channel.
+     * Reads an <TT>Object</TT> from the channel.
      *
      * @return the object read from the channel.
      */
-    public Object read()
-    {
-        synchronized (rwMonitor)
-        {
-            if (data.getState() == ChannelDataStore.EMPTY)
-                try
-                {
-                    rwMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from One2OneChannelImpl.read (int)\n" +
-                            e.toString());
-                }
-            rwMonitor.notify();
-            return data.get();
+    public Object read () {
+      synchronized (rwMonitor) {
+        if (data.getState () == ChannelDataStore.EMPTY) {
+          try {
+            rwMonitor.wait ();
+  	  while (data.getState () == ChannelDataStore.EMPTY) {
+  	    if (Spurious.logging) {
+  	      SpuriousLog.record (SpuriousLog.One2OneChannelXRead);
+  	    }
+  	    rwMonitor.wait ();
+  	  }
+          }
+          catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from One2OneChannel.read (int)\n" + e.toString ()
+            );
+          }
         }
+        rwMonitor.notify ();
+        return data.get ();
+      }
     }
 
     /**
@@ -109,27 +112,31 @@ class BufferedOne2OneChannel extends One2OneChannelImpl
      *
      * @param value the object to write to the channel.
      */
-    public void write(Object value)
-    {
-        synchronized (rwMonitor)
-        {
-            data.put(value);
-            if (alt != null)
-                alt.schedule();
-            else
-                rwMonitor.notify();
-            if (data.getState() == ChannelDataStore.FULL)
-                try
-                {
-                    rwMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from One2OneChannelImpl.write (Object)\n" +
-                            e.toString());
-                }
+    public void write (Object value) {
+      synchronized (rwMonitor) {
+        data.put (value);
+        if (alt != null) {
+          alt.schedule ();
+        } else {
+          rwMonitor.notify ();
         }
+        if (data.getState () == ChannelDataStore.FULL) {
+          try {
+            rwMonitor.wait ();
+  	  while (data.getState () == ChannelDataStore.FULL) {
+  	    if (Spurious.logging) {
+  	      SpuriousLog.record (SpuriousLog.One2OneChannelXWrite);
+  	    }
+  	    rwMonitor.wait ();
+  	  }
+          }
+          catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from One2OneChannel.write (Object)\n" + e.toString ()
+            );
+          }
+        }
+      }
     }
 
     /**
@@ -141,18 +148,16 @@ class BufferedOne2OneChannel extends One2OneChannelImpl
      * @param alt the Alternative class which will control the selection
      * @return true if the channel has data that can be read, else false
      */
-    boolean enable(Alternative alt)
-    {
-        synchronized (rwMonitor)
-        {
-            if (data.getState() == ChannelDataStore.EMPTY)
-            {
-                this.alt = alt;
-                return false;
-            }
-            else
-                return true;
+    boolean enable (Alternative alt) {
+      synchronized (rwMonitor) {
+        if (data.getState () == ChannelDataStore.EMPTY) {
+          this.alt = alt;
+          return false;
         }
+        else {
+          return true;
+        }
+      }
     }
 
     /**
@@ -163,13 +168,11 @@ class BufferedOne2OneChannel extends One2OneChannelImpl
      *
      * @return true if the channel has data that can be read, else false
      */
-    boolean disable()
-    {
-        synchronized (rwMonitor)
-        {
-            alt = null;
-            return data.getState() != ChannelDataStore.EMPTY;
-        }
+    boolean disable () {
+      synchronized (rwMonitor) {
+        alt = null;
+        return data.getState () != ChannelDataStore.EMPTY;
+      }
     }
 
     /**
@@ -207,11 +210,9 @@ class BufferedOne2OneChannel extends One2OneChannelImpl
      *
      * @return state of the channel.
      */
-    public boolean pending()
-    {
-        synchronized (rwMonitor)
-        {
-            return (data.getState() != ChannelDataStore.EMPTY);
-        }
+    public boolean pending () {
+      synchronized (rwMonitor) {
+        return (data.getState () != ChannelDataStore.EMPTY);
+      }
     }
 }

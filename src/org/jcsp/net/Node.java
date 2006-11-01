@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -285,7 +285,7 @@ public class Node
       
       // Only call this once or else...
       if (initialized)
-         throw new IllegalStateException("Attempted to initialize com.quickstone.jcsp.net.Node twice!");
+         throw new IllegalStateException("Attempted to initialize org.jcsp.net.Node twice!");
       
       //start Link Manager
       LinkManager.getInstance().start();
@@ -333,7 +333,7 @@ public class Node
     * </p>
     * <p>
     * This default factory is currently the
-    * <code>{@link com.quickstone.jcsp.net.tcpip.TCPIPNodeFactory}</code>.
+    * <code>{@link org.jcsp.net.tcpip.TCPIPNodeFactory}</code>.
     * This is instantiated with its <code>instantiate()</code> method.
     * </p>
     *

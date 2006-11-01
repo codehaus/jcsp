@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -86,24 +86,30 @@ class One2AnyChannelImpl implements ChannelOutput, SharedChannelInput, One2AnyCh
      * RejectableOne2AnyChannel extends this class and depends
      * heavily on the algorithms used.
      * Do not modify without checking that class first.
+     * 
+     * NCCB: I have changed this algorithm with the spurious wake-up code from Peter.  
+     * From what I can make out in the RejectableOne2AnyChannel (the concept of which
+     * looks a lot like one-off poison), this shouldn't break it.
      */
 
-    /** The monitor synchronising reader and writer on this channel */
-    protected Object rwMonitor = new Object();
+	/** The monitor synchronising reader and writer on this channel */
+	  protected Object rwMonitor = new Object ();
 
-    /** The (invisible-to-users) buffer used to store the data for the channel */
-    private Object hold;
+	  /** The (invisible-to-users) buffer used to store the data for the channel */
+	  private Object hold;
 
-    /** The synchronisation flag */
-    private boolean empty = true;
+	  /** The synchronisation flag */
+	  private boolean empty = true;
 
-    /** The monitor on which readers must synchronize */
-    protected final Object readMonitor = new Object();
+	  /** The monitor on which readers must synchronize */
+	  protected final Object readMonitor = new Object ();
 
+	  /** Flag to deal with a spurious wakeup during a write */
+	  private boolean spuriousWakeUp = true;
 
     /*************Methods from One2AnyChannel******************************/
 
-    /**
+	  /**
      * Returns the <code>SharedChannelInput</code> to use for this channel.
      * As <code>One2AnyChannelImpl</code> implements
      * <code>SharedChannelInput</code> itself, this method simply returns
@@ -134,70 +140,72 @@ class One2AnyChannelImpl implements ChannelOutput, SharedChannelInput, One2AnyCh
     /*************Methods from ChannelOutput*******************************/
 
     /**
-     * Reads an <TT>Object</TT> from the channel.
-     *
-     * @return the object read from the channel.
-     */
-    public Object read()
-    {
-        synchronized (readMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                if (empty)
-                {
-                    empty = false;
-                    try
-                    {
-                        rwMonitor.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        throw new ProcessInterruptedError
-                                ("*** Thrown from One2AnyChannel.read ()\n" +
-                                e.toString());
-                    }
-                }
-                else
-                    empty = true;
-                rwMonitor.notify();
-                return hold;
-            }
-        }
-    }
+	   * Reads an <TT>Object</TT> from the channel.
+	   *
+	   * @return the object read from the channel.
+	   */
+	  public Object read () {
+	    synchronized (readMonitor) {
+	      synchronized (rwMonitor) {
+	        if (empty) {
+	          empty = false;
+	          try {
+	            rwMonitor.wait ();
+		    while (!empty) {
+		      if (Spurious.logging) {
+		        SpuriousLog.record (SpuriousLog.One2AnyChannelRead);
+		      }
+		      rwMonitor.wait ();
+		    }
+	          }
+	          catch (InterruptedException e) {
+	            throw new ProcessInterruptedException (
+	              "*** Thrown from One2AnyChannel.read ()\n" + e.toString ()
+	            );
+	          }
+	        } else {
+	          empty = true;
+	        }
+	        spuriousWakeUp = false;
+	        rwMonitor.notify ();
+	        return hold;
+	      }
+	    }
+	  }
 
-    /**
-     * Writes an <TT>Object</TT> to the Channel. This method also ensures only one
-     * of the writers can actually be writing at any time. All other writers
-     * are blocked until it completes the write.
-     *
-     * @param value The object to write to the Channel.
-     */
-    public void write(Object value)
-    {
-        synchronized (rwMonitor)
-        {
-            hold = value;
-            if (empty)
-                empty = false;
-
-            else
-            {
-                empty = true;
-                rwMonitor.notify();
-            }
-            try
-            {
-                rwMonitor.wait();
-            }
-            catch (InterruptedException e)
-            {
-                throw new ProcessInterruptedError
-                        ("*** Thrown from One2AnyChannel.write (Object)\n" +
-                        e.toString());
-            }
-        }
-    }
+	  /**
+	   * Writes an <TT>Object</TT> to the Channel. This method also ensures only one
+	   * of the writers can actually be writing at any time. All other writers
+	   * are blocked until it completes the write.
+	   *
+	   * @param value The object to write to the Channel.
+	   */
+	  public void write (Object value) {
+	    synchronized (rwMonitor) {
+	      hold = value;
+	      if (empty) {
+	        empty = false;
+	      } else {
+	        empty = true;
+	        rwMonitor.notify ();
+	      }
+	      try {
+	        rwMonitor.wait ();
+		while (spuriousWakeUp) {
+		  if (Spurious.logging) {
+		    SpuriousLog.record (SpuriousLog.One2AnyChannelWrite);
+		  }
+		  rwMonitor.wait ();
+		}
+		spuriousWakeUp = true;
+	      }
+	      catch (InterruptedException e) {
+	        throw new ProcessInterruptedException (
+	          "*** Thrown from One2AnyChannel.write (Object)\n" + e.toString ()
+	        );
+	      }
+	    }
+	  }
 
     /**
      * Creates an array of One2AnyChannel.
@@ -228,7 +236,7 @@ class One2AnyChannelImpl implements ChannelOutput, SharedChannelInput, One2AnyCh
      *
      * @param n the number of channels to create in the array
      * @deprecated use methods in Channel class instead.
-     * {@link com.quickstone.jcsp.lang.Channel#createOne2Any(ChannelDataStore, int)}
+     * {@link org.jcsp.lang.Channel#createOne2Any(ChannelDataStore, int)}
      * @return the array of One2AnyChannel
      */
     public static One2AnyChannel[] create(int n, ChannelDataStore store)

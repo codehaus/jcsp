@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -44,7 +44,7 @@ import org.jcsp.util.*;
  * <P>
  * <I>Please note that this is a safely shared channel and not
  * a multicaster.  Currently, multicasting has to be managed by
- * writing active processes (see {@link com.quickstone.jcsp.plugNplay.DynamicDelta}
+ * writing active processes (see {@link org.jcsp.plugNplay.DynamicDelta}
  * for an example of broadcasting).</I>
  * <P>
  * All reading processes and writing processes commit to the channel
@@ -82,84 +82,84 @@ import org.jcsp.util.*;
 
 class BufferedAny2AnyChannel extends Any2AnyChannelImpl
 {
+	/** The ChannelDataStore used to store the data for the channel */
+	  private final ChannelDataStore data;
 
-    /** The ChannelDataStore used to store the data for the channel */
-    private final ChannelDataStore data;
-
-    /**
+	  /**
      * Constructs a new BufferedAny2AnyChannel with the specified ChannelDataStore.
-     *
-     * @param data The ChannelDataStore used to store the data for the channel
-     */
+	   *
+	   * @param data The ChannelDataStore used to store the data for the channel
+	   */
     public BufferedAny2AnyChannel(ChannelDataStore data)
     {
         if (data == null)
             throw new IllegalArgumentException
                     ("Null ChannelDataStore given to channel constructor ...\n");
-        this.data = (ChannelDataStore)data.clone();
-    }
+	    this.data = (ChannelDataStore) data.clone ();
+	  }
 
-    /**
-     * Reads an <TT>Object</TT> from the channel.  This method also ensures only one
-     * of the readers can actually be reading at any time. All other readers
-     * are blocked until it completes the read.
-     *
-     * @return the object read from the Channel.
-     */
-    public Object read()
-    {
-        synchronized (readMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                if (data.getState() == ChannelDataStore.EMPTY)
-                {
-                    try
-                    {
-                        rwMonitor.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        throw new ProcessInterruptedError
-                                ("*** Thrown from Any2AnyChannelImpl.read ()\n" +
-                                e.toString());
-                    }
-                }
-                rwMonitor.notify();
-                return data.get();
-            }
-        }
-    }
+	  /**
+	   * Reads an <TT>Object</TT> from the channel.  This method also ensures only one
+	   * of the readers can actually be reading at any time. All other readers
+	   * are blocked until it completes the read.
+	   *
+	   * @return the object read from the Channel.
+	   */
+	  public Object read () {
+	    synchronized (readMonitor) {
+	      synchronized (rwMonitor) {
+	        if (data.getState () == ChannelDataStore.EMPTY) {
+	          try {
+	            rwMonitor.wait ();
+		    while (data.getState () == ChannelDataStore.EMPTY) {
+		      if (Spurious.logging) {
+		        SpuriousLog.record (SpuriousLog.Any2AnyChannelXRead);
+		      }
+		      rwMonitor.wait ();
+		    }
+	          }
+	          catch (InterruptedException e) {
+	            throw new ProcessInterruptedException (
+	              "*** Thrown from Any2AnyChannel.read ()\n" + e.toString ()
+	            );
+	          }
+	        }
+	        rwMonitor.notify ();
+	        return data.get ();
+	      }
+	    }
+	  }
 
-    /**
-     * Writes an <TT>Object</TT> to the channel. This method also ensures only one
-     * of the writers can actually be writing at any time. All other writers
-     * are blocked until it completes the write.
-     *
-     * @param value The object to write to the channel.
-     */
-    public void write(Object value)
-    {
-        synchronized (writeMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                data.put(value);
-                rwMonitor.notify();
-                if (data.getState() == ChannelDataStore.FULL)
-                {
-                    try
-                    {
-                        rwMonitor.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        throw new ProcessInterruptedError
-                                ("*** Thrown from Any2AnyChannelImpl.write (Object)\n" +
-                                e.toString());
-                    }
-                }
-            }
-        }
-    }
+	  /**
+	   * Writes an <TT>Object</TT> to the channel. This method also ensures only one
+	   * of the writers can actually be writing at any time. All other writers
+	   * are blocked until it completes the write.
+	   *
+	   * @param value The object to write to the channel.
+	   */
+	  public void write (Object value) {
+	    synchronized (writeMonitor) {
+	      synchronized (rwMonitor) {
+	        data.put (value);
+	        rwMonitor.notify ();
+	        if (data.getState () == ChannelDataStore.FULL) {
+	          try {
+	            rwMonitor.wait ();
+		    while (data.getState () == ChannelDataStore.FULL) {
+		      if (Spurious.logging) {
+		        SpuriousLog.record (SpuriousLog.Any2AnyChannelXWrite);
+		      }
+		      rwMonitor.wait ();
+	            }
+	          }
+	          catch (InterruptedException e) {
+	            throw new ProcessInterruptedException (
+	              "*** Thrown from Any2AnyChannel.write (Object)\n" + e.toString ()
+	            );
+	          }
+	        }
+	      }
+	    }
+	  }
+
 }

@@ -3,7 +3,7 @@ This provides CSP extensions for all {@link java.awt.Component} components -- GU
 and widget configuration map to channel communications.
 <P>
 Each AWT component (e.g. {@link java.awt.Button}) is mirrored by an <I>active</I>
-{@link com.quickstone.jcsp.lang.CSProcess process} (e.g. {@link com.quickstone.jcsp.awt.ActiveButton})
+{@link org.jcsp.lang.CSProcess process} (e.g. {@link org.jcsp.awt.ActiveButton})
 that works to a channel interface.  GUI events are signalled as output
 messages sent on channels coming from the CSP component.  Each component
 may be dynamically configured by sending it a message on its configuration

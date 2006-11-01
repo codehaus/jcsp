@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -98,24 +98,27 @@ class BufferedAny2OneChannelIntImpl extends Any2OneChannelIntImpl
      *
      * @return The integer returned from the channel.
      */
-    public int read()
-    {
-        synchronized (rwMonitor)
-        {
-            if (data.getState() == ChannelDataStoreInt.EMPTY)
-                try
-                {
-                    rwMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from Any2OneChannelIntImpl.read ()\n" +
-                            e.toString());
-                }
-            rwMonitor.notify();
-            return data.get();
+    public int read () {
+      synchronized (rwMonitor) {
+        if (data.getState () == ChannelDataStoreInt.EMPTY) {
+          try {
+            rwMonitor.wait ();
+  	  while (data.getState () == ChannelDataStoreInt.EMPTY) {
+  	    if (Spurious.logging) {
+  	      SpuriousLog.record (SpuriousLog.Any2OneChannelIntXRead);
+  	    }
+  	    rwMonitor.wait ();
+  	  }
+          }
+          catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from Any2OneChannelInt.read ()\n" + e.toString ()
+            );
+          }
         }
+        rwMonitor.notify ();
+        return data.get ();
+      }
     }
 
     /**
@@ -125,34 +128,37 @@ class BufferedAny2OneChannelIntImpl extends Any2OneChannelIntImpl
      *
      * @param value The integer to write to the channel.
      */
-    public void write(int value)
-    {
-        synchronized (writeMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                data.put(value);
-                if (alt != null)
-                    alt.schedule();
-                else
-                    rwMonitor.notify();
-                if (data.getState() == ChannelDataStoreInt.FULL)
-                    try
-                    {
-                        rwMonitor.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        throw new ProcessInterruptedError
-                                ("*** Thrown from Any2OneChannelIntImpl.write (int)\n" +
-                                e.toString());
-                    }
+    public void write (int value) {
+      synchronized (writeMonitor) {
+        synchronized (rwMonitor) {
+          data.put (value);
+          if (alt != null) {
+            alt.schedule ();
+          } else {
+            rwMonitor.notify ();
+          }
+          if (data.getState () == ChannelDataStoreInt.FULL) {
+            try {
+              rwMonitor.wait ();
+  	    while (data.getState () == ChannelDataStoreInt.FULL) {
+  	      if (Spurious.logging) {
+  	        SpuriousLog.record (SpuriousLog.Any2OneChannelIntXWrite);
+  	      }
+  	      rwMonitor.wait ();
+  	    }
             }
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException (
+                "*** Thrown from Any2OneChannelInt.write (int)\n" + e.toString ()
+              );
+            }
+          }
         }
+      }
     }
 
     /**
-     * turns on Alternative selection for the channel. Returns true if the
+     * turns on Alternative selection for the channel. Returns true if the 
      * channel has data that can be read immediately.
      * <P>
      * <I>NOTE: This method should only be called by the Alternative class</I>
@@ -160,18 +166,16 @@ class BufferedAny2OneChannelIntImpl extends Any2OneChannelIntImpl
      * @param alt The Alternative class which will control the selection
      * @return true if the channel has data that can be read, else false
      */
-    boolean enable(Alternative alt)
-    {
-        synchronized (rwMonitor)
-        {
-            if (data.getState() == ChannelDataStoreInt.EMPTY)
-            {
-                this.alt = alt;
-                return false;
-            }
-            else
-                return true;
+    boolean enable (Alternative alt) {
+      synchronized (rwMonitor) {
+        if (data.getState () == ChannelDataStoreInt.EMPTY) {
+          this.alt = alt;
+          return false;
         }
+        else {
+          return true;
+        }
+      }
     }
 
     /**
@@ -182,13 +186,11 @@ class BufferedAny2OneChannelIntImpl extends Any2OneChannelIntImpl
      *
      * @return true if the channel has data that can be read false otherwise
      */
-    boolean disable()
-    {
-        synchronized (rwMonitor)
-        {
-            alt = null;
-            return data.getState() != ChannelDataStoreInt.EMPTY;
-        }
+    boolean disable () {
+      synchronized (rwMonitor) {
+        alt = null;
+        return data.getState () != ChannelDataStoreInt.EMPTY;
+      }
     }
 
     /**
@@ -226,11 +228,9 @@ class BufferedAny2OneChannelIntImpl extends Any2OneChannelIntImpl
      *
      * @return state of the channel.
      */
-    public boolean pending()
-    {
-        synchronized (rwMonitor)
-        {
-            return (data.getState() != ChannelDataStoreInt.EMPTY);
-        }
+    public boolean pending () {
+      synchronized (rwMonitor) {
+        return (data.getState () != ChannelDataStoreInt.EMPTY);
+      }
     }
 }

@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -45,24 +45,27 @@ import java.io.Serializable;
 
 class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutputInt, Any2AnyChannelInt, Serializable
 {
-    /** The monitor synchronising reader and writer on this channel */
-    protected Object rwMonitor = new Object();
+	  /** The monitor synchronising reader and writer on this channel */
+	  protected Object rwMonitor = new Object ();
 
-    /** The (invisible-to-users) buffer used to store the data for the channel */
-    private int hold;
+	  /** The (invisible-to-users) buffer used to store the data for the channel */
+	  private int hold;
 
-    /** The synchronisation flag */
-    private boolean empty = true;
+	  /** The synchronisation flag */
+	  private boolean empty = true;
 
-    /** The monitor on which readers must synchronize */
-    protected final Object readMonitor = new Object();
+	  /** The monitor on which readers must synchronize */
+	  protected final Object readMonitor = new Object ();
 
-    /** The monitor on which writers must synchronize */
-    protected final Object writeMonitor = new Object();
+	  /** The monitor on which writers must synchronize */
+	  protected final Object writeMonitor = new Object ();
 
-    /*************Methods from Any2AnyChannel******************************/
+	  /** Flag to deal with a spurious wakeup during a write */
+	  private boolean spuriousWakeUp = true;
+	  
+	  /*************Methods from Any2AnyChannel******************************/
 
-    /**
+	  /**
      * Returns the <code>SharedChannelInputInt</code> object to use for this
      * channel. As <code>Any2AnyChannelIntImpl</code> implements
      * <code>SharedChannelInputInt</code> itself, this method simply returns
@@ -94,72 +97,74 @@ class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutpu
 
 
     /**
-     * Reads an <TT>int</TT> from the channel.
-     *
-     * @return the integer read from the channel.
-     */
-    public int read()
-    {
-        synchronized (readMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                if (empty)
-                {
-                    empty = false;
-                    try
-                    {
-                        rwMonitor.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        throw new ProcessInterruptedError
-                                ("*** Thrown from Any2AnyChannelIntImpl.read ()\n" +
-                                e.toString());
-                    }
-                }
-                else
-                    empty = true;
-                rwMonitor.notify();
-                return hold;
-            }
-        }
-    }
+	   * Reads an <TT>int</TT> from the channel.
+	   *
+	   * @return the integer read from the channel.
+	   */
+	  public int read () {
+	    synchronized (readMonitor) {
+	      synchronized (rwMonitor) {
+	        if (empty) {
+	          empty = false;
+	          try {
+	            rwMonitor.wait ();
+		    while (!empty) {
+		      if (Spurious.logging) {
+		        SpuriousLog.record (SpuriousLog.Any2AnyChannelIntRead);
+		      }
+		      rwMonitor.wait ();
+		    }
+	          }
+	          catch (InterruptedException e) {
+	            throw new ProcessInterruptedException (
+	              "*** Thrown from Any2AnyChannelInt.read ()\n" + e.toString ()
+	            );
+	          }
+	        } else {
+	          empty = true;
+	        }
+	        spuriousWakeUp = false;
+	        rwMonitor.notify ();
+	        return hold;
+	      }
+	    }
+	  }
 
-    /**
-     * Writes an <TT>int</TT> to the Channel. This method also ensures only one
-     * of the writers can actually be writing at any time. All other writers
-     * are blocked until it completes the write.
-     *
-     * @param value The integer to write to the Channel.
-     */
-    public void write(int value)
-    {
-        synchronized (writeMonitor)
-        {
-            synchronized (rwMonitor)
-            {
-                hold = value;
-                if (empty)
-                    empty = false;
-                else
-                {
-                    empty = true;
-                    rwMonitor.notify();
-                }
-                try
-                {
-                    rwMonitor.wait();
-                }
-                catch (InterruptedException e)
-                {
-                    throw new ProcessInterruptedError
-                            ("*** Thrown from Any2AnyChannelIntImpl.write (int)\n" +
-                            e.toString());
-                }
-            }
-        }
-    }
+	  /**
+	   * Writes an <TT>int</TT> to the Channel. This method also ensures only one
+	   * of the writers can actually be writing at any time. All other writers
+	   * are blocked until it completes the write.
+	   *
+	   * @param value The integer to write to the Channel.
+	   */
+	  public void write (int value) {
+	    synchronized (writeMonitor) {
+	      synchronized (rwMonitor) {
+	        hold = value;
+	        if (empty) {
+	          empty = false;
+	        } else {
+	          empty = true;
+	          rwMonitor.notify ();
+	        }
+	        try {
+	          rwMonitor.wait ();
+		  while (spuriousWakeUp) {
+		    if (Spurious.logging) {
+		      SpuriousLog.record (SpuriousLog.Any2AnyChannelIntWrite);
+		    }
+		    rwMonitor.wait ();
+		  }
+		  spuriousWakeUp = true;
+	        }
+	        catch (InterruptedException e) {
+	          throw new ProcessInterruptedException (
+	            "*** Thrown from Any2AnyChannelInt.write (int)\n" + e.toString ()
+	          );
+	        }
+	      }
+	    }
+	  }
 
     /**
      * Creates an array of Any2AnyChannelIntImpl.

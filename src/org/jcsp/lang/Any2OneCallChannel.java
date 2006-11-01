@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -48,7 +48,7 @@ import java.io.Serializable;
  * For example, using the same <A HREF="One2OneCallChannel.html#Foo"><TT>Foo</TT></A>
  * interface as before, we derive:
  * <PRE>
- * import com.quickstone.jcsp.lang.*;
+ * import org.jcsp.lang.*;
  * <I></I>
  * public class Any2OneFooChannel extends Any2OneCallChannel implements Foo {
  * <I></I>
@@ -557,7 +557,7 @@ import java.io.Serializable;
  * For other effects, connect in other servers.
  * Note that the college processes do not have to be connected to the same server - each
  * could be connected to a separate server and these servers connected into a graphics
- * animation network (incorporating, for example, processes from {@link com.quickstone.jcsp.awt}).
+ * animation network (incorporating, for example, processes from {@link org.jcsp.awt}).
  * The point is that the college processes would need no changing to drive whatever
  * was constructed.  This is also left as an exercise.
  *

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //  JCSP ("CSP for Java") Libraries                                 //
-//  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+//  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
 //                2001-2004 Quickstone Technologies Limited.        //
 //                                                                  //
 //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
 //  Boston, MA 02111-1307, USA.                                     //
 //                                                                  //
 //  Author contact: P.H.Welch@ukc.ac.uk                             //
-//                  mailbox@quickstone.com                          //
+//                                                                  //
 //                                                                  //
 //////////////////////////////////////////////////////////////////////
 
@@ -57,7 +57,7 @@ import org.jcsp.lang.*;
  * <BLOCKQUOTE>
  * <I>There must be only one process receiving array packets
  * from <TT>Paraplex</TT> (i.e. its output channel must <I>not</I> be connected
- * to a {@link com.quickstone.jcsp.lang.One2AnyChannel} or {@link com.quickstone.jcsp.lang.Any2AnyChannel}).</I>
+ * to a {@link org.jcsp.lang.One2AnyChannel} or {@link org.jcsp.lang.Any2AnyChannel}).</I>
  * </BLOCKQUOTE>
  * The reason for these obligations is to remove the need for <TT>Paraplex</TT>
  * to generate a <TT>new</TT> array packet for each <I>paraplexed</I> communication
@@ -68,7 +68,7 @@ import org.jcsp.lang.*;
  * after every cycle.  In this way, it fills one packet while the process
  * receiving its output consumes the other one.  This is safe so long as that
  * receiving process agrees to the above rules.
- * See the <I>Low Level</I> example in {@link com.quickstone.jcsp.lang.Parallel} for the details
+ * See the <I>Low Level</I> example in {@link org.jcsp.lang.Parallel} for the details
  * of this implementation.
  * <P>
  * <I>Note:</I> the above two constraints should work naturally with most applications.
@@ -77,9 +77,9 @@ import org.jcsp.lang.*;
  * when it has finished using it and before inputting the next one, the second
  * rule could be dropped.  This is trivial to do by piping the output from
  * <TT>Paraplex</TT> through a simple cyclic process that inputs a packet,
- * forwards it (down a {@link com.quickstone.jcsp.lang.One2AnyChannel} or
- * {@link com.quickstone.jcsp.lang.Any2AnyChannel}) and waits for the acknowledgment
- * (for which only a {@link com.quickstone.jcsp.lang.One2OneChannel} is needed).
+ * forwards it (down a {@link org.jcsp.lang.One2AnyChannel} or
+ * {@link org.jcsp.lang.Any2AnyChannel}) and waits for the acknowledgment
+ * (for which only a {@link org.jcsp.lang.One2OneChannel} is needed).
  * <P>
  * Of course, avoiding uncontrolled sharing of the <TT>Object</TT> passing
  * through this process is something that must be done.  But that is not

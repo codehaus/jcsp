@@ -6,19 +6,19 @@ If you have the resource kit (or windows XP) installed it is recommended that yo
 install the service. In the absence of this, there is an executable file called SVCCTRL which can
 install and/or remove NT services.
 
-The com.quickstone.win32.dll file should be copied to the WINNT\System32 folder for the
+The org.win32.dll file should be copied to the WINNT\System32 folder for the
 Java service wrapper to work.
 
 To install the CNS service type:
 
-	svcctrl install "JCSP.NET:TCPIPCNSServer" "java com.quickstone.jcsp.net.tcpip.TCPIPCNSServerNT"
+	svcctrl install "JCSP.NET:TCPIPCNSServer" "java org.jcsp.net.tcpip.TCPIPCNSServerNT"
 
 If present, configuration parameters will be read from the file "JCSPNetCNSService.xml" in the
 WINNT\System32 folder. A template for this file can be found in "src\com\quickstone\jcsp\net\tcpip".
 
 To install the spawning service type:
 
-	svcctrl install "JCSP.NET:SpawnerService" "java.com.quickstone.jcsp.net.remote.SpawnerServiceNT"
+	svcctrl install "JCSP.NET:SpawnerService" "java.org.jcsp.net.remote.SpawnerServiceNT"
 
 If present, configuration parameters will be read from the file "JCSPNetSpawnerService.xml" in the
 WINNT\System32 folder. A template for this file can be found in "src\com\quickstone\jcsp\net\remote".

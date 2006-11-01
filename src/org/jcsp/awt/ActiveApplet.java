@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2001 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -22,7 +22,7 @@
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
     //  Author contact: P.H.Welch@ukc.ac.uk                             //
-    //                  mailbox@quickstone.com                          //
+    //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
@@ -161,7 +161,7 @@ import org.jcsp.lang.*;
  * for the applet process to respond with a message on <TT>destroyAck</TT>, before
  * proceeding to execute <A HREF="#Default">the default <I>destroy</I> mechanisms</A>.
  * The timeout period can be specified (or disabled)
- * {@link ActiveApplet#setDestroyChannels(com.quickstone.jcsp.lang.ChannelOutputInt,com.quickstone.jcsp.lang.AltingChannelInputInt,int) when the channels are set}.
+ * {@link ActiveApplet#setDestroyChannels(org.jcsp.lang.ChannelOutputInt,org.jcsp.lang.AltingChannelInputInt,int) when the channels are set}.
  * <P>
  * These channels should be set up <I>either</I> as an explicit part of the <TT>init</TT>
  * method (and passed to the user process as a constructor or mutator parameter) <I>or</I>
@@ -222,7 +222,7 @@ import org.jcsp.lang.*;
  * panel, the <TT>ActveApplet</TT> can itself be used as a process in that network.
  * Fot this case, an <TT>ActveApplet</TT> has a channel interface (which, together with
  * <A HREF="#Override">the browser control channels</A>, extends that offered by
- * an {@link com.quickstone.jcsp.awt.ActivePanel}):
+ * an {@link org.jcsp.awt.ActivePanel}):
  * <p><img src="doc-files/ActiveApplet2.gif"></p>
  * The event channels
  * should be connected to one or more application-specific server processes (instead
