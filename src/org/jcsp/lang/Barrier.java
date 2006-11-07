@@ -436,17 +436,17 @@ public class Barrier implements Serializable
         try {
           boolean spuriousCycle = evenOddCycle;
           barrierLock.wait ();
-	  while (spuriousCycle == evenOddCycle) {
-	    if (Spurious.logging) {
-	      SpuriousLog.record (SpuriousLog.BarrierSync);
-	    }
-	    barrierLock.wait ();
+	      while (spuriousCycle == evenOddCycle) {
+	        if (Spurious.logging) {
+	          SpuriousLog.record (SpuriousLog.BarrierSync);
+	        }
+	        barrierLock.wait (); 
           }	  
         }
         catch (InterruptedException e) {
           throw new ProcessInterruptedException (
-	    "*** Thrown from Barrier.sync ()\n" + e.toString ()
-	  );
+	        "*** Thrown from Barrier.sync ()\n" + e.toString ()
+	      );
         }
       } else {
         countDown = nEnrolled;

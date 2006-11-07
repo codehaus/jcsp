@@ -45,9 +45,9 @@ public class BounceMain extends ActiveApplet {
   public static final int maxHeight = 768;
 
   public static final Params[] params =
-    {new Params ("com/quickstone/jcsp/demos/bounce/images/cube/", 1, 5, ".gif", Color.white),
-     new Params ("com/quickstone/jcsp/demos/bounce/images/duke/", 1, 17, ".gif", Color.lightGray),
-     new Params ("com/quickstone/jcsp/demos/bounce/images/earth/", 1, 30, ".gif", Color.white)};
+    {new Params ("org/jcsp/demos/bounce/images/cube/", 1, 5, ".gif", Color.white),
+     new Params ("org/jcsp/demos/bounce/images/duke/", 1, 17, ".gif", Color.lightGray),
+     new Params ("org/jcsp/demos/bounce/images/earth/", 1, 30, ".gif", Color.white)};
 
   public void init () {
     setProcess (new BounceNetwork (params, getDocumentBase (), this));

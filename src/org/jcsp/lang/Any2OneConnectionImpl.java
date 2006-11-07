@@ -50,8 +50,7 @@ class Any2OneConnectionImpl implements Any2OneConnection
      *
      * Constructor for One2OneConnectionImpl.
      */
-    public Any2OneConnectionImpl()
-    {
+    public Any2OneConnectionImpl() {
         super();
         chanToServer = ConnectionServer.FACTORY.createOne2One(new Buffer(1));
         chanFromServer = ConnectionServer.FACTORY.createOne2One(new Buffer(1));
