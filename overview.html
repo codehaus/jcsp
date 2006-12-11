@@ -1,0 +1,192 @@
+
+<body>
+This document is the specification for the JCSP core API.
+<P>
+JCSP provides a complete library for building complex functionality
+through layered networks of communicating processes.  It conforms to
+the <A HREF="http://www.comlab.ox.ac.uk/archive/csp.html">CSP</A>
+model of cummunicating systems so that twenty years of theory, tools
+and practical experience can be brought to bear in the support of Java
+multi-threaded applications.
+Newcomers to JCSP should start with the documentation on
+the {@link jcsp.lang.CSProcess <TT>CSProcess</TT>} interface,
+which outlines and motivates the notion of <I>components</I> as <I>communicating processes</I>
+and the <I>process oriented design</I> pattern.
+<P>
+Processes interact solely via CSP synchronising primitives, such as
+{@link jcsp.lang.One2OneChannel <I>channels</I>},
+{@link jcsp.lang.One2OneCallChannel <I>CALL channels</I>},
+{@link jcsp.lang.CSTimer <I>timers</I>},
+{@link jcsp.lang.Crew <I>crews</I>},
+{@link jcsp.lang.Barrier <I>barriers</I>},
+{@link jcsp.lang.Bucket <I>buckets</I>}
+or other well-defined modes of access
+to shared passive objects.  Processes do not invoke each other's methods.
+Processes may be combined to run in {@link jcsp.lang.Sequence <I>sequence</I>}
+or {@link jcsp.lang.Parallel <I>parallel</I>}.  Processes may be combined to wait passively
+on a number of {@link jcsp.lang.Alternative <I>alternative</I>} events, with one of them
+trigered into action only by the external generation of that event.
+Such collections of events may
+be serviced either {@link jcsp.lang.Alternative#fairSelect() <I>fairly</I>}
+(guaranteeing no starvation of one event by the repeated arrival of its siblings),
+by any user-defined {@link jcsp.lang.Alternative#priSelect() <I>priority</I>} or
+in an {@link jcsp.lang.Alternative#select() <I>arbitrary</I>} manner.
+<P>
+JCSP is an alternative to the built-in
+<I>monitor</I> model for Java threads.  JCSP primitives should not normally
+be mixed into designs with <TT>synchronized</TT> method declarations, instances
+of the <TT>java.lang.Runnable</TT> interface or <TT>java.lang.Thread</TT> class,
+or invocations of the <TT>wait</TT>/<TT>notify</TT>/<TT>notifyAll</TT>
+methods from <TT>java.lang.Object</TT>.
+<P>
+However, JCSP is compatible with the built-in model and, with care, can be mixed
+safely and profitably.  In particular, process communication via <TT>wait</TT>-free
+<TT>synchronized</TT> method invocations on a shared passive object directly
+implements a common CSP <I>server</I> idiom
+(see {@link jcsp.awt.DisplayList <TT>DisplayList</TT>} for an example).
+Further, existing libraries that interact with user software via <I>listener</I>
+registration and callback (such as the standard <I>AWT</I> and <I>Swing</I>) can be
+easily tailored to operate as processes with channel-based interfaces (for
+example, see {@link jcsp.awt <I>AWT</I>}).
+<P>
+Finally, we note that the JCSP library reflects
+the <A HREF="http://wotug.ukc.ac.uk/parallel/occam/projects/occam-for-all/"><B>occam</B></A>
+realisation of CSP,
+with some extensions to take advantage of the dynamic nature of Java.
+An <B>occam</B> <TT>PROC</TT> declaration maps simply into a class implementing
+{@link jcsp.lang.CSProcess <TT>CSProcess</TT>}, whose constructor parameters mirror the <TT>PROC</TT>
+parameters and whose <TT>run</TT> method mirrors the <TT>PROC</TT> body.
+<P>
+<H2>Acknowledgements</H2>
+This <A HREF="http://www.cs.ukc.ac.uk/projects/ofa/jcsp/">JCSP</A>
+library was developed from work originally carried out and
+presented by numerous individuals at
+the <A HREF="http://wotug.ukc.ac.uk/">WoTUG</A>
+<A HREF="http://wotug.ukc.ac.uk/parallel/groups/wotug/java/"><I>Java Threads Workshop</I></A>
+and conferences
+(<A HREF="http://www.rt.el.utwente.nl/wotug20/"><I>WoTUG-20</I></A>,
+<A HREF="http://wotug.ukc.ac.uk/parallel/groups/wotug/wotug21/"><I>WoTUG-21</I></A>,
+<A HREF="http://www.keele.ac.uk/depts/cs/events/wotug22/"><I>WoTUG-22</I></A>
+<A HREF="http://wotug.ukc.ac.uk/cpa2000/"><I>WoTUG-23/CPA-2000</I></A> and
+<A HREF="http://www.cs.bris.ac.uk/Events/CPA2001/"><I>WoTUG-24/CPA-2001</I></A>)
+in the period 1996-2000.
+Please follow the links to find the original sources.
+Special thanks are owed to <A HREF="mailto:p_d_austin@hotmail.com">Paul Austin</A>,
+who developed 
+<A HREF="http://www.cs.ukc.ac.uk/projects/ofa/jcsp0-5/"><I>the original JCSP</I></A>
+library.
+
+<H2>References</H2>
+<I>`Communicating Sequential Processes'</I>,
+C.A.R. Hoare,
+CACM,
+21-8,
+pp. 666-677,
+August 1978.
+<BLOCKQUOTE>
+This is the original exposition of CSP.  Presentation is largely from the
+programmer's point of view.  The <B>Ada</B> tasking model and the
+<B>occam</B>/transputer process model were derived from this work.
+</BLOCKQUOTE>
+<I>`Communicating Sequential Processes'</I>,
+C.A.R. Hoare,
+Prentice Hall,
+1985.
+<BLOCKQUOTE>
+This is <I>`the book'</I>.  Presentation is more abstract (i.e. mathematical)
+and a more general theory is given than in the original CACM paper.
+One crucial difference is that <I>events</I> (and <I>channels</I>)
+become concepts that are separate from the processes that engage in
+them.  This difference was adopted in the <B>occam</B>/transputer
+model, but <B>Ada</B> missed out on it.  The <I>JCSP</I> library
+follows the model presented in this book.
+</BLOCKQUOTE>
+<I>`The Theory and Practice of Concurrency'</I>,
+A.W. Roscoe,
+Prentice Hall,
+ISBN 0-13-674409-5,
+1997.
+<BLOCKQUOTE>
+This brings CSP up to date with refinements developed over the past decade.
+It is <I>`the new book'</I>.
+</BLOCKQUOTE>
+`<A HREF="http://wotug.ukc.ac.uk/parallel/theory/formal/csp/jeremy-martin/chapter1.ps.gz"><I>Communicating Sequential Processes and Deadlock</I></A>'
+J.M.R.Martin,
+Chapter 1 from his Ph.D thesis
+("<A HREF="http://wotug.ukc.ac.uk/parallel/theory/formal/csp/jeremy-martin/">The Design
+and Construction of Deadlock-Free Concurrent Systems</A>"),
+University of Buckingham, UK,
+1996.
+<BLOCKQUOTE>
+This gives a crisp, amusing and accurate tour around all the CSP concepts,
+strongly recommended for beginners and experienced CSP users alike.
+[Actually only up to (and including) page 11 are for normal mortals - after
+that it starts to get scary.  But those first few pages are a gem.]
+</BLOCKQUOTE>
+<I>`A Classical Mind - Essays in Honour of C.A.R. Hoare'</I>,
+Edited by A.W. Roscoe,
+Prentice Hall,
+ISBN 0-13-294844-3,
+1994.
+<BLOCKQUOTE>
+Serious bedtime reading.
+</BLOCKQUOTE>
+<I>`Parallel Processing with Communicating Process Architecture'</I>,
+I.R.East,
+UCL press,
+ISBN 1-85728-239-6,
+1995.
+<BLOCKQUOTE>
+This is an excellent text on how to design and program with the CSP model -
+many higher level design issues are addressed.
+</BLOCKQUOTE>
+<I>`occam 2 -- including occam 2.1'</I>,
+John Galletly,
+UCL press,
+ISBN 1-85728-362-7,
+1996.
+<BLOCKQUOTE>
+This is a good textbook on the <B>occam</B> version of the CSP model.
+A knowledge of <B>occam</B> gives insight that makes
+multithreading in <B>Java</B> simpler and, hence, safer to manage ;-) ...
+</BLOCKQUOTE>
+<I>`Parallel and Distributed Computing in Education'</I>,
+<A HREF="mailto:P.H.Welch@ukc.ac.uk">P.H.Welch</A>,
+in <I>Proceedings of VecPar'98</I>,
+Lecture Notes in Computer Science #1573,
+Springer-Verlag,
+April 1999.
+<BLOCKQUOTE>
+This is a tutorial introduction to CSP from the point of view of
+the programmer/designer.  JCSP bindings to key examples are given in
+an appendix.  See <A HREF="vecpar-abstract.html">Abstract</A>.
+</BLOCKQUOTE>
+<I>`Java Threads in the Light of occam/CSP'</I>,
+<A HREF="mailto:P.H.Welch@ukc.ac.uk">P.H.Welch</A>,
+in <I>Architectures, Languages and Patterns for Parallel and Distributed
+Applications</I>, Proceedings of WoTUG-21, pp. 259-284,
+IOS Press (Amsterdam),
+ISBN 90 5199 391 9,
+April 1998.
+<BLOCKQUOTE>
+This is a tutorial introduction to the Java monitor model.
+It raises concern over its ease of use and the safety of its standard
+design patterns, but shows how it may be used to build
+the CSP primitives.  Finally, it revisits those concerns and shows
+how they fade in the light of CSP.
+See <A HREF="vegas-abstract.html">Abstract</A>.
+</BLOCKQUOTE>
+
+<H2>Request for Feedback</H2>
+Currently, the more complex the system requirements, the less likely it becomes
+that concurrency (or multi-threading) play a major role.  This is because
+concurrency is thought to make system design especially hard - so many additional
+problems (race hazards, deadlock etc.) to worry about.
+A good model of concurrency, however, should <I>simplify</I> the design,
+implementation, verification and maintenance of systems.  A design goal
+for our <I>CSP-for-Java</I> collaboration is to enable concurrency to play
+that natural role.  <A HREF="mailto:jcsp-team@ukc.ac.uk">Feedback</A>
+on moving towards that goal is always welcome.
+<P>
+
+</body>

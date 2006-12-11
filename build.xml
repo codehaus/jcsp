@@ -1,0 +1,145 @@
+<project name="JCSP" basedir="." default="all">
+
+<property name="src" location="src"/>
+<property name="build" location="jartemp"/>
+<property name="dist"  location="dist"/>	
+<property name="jcsp-version" value="1.0-rc7"/>
+<property name="copyright" value="Copyright 1997-2007 P.D.Austin and P.H.Welch - All Rights Reserved"/>
+	
+<selector id="jcsp-net-lang-files">
+	<!--lang is the tricky package:-->
+		
+	<or>
+		<filename name="org/jcsp/lang/*Connection*"/>
+		<filename name="org/jcsp/lang/*CallChannel*"/>
+		<!-- Picks up Rejectable channels and ChannelDataRejectedException: -->
+		<filename name="org/jcsp/lang/*Reject*"/>
+	</or>
+</selector>
+	
+<selector id="jcsp-core-fileset">
+	<and>
+		<or>
+			<filename name="org/jcsp/awt/**/*"/>
+			<filename name="org/jcsp/plugNplay/**/*"/>	
+			<filename name="org/jcsp/util/**/*"/>	
+	
+			<filename name="org/jcsp/lang/**/*"/>
+		</or>
+		<not>
+			<selector refid="jcsp-net-lang-files"/>
+		</not>		
+	</and>
+</selector>	
+
+<selector id="jcsp-net-fileset">
+	<or>
+		<filename name="org/jcsp/net/**/*"/>	
+		<selector refid="jcsp-net-lang-files"/>
+	</or>
+</selector>
+	
+	<selector id="jcsp-demos-fileset">
+		<filename name="org/jcsp/demos/**/*"/>
+	</selector>
+	
+<selector id="jar-files-only">
+	<and>
+		<filename name="**/*.java" negate="true"/>
+		<filename name="**/doc-files" negate="true"/>
+		<filename name="**/doc-files/*" negate="true"/>
+		<filename name="**/package.html" negate="true"/>
+		<filename name="*.svn*" negate="true"/>
+	</and>
+</selector>
+	
+<target name="jcsp-build">
+	<mkdir dir="${build}"/>
+	<javac srcdir="${src}" destdir="${build}" source="1.3" target="1.3">
+	</javac>
+	<copy todir="${build}">
+		<fileset dir="${src}"/>
+	</copy>
+</target>
+
+<target name="jcsp-core-jar" depends="jcsp-build">
+	<mkdir dir="${dist}"/>
+	<jar destfile="${dist}/jcsp-core.jar" basedir="${build}" >
+		<and>
+			<selector refid="jcsp-core-fileset"/>
+			<selector refid="jar-files-only"/>
+		</and>
+	</jar>
+</target>
+	
+<target name="jcsp-net-jar" depends="jcsp-build">
+	<mkdir dir="${dist}"/>
+	<jar destfile="${dist}/jcsp-net.jar" basedir="${build}" >
+		<and>
+			<selector refid="jcsp-net-fileset"/>
+			<selector refid="jar-files-only"/>
+		</and>
+	</jar>
+</target>
+	
+<target name="jcsp-demos-jar" depends="jcsp-build">
+	<mkdir dir="${dist}"/>
+	<jar destfile="${dist}/jcsp-demos.jar" basedir="${build}">
+		<and>
+			<selector refid="jcsp-demos-fileset"/>
+			<selector refid="jar-files-only"/>
+		</and>
+	</jar>
+</target>
+	
+<target name="jcsp-core-javadoc">
+	<mkdir dir="${dist}/jcsp-core-doc"/>
+	<javadoc 
+		destdir="${dist}/jcsp-core-doc" 
+		Splitindex="true"
+		Windowtitle="CSP for Java (JCSP) ${jcsp-version} API Specification"
+		Doctitle="CSP for Java&lt;sup&gt;&lt;font size=\'-2\'&gt;TM&lt;/font&gt;&lt;/sup&gt; (JCSP) ${jcsp-version} API Specification"
+		Header="&lt;b&gt;CSP for Java&lt;br&gt;(JCSP) ${jcsp-version}&lt;/b&gt;"	
+		bottom="&lt;font size=\'-1\'&gt;&lt;A HREF=\'mailto:jcsp-team@kent.ac.uk\'&gt;Submit a bug or feature to jcsp-team@kent.ac.uk&lt;/A&gt;&lt;br&gt;Version ${jcsp-version} of the JCSP API Specification (${copyright})&lt;br&gt;Java is a trademark or registered trademark of Sun Microsystems, Inc. in the US and other countries."
+		link="http://java.sun.com/j2se/1.5.0/docs/api"
+		Overview="overview.html"
+		Author="true"
+		additionalparam="-docfilessubdirs"
+		packagenames="org.jcsp.lang,org.jcsp.util,org.jcsp.util.ints,org.jcsp.plugNplay,org.jcsp.plugNplay.ints,org.jcsp.awt"
+	>		
+		<fileset dir="${src}">
+			<and>
+				<selector refid="jcsp-core-fileset"/>
+				<filename name="**/*.java"/>
+			</and>
+		</fileset>
+	</javadoc>
+</target>
+
+	<target name="jcsp-net-javadoc">
+		<mkdir dir="${dist}/jcsp-net-doc"/>
+		<javadoc 
+			destdir="${dist}/jcsp-net-doc" 
+			Splitindex="true"
+			Use="true"
+			link="http://java.sun.com/j2se/1.5.0/docs/api"
+			additionalparam="-docfilessubdirs"
+			Windowtitle="JCSP (CSP for Java) Networked Libraries"
+			
+			packagenames="org.jcsp.lang,org.jcsp.net,org.jcsp.net.cns,org.jcsp.net.dynamic,org.jcsp.net.remote,org.jcsp.net.security,org.jcsp.net.settings,org.jcsp.net.tcpip,org.jcsp.win32"
+		>		
+			<fileset dir="${src}">
+				<and>
+					<selector refid="jcsp-net-fileset"/>
+					<filename name="**/*.java"/>
+				</and>
+			</fileset>
+		</javadoc>
+	</target>
+
+	<target name="build-all" depends="jcsp-build"/>
+	<target name="all-jars" depends="jcsp-core-jar,jcsp-net-jar,jcsp-demos-jar"/>
+	<target name="all-javadoc" depends="jcsp-core-javadoc,jcsp-net-javadoc"/>
+	<target name="all" depends="all-jars,all-javadoc"/>
+	
+</project>
