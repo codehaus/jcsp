@@ -10,8 +10,6 @@
 	<!--lang is the tricky package:-->
 		
 	<or>
-		<filename name="org/jcsp/lang/*Connection*"/>
-		<filename name="org/jcsp/lang/*CallChannel*"/>
 		<!-- Picks up Rejectable channels and ChannelDataRejectedException: -->
 		<filename name="org/jcsp/lang/*Reject*"/>
 	</or>
