@@ -210,23 +210,25 @@ public class CSTimer extends Guard
      *
      * @param alt the Alternative doing the enabling.
      */
-    boolean enable(Alternative alt)
-    {
-        alt.setTimeout(msecs);
-        return false;
-    }
+    boolean enable (Alternative alt) {
+        if ((msecs - System.currentTimeMillis ()) <= Spurious.earlyTimeout) {
+          return true;
+        } else {
+          alt.setTimeout (msecs);
+          return false;
+        }
+      }
 
-    /**
-     * Disables this guard.
-     */
-    boolean disable()
-    {
+      /**
+       * Disables this guard.
+       */
+      boolean disable () {
         // final long now = System.currentTimeMillis ();
         // System.out.println ("*** CSTimer.disable: " + msecs + ", " + now);
         // return (msecs <= now);
-        return (msecs <= System.currentTimeMillis());
+        return ((msecs - System.currentTimeMillis ()) <= Spurious.earlyTimeout);
         // WARNING: the above is an insufficient test to see if the timeout
         // has expired ... since Java wait-with-timeouts sometimes return
         // early!  See the implementation of Alternative for a work-around.
-    }
+      }
 }
