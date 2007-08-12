@@ -69,7 +69,7 @@ package org.jcsp.lang;
  * @author P.D.Austin
  */
 
-public interface ChannelOutput
+public interface ChannelOutput 
 {
     /**
      * Write an Object to the channel.

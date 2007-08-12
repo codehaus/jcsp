@@ -28,6 +28,7 @@
 
 package org.jcsp.net;
 
+import org.jcsp.lang.PoisonException;
 import org.jcsp.lang.ProcessManager;
 import org.jcsp.lang.RejectableBufferedOne2AnyChannel;
 import org.jcsp.lang.RejectableChannel;
@@ -135,6 +136,28 @@ class Net2AnyChannel implements NetSharedChannelInput, Networked
    public Object read()
    {
       return ch.read();
+   }
+   
+   public Object startRead()
+   {
+     return ch.startRead();
+   }
+   
+   public void endRead()
+   {
+     ch.endRead();
+   }
+   
+   
+   /**
+    * Currently, network channels are unpoisonable so this method has no effect.
+    */
+   public void poisonIn(PoisonException poison) {   
+   }
+   /**
+    * Currently, network channels are unpoisonable so this method will never throw a PoisonException
+    */
+   public void checkPoisonIn() throws PoisonException {   
    }
    
    public NetChannelLocation getChannelLocation()

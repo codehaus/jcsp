@@ -33,6 +33,8 @@ package org.jcsp.lang;
  * <code>reject</code> data offered by the writer.
  *
  * @author Quickstone Technologies Limited
+ * 
+ * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}
  */
 public interface RejectableChannel extends RejectableChannelInput, RejectableChannelOutput
 {

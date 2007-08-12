@@ -2,7 +2,7 @@
   /*************************************************************************
   *                                                                        *
   *  JCSP ("CSP for Java") libraries                                       *
-  *  Copyright (C) 1996-2001 Peter Welch and Paul Austin.                  *
+  *  Copyright (C) 1996-2006 Peter Welch and Paul Austin.                  *
   *                                                                        *
   *  This library is free software; you can redistribute it and/or         *
   *  modify it under the terms of the GNU Lesser General Public            *
@@ -297,29 +297,20 @@ public class SpuriousLog {
    * This indexes the counts of spurious wakeups
    * ({@link #report()}),
    * indicating the class and operation that suffered.
+   * <i>Note:</i> this field is not operative in the current JCSP release.
+   * Spurious wakeups on <tt>AltingBarrier</tt>s are handled correctly
+   * -- just not recorded.
    */
-  static public final int BucketFallInto = 35;
-
+  static public final int AltingBarrierCoordinateStartEnable = 35;
+  
   /**
    * This indexes the counts of spurious wakeups
    * ({@link #getSpuriousWakeUpCounts()}),
    * indicating the class and operation that suffered.
-   * <p>
-   * <i>Note:</i> this field is not operative in the current JCSP release.
-   * Spurious wakeups on <tt>AltingBarrier</tt>s are handled correctly
-   * -- just not recorded.
-   * </p>
    */
-  static public final int AltingBarrierCoordinateStartEnable = 36;
+  static public final int BucketSync = 36;
 
-  /**
-   * This indexes the counts of spurious wakeups
-   * ({@link #report()}),
-   * indicating the class and operation that suffered.
-   */
-  static public final int StopRun = 37;
-
-  static private final int nSpuriousWakeUpPlaces = 38;
+  static private final int nSpuriousWakeUpPlaces = 37;
   
   static private int[] count = new int[nSpuriousWakeUpPlaces];
 

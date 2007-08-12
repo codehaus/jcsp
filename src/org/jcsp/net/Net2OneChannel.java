@@ -137,6 +137,18 @@ class Net2OneChannel extends NetAltingChannelInput
       return StandardNetChannelEndFactory.class;
    }
    
+   /**
+    * Currently, network channels are unpoisonable so this method has no effect.
+    */
+   public void poison(PoisonException poison) {   
+   }
+   /**
+    * Currently, network channels are unpoisonable so this method will never throw a PoisonException
+    */
+   public void checkPoison() throws PoisonException {   
+   }
+   
+   
    /*-----------------Attributes-------------------------------------------------*/
    
    private final String label;

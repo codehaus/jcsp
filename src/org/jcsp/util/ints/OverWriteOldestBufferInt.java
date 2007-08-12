@@ -69,6 +69,8 @@ public class OverWriteOldestBufferInt implements ChannelDataStoreInt, Serializab
     /** The index of the next free element (when counter < buffer.length) */
     private int lastIndex = 0;
 
+    private boolean valueWrittenWhileFull = false;
+    
     /**
      * Construct a new <TT>OverWriteOldestBufferInt</TT> with the specified size.
      *
@@ -99,6 +101,51 @@ public class OverWriteOldestBufferInt implements ChannelDataStoreInt, Serializab
         counter--;
         return value;
     }
+    
+    /**
+     * Begins an extended rendezvous by the reader.  
+     * 
+     * The semantics of an extended rendezvous on an overwrite-oldest buffer are slightly
+     * complicated, but hopefully intuitive.
+     * 
+     * When a reader begins an extended rendezvous, the oldest value is returned from the buffer
+     * (as it would be for a call to {@link get()}).  While an extended rendezvous is ongoing, the
+     * writer may (repeatedly) write to the buffer, without ever blocking.  
+     * 
+     * When the reader finishes an extended rendezvous, the following options are possible:
+     * <ul>
+     *   <li> The writer has not written to the channel during the rendezvous.  In this case,
+     *   the value that was read at the start of the rendezvous is removed from the buffer. </li>
+     *   <li> The writer has written to the channel during the rendezvous, but has not over-written
+     *   the value that was read at the start of the rendezvous.  In this case, the value that 
+     *   was read at the start of the rendezvous is removed from the buffer. </li>
+     *   <li> The writer has written to the channel during the rendezvous, and has over-written
+     *   (perhaps repeatedly) the value that was read at the start of the rendezvous.  In this case, 
+     *   the value that was read at the start of the rendezvous is no longer in the buffer, and hence
+     *   nothing is removed. </li>
+     * </ul>
+     * 
+     * @return The oldest value in the buffer at this time
+     */
+    public int startGet()
+    {
+      valueWrittenWhileFull = false;
+      return buffer[firstIndex];
+    }
+    
+    /**
+     * See {@link startGet()} for a description of the semantics of this method.
+     * 
+     * @see startGet()
+     */
+    public void endGet()
+    {
+      if (false == valueWrittenWhileFull) {
+        //Our data hasn't been over-written so remove it:        
+        firstIndex = (firstIndex + 1) % buffer.length;
+        counter--;
+      }
+    }
 
     /**
      * Puts a new <TT>int</TT> into the <TT>OverWriteOldestBufferInt</TT>.
@@ -111,9 +158,14 @@ public class OverWriteOldestBufferInt implements ChannelDataStoreInt, Serializab
     public void put(int value)
     {
         if (counter == buffer.length)
+        {
             firstIndex = (firstIndex + 1) % buffer.length;
+            valueWrittenWhileFull = true;
+        }
         else
+        {
             counter++;
+        }
         buffer[lastIndex] = value;
         lastIndex = (lastIndex + 1) % buffer.length;
     }

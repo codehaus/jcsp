@@ -159,6 +159,21 @@ class AcknowledgementsBuffer implements ChannelDataStore, Serializable
       return value;
    }
    
+   public Object startGet()
+   {
+      Object value = buffer[firstIndex];
+      if (value == acks)
+        acks = null;
+      return value;
+   }
+   
+   public void endGet()
+   {
+      buffer[firstIndex] = null;
+      firstIndex = (++firstIndex) % buffer.length;
+      counter--;      
+   }
+   
    /**
     * Puts a new <TT>Object</TT> into the <TT>InfiniteBuffer</TT>.
     * <P>

@@ -62,4 +62,5 @@ public class ChannelOutputWrapper implements ChannelOutput
     {
         out.write(o);
     }
+
 }

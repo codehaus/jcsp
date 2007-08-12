@@ -28,6 +28,8 @@
 
 package org.jcsp.util.filter;
 
+import org.jcsp.lang.PoisonException;
+
 /**
  * This filter will throw a <code>PoisonException</code>
  * when <code>filter(Object)</code> is called. This can be
@@ -65,6 +67,6 @@ public class PoisonFilter implements Filter
 
     public Object filter(Object obj)
     {
-        throw new PoisonException(this.message);
+        throw new PoisonFilterException(this.message);
     }
 }

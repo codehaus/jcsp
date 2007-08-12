@@ -33,6 +33,8 @@ package org.jcsp.lang;
  * of accepting pending data.
  *
  * @author Quickstone Technologies Limited
+ * 
+ * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}
  */
 public interface RejectableChannelInput extends ChannelInput
 {

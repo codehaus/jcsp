@@ -28,6 +28,7 @@
 
 package org.jcsp.lang;
 
+import org.jcsp.util.ChannelDataStore;
 import org.jcsp.util.ints.*;
 
 /**
@@ -75,11 +76,20 @@ import org.jcsp.util.ints.*;
  * @author P.H.Welch
  */
 
-class BufferedAny2OneChannelIntImpl extends Any2OneChannelIntImpl
+class BufferedAny2OneChannelIntImpl extends AltingChannelInputInt implements Any2OneChannelInt,SharedChannelOutputInt
 {
+  /** The monitor synchronising reader and writer on this channel */
+  private final Object rwMonitor = new Object ();
+  
+  /** The monitor on which writers must synchronize */
+  private final Object writeMonitor = new Object ();
+  
+  /** The Alternative class that controls the selection */
+  private Alternative alt;
+  
     /** The ChannelDataStoreInt used to store the data for the channel */
     private ChannelDataStoreInt data;
-
+   
     /**
      * Constructs a new Any2OneChannelIntImpl with the specified ChannelDataStoreInt.
      *
@@ -118,6 +128,36 @@ class BufferedAny2OneChannelIntImpl extends Any2OneChannelIntImpl
         }
         rwMonitor.notify ();
         return data.get ();
+      }
+    }
+    
+    public int startRead() {
+      synchronized (rwMonitor) {
+        if (data.getState () == ChannelDataStore.EMPTY) {
+          try {
+            rwMonitor.wait ();
+      while (data.getState () == ChannelDataStore.EMPTY) {
+        if (Spurious.logging) {
+          SpuriousLog.record (SpuriousLog.One2OneChannelXRead);
+        }
+        rwMonitor.wait ();
+      }
+          }
+          catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from One2OneChannel.read (int)\n" + e.toString ()
+            );
+          }
+        }
+        
+        return data.startGet();
+      }
+    }
+    
+    public void endRead() {
+      synchronized(rwMonitor) {
+        data.endGet();
+        rwMonitor.notify ();
       }
     }
 
@@ -233,4 +273,34 @@ class BufferedAny2OneChannelIntImpl extends Any2OneChannelIntImpl
         return (data.getState () != ChannelDataStoreInt.EMPTY);
       }
     }
+    
+    /*************Methods from Any2OneChannelInt******************************/
+
+      /**
+   * Returns the <code>AltingChannelInputInt</code> object to use for this
+   * channel. As <code>BufferedAny2OneChannelInt</code> implements
+   * <code>AltingChannelInputInt</code> itself, this method simply returns
+   * a reference to the object that it is called on.
+   *
+   * @return the <code>AltingChannelInputInt</code> object to use for this
+   *          channel.
+   */
+  public AltingChannelInputInt in()
+  {
+      return this;
+  }
+
+  /**
+   * Returns the <code>SharedChannelOutputInt</code> object to use for this
+   * channel. As <code>BufferedAny2OneChannelInt</code> implements
+   * <code>SharedChannelOutputInt</code> itself, this method simply returns
+   * a reference to the object that it is called on.
+   *
+   * @return the <code>SharedChannelOutputInt</code> object to use for this
+   *          channel.
+   */
+  public SharedChannelOutputInt out()
+  {
+      return this;
+  }
 }

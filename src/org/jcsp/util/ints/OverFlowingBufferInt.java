@@ -99,6 +99,27 @@ public class OverFlowingBufferInt implements ChannelDataStoreInt, Serializable
         counter--;
         return value;
     }
+    
+    /**
+     * Returns the oldest integer from the buffer but does not remove it.
+     * 
+     * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>EMPTY</TT>.
+     *
+     * @return the oldest <TT>int</TT> from the <TT>Buffer</TT>
+     */
+    public int startGet()
+    {
+      return buffer[firstIndex];
+    }
+    
+    /**
+     * Removes the oldest integer from the buffer.     
+     */
+    public void endGet()
+    {      
+      firstIndex = (firstIndex + 1) % buffer.length;
+      counter--;
+    }
 
     /**
      * Puts a new <TT>int</TT> into the <TT>OverFlowingBufferInt</TT>.

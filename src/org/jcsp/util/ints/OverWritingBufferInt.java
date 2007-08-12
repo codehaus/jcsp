@@ -30,6 +30,8 @@ package org.jcsp.util.ints;
 
 import java.io.Serializable;
 
+import org.jcsp.util.OverWriteOldestBuffer;
+
 //{{{  javadoc
 /**
  * This is used to create a buffered integer channel that always accepts input,
@@ -69,6 +71,8 @@ public class OverWritingBufferInt implements ChannelDataStoreInt, Serializable
 
     /** The index of the next free element (when counter < buffer.length) */
     private int lastIndex = 0;
+    
+    private boolean valueWrittenWhileFull = false;
 
     /**
      * Construct a new <TT>OverWritingBufferInt</TT> with the specified size.
@@ -100,6 +104,43 @@ public class OverWritingBufferInt implements ChannelDataStoreInt, Serializable
         counter--;
         return value;
     }
+    
+    /**
+     * Begins an extended rendezvous by the reader.  
+     * 
+     * The semantics of an extended rendezvous on an overwrite-newest buffer are slightly
+     * complicated, but hopefully intuitive.
+     * 
+     * If the buffer is of size 2 or larger, the semantics are as follows.
+     * Beginning an extended rendezvous will return the oldest value in the buffer, but not remove it.
+     * If the writer writes to the buffer during the rendezvous, it will grow the buffer and end up
+     * overwriting the newest value as normal.  At the end of the extended rendezvous, the oldest
+     * value is removed.
+     * 
+     * If the buffer is of size 1, the semantics are identical to those of an {@link OverWriteOldestBuffer}.
+     * For a complete description, refer to the documentation for the {@link OverWriteOldestBuffer.startGet()} method.
+     * 
+     * @return The oldest value in the buffer at this time
+     */
+    public int startGet()
+    {
+      valueWrittenWhileFull = false;
+      return buffer[firstIndex];
+    }
+    
+    /**
+     * See {@link startGet()} for a description of the semantics of this method.
+     * 
+     * @see startGet()
+     */
+    public void endGet()
+    {
+      if (false == valueWrittenWhileFull || buffer.length != 1) {
+        //Our data hasn't been over-written so remove it:        
+        firstIndex = (firstIndex + 1) % buffer.length;
+        counter--;
+      }
+    }
 
     /**
      * Puts a new <TT>int</TT> into the <TT>OverWritingBufferInt</TT>.
@@ -110,9 +151,12 @@ public class OverWritingBufferInt implements ChannelDataStoreInt, Serializable
      * @param value the <TT>int</TT> to put into the <TT>OverWritingBufferInt</TT>
      */
     public void put(int value)
-    {
+    {      
         if (counter == buffer.length)
+        {
             buffer[(lastIndex - 1 + buffer.length) % buffer.length] = value;
+            valueWrittenWhileFull = true;
+        }
         else
         {
             buffer[lastIndex] = value;

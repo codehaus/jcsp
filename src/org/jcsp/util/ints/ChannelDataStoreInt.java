@@ -28,6 +28,9 @@
 
 package org.jcsp.util.ints;
 
+import org.jcsp.util.OverWriteOldestBuffer;
+import org.jcsp.util.OverWritingBuffer;
+
 /**
  * This is the interface for integer channel plug-ins that define their buffering
  * characteristics.
@@ -111,6 +114,37 @@ public interface ChannelDataStoreInt extends Cloneable {
    * @return an <TT>int</TT> from the <TT>ChannelDataStoreInt</TT>
    */
   public abstract int get ();
+  
+  /**
+   * Begins an extended read on the buffer, returning the data for the extended read
+   * 
+   * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>EMPTY</TT>.
+   * 
+   * The exact behaviour of this method depends on your buffer.  When a process performs an
+   * extended rendezvous on a buffered channel, it will first call this method, then the
+   * {@link endGet} method.  
+   * 
+   * A FIFO buffer would implement this method as returning the value from the front of the buffer
+   * and the next call would remove the value.  An overflowing buffer would do the same.
+   * 
+   * However, for an overwriting buffer it is more complex.  Refer to the documentation for
+   * {@link OverWritingBuffer#startGet} and {@link OverWriteOldestBuffer#startGet}
+   * for details  
+   * 
+   * @return The int to be read from the channel at the beginning of the extended rendezvous 
+   */
+  public abstract int startGet();
+  
+  /**
+   * Ends an extended read on the buffer.
+   * 
+   * The channels guarantee that this method will be called exactly once after each beginExtRead call.
+   * During the period between startGet and endGet, it is possible that {@link put} will be called,
+   * but not {@link get}. 
+   *
+   * @see endGet
+   */
+  public abstract void endGet();
 
   /**
    * Returns a new (and <TT>EMPTY</TT>) <TT>ChannelDataStoreInt</TT> with the same

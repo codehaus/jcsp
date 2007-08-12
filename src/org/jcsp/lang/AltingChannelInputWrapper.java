@@ -104,6 +104,29 @@ public class AltingChannelInputWrapper extends AltingChannelInput
     {
         return channel.read();
     }
+    
+    /**
+     * Begins an extended rendezvous
+     * 
+     * @see ChannelInput.beginExtRead
+     * @return The object read from the channel
+     */
+    public Object startRead()
+    {
+    	return channel.startRead();
+    }
+    
+    /**
+     * Ends an extended rendezvous
+     * 
+     * @see ChannelInput.endExtRead
+     */
+    public void endRead()
+    {
+    	channel.endRead();
+    }
+    
+    
 
     /**
      * Returns whether there is data pending on this channel.
@@ -142,5 +165,5 @@ public class AltingChannelInputWrapper extends AltingChannelInput
     boolean disable()
     {
         return channel.disable();
-    }
+    }    
 }

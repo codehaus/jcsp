@@ -62,4 +62,26 @@ public class ChannelInputWrapper implements ChannelInput
     {
         return in.read();
     }
+    
+    /**
+     * Begins an extended rendezvous
+     * 
+     * @see ChannelInput.beginExtRead
+     * @return The object read from the channel
+     */
+    public Object startRead()
+    {
+    	return in.startRead();
+    }
+    
+    /**
+     * Ends an extended rendezvous
+     * 
+     * @see ChannelInput.endExtRead
+     */
+    public void endRead()
+    {
+    	in.endRead();
+    }
+
 }

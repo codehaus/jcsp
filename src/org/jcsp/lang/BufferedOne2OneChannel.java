@@ -61,11 +61,15 @@ import org.jcsp.util.*;
  * @author P.H.Welch
  */
 
-class BufferedOne2OneChannel extends One2OneChannelImpl
+class BufferedOne2OneChannel extends AltingChannelInput implements One2OneChannel, ChannelOutput
 {
     /** The ChannelDataStore used to store the data for the channel */
     private final ChannelDataStore data;
-
+    
+    private final Object rwMonitor = new Object();
+    
+    private Alternative alt;
+    
     /**
      * Constructs a new BufferedOne2OneChannel with the specified ChannelDataStore.
      *
@@ -104,6 +108,36 @@ class BufferedOne2OneChannel extends One2OneChannelImpl
         }
         rwMonitor.notify ();
         return data.get ();
+      }
+    }
+    
+    public Object startRead() {
+      synchronized (rwMonitor) {
+        if (data.getState () == ChannelDataStore.EMPTY) {
+          try {
+            rwMonitor.wait ();
+      while (data.getState () == ChannelDataStore.EMPTY) {
+        if (Spurious.logging) {
+          SpuriousLog.record (SpuriousLog.One2OneChannelXRead);
+        }
+        rwMonitor.wait ();
+      }
+          }
+          catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from One2OneChannel.read (int)\n" + e.toString ()
+            );
+          }
+        }
+        
+        return data.startGet();
+      }
+    }
+    
+    public void endRead() {
+      synchronized(rwMonitor) {
+        data.endGet();
+        rwMonitor.notify ();
       }
     }
 
@@ -214,5 +248,33 @@ class BufferedOne2OneChannel extends One2OneChannelImpl
       synchronized (rwMonitor) {
         return (data.getState () != ChannelDataStore.EMPTY);
       }
+    }
+    
+    /**
+     * Returns the <code>AltingChannelInput</code> to use for this channel.
+     * As <code>BufferedOne2OneChannel</code> implements
+     * <code>AltingChannelInput</code> itself, this method simply returns
+     * a reference to the object that it is called on.
+     *
+     * @return the <code>AltingChannelInput</code> object to use for this
+     *          channel.
+     */
+    public AltingChannelInput in()
+    {
+        return this;
+    }
+
+    /**
+     * Returns the <code>ChannelOutput</code> object to use for this channel.
+     * As <code>BufferedOne2OneChannel</code> implements
+     * <code>ChannelOutput</code> itself, this method simply returns
+     * a reference to the object that it is called on.
+     *
+     * @return the <code>ChannelOutput</code> object to use for this
+     *          channel.
+     */
+    public ChannelOutput out()
+    {
+        return this;
     }
 }

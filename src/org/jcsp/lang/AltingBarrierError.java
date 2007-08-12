@@ -35,23 +35,18 @@ package org.jcsp.lang;
  *   <LI>
  *     different threads trying to operate on the same front-end;
  *   <LI>
- *     attempt to use as a {@link Guard} whilst resigned;
+ *     attempt to operate whilst resigned;
  *   <LI>
- *     attempt to {@link AltingBarrier#sync sync} whilst resigned;
+ *     attempt to {@link AltingBarrier#resign resign} whilst not enrolled;
  *   <LI>
- *     attempt to {@link AltingBarrier#resign resign} whilst resigned;
- *   <LI>
- *     attempt to {@link AltingBarrier#enroll enroll} whilst enrolled;
+ *     attempt to {@link AltingBarrier#enroll enroll} whilst not resigned;
  *   <LI>
  *     attempt to {@link AltingBarrier#expand expand} whilst resigned;
  *   <LI>
  *     attempt to {@link AltingBarrier#contract contract} whilst resigned;
  *   <LI>
  *     attempt to {@link AltingBarrier#contract contract} with an array
- *     of front-ends not supplied by {@link AltingBarrier#expand expand};
- *   <LI>
- *     attempt to {@link AltingBarrier#mark mark} whilst resigned (caused
- *     by a process transfering a <i>front-end</i> in that state).
+ *     of front-ends not supplied by {@link AltingBarrier#expand expand}.
  * </UL>
  *
  * @author P.H.Welch

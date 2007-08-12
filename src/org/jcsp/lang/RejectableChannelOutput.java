@@ -33,6 +33,8 @@ package org.jcsp.lang;
  * to receive it and calls <code>reject</code> instead of <code>read</code> on the input channel end.
  *
  * @author Quickstone Technologies Limited
+ * 
+ * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}
  */
 public interface RejectableChannelOutput extends ChannelOutput
 {

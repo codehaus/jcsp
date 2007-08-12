@@ -46,7 +46,7 @@ import java.io.Serializable;
 class Any2OneChannelImpl extends AltingChannelInput implements SharedChannelOutput, Any2OneChannel, Serializable
 {
 	/** The monitor synchronising reader and writer on this channel */
-	  protected Object rwMonitor = new Object ();
+	  private Object rwMonitor = new Object ();
 
 	  /** The (invisible-to-users) buffer used to store the data for the channel */
 	  private Object hold;
@@ -55,10 +55,10 @@ class Any2OneChannelImpl extends AltingChannelInput implements SharedChannelOutp
 	  private boolean empty = true;
 
 	  /** The Alternative class that controls the selection */
-	  protected Alternative alt;
+	  private Alternative alt;
 
 	  /** The monitor on which writers must synchronize */
-	  protected final Object writeMonitor = new Object ();
+	  private final Object writeMonitor = new Object ();
 
 	  /** Flag to deal with a spurious wakeup during a write */
 	  private boolean spuriousWakeUp = true;
@@ -100,7 +100,7 @@ class Any2OneChannelImpl extends AltingChannelInput implements SharedChannelOutp
 	   * @return the object read from the channel.
 	   */
 	  public Object read () {
-	    synchronized (rwMonitor) {
+	    synchronized (rwMonitor) {          
 	      if (empty) {
 	        empty = false;
 	        try {
@@ -110,7 +110,7 @@ class Any2OneChannelImpl extends AltingChannelInput implements SharedChannelOutp
 		      SpuriousLog.record (SpuriousLog.Any2OneChannelRead);
 		    }
 		    rwMonitor.wait ();
-		  }
+		  }              
 	        }
 	        catch (InterruptedException e) {
 	          throw new ProcessInterruptedException (
@@ -125,6 +125,38 @@ class Any2OneChannelImpl extends AltingChannelInput implements SharedChannelOutp
 	      return hold;
 	    }
 	  }
+      
+      public Object startRead () {
+        synchronized (rwMonitor) {
+          if (empty) {
+            empty = false;
+            try {
+              rwMonitor.wait ();
+          while (!empty) {
+            if (Spurious.logging) {
+              SpuriousLog.record (SpuriousLog.Any2OneChannelRead);
+            }
+            rwMonitor.wait ();
+          }
+            }
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException (
+                "*** Thrown from Any2OneChannel.read ()\n" + e.toString ()
+              );
+            }
+          } else {
+            empty = true;
+          }          
+          return hold;
+        }
+      }
+      
+      public void endRead() {
+    	synchronized (rwMonitor) {
+    	  spuriousWakeUp = false;
+    	  rwMonitor.notify ();
+    	}
+      }
 
 	  /**
 	   * Writes an <TT>Object</TT> to the Channel. This method also ensures only one
@@ -249,9 +281,9 @@ class Any2OneChannelImpl extends AltingChannelInput implements SharedChannelOutp
      * @param n the number of channels to create in the array
      * @return the array of Any2OneChannelImpl
      */
-    public static Any2OneChannelImpl[] create(int n)
+    public static Any2OneChannel[] create(int n)
     {
-        Any2OneChannelImpl[] channels = new Any2OneChannelImpl[n];
+        Any2OneChannel[] channels = new Any2OneChannelImpl[n];
         for (int i = 0; i < n; i++)
             channels[i] = new Any2OneChannelImpl();
         return channels;
@@ -262,7 +294,7 @@ class Any2OneChannelImpl extends AltingChannelInput implements SharedChannelOutp
      *
      * @return the Any2OneChannelImpl
      */
-    public static Any2OneChannelImpl create(ChannelDataStore store)
+    public static Any2OneChannel create(ChannelDataStore store)
     {
         return new BufferedAny2OneChannel(store);
     }
@@ -274,9 +306,9 @@ class Any2OneChannelImpl extends AltingChannelInput implements SharedChannelOutp
      * @param n the number of channels to create in the array
      * @return the array of Any2OneChannelImpl
      */
-    public static Any2OneChannelImpl[] create(int n, ChannelDataStore store)
+    public static Any2OneChannel[] create(int n, ChannelDataStore store)
     {
-        Any2OneChannelImpl[] channels = new Any2OneChannelImpl[n];
+        Any2OneChannel[] channels = new Any2OneChannelImpl[n];
         for (int i = 0; i < n; i++)
             channels[i] = new BufferedAny2OneChannel(store);
         return channels;

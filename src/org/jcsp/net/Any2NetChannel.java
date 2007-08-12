@@ -29,6 +29,8 @@
 package org.jcsp.net;
 import java.io.Serializable;
 
+import org.jcsp.lang.PoisonException;
+
 /**
  * A channel for network output (TX).  This is a "Any2Net" channel,
  * which can be safely used by multiple writers.
@@ -167,5 +169,16 @@ class Any2NetChannel implements NetSharedChannelOutput, Serializable
    public Class getFactoryClass()
    {
       return StandardNetChannelEndFactory.class;
+   }
+   
+   /**
+    * Currently, network channels are unpoisonable so this method has no effect.
+    */
+   public void poisonOut(PoisonException poison) {   
+   }
+   /**
+    * Currently, network channels are unpoisonable so this method will never throw a PoisonException
+    */
+   public void checkPoisonOut() throws PoisonException {   
    }
 }

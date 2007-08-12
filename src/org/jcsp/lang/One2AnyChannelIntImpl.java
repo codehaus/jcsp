@@ -91,10 +91,10 @@ class One2AnyChannelIntImpl implements ChannelOutputInt, SharedChannelInputInt, 
 	  private boolean empty = true;
 
 	  /** The monitor on which readers must synchronize */
-	  protected final Object readMonitor = new Object ();
+	  protected final Mutex readMutex = new Mutex();
 
 	  /** Flag to deal with a spurious wakeup during a write */
-	  private boolean spuriousWakeUp = true;
+	  private boolean spuriousWakeUp = true;      
 
 /*************Methods from One2OneChannelInt******************************/
 
@@ -135,7 +135,8 @@ class One2AnyChannelIntImpl implements ChannelOutputInt, SharedChannelInputInt, 
 	   * @return the integer read from the channel.
 	   */
 	  public int read () {
-	    synchronized (readMonitor) {
+	    int retValue;
+        readMutex.claim();
 	      synchronized (rwMonitor) {
 	        if (empty) {
 	          empty = false;
@@ -158,10 +159,47 @@ class One2AnyChannelIntImpl implements ChannelOutputInt, SharedChannelInputInt, 
 	        }
 	        spuriousWakeUp = false;
 	        rwMonitor.notify ();
-	        return hold;
+	        retValue = hold;
 	      }
-	    }
+	    readMutex.release();
+        return retValue;
 	  }
+      
+      public int startRead () {        
+        readMutex.claim();
+          synchronized (rwMonitor) {
+            if (empty) {
+              empty = false;
+              try {
+                rwMonitor.wait ();
+            while (!empty) {
+              if (Spurious.logging) {
+                SpuriousLog.record (SpuriousLog.One2AnyChannelRead);
+              }
+              rwMonitor.wait ();
+            }
+              }
+              catch (InterruptedException e) {
+                throw new ProcessInterruptedException (
+                  "*** Thrown from One2AnyChannel.read ()\n" + e.toString ()
+                );
+              }
+            } else {
+              empty = true;
+            }
+            
+            return hold;
+          }        
+        //We don't release the readMutex until endExtRead  
+      }
+      
+      public void endRead() {
+        synchronized (rwMonitor) {
+          spuriousWakeUp = false;
+          rwMonitor.notify ();
+          readMutex.release();
+        }
+      }
 
 	  /**
 	   * Writes an <TT>int</TT> to the Channel. This method also ensures only one
@@ -203,7 +241,7 @@ class One2AnyChannelIntImpl implements ChannelOutputInt, SharedChannelInputInt, 
      * @param n the number of channels to create in the array
      * @return the array of One2AnyChannelIntImpl
      */
-    public static One2AnyChannelIntImpl[] create(int n)
+    public static One2AnyChannelInt[] create(int n)
     {
         One2AnyChannelIntImpl[] channels = new One2AnyChannelIntImpl[n];
         for (int i = 0; i < n; i++)
@@ -216,7 +254,7 @@ class One2AnyChannelIntImpl implements ChannelOutputInt, SharedChannelInputInt, 
      *
      * @return the One2AnyChannelIntImpl
      */
-    public static One2AnyChannelIntImpl create(ChannelDataStoreInt store)
+    public static One2AnyChannelInt create(ChannelDataStoreInt store)
     {
         return new BufferedOne2AnyChannelIntImpl(store);
     }
@@ -227,9 +265,9 @@ class One2AnyChannelIntImpl implements ChannelOutputInt, SharedChannelInputInt, 
      * @param n the number of channels to create in the array
      * @return the array of One2AnyChannelIntImpl
      */
-    public static One2AnyChannelIntImpl[] create(int n, ChannelDataStoreInt store)
+    public static One2AnyChannelInt[] create(int n, ChannelDataStoreInt store)
     {
-        One2AnyChannelIntImpl[] channels = new One2AnyChannelIntImpl[n];
+        One2AnyChannelInt[] channels = new One2AnyChannelIntImpl[n];
         for (int i = 0; i < n; i++)
             channels[i] = new BufferedOne2AnyChannelIntImpl(store);
         return channels;

@@ -68,6 +68,8 @@ public class OverWritingBuffer implements ChannelDataStore, Serializable
 
     /** The index of the next free element (when counter < buffer.length) */
     private int lastIndex = 0;
+    
+    private boolean valueWrittenWhileFull = false;
 
     /**
      * Construct a new <TT>OverWritingBuffer</TT> with the specified size.
@@ -112,13 +114,54 @@ public class OverWritingBuffer implements ChannelDataStore, Serializable
     public void put(Object value)
     {
         if (counter == buffer.length)
+        {
             buffer[(lastIndex - 1 + buffer.length) % buffer.length] = value;
+            valueWrittenWhileFull = true;
+        }
         else
         {
             buffer[lastIndex] = value;
             lastIndex = (lastIndex + 1) % buffer.length;
             counter++;
         }
+    }
+    
+    /**
+     * Begins an extended rendezvous by the reader.  
+     * 
+     * The semantics of an extended rendezvous on an overwrite-newest buffer are slightly
+     * complicated, but hopefully intuitive.
+     * 
+     * If the buffer is of size 2 or larger, the semantics are as follows.
+     * Beginning an extended rendezvous will return the oldest value in the buffer, but not remove it.
+     * If the writer writes to the buffer during the rendezvous, it will grow the buffer and end up
+     * overwriting the newest value as normal.  At the end of the extended rendezvous, the oldest
+     * value is removed.
+     * 
+     * If the buffer is of size 1, the semantics are identical to those of an {@link OverWriteOldestBuffer}.
+     * For a complete description, refer to the documentation for the {@link OverWriteOldestBuffer.startGet()} method.
+     * 
+     * @return The oldest value in the buffer at this time
+     */
+    public Object startGet()
+    {
+      valueWrittenWhileFull = false;
+      return buffer[firstIndex];
+    }
+    
+    /**
+     * See {@link startGet()} for a description of the semantics of this method.
+     * 
+     * @see startGet()
+     */
+    public void endGet()
+    {
+      if (false == valueWrittenWhileFull || buffer.length != 1) {
+        //Our data hasn't been over-written so remove it:
+        buffer[firstIndex] = null;
+        firstIndex = (firstIndex + 1) % buffer.length;
+        counter--;
+      }
     }
 
     /**

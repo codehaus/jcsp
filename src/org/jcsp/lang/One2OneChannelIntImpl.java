@@ -73,7 +73,7 @@ import org.jcsp.util.ints.ChannelDataStoreInt;
 class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutputInt, One2OneChannelInt, Serializable
 {
     /** The monitor synchronising reader and writer on this channel */
-    protected Object rwMonitor = new Object();
+    private Object rwMonitor = new Object();
 
     /** The (invisible-to-users) buffer used to store the data for the channel */
     private int hold;
@@ -82,11 +82,11 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
     private boolean empty = true;
 
     /** The Alternative class that controls the selection */
-    protected Alternative alt;
+    private Alternative alt;
     
     /** Flag to deal with a spurious wakeup during a write */
     private boolean spuriousWakeUp = true;
-
+    
     /*************Methods from One2OneChannelInt******************************/
 
     /**
@@ -150,6 +150,38 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
           return hold;
         }
       }
+    
+    public int startRead() {
+        synchronized (rwMonitor) {              
+          if (empty) {
+            empty = false;
+            try {
+              rwMonitor.wait ();
+          while (!empty) {
+            if (Spurious.logging) {
+              SpuriousLog.record (SpuriousLog.One2OneChannelRead);
+            }
+            rwMonitor.wait ();
+          }              
+            }
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException ("*** Thrown from One2OneChannel.read ()\n"
+                                                 + e.toString ());
+            }
+          } else {
+            empty = true;
+          }
+          
+          return hold;
+        }
+    }     
+
+    public void endRead() {
+      synchronized (rwMonitor) {      
+        spuriousWakeUp = false;
+        rwMonitor.notify ();
+      }
+    }
 
     /**
      * Writes an <TT>int</TT> to the channel.
@@ -275,9 +307,9 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      * @param n the number of channels to create in the array
      * @return the array of One2OneChannelIntImpl
      */
-    public static One2OneChannelIntImpl[] create(int n)
+    public static One2OneChannelInt[] create(int n)
     {
-        One2OneChannelIntImpl[] channels = new One2OneChannelIntImpl[n];
+        One2OneChannelInt[] channels = new One2OneChannelIntImpl[n];
         for (int i = 0; i < n; i++)
             channels[i] = new One2OneChannelIntImpl();
         return channels;
@@ -288,7 +320,7 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      *
      * @return the One2OneChannelIntImpl
      */
-    public static One2OneChannelIntImpl create(ChannelDataStoreInt store)
+    public static One2OneChannelInt create(ChannelDataStoreInt store)
     {
         return new BufferedOne2OneChannelIntImpl(store);
     }
@@ -299,9 +331,9 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      * @param n the number of channels to create in the array
      * @return the array of One2OneChannelIntImpl
      */
-    public static One2OneChannelIntImpl[] create(int n, ChannelDataStoreInt store)
+    public static One2OneChannelInt[] create(int n, ChannelDataStoreInt store)
     {
-        One2OneChannelIntImpl[] channels = new One2OneChannelIntImpl[n];
+        One2OneChannelInt[] channels = new One2OneChannelIntImpl[n];
         for (int i = 0; i < n; i++)
             channels[i] = new BufferedOne2OneChannelIntImpl(store);
         return channels;

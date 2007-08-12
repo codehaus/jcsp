@@ -40,59 +40,14 @@ package org.jcsp.lang;
  * <code>ChannelDataRejectedException</code>.</p>
  *
  * @author Quickstone Technologies Limited
+ * 
+ * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}
  */
 public class RejectableOne2AnyChannel
         extends One2AnyChannelImpl
         implements RejectableChannel, SharedChannelOutput
 {
-    /** Constant to represent the state of the writer. */
-    private static int WRITE_NOT_CALLED = 0;
-    /** Constant to represent the state of the writer. */
-    private static int WRITE_STARTED = 1;
-    /** Constant to represent the state of the writer. */
-    private static int WRITE_COMPLETED = 2;
-
-    /** Constant to represent the state of the reader. */
-    private static int READ_NOT_CALLED = 0;
-    /** Constant to represent the state of the reader. */
-    private static int READ_STARTED = 1;
-    /** Constant to represent the state of the reader. */
-    private static int READ_COMPLETED = 2;
-
-    /** Constant to represent the state of the readers and writer. */
-    private static int EITHER_STARTED = 1;
-
-    /** Set to true if <code>reject</code> has been called. */
-    private boolean rejected = false;
-
-    /**
-     * <p>Indicates the current state of the writer, taking the value WRITE_NOT_CALLED, WRITE_STARTED, or
-     * WRITE_COMPLETED.</p>
-     *
-     * <p>WRITE_NOT_CALLED is before the <code>write</code> method gets called.</p>
-     *
-     * <p>WRITE_STARTED is when the <code>write</code> method has been called and the underlying
-     * channel's </code>write</code> method has not yet returned.</p>
-     *
-     * <p>WRITE_COMPLETED is when the underlying channel's <code>write</code> method has returned but
-     * this <code>write</code> method has not fully completed.</p>
-     */
-    private int writing = WRITE_NOT_CALLED;
-
-    /**
-     * <p>Indicates the current state of the writer, taking the value WRITE_NOT_CALLED, WRITE_STARTED, or
-     * WRITE_COMPLETED.</p>
-     *
-     * <p>WRITE_NOT_CALLED is before the <code>write</code> method gets called.</p>
-     *
-     * <p>WRITE_STARTED is when the <code>write</code> method has been called and the underlying
-     * channel's </code>write</code> method has not yet returned.</p>
-     *
-     * <p>WRITE_COMPLETED is when the underlying channel's <code>write</code> method has returned but
-     * this <code>write</code> method has not fully completed.</p>
-     */
-    private int reading = WRITE_NOT_CALLED;
-
+    
     /**
      * Constructs a new channel.
      */
@@ -111,38 +66,7 @@ public class RejectableOne2AnyChannel
      */
     public void reject()
     {
-        synchronized (super.rwMonitor)
-        {
-            if (rejected)
-                return;
-            //no more readers or writers can start but
-            //there might be existing processes reading
-            //and writing
-
-            // The possible conditions are:
-            //             Reading  Writing
-            //                0        0      No one is waiting
-            //                0        1      Writer is in super.write(), so needs notify
-            //                1        0      Reader in in super.read(), so needs notify
-            //                1        1      Both are in their methods so will sort each other out
-            //                1        2      Reader has been notified it is just waiting on the lock
-            //                2        1      Writer has been notified it is just waiting on the lock
-            //      This would save calling notify() unnecessarily.
-
-            if (reading + writing == EITHER_STARTED)
-                //Either read or write has started.
-                //Either the reading or writing process must
-                //have called wait() - BUT ONLY ONE!!
-                //Need a notify to wake up process.
-                //don't care which process is waiting
-                super.rwMonitor.notify();
-
-                //if both reading and writing are true, we
-                //don't need a notify as the write process
-                //notifies the read process and the read
-                //process notifies the write process.
-            rejected = true;
-        }
+        poisonIn(new ChannelDataRejectedException());
     }
 
     /**
@@ -154,45 +78,7 @@ public class RejectableOne2AnyChannel
      */
     public Object read()
     {
-        synchronized (super.readMonitor)
-        {
-            synchronized (super.rwMonitor)
-            {
-                if (rejected)
-                    throw (new ChannelDataRejectedException());
-                reading = READ_STARTED;
-                Object toReturn = super.read();
-                //either been woken up by a write process or
-                // a reject process.
-                if (writing == WRITE_NOT_CALLED)
-                    throw (new ChannelDataRejectedException());
-                //write has not been called and never will be
-                //successfully so throw an Exception to notify the
-                //user.
-
-                //A write must have occurred and we must have
-                //the data. If write occurs and then a Read, read
-                //will not wait but will notify the write process
-                //and then finish.
-                //Don't need to throw an exception even if
-                //reject has been called.
-                //Can deliver the data.
-
-                //don't want to reset state if rejected as writer
-                //needs to know that we have read
-                //Read can never be called again anyway
-                //if(!rejected) reading = 2;
-                reading = READ_COMPLETED;
-
-                if (writing == WRITE_COMPLETED)
-                {
-                    //write finished before read
-                    reading = READ_NOT_CALLED;
-                    writing = WRITE_NOT_CALLED;
-                }
-                return toReturn;
-            }
-        }
+        return super.read();
     }
 
     /**
@@ -205,30 +91,6 @@ public class RejectableOne2AnyChannel
      */
     public void write(Object data)
     {
-        synchronized (super.rwMonitor)
-        {
-            if (rejected)
-                throw (new ChannelDataRejectedException());
-            writing = WRITE_STARTED;
-            super.write(data);
-
-            //write process could be scheduled before second half of
-            //read process - if rejected need to leave writing
-            //equal to true.
-            //if (!rejected) writing = 2;
-            writing = WRITE_COMPLETED;
-
-            //if reading then it doesn't matter that data has been rejected
-            //as read will have succeeded.
-            if (reading == READ_NOT_CALLED)
-                throw (new ChannelDataRejectedException());
-
-            if (reading == READ_COMPLETED)
-            {
-                //read finished before write
-                reading = READ_NOT_CALLED;
-                writing = WRITE_NOT_CALLED;
-            }
-        }
+        super.write(data);
     }
 }

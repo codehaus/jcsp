@@ -30,6 +30,8 @@ package org.jcsp.net.dynamic;
 
 import java.io.IOException;
 import java.util.Vector;
+
+import org.jcsp.lang.PoisonException;
 import org.jcsp.net.NetChannelLocation;
 import org.jcsp.net.NetChannelOutput;
 import org.jcsp.util.filter.Filter;
@@ -224,5 +226,16 @@ class MigratableChannelOutputImpl implements MigratableChannelOutput
       
       //writes all non-transient variables to the output stream
       out.defaultWriteObject();
+   }
+   
+   /**
+    * Currently, network channels are unpoisonable so this method has no effect.
+    */
+   public void poisonOut(PoisonException poison) {   
+   }
+   /**
+    * Currently, network channels are unpoisonable so this method will never throw a PoisonException
+    */
+   public void checkPoisonOut() throws PoisonException {   
    }
 }

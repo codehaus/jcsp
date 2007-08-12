@@ -76,6 +76,25 @@ public class ZeroBufferInt implements ChannelDataStoreInt, Serializable
         int o = value;
         return o;
     }
+    
+    /**
+     * Begins an extended rendezvous - simply returns the next integer in the buffer.  
+     * This function does not remove the integer.
+     * 
+     * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>EMPTY</TT>.
+     * 
+     * @return The integer in the buffer. 
+     */
+    public int startGet() {
+      return value;     
+    }
+    
+    /**
+     * Ends the extended rendezvous by clearing the buffer.
+     */
+    public void endGet() {      
+      state = EMPTY;      
+    }
 
     /**
      * Puts a new <TT>int</TT> into the <TT>ZeroBufferInt</TT>.

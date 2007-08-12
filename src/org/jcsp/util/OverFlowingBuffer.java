@@ -99,6 +99,28 @@ public class OverFlowingBuffer implements ChannelDataStore, Serializable {
         counter--;
         return value;
     }
+    
+    /**
+     * Returns the oldest object from the buffer but does not remove it.
+     * 
+     * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>EMPTY</TT>.
+     *
+     * @return the oldest <TT>Object</TT> from the <TT>Buffer</TT>
+     */
+    public Object startGet()
+    {
+      return buffer[firstIndex];
+    }
+    
+    /**
+     * Removes the oldest object from the buffer.     
+     */
+    public void endGet()
+    {
+      buffer[firstIndex] = null;
+      firstIndex = (firstIndex + 1) % buffer.length;
+      counter--;
+    }
 
     /**
      * Puts a new <TT>Object</TT> into the <TT>OverFlowingBuffer</TT>.

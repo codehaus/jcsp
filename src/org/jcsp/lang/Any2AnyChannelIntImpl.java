@@ -46,7 +46,7 @@ import java.io.Serializable;
 class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutputInt, Any2AnyChannelInt, Serializable
 {
 	  /** The monitor synchronising reader and writer on this channel */
-	  protected Object rwMonitor = new Object ();
+	  private final Object rwMonitor = new Object ();
 
 	  /** The (invisible-to-users) buffer used to store the data for the channel */
 	  private int hold;
@@ -55,13 +55,15 @@ class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutpu
 	  private boolean empty = true;
 
 	  /** The monitor on which readers must synchronize */
-	  protected final Object readMonitor = new Object ();
+	  private final Mutex readMutex = new Mutex ();
 
 	  /** The monitor on which writers must synchronize */
-	  protected final Object writeMonitor = new Object ();
+	  private final Object writeMonitor = new Object ();
 
 	  /** Flag to deal with a spurious wakeup during a write */
 	  private boolean spuriousWakeUp = true;
+      
+      
 	  
 	  /*************Methods from Any2AnyChannel******************************/
 
@@ -102,7 +104,8 @@ class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutpu
 	   * @return the integer read from the channel.
 	   */
 	  public int read () {
-	    synchronized (readMonitor) {
+        int retValue;
+	    readMutex.claim();
 	      synchronized (rwMonitor) {
 	        if (empty) {
 	          empty = false;
@@ -125,10 +128,47 @@ class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutpu
 	        }
 	        spuriousWakeUp = false;
 	        rwMonitor.notify ();
-	        return hold;
+	        retValue = hold;
 	      }
-	    }
+	    readMutex.release();
+        return retValue;
 	  }
+      
+      public int startRead () {        
+          readMutex.claim();
+            synchronized (rwMonitor) {
+              if (empty) {
+                empty = false;
+                try {
+                  rwMonitor.wait ();
+              while (!empty) {
+                if (Spurious.logging) {
+                  SpuriousLog.record (SpuriousLog.One2AnyChannelRead);
+                }
+                rwMonitor.wait ();
+              }
+                }
+                catch (InterruptedException e) {
+                  throw new ProcessInterruptedException (
+                    "*** Thrown from One2AnyChannel.read ()\n" + e.toString ()
+                  );
+                }
+              } else {
+                empty = true;
+              }
+              
+              return hold;
+            }        
+          //We don't release the readMutex until endExtRead  
+        }
+        
+        public void endRead() {
+          synchronized (rwMonitor) {
+            spuriousWakeUp = false;
+            rwMonitor.notify ();
+            readMutex.release();
+          }
+        }
 
 	  /**
 	   * Writes an <TT>int</TT> to the Channel. This method also ensures only one
@@ -172,7 +212,7 @@ class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutpu
      * @param n the number of channels to create in the array
      * @return the array of Any2AnyChannelIntImpl
      */
-    public static Any2AnyChannelIntImpl[] create(int n)
+    public static Any2AnyChannelInt[] create(int n)
     {
         Any2AnyChannelIntImpl[] channels = new Any2AnyChannelIntImpl[n];
         for (int i = 0; i < n; i++)
@@ -185,7 +225,7 @@ class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutpu
      *
      * @return the Any2AnyChannelIntImpl
      */
-    public static Any2AnyChannelIntImpl create(ChannelDataStoreInt store)
+    public static Any2AnyChannelInt create(ChannelDataStoreInt store)
     {
         return new BufferedAny2AnyChannelIntImpl(store);
     }
@@ -196,9 +236,9 @@ class Any2AnyChannelIntImpl implements SharedChannelInputInt, SharedChannelOutpu
      * @param n the number of channels to create in the array
      * @return the array of Any2AnyChannelIntImpl
      */
-    public static Any2AnyChannelIntImpl[] create(int n, ChannelDataStoreInt store)
+    public static Any2AnyChannelInt[] create(int n, ChannelDataStoreInt store)
     {
-        Any2AnyChannelIntImpl[] channels = new Any2AnyChannelIntImpl[n];
+        Any2AnyChannelInt[] channels = new Any2AnyChannelIntImpl[n];
         for (int i = 0; i < n; i++)
             channels[i] = new BufferedAny2AnyChannelIntImpl(store);
         return channels;

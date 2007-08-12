@@ -34,20 +34,19 @@ package org.jcsp.lang;
  * <P>
  * <A HREF="#constructor_summary">Shortcut to the Constructor and Method Summaries.</A>
  * <H2>Description</H2>
- * The <code>Alternative</code> class enables a <code>CSProcess</code> to wait passively for and
- * choose between a number of {@link Guard} events.  This is known as
- * <code>ALT</code><I>ing</I>.
+ * The <TT>Alternative</TT> class enables a <TT>CSProcess</TT> to wait passively for and
+ * choose between a number of {@link Guard} events.  This is known as <TT>ALT</TT><I>ing</I>.
  * <P>
  * <I>Note: for those familiar with the <I><B>occam</B></I> multiprocessing
- * language, this gives the semantics of the </I><code>ALT</code><I> and
- * </I><code>PRI</code> <code>ALT</code><I> constructs, extended with a built-in implementation
- * of the classical </I><code>FAIR</code> <code>ALT</code><I>.</I>
+ * language, this gives the semantics of the </I><TT>ALT</TT><I> and
+ * </I><TT>PRI</TT> <TT>ALT</TT><I> constructs, extended with a built-in implementation
+ * of the classical </I><TT>FAIR</TT> <TT>ALT</TT><I>.</I>
  * <P>
- * The <code>Alternative</code> constructor takes an array of guards.  Processes
+ * The <TT>Alternative</TT> constructor takes an array of guards.  Processes
  * that need to <I>Alt</I> over more than one set of guards will need a separate
- * <code>Alternative</code> instance for each set.
+ * <TT>Alternative</TT> instance for each set.
  * <P>
- * Six types of <code>Guard</code> are provided in <code>jcsp.lang</code>:
+ * Five types of <TT>Guard</TT> are provided in <TT>org.jcsp.lang</TT>:
  * <UL>
  *   <LI>
  *      {@link AltingChannelInput}: <I>object channel input</I> --
@@ -59,9 +58,6 @@ package org.jcsp.lang;
  *      {@link AltingChannelAccept}: <I>CALL channel accept</I> --
  *      ready if an unaccepted call is pending on the channel.
  *   <LI>
- *      {@link AltingBarrier}: <I>barrier synchronisation</I> --
- *      ready if all enrolled processes are offering to synchronise.
- *   <LI>
  *      {@link CSTimer}: <I>timeout</I> --
  *      ready if the timeout has expired (timeout
  *      values are absolute time values, not delays)
@@ -71,30 +67,30 @@ package org.jcsp.lang;
  * </UL>
  * <P>
  * By invoking one of the following methods, a process may passively wait for
- * one or more of the guards associated with an <code>Alternative</code> object
+ * one or more of the guards associated with an <TT>Alternative</TT> object
  * to become ready.  The methods differ in the way they choose which guard
  * to select in the case when two or more guards are ready:
  * <UL>
  *   <LI>
- *      {@link #select() <code>select</code>} waits for one or more of the guards
+ *      {@link #select() <TT>select</TT>} waits for one or more of the guards
  *      to become ready.  If more than one become ready, it makes an
  *      <I>arbitrary</I> choice between them (and corresponds to the
- *      <I><B>occam</B></I> <code>ALT</code>).
+ *      <I><B>occam</B></I> <TT>ALT</TT>).
  *   <LI>
- *      {@link #priSelect() <code>priSelect</code>} also waits for one or more of
+ *      {@link #priSelect() <TT>priSelect</TT>} also waits for one or more of
  *      the guards to become ready.  However, if more than one becomes ready,
  *      it chooses the <I>first</I> one listed (and corresponds to the
- *      <I><B>occam</B></I> <code>PRI</code> <code>ALT</code>).  Note: the use of
- *      <code>priSelect</code> between channel inputs and a skip guard (at lowest
+ *      <I><B>occam</B></I> <TT>PRI</TT> <TT>ALT</TT>).  Note: the use of
+ *      <TT>priSelect</TT> between channel inputs and a skip guard (at lowest
  *      priority) gives us a <I>polling</I> operation on the <I>readiness</I>
  *      of those channels.</I>
  *   <LI>
- *      {@link #fairSelect() <code>fairSelect</code>} also waits for one or more
+ *      {@link #fairSelect() <TT>fairSelect</TT>} also waits for one or more
  *      of the guards to become ready.  If more than one become ready, it
  *      prioritises its choice so that the guard it chose <I>the last time
  *      it was invoked</I> has lowest priority this time.  This corresponds
  *      to a common <I><B>occam</B></I> idiom used for real-time applications.
- *      If <code>fairSelect</code> is used
+ *      If <TT>fairSelect</TT> is used
  *      in a loop, a ready guard has the guarantee that no other guard will be
  *      serviced <I>twice</I> before it will be serviced.  This enables
  *      an upper bound on service times to be calculated and ensures that no
@@ -139,10 +135,10 @@ package org.jcsp.lang;
  * <I></I>
  * }
  * </PRE>
- * Note that if <code>priSelect</code> were used above, higher-indexed channels would be
+ * Note that if <TT>priSelect</TT> were used above, higher-indexed channels would be
  * starved if lower-indexed channels were continually demanding service.
- * If <code>select</code> were used, no starvation analysis is possible.
- * The <code>select</code> mechanism should only be used when starvation is not an issue.
+ * If <TT>select</TT> were used, no starvation analysis is possible.
+ * The <TT>select</TT> mechanism should only be used when starvation is not an issue.
  * 
  * <H3><A NAME="FairMuxTime">A Fair Multiplexor with a Timeout</H3>
  * This examples demonstrates a process that <I>fairly</I> multiplexes traffic
@@ -191,12 +187,12 @@ package org.jcsp.lang;
  * <I></I>
  * }
  * </PRE>
- * Note that if <code>priSelect</code> were used above, higher-indexed guards would be
+ * Note that if <TT>priSelect</TT> were used above, higher-indexed guards would be
  * starved if lower-indexed guards were continually demanding service -- and
  * the timeout would never be noticed.
- * If <code>select</code> were used, no starvation analysis is possible.
+ * If <TT>select</TT> were used, no starvation analysis is possible.
  * <P>
- * To demonstrate <code>FairPlexTime</code>, consider:
+ * To demonstrate <TT>FairPlexTime</TT>, consider:
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.Printer;
@@ -224,44 +220,44 @@ package org.jcsp.lang;
  * <I></I>
  * }
  * </PRE>
- * where <code>Regular</code> (documented as an example in the {@link CSTimer}
- * class) attempts to output an <code>Integer</code> (defined by its second parameter) to
+ * where <TT>Regular</TT> (documented as an example in the {@link CSTimer}
+ * class) attempts to output an <TT>Integer</TT> (defined by its second parameter) to
  * the channel (defined by its first parameter) at a regular interval (defined by its
  * third parameter in msecs).  If you are using a relatively slow <I>JVM</I> (such as
- * <code>JDK1.1.x</code>), the input channels to <code>FairPlexTime</code> will always be
- * ready.  Faster <I>JVM</I>s (such as <code>JDK1.2</code>) are able to clear all input
+ * <TT>JDK1.1.x</TT>), the input channels to <TT>FairPlexTime</TT> will always be
+ * ready.  Faster <I>JVM</I>s (such as <TT>JDK1.2</TT>) are able to clear all input
  * channels leaving the timeout guard selectable.  Either way, all channels are
  * fairly serviced and the eventual timeout (after 10 seconds) is processed.
  * <P>
- * If <code>FairPlexTime</code> had used <code>alt.priSelect</code> instead of
- * <code>alt.fairSelect</code> and a slow <I>JVM</I> is used, the higher indexed channels
+ * If <TT>FairPlexTime</TT> had used <TT>alt.priSelect</TT> instead of
+ * <TT>alt.fairSelect</TT> and a slow <I>JVM</I> is used, the higher indexed channels
  * would not get serviced and neither would the timeout.  Try it and see!  Notice
  * the different behaviour if you freeze screen output (with <I>ctl-s</I>) and, then,
- * resume it (with <I>ctl-q</I>).  The moral is that <code>fairSelect</code> frees
+ * resume it (with <I>ctl-q</I>).  The moral is that <TT>fairSelect</TT> frees
  * us from worries such as the speed of our <I>JVM</I> and its scheduling behaviour.
  * <P>
- * Sometimes, of course, we need to use <code>priSelect</code> to impose a <I>specific</I>
+ * Sometimes, of course, we need to use <TT>priSelect</TT> to impose a <I>specific</I>
  * (as opposed to <I>fair</I>) choice that overcomes the external scheduling of events.
- * For example, if we were concerned that the timeout in <code>FairPlexTime</code> should
+ * For example, if we were concerned that the timeout in <TT>FairPlexTime</TT> should
  * be responded to <I>immediately</I> and unconcerned about the fair servicing of its
- * channels, we could put its <code>CSTimer</code> as the first element of its <code>Guard</code>
- * array and use a <code>priSelect</code>.
+ * channels, we could put its <TT>CSTimer</TT> as the first element of its <TT>Guard</TT>
+ * array and use a <TT>priSelect</TT>.
  *
  * <H3><A NAME="STFR">A Simple Traffic Flow Regulator</H3>
- * The <code>Regulate</code> process controls the flow of traffic from its <code>in</code> to
- * <code>out</code> channels.  It produces a constant rate of output flow, regardless of
+ * The <TT>Regulate</TT> process controls the flow of traffic from its <TT>in</TT> to
+ * <TT>out</TT> channels.  It produces a constant rate of output flow, regardless of
  * the rate of its input.  At the end of each timeslice defined by the required output
  * rate, it outputs the last object input during that timeslice.  If nothing has come
  * in during a timeslice, the previous output will be repeated (note: this will be a
- * <code>null</code> if nothing has ever arrived).  If the input flow is greater than
+ * <TT>null</TT> if nothing has ever arrived).  If the input flow is greater than
  * the required output flow, data will be discarded.
  * <P>
  * The interval (in msecs) defining the output flow rate is given by a constructor
- * argument; but it can be reset at any time by sending a new interval (as a <code>Long</code>)
- * down the <code>reset</code> channel.
+ * argument; but it can be reset at any time by sending a new interval (as a <TT>Long</TT>)
+ * down the <TT>reset</TT> channel.
  * <P>
  * <I> Note: this example shows how simple it is to program time-regulated functionality
- * like that performed by </I><code>java.awt.Component.repaint</code><I>.</I>
+ * like that performed by </I><TT>java.awt.Component.repaint</TT><I>.</I>
  * <PRE>
  * import org.jcsp.lang.*;
  * <I></I>
@@ -318,7 +314,7 @@ package org.jcsp.lang;
  * }
  * </PRE>
  * <P>
- * To demonstrate <code>Regulate</code>, consider:
+ * To demonstrate <TT>Regulate</TT>, consider:
  * <PRE>
  * class RegulateTest {
  * <I></I>
@@ -358,17 +354,16 @@ package org.jcsp.lang;
  *       }
  *     ).run ();
  *   }
- * <I></I>
  * }
  * </PRE>
  * The reader may like to consider the danger of deadlock in the above system if
- * the <code>reset</code> channel were not an <I>overwriting</I> one.
+ * the <TT>reset</TT> channel were not an <I>overwriting</I> one.
  *
  * <A NAME="Polling">
  * <H3>Polling</H3>
  * Sometimes, we want to handle incoming channel data if it's there, but get on with
- * something else if all is quiet.  This can be done by <code>PRI</code> <code>ALT</code><I>ing</I>
- * the channels we wish to poll against a <code>SKIP</code> guard:
+ * something else if all is quiet.  This can be done by <TT>PRI</TT> <TT>ALT</TT><I>ing</I>
+ * the channels we wish to poll against a <TT>SKIP</TT> guard:
  * <PRE>
  * import org.jcsp.lang.*;
  * <I></I>
@@ -386,13 +381,10 @@ package org.jcsp.lang;
  *     this.in2 = in2;
  *     this.out = out;
  *   }
- * <I></I>
  *   public void run() {
- * <I></I>
  *     final Skip skip = new Skip ();
  *     final Guard[] guards = {in0, in1, in2, skip};
  *     final Alternative alt = new Alternative (guards);
- * <I></I>
  *     while (true) {
  *       switch (alt.priSelect ()) {
  *         case 0:
@@ -411,9 +403,7 @@ package org.jcsp.lang;
  *         break;
  *       }
  *     }
- * <I></I>
  *   }
- * <I></I>
  * }
  * </PRE>
  * The above technique lets us poll <I>any</I> {@link Guard} events, including
@@ -426,16 +416,16 @@ package org.jcsp.lang;
  * a process running in parallel.</I>
  *
  * <A NAME="Wot-no-Chickens">
- * <H3>The <A HREF="http://wotug.org/parallel/groups/wotug/java/discussion/">`Wot-no-Chickens?'</A> Canteen</H3>
- * This examples demonstrates the use of <I>pre-conditions</I> on the <code>ALT</code>
- * guards.  The <code>Canteen</code> process buffers a supply of chickens.  It can
- * hold a maximum of 20 chickens.  Chickens are supplied on the <code>supply</code>
+ * <H3>The <A HREF="http://www.hensa.ac.uk/parallel/groups/wotug/java/discussion/">`Wot-no-Chickens'</A> Canteen</H3>
+ * This examples demonstrates the use of <I>pre-conditions</I> on the <TT>ALT</TT>
+ * guards.  The <TT>Canteen</TT> process buffers a supply of chickens.  It can
+ * hold a maximum of 20 chickens.  Chickens are supplied on the <TT>supply</TT>
  * line in batches of, at most, 4.  Chickens are requested by hungry philosophers
- * who share the <code>request</code> line to the <code>Canteen</code>.  In response to
- * such requests, one chicken is delivered down the <code>deliver</code> line.
+ * who share the <TT>request</TT> line to the <TT>Canteen</TT>.  In response to
+ * such requests, one chicken is delivered down the <TT>deliver</TT> line.
  * <P>
- * The <code>Canteen</code> refuses further supplies if it has no room for the maximum
- * (4) batch supply.  The <code>Canteen</code> refuses requests from the philosophers
+ * The <TT>Canteen</TT> refuses further supplies if it has no room for the maximum
+ * (4) batch supply.  The <TT>Canteen</TT> refuses requests from the philosophers
  * if it has no chickens.
  * <PRE>
  * import org.jcsp.lang.*;
@@ -489,54 +479,52 @@ package org.jcsp.lang;
  *         break;
  *       }
  *     }
- * <I></I>
  *   }
- * <I></I>
  * }
  * </PRE>
  * <P>
  * Contrast the above programming of the canteen as a CSP <I>process</I> rather
  * than a <I>monitor</I>.  A monitor cannot refuse a callback when noone has the lock,
- * even though it may not be in a state to process it.  In the above, a <code>supply</code>
+ * even though it may not be in a state to process it.  In the above, a <TT>supply</TT>
  * <I>method</I> would have to cope with its being called when there is no room to take the supply.
- * A <code>request</code> <I>method</I> would have to be dealt with even though there may be no chickens
+ * A <TT>request</TT> <I>method</I> would have to be dealt with even though there may be no chickens
  * to deliver.  Monitors manage such problems by putting their callers on hold
- * (<code>wait</code>), but that means that their methods have to rely on each other to get
- * out of any resulting embarassment (using <code>notify</code>).
+ * (<TT>wait</TT>), but that means that their methods have to rely on each other to get
+ * out of any resulting embarassment (using <TT>notify</TT>).
  * And that means that the logic of those methods has to be tightly coupled, which
  * makes reasoning about them hard.  This gets worse the more interdependent methods
  * the monitor has.
  * <P>
- * On the other hand, the above <code>Canteen</code> <I>process</I> simply refuses service on
- * its <code>supply</code> and <code>request</code> <I>channels</I> if it can't cope, leaving
+ * On the other hand, the above <TT>Canteen</TT> <I>process</I> simply refuses service on
+ * its <TT>supply</TT> and <TT>request</TT> <I>channels</I> if it can't cope, leaving
  * the supplying or requesting processes waiting harmlessly on those channels.
  * The service responses can assume their run-time set <I>pre-conditions</I> and have
  * independent -- and trivial -- logic.  When circumstances permit,
  * the blocked processes are serviced in the normal way.
  * </P>
  * <H2>Implementation Footnote</H2>
- * This <code>Alternative</code> class and the various channel classes
+ * This <TT>Alternative</TT> class and the various channel classes
  * (e.g. {@link One2OneChannel}) are mutually dependent monitors -- they see instances
  * of each other and invoke each others' strongly interdependent methods.  This logic
  * is inspired by the published algorithms and data structures burnt into the microcode
  * of the <I>transputer</I> some 15 years ago (1984).  Getting this logic <I>`right'</I>
- * in the context of Java monitors is something we have done <code>(n + 1)</code> times,
- * only to find it flawed <code>n</code> times with an unsuspected race-hazard months
+ * in the context of Java monitors is something we have done <TT>(n + 1)</TT> times,
+ * only to find it flawed <TT>n</TT> times with an unsuspected race-hazard months
  * (sometimes years) later.  Hopefully, we have it <I>right</I> now ... but a proof
  * of correctness is really needed!
  * </P>
  * To this end, a formal (CSP) model of Java's monitor primitives
- * (the <code>synchronized</code> keyword and the <code>wait</code>, <code>notify</code> and
- * <code>notifyAll</code> methods of the <code>Object</code> class) has been built.
+ * (the <TT>synchronized</TT> keyword and the <TT>wait</TT>, <TT>notify</TT> and
+ * <TT>notifyAll</TT> methods of the <TT>Object</TT> class) has been built.
  * This has been used for the <I>formal verification</I> of the JCSP implementation
- * of channel <code>read</code> and <code>write</code>, along with the correctness of
- * <I>2-way</I> channel input <code>Alternative</code>s.
+ * of channel <TT>read</TT> and <TT>write</TT>, along with the correctness of
+ * <I>2-way</I> channel input <TT>Alternative</TT>s.
  * Details and references are listed under
  * <A HREF="http://www.cs.ukc.ac.uk/projects/ofa/jcsp/index.html#Model"><I>`A CSP Model
  * for Java Threads'</I> on the JCSP web-site</A>.
  * [The proof uses the <A HREF="http://www.formal.demon.co.uk/FDR2.html">FDR</A>
  * model checker.  Model checkers do not easily allow verification of results containing
- * free variables - such as the correctness of the <I>n-way</I> <code>Alternative</code>.
+ * free variables - such as the correctness of the <I>n-way</I> <TT>Alternative</TT>.
  * An investigation of this using <I>formal transformation</I> of one system of CSP equations
  * into another, rather than <I>model checking</I> is being considered.]
  * <P>
@@ -552,7 +540,6 @@ package org.jcsp.lang;
  * @see org.jcsp.lang.AltingChannelInput
  * @see org.jcsp.lang.AltingChannelInputInt
  * @see org.jcsp.lang.AltingChannelAccept
- * @see org.jcsp.lang.AltingBarrier
  * @see org.jcsp.lang.CSTimer
  * @see org.jcsp.lang.Skip
  * 
@@ -616,11 +603,10 @@ public class Alternative
   private int timeIndex;
 
   /**
-   * Construct an <code>Alternative</code> object operating on the {@link Guard}
+   * Construct an <TT>Alternative</TT> object operating on the {@link Guard}
    * array of events.  Supported guard events are channel inputs
    * ({@link AltingChannelInput} and {@link AltingChannelInputInt}),
    * CALL channel accepts ({@link AltingChannelAccept}),
-   * barriers ({@link AltingBarrier}),
    * timeouts ({@link CSTimer}) and skips ({@link Skip}).
    * <P>
    *
@@ -655,12 +641,14 @@ public class Alternative
    * until one of the guards becomes ready.  If more than one is ready,
    * the one with the lowest index is selected.
    */
-  public final int priSelect () {
-    // if (barrierPresent) {
-    //   throw new AlternativeError (
-    //     "*** Cannot 'priSelect' with an AltingBarrier in the Guard array"
-    //   );
-    // }
+  public final int priSelect () 
+  {
+    if (barrierPresent) 
+    {
+      throw new AlternativeError (
+        "*** Cannot 'priSelect' with an AltingBarrier in the Guard array"
+      );
+    }
     state = enabling;
     favourite = 0;
     enableGuards ();
@@ -820,61 +808,39 @@ public class Alternative
    */
   private final void enableGuards () {
     if (barrierPresent) {
-      // System.out.println ("ENABLE barrier(s) present ...");
       AltingBarrierCoordinate.startEnable ();
     }
     barrierSelected = NONE_SELECTED;
     for (enableIndex = favourite; enableIndex < guard.length; enableIndex++) {
       if (guard[enableIndex].enable (this)) {
-        // if (guard[enableIndex] instanceof AltingChannelInput) {
-        //   System.out.println ("CHANNEL ENABLE " + enableIndex + " SUCCEED");
-	// } else {
-        //   System.out.println ("ENABLE " + enableIndex + " SUCCEED");
-	// }
+        // System.out.println ("ENABLE " + enableIndex + " SUCCEED");
         selected = enableIndex;
         state = ready;
 	if (barrierTrigger) {
 	  barrierSelected = selected;
           barrierTrigger = false;
-	} else if (barrierPresent) {
-	  // System.out.println ("ENABLE " + enableIndex + " NON-BARRIER SUCCEED");
-          AltingBarrierCoordinate.finishEnable ();
-        }
+	}
         return;
-      } // else {
-        // if (guard[enableIndex] instanceof AltingChannelInput) {
-        //   System.out.println ("CHANNEL ENABLE " + enableIndex + " FAIL");
-	// } else {
-        //   System.out.println ("ENABLE " + enableIndex + " FAIL");
-	// }
+      }
+      // } else {
+        // System.out.println ("ENABLE " + enableIndex + " FAIL");
       // }
     }
     for (enableIndex = 0; enableIndex < favourite; enableIndex++) {
       if (guard[enableIndex].enable (this)) {
-        // if (guard[enableIndex] instanceof AltingChannelInput) {
-        //   System.out.println ("CHANNEL ENABLE " + enableIndex + " SUCCEED");
-	// } else {
-        //   System.out.println ("ENABLE " + enableIndex + " SUCCEED");
-	// }
+        // System.out.println ("ENABLE " + enableIndex + " SUCCEED");
         selected = enableIndex;
         state = ready;
 	if (barrierTrigger) {
 	  barrierSelected = selected;
           barrierTrigger = false;
-	} else if (barrierPresent) {
-	  // System.out.println ("ENABLE " + enableIndex + " NON-BARRIER SUCCEED");
-          AltingBarrierCoordinate.finishEnable ();
-        }
+	}
         return;
-      } // else {
-        // if (guard[enableIndex] instanceof AltingChannelInput) {
-        //   System.out.println ("CHANNEL ENABLE " + enableIndex + " FAIL");
-	// } else {
-        //   System.out.println ("ENABLE " + enableIndex + " FAIL");
-	// }
+      }
+      // } else {
+        // System.out.println ("ENABLE " + enableIndex + " FAIL");
       // }
     }
-    // System.out.println ("ENABLE ALL FAIL");
     selected = NONE_SELECTED;
     if (barrierPresent) {
       AltingBarrierCoordinate.finishEnable ();
@@ -986,11 +952,11 @@ public class Alternative
 
 
   /**
-   * Returns the index of one of the ready guards whose <code>preCondition</code>
+   * Returns the index of one of the ready guards whose <TT>preCondition</TT>
    * index is true. The method will block until one of these guards becomes
    * ready.  If more than one is ready, an <I>arbitrary</I> choice is made.
    * <P>
-   * <I>Note: the length of the </I><code>preCondition</code><I> array must be the
+   * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
    * same as that of the array of guards with which this object was constructed.</I>
    * <P>
    *
@@ -1001,22 +967,22 @@ public class Alternative
   }
 
   /**
-   * Returns the index of one of the ready guards whose <code>preCondition</code>
+   * Returns the index of one of the ready guards whose <TT>preCondition</TT>
    * index is true. The method will block until one of these guards becomes
    * ready.  If more than one is ready, the one with the lowest index is selected.
    * <P>
-   * <I>Note: the length of the </I><code>preCondition</code><I> array must be the
+   * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
    * same as that of the array of guards with which this object was constructed.</I>
    * <P>
    *
    * @param preCondition the guards from which to select
    */
   public final int priSelect (boolean[] preCondition) {
-    // if (barrierPresent) {
-    //   throw new AlternativeError (
-    //     "*** Cannot 'priSelect' with an AltingBarrier in the Guard array"
-    //   );
-    // }
+    if (barrierPresent) {
+      throw new AlternativeError (
+        "*** Cannot 'priSelect' with an AltingBarrier in the Guard array"
+      );
+    }
     if (preCondition.length != guard.length) {
       throw new IllegalArgumentException (
         "*** jcsp.lang.Alternative.select called with a preCondition array\n" +
@@ -1075,13 +1041,13 @@ public class Alternative
   }
 
   /**
-   * Returns the index of one of the ready guards whose <code>preCondition</code> index
+   * Returns the index of one of the ready guards whose <TT>preCondition</TT> index
    * is true. The method will block until one of these guards becomes ready.
    * Consequetive invocations will service the guards `fairly' in the case
    * when many guards are always ready.  <I>Implementation note: the last
    * guard serviced has the lowest priority next time around.</I>
    * <P>
-   * <I>Note: the length of the </I><code>preCondition</code><I> array must be the
+   * <I>Note: the length of the </I><TT>preCondition</TT><I> array must be the
    * same as that of the array of guards with which this object was constructed.</I>
    * <P>
    *
@@ -1167,9 +1133,7 @@ public class Alternative
 	if (barrierTrigger) {
 	  barrierSelected = selected;
           barrierTrigger = false;
-	} else if (barrierPresent) {
-          AltingBarrierCoordinate.finishEnable ();
-        }
+	}
         return;
       }
     }
@@ -1180,9 +1144,7 @@ public class Alternative
 	if (barrierTrigger) {
 	  barrierSelected = selected;
           barrierTrigger = false;
-	} else if (barrierPresent) {
-          AltingBarrierCoordinate.finishEnable ();
-        }
+	}
         return;
       }
     }

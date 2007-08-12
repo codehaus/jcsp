@@ -72,7 +72,7 @@ import java.io.Serializable;
 class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, One2OneChannel, Serializable
 {
 	/** The monitor synchronising reader and writer on this channel */
-	  protected Object rwMonitor = new Object ();
+	  private Object rwMonitor = new Object ();
 
 	  /** The (invisible-to-users) buffer used to store the data for the channel */
 	  private Object hold;
@@ -81,11 +81,11 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	  private boolean empty = true;
 
 	  /** The Alternative class that controls the selection */
-	  protected Alternative alt;
+	  private Alternative alt;
 
 	  /** Flag to deal with a spurious wakeup during a write */
-	  private boolean spuriousWakeUp = true;
-
+	  private boolean spuriousWakeUp = true;      
+      
 	  /*************Methods from One2OneChannel******************************/
 
     /**
@@ -123,36 +123,35 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	   *
 	   * @param value the object to write to the channel.
 	   */
-	  public void write (Object value) {
-	    synchronized (rwMonitor) {
-	      hold = value;
-	      if (empty) {
-	        empty = false;
-	        if (alt != null) {
-	          alt.schedule ();
-	        }
-	      } else {
-	        empty = true;
-	        rwMonitor.notify ();
-	      }
-	      try {
-	        rwMonitor.wait ();
-		while (spuriousWakeUp) {
-		  if (Spurious.logging) {
-		    SpuriousLog.record (SpuriousLog.One2OneChannelWrite);
-		  }
-		  rwMonitor.wait ();
-		}
-		spuriousWakeUp = true;
-	      }
-	      catch (InterruptedException e) {
-	        throw new ProcessInterruptedException ("*** Thrown from One2OneChannel.write (Object)\n"
-	                                           + e.toString ());
-	      }
-	    }
-	  }
+  public void write(Object value) {
+    synchronized (rwMonitor) {      
+      hold = value;
+      if (empty) {
+        empty = false;
+        if (alt != null) {
+          alt.schedule();
+        }
+      } else {
+        empty = true;
+        rwMonitor.notify();
+      }
+      try {
+        rwMonitor.wait();        
+        while (spuriousWakeUp) {
+          if (Spurious.logging) {
+            SpuriousLog.record(SpuriousLog.One2OneChannelWrite);
+          }
+          rwMonitor.wait();
+        }        
+        spuriousWakeUp = true;        
+      } catch (InterruptedException e) {
+        throw new ProcessInterruptedException(
+            "*** Thrown from One2OneChannel.write (Object)\n" + e.toString());
+      }
+    }
+  }
 
-    /*************Methods from AltingChannelInput**************************/
+    /** ***********Methods from AltingChannelInput************************* */
 
 	   /**
 	   * Reads an <TT>Object</TT> from the channel.
@@ -160,7 +159,7 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	   * @return the object read from the channel.
 	   */
 	  public Object read () {
-	    synchronized (rwMonitor) {
+	    synchronized (rwMonitor) {          
 	      if (empty) {
 	        empty = false;
 	        try {
@@ -170,7 +169,7 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 		      SpuriousLog.record (SpuriousLog.One2OneChannelRead);
 		    }
 		    rwMonitor.wait ();
-		  }
+		  }          
 	        }
 	        catch (InterruptedException e) {
 	          throw new ProcessInterruptedException ("*** Thrown from One2OneChannel.read ()\n"
@@ -184,6 +183,38 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	      return hold;
 	    }
 	  }
+	  
+	  public Object startRead() {
+		    synchronized (rwMonitor) {              
+		      if (empty) {
+		        empty = false;
+		        try {
+		          rwMonitor.wait ();
+			  while (!empty) {
+			    if (Spurious.logging) {
+			      SpuriousLog.record (SpuriousLog.One2OneChannelRead);
+			    }
+			    rwMonitor.wait ();
+			  }              
+		        }
+		        catch (InterruptedException e) {
+		          throw new ProcessInterruptedException ("*** Thrown from One2OneChannel.read ()\n"
+		                                             + e.toString ());
+		        }
+		      } else {
+		        empty = true;
+		      }
+		      
+		      return hold;
+		    }
+	  }	  
+      
+  public void endRead() {
+    synchronized (rwMonitor) {      
+      spuriousWakeUp = false;
+      rwMonitor.notify ();
+    }
+  }
 
 
 	  /**
@@ -196,7 +227,7 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	   * @return true if the channel has data that can be read, else false
 	   */
 	  boolean enable (Alternative alt) {
-	    synchronized (rwMonitor) {
+	    synchronized (rwMonitor) {          
 	      if (empty) {
 	        this.alt = alt;
 	        return false;
@@ -258,7 +289,7 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	   * @return state of the channel.
 	   */
 	  public boolean pending () {
-	    synchronized (rwMonitor) {
+	    synchronized (rwMonitor) {          
 	      return !empty;
 	    }
 	  }

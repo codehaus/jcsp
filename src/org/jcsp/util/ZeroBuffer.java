@@ -81,6 +81,26 @@ public class ZeroBuffer implements ChannelDataStore, Serializable
         value = null;
         return o;
     }
+    
+    /**
+     * Begins an extended rendezvous - simply returns the next object in the buffer.  
+     * This function does not remove the object.
+     * 
+     * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>EMPTY</TT>.
+     * 
+     * @return The object in the buffer. 
+     */
+    public Object startGet() {
+      return value;     
+    }
+    
+    /**
+     * Ends the extended rendezvous by clearing the buffer.
+     */
+    public void endGet() {
+      value = null;
+      state = EMPTY;      
+    }
 
     /**
      * Puts a new <TT>Object</TT> into the <TT>ZeroBuffer</TT>.

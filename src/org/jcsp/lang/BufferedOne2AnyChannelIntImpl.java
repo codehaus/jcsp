@@ -28,6 +28,7 @@
 
 package org.jcsp.lang;
 
+import org.jcsp.util.ChannelDataStore;
 import org.jcsp.util.ints.*;
 
 /**
@@ -80,11 +81,18 @@ import org.jcsp.util.ints.*;
  * @author P.H.Welch
  */
 
-class BufferedOne2AnyChannelIntImpl extends One2AnyChannelIntImpl
+class BufferedOne2AnyChannelIntImpl implements One2AnyChannelInt, ChannelOutputInt, SharedChannelInputInt
 {
+  /** The monitor synchronising reader and writer on this channel */
+  private final Object rwMonitor = new Object ();
+  
+  /** The monitor on which readers must synchronize */
+  private final Mutex readMutex = new Mutex();
+  
+  
     /** The ChannelDataStoreInt used to store the data for the channel */
     private final ChannelDataStoreInt data;
-
+    
     /**
      * Constructs a new BufferedAny2AnyChannelIntImpl with the specified ChannelDataStoreInt.
      *
@@ -106,7 +114,8 @@ class BufferedOne2AnyChannelIntImpl extends One2AnyChannelIntImpl
      * @return the integer read from the Channel.
      */
     public int read () {
-      synchronized (readMonitor) {
+      int retValue;
+      readMutex.claim();
         synchronized (rwMonitor) {
           if (data.getState () == ChannelDataStoreInt.EMPTY) {
             try {
@@ -125,9 +134,45 @@ class BufferedOne2AnyChannelIntImpl extends One2AnyChannelIntImpl
             }
           }
           rwMonitor.notify ();
-          return data.get ();
+          retValue = data.get ();
         }
+      readMutex.release();
+      return retValue;
+    }
+    
+    public int startRead() {
+      int retValue;
+      readMutex.claim();
+        synchronized (rwMonitor) {
+          if (data.getState () == ChannelDataStore.EMPTY) {
+            try {
+              rwMonitor.wait ();
+          while (data.getState () == ChannelDataStore.EMPTY) {
+            if (Spurious.logging) {
+              SpuriousLog.record (SpuriousLog.Any2AnyChannelXRead);
+            }
+            rwMonitor.wait ();
+          }
+            }
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException (
+                "*** Thrown from Any2AnyChannel.read ()\n" + e.toString ()
+              );
+            }
+          }
+          rwMonitor.notify ();
+          retValue = data.startGet();
+        }
+      //We release the readMutex in the endRead() function
+      return retValue;
+    }
+    
+    public void endRead() {
+      synchronized(rwMonitor) {
+        data.endGet();
+        rwMonitor.notify();                    
       }
+      readMutex.release();
     }
 
     /**
@@ -156,5 +201,33 @@ class BufferedOne2AnyChannelIntImpl extends One2AnyChannelIntImpl
           }
         }
       }
+    }
+    
+    /**
+     * Returns the <code>SharedChannelInputInt</code> object to use for this
+     * channel. As <code>BufferedOne2AnyChannelIntImpl</code> implements
+     * <code>SharedChannelInputInt</code> itself, this method simply returns
+     * a reference to the object that it is called on.
+     *
+     * @return the <code>SharedChannelInputInt</code> object to use for this
+     *          channel.
+     */
+    public SharedChannelInputInt in()
+    {
+        return this;
+    }
+
+    /**
+     * Returns the <code>ChannelOutputInt</code> object to use for this
+     * channel. As <code>BufferedOne2AnyChannelIntImpl</code> implements
+     * <code>ChannelOutputInt</code> itself, this method simply returns
+     * a reference to the object that it is called on.
+     *
+     * @return the <code>ChannelOutputInt</code> object to use for this
+     *          channel.
+     */
+    public ChannelOutputInt out()
+    {
+        return this;
     }
 }

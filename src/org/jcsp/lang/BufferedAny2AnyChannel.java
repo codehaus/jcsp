@@ -80,10 +80,19 @@ import org.jcsp.util.*;
  * @author P.D.Austin and P.H.Welch
  */
 
-class BufferedAny2AnyChannel extends Any2AnyChannelImpl
+class BufferedAny2AnyChannel implements Any2AnyChannel, SharedChannelInput, SharedChannelOutput
 {
+  /** The monitor synchronising reader and writer on this channel */
+  private Object rwMonitor = new Object ();
+  
+  /** The mutex on which readers must synchronize */
+  private final Mutex readMutex = new Mutex();
+
+  /** The monitor on which writers must synchronize */
+  private final Object writeMonitor = new Object ();
+  
 	/** The ChannelDataStore used to store the data for the channel */
-	  private final ChannelDataStore data;
+	  private final ChannelDataStore data;      
 
 	  /**
      * Constructs a new BufferedAny2AnyChannel with the specified ChannelDataStore.
@@ -97,6 +106,36 @@ class BufferedAny2AnyChannel extends Any2AnyChannelImpl
                     ("Null ChannelDataStore given to channel constructor ...\n");
 	    this.data = (ChannelDataStore) data.clone ();
 	  }
+    
+    /*************Methods from Any2AnyChannel******************************/
+
+      /**
+   * Returns the <code>SharedChannelInput</code> object to use for this
+   * channel. As <code>Any2AnyChannelImpl</code> implements
+   * <code>SharedChannelInput</code> itself, this method simply returns
+   * a reference to the object that it is called on.
+   *
+   * @return the <code>SharedChannelInput</code> object to use for this
+   *          channel.
+   */
+  public SharedChannelInput in()
+  {
+      return this;
+  }
+
+  /**
+   * Returns the <code>SharedChannelOutput</code> object to use for this
+   * channel. As <code>Any2AnyChannelImpl</code> implements
+   * <code>SharedChannelOutput</code> itself, this method simply returns
+   * a reference to the object that it is called on.
+   *
+   * @return the <code>SharedChannelOutput</code> object to use for this
+   *          channel.
+   */
+  public SharedChannelOutput out()
+  {
+      return this;
+  }
 
 	  /**
 	   * Reads an <TT>Object</TT> from the channel.  This method also ensures only one
@@ -106,7 +145,8 @@ class BufferedAny2AnyChannel extends Any2AnyChannelImpl
 	   * @return the object read from the Channel.
 	   */
 	  public Object read () {
-	    synchronized (readMonitor) {
+        Object retValue;
+	    readMutex.claim();
 	      synchronized (rwMonitor) {
 	        if (data.getState () == ChannelDataStore.EMPTY) {
 	          try {
@@ -125,10 +165,46 @@ class BufferedAny2AnyChannel extends Any2AnyChannelImpl
 	          }
 	        }
 	        rwMonitor.notify ();
-	        return data.get ();
+	        retValue = data.get ();
 	      }
-	    }
+	    readMutex.release();
+        return retValue;
 	  }
+      
+      public Object startRead() {
+        Object retValue;
+        readMutex.claim();
+          synchronized (rwMonitor) {
+            if (data.getState () == ChannelDataStore.EMPTY) {
+              try {
+                rwMonitor.wait ();
+            while (data.getState () == ChannelDataStore.EMPTY) {
+              if (Spurious.logging) {
+                SpuriousLog.record (SpuriousLog.Any2AnyChannelXRead);
+              }
+              rwMonitor.wait ();
+            }
+              }
+              catch (InterruptedException e) {
+                throw new ProcessInterruptedException (
+                  "*** Thrown from Any2AnyChannel.read ()\n" + e.toString ()
+                );
+              }
+            }
+            rwMonitor.notify ();
+            retValue = data.startGet();
+          }
+        //We release the readMutex in the endRead() function
+        return retValue;
+      }
+      
+      public void endRead() {
+        synchronized(rwMonitor) {
+          data.endGet();
+          rwMonitor.notify();                    
+        }
+        readMutex.release();
+      }
 
 	  /**
 	   * Writes an <TT>Object</TT> to the channel. This method also ensures only one

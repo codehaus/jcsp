@@ -60,5 +60,5 @@ public class ChannelOutputIntWrapper implements ChannelOutputInt {
     public void write(int o)
     {
         out.write(o);
-    }
+    }    
 }

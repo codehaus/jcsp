@@ -75,11 +75,20 @@ import org.jcsp.util.*;
  * @author P.H.Welch
  */
 
-class BufferedAny2OneChannel extends Any2OneChannelImpl
+class BufferedAny2OneChannel extends AltingChannelInput implements Any2OneChannel, SharedChannelOutput
 {
+  /** The monitor synchronising reader and writer on this channel */
+  private Object rwMonitor = new Object ();
+  
+  /** The monitor on which writers must synchronize */
+  private final Object writeMonitor = new Object ();
+  
+  /** The Alternative class that controls the selection */
+  private Alternative alt;
+  
     /** The ChannelDataStore used to store the data for the channel */
     private final ChannelDataStore data;
-
+    
     /**
      * Constructs a new Any2OneChannelImpl with the specified ChannelDataStore.
      *
@@ -92,6 +101,36 @@ class BufferedAny2OneChannel extends Any2OneChannelImpl
                     ("Null ChannelDataStore given to channel constructor ...\n");
         this.data = (ChannelDataStore) data.clone();
     }
+    
+    /*************Methods from One2AnyChannel******************************/
+
+      /**
+   * Returns the <code>AltingChannelInput</code> object to use for this
+   * channel. As <code>BufferedAny2OneChannel</code> implements
+   * <code>AltingChannelInput</code> itself, this method simply returns
+   * a reference to the object that it is called on.
+   *
+   * @return the <code>AltingChannelInput</code> object to use for this
+   *          channel.
+   */
+  public AltingChannelInput in()
+  {
+      return this;
+  }
+
+  /**
+   * Returns the <code>SharedChannelOutput</code> object to use for this
+   * channel. As <code>BufferedAny2OneChannel</code> implements
+   * <code>SharedChannelOutput</code> itself, this method simply returns
+   * a reference to the object that it is called on.
+   *
+   * @return the <code>SharedChannelOutput</code> object to use for this
+   *          channel.
+   */
+  public SharedChannelOutput out()
+  {
+      return this;
+  }
 
     /**
      * Reads an <TT>Object</TT> from the channel.
@@ -118,6 +157,36 @@ class BufferedAny2OneChannel extends Any2OneChannelImpl
         }
         rwMonitor.notify ();
         return data.get ();
+      }
+    }
+    
+    public Object startRead() {
+      synchronized (rwMonitor) {
+        if (data.getState () == ChannelDataStore.EMPTY) {
+          try {
+            rwMonitor.wait ();
+      while (data.getState () == ChannelDataStore.EMPTY) {
+        if (Spurious.logging) {
+          SpuriousLog.record (SpuriousLog.One2OneChannelXRead);
+        }
+        rwMonitor.wait ();
+      }
+          }
+          catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from One2OneChannel.read (int)\n" + e.toString ()
+            );
+          }
+        }
+        
+        return data.startGet();
+      }
+    }
+    
+    public void endRead() {
+      synchronized(rwMonitor) {
+        data.endGet();
+        rwMonitor.notify ();
       }
     }
 

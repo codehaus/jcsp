@@ -61,7 +61,7 @@ class AltingBarrierCoordinate {     // package-only visible class
 	    // notified wakeup that has been raced to the 'activelock' monitor
 	    // by another thread (quite possibly the notifying one) that has
 	    // (re-)acquired it and set 'active' greater than zero.  We have
-	    // not instrumented the code to tell the difference.  Either way:
+	    // not instrumented the code to tell the difference.
             activeLock.wait ();
 	  }
 	}

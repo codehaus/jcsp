@@ -81,6 +81,16 @@ public class AltingChannelInputIntWrapper extends AltingChannelInputInt
     {
         return channel.read();
     }
+    
+    public int startRead()
+    {
+      return channel.startRead();
+    }
+    
+    public void endRead()
+    {
+      channel.endRead();
+    }
 
     /**
      * Returns whether there is data pending on this channel.
@@ -119,5 +129,5 @@ public class AltingChannelInputIntWrapper extends AltingChannelInputInt
     boolean disable()
     {
         return channel.disable();
-    }
+    }    
 }

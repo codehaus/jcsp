@@ -62,7 +62,7 @@ class Any2OneChannelIntImpl extends AltingChannelInputInt implements SharedChann
 	  protected final Object writeMonitor = new Object ();
 
 	  /** Flag to deal with a spurious wakeup during a write */
-	  private boolean spuriousWakeUp = true;
+	  private boolean spuriousWakeUp = true;      
 	  
 	      /*************Methods from Any2OneChannelInt******************************/
 
@@ -127,6 +127,38 @@ class Any2OneChannelIntImpl extends AltingChannelInputInt implements SharedChann
 	      return hold;
 	    }
 	  }
+      
+      public int startRead () {
+        synchronized (rwMonitor) {
+          if (empty) {
+            empty = false;
+            try {
+              rwMonitor.wait ();
+          while (!empty) {
+            if (Spurious.logging) {
+              SpuriousLog.record (SpuriousLog.Any2OneChannelRead);
+            }
+            rwMonitor.wait ();
+          }
+            }
+            catch (InterruptedException e) {
+              throw new ProcessInterruptedException (
+                "*** Thrown from Any2OneChannel.read ()\n" + e.toString ()
+              );
+            }
+          } else {
+            empty = true;
+          }          
+          return hold;
+        }
+      }
+      
+      public void endRead() {
+    	synchronized (rwMonitor) {
+          spuriousWakeUp = false;
+          rwMonitor.notify ();
+    	}
+      }
 
 	  /**
 	   * Writes an <TT>int</TT> to the Channel. This method also ensures only one
@@ -249,9 +281,9 @@ class Any2OneChannelIntImpl extends AltingChannelInputInt implements SharedChann
      * @param n the number of channels to create in the array
      * @return the array of Any2OneChannelIntImpl
      */
-    public static Any2OneChannelIntImpl[] create(int n)
+    public static Any2OneChannelInt[] create(int n)
     {
-        Any2OneChannelIntImpl[] channels = new Any2OneChannelIntImpl[n];
+        Any2OneChannelInt[] channels = new Any2OneChannelIntImpl[n];
         for (int i = 0; i < n; i++)
             channels[i] = new Any2OneChannelIntImpl();
         return channels;
@@ -262,7 +294,7 @@ class Any2OneChannelIntImpl extends AltingChannelInputInt implements SharedChann
      *
      * @return the Any2OneChannelIntImpl
      */
-    public static Any2OneChannelIntImpl create(ChannelDataStoreInt store)
+    public static Any2OneChannelInt create(ChannelDataStoreInt store)
     {
         return new BufferedAny2OneChannelIntImpl(store);
     }
@@ -273,9 +305,9 @@ class Any2OneChannelIntImpl extends AltingChannelInputInt implements SharedChann
      * @param n the number of channels to create in the array
      * @return the array of Any2OneChannelIntImpl
      */
-    public static Any2OneChannelIntImpl[] create(int n, ChannelDataStoreInt store)
+    public static Any2OneChannelInt[] create(int n, ChannelDataStoreInt store)
     {
-        Any2OneChannelIntImpl[] channels = new Any2OneChannelIntImpl[n];
+        Any2OneChannelInt[] channels = new Any2OneChannelIntImpl[n];
         for (int i = 0; i < n; i++)
             channels[i] = new BufferedAny2OneChannelIntImpl(store);
         return channels;

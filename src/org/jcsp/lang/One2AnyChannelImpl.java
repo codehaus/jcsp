@@ -81,19 +81,8 @@ import org.jcsp.util.ChannelDataStore;
 
 class One2AnyChannelImpl implements ChannelOutput, SharedChannelInput, One2AnyChannel, Serializable
 {
-    /**
-     * WARNING:
-     * RejectableOne2AnyChannel extends this class and depends
-     * heavily on the algorithms used.
-     * Do not modify without checking that class first.
-     * 
-     * NCCB: I have changed this algorithm with the spurious wake-up code from Peter.  
-     * From what I can make out in the RejectableOne2AnyChannel (the concept of which
-     * looks a lot like one-off poison), this shouldn't break it.
-     */
-
-	/** The monitor synchronising reader and writer on this channel */
-	  protected Object rwMonitor = new Object ();
+      /** The monitor synchronising reader and writer on this channel */
+	  private Object rwMonitor = new Object ();
 
 	  /** The (invisible-to-users) buffer used to store the data for the channel */
 	  private Object hold;
@@ -101,11 +90,12 @@ class One2AnyChannelImpl implements ChannelOutput, SharedChannelInput, One2AnyCh
 	  /** The synchronisation flag */
 	  private boolean empty = true;
 
-	  /** The monitor on which readers must synchronize */
-	  protected final Object readMonitor = new Object ();
+	  /** The mutex on which readers must synchronize */
+	  private final Mutex readMutex = new Mutex();
 
 	  /** Flag to deal with a spurious wakeup during a write */
 	  private boolean spuriousWakeUp = true;
+      
 
     /*************Methods from One2AnyChannel******************************/
 
@@ -145,7 +135,8 @@ class One2AnyChannelImpl implements ChannelOutput, SharedChannelInput, One2AnyCh
 	   * @return the object read from the channel.
 	   */
 	  public Object read () {
-	    synchronized (readMonitor) {
+        Object retValue;
+        readMutex.claim();
 	      synchronized (rwMonitor) {
 	        if (empty) {
 	          empty = false;
@@ -168,10 +159,47 @@ class One2AnyChannelImpl implements ChannelOutput, SharedChannelInput, One2AnyCh
 	        }
 	        spuriousWakeUp = false;
 	        rwMonitor.notify ();
-	        return hold;
+	        retValue = hold;
 	      }
-	    }
+        readMutex.release();
+        return retValue;  
 	  }
+      
+      public Object startRead () {        
+        readMutex.claim();
+          synchronized (rwMonitor) {
+            if (empty) {
+              empty = false;
+              try {
+                rwMonitor.wait ();
+            while (!empty) {
+              if (Spurious.logging) {
+                SpuriousLog.record (SpuriousLog.One2AnyChannelRead);
+              }
+              rwMonitor.wait ();
+            }
+              }
+              catch (InterruptedException e) {
+                throw new ProcessInterruptedException (
+                  "*** Thrown from One2AnyChannel.read ()\n" + e.toString ()
+                );
+              }
+            } else {
+              empty = true;
+            }
+            
+            return hold;
+          }        
+        //We don't release the readMutex until endExtRead  
+      }
+      
+      public void endRead() {
+        synchronized (rwMonitor) {
+          spuriousWakeUp = false;
+          rwMonitor.notify ();
+          readMutex.release();
+        }
+      }
 
 	  /**
 	   * Writes an <TT>Object</TT> to the Channel. This method also ensures only one

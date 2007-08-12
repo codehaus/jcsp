@@ -61,5 +61,15 @@ public class ChannelInputIntWrapper implements ChannelInputInt
     public int read()
     {
         return in.read();
+    }    
+    
+    public int startRead()
+    {
+      return in.startRead();
+    }
+    
+    public void endRead()
+    {
+      in.endRead();
     }
 }

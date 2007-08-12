@@ -28,6 +28,7 @@
 
 package org.jcsp.lang;
 
+import org.jcsp.util.ChannelDataStore;
 import org.jcsp.util.ints.*;
 
 /**
@@ -61,11 +62,46 @@ import org.jcsp.util.ints.*;
  * @author P.H.Welch
  */
 
-class BufferedOne2OneChannelIntImpl extends One2OneChannelIntImpl
+class BufferedOne2OneChannelIntImpl extends AltingChannelInputInt implements One2OneChannelInt, ChannelOutputInt
 {
+  /** The monitor synchronising reader and writer on this channel */
+  private Object rwMonitor = new Object();
 
+  /** The Alternative class that controls the selection */
+  private Alternative alt;
+  
     /** The ChannelDataStoreInt used to store the data for the channel */
-    private final ChannelDataStoreInt data;
+    private final ChannelDataStoreInt data;  
+    
+    /*************Methods from One2OneChannelInt******************************/
+
+    /**
+     * Returns the <code>AltingChannelInputInt</code> object to use for this
+     * channel. As <code>One2OneChannelIntImpl</code> implements
+     * <code>AltingChannelInputInt</code> itself, this method simply returns
+     * a reference to the object that it is called on.
+     *
+     * @return the <code>AltingChannelInputInt</code> object to use for this
+     *          channel.
+     */
+    public AltingChannelInputInt in()
+    {
+        return this;
+    }
+
+    /**
+     * Returns the <code>ChannelOutputInt</code> object to use for this
+     * channel. As <code>One2OneChannelIntImpl</code> implements
+     * <code>ChannelOutputInt</code> itself, this method simply returns
+     * a reference to the object that it is called on.
+     *
+     * @return the <code>ChannelOutputInt</code> object to use for this
+     *          channel.
+     */
+    public ChannelOutputInt out()
+    {
+        return this;
+    }
 
     /**
      * Constructs a new BufferedOne2OneChannelIntImpl with the specified ChannelDataStoreInt.
@@ -108,6 +144,36 @@ class BufferedOne2OneChannelIntImpl extends One2OneChannelIntImpl
       }
     }
 
+    public int startRead() {
+      synchronized (rwMonitor) {
+        if (data.getState () == ChannelDataStore.EMPTY) {
+          try {
+            rwMonitor.wait ();
+      while (data.getState () == ChannelDataStore.EMPTY) {
+        if (Spurious.logging) {
+          SpuriousLog.record (SpuriousLog.One2OneChannelXRead);
+        }
+        rwMonitor.wait ();
+      }
+          }
+          catch (InterruptedException e) {
+            throw new ProcessInterruptedException (
+              "*** Thrown from One2OneChannel.read (int)\n" + e.toString ()
+            );
+          }
+        }
+        
+        return data.startGet();
+      }
+    }
+    
+    public void endRead() {
+      synchronized(rwMonitor) {
+        data.endGet();
+        rwMonitor.notify ();
+      }
+    }    
+    
     /**
      * Writes an <TT>int</TT> to the channel.
      *

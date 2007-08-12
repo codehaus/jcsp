@@ -111,6 +111,38 @@ public interface ChannelDataStore extends Cloneable
      * @return an <TT>Object</TT> from the <TT>ChannelDataStore</TT>
      */
     public abstract Object get();
+    
+    /**
+     * Begins an extended read on the buffer, returning the data for the extended read
+     * 
+     * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>EMPTY</TT>.
+     * 
+     * The exact behaviour of this method depends on your buffer.  When a process performs an
+     * extended rendezvous on a buffered channel, it will first call this method, then the
+     * {@link endGet} method.  
+     * 
+     * A FIFO buffer would implement this method as returning the value from the front of the buffer
+     * and the next call would remove the value.  An overflowing buffer would do the same.
+     * 
+     * However, for an overwriting buffer it is more complex.  Refer to the documentation for
+     * {@link OverWritingBuffer#startGet} and {@link OverWriteOldestBuffer#startGet}
+     * for details  
+     * 
+     * @return The object to be read from the channel at the beginning of the extended rendezvous 
+     */
+    public abstract Object startGet();
+    
+    /**
+     * Ends an extended read on the buffer.
+     * 
+     * The channels guarantee that this method will be called exactly once after each beginExtRead call.
+     * During the period between startGet and endGet, it is possible that {@link put} will be called,
+     * but not {@link get}. 
+     *
+     * @see endGet
+     */
+    public abstract void endGet();
+    
 
     /**
      * Returns a new (and <TT>EMPTY</TT>) <TT>ChannelDataStore</TT> with the same
