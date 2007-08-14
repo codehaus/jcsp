@@ -400,7 +400,7 @@ public class Bucket implements Serializable
     			while (spuriousCycle == bucketCycle) 
     			{
     			    if (Spurious.logging) {
-    			      SpuriousLog.record (SpuriousLog.BucketSync);
+    			      SpuriousLog.record (SpuriousLog.BucketFallInto);
     			    }
     			    bucketLock.wait ();
     		    }
@@ -427,7 +427,7 @@ public class Bucket implements Serializable
 		  final int tmp = nHolding;
 		  nHolding = 0;
 		  bucketCycle += 1;
-		  notifyAll ();		  
+		  bucketLock.notifyAll ();		  
 		  return tmp;
 	  }
   }
