@@ -55,7 +55,7 @@ public interface ConnectionServer
     /**
      * The factory for creating channels within servers.
      */
-    static RiskyChannelFactory FACTORY = new RiskyChannelFactory();
+    static StandardChannelFactory FACTORY = new StandardChannelFactory();
 
     /**
      * <p>Receives a request from a client. This will block until the client

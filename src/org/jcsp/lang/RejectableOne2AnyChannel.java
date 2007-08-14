@@ -43,54 +43,24 @@ package org.jcsp.lang;
  * 
  * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}
  */
-public class RejectableOne2AnyChannel
-        extends One2AnyChannelImpl
-        implements RejectableChannel, SharedChannelOutput
+public class RejectableOne2AnyChannel        
+        implements RejectableChannel
 {
+	One2AnyChannelImpl innerChannel;
     
     /**
      * Constructs a new channel.
      */
     public RejectableOne2AnyChannel()
     {
+    	innerChannel = (One2AnyChannelImpl)Channel.createOne2Any();
     }
 
-    /**
-     * <p>This method will reject any input from the channel.
-     * Any writer waiting to output data will have a
-     * <code>ChannelDataRejectedException</code> thrown.</p>
-     *
-     * <p>The reject can be called by any thread.</p>
-     *
-     * @see org.jcsp.lang.RejectableChannelInput#reject()
-     */
-    public void reject()
-    {
-        poisonIn(new ChannelDataRejectedException());
-    }
+	public RejectableChannelInput in() {
+		return new RejectableChannelInputImpl(innerChannel,0);
+	}
 
-    /**
-     * Reads an object over the channel. This method will throw an exception if another thread calls
-     * <code>reject</code> before any data is available.
-     *
-     * @throws ChannelDataRejectedException if <code>reject</code> was called.
-     * @return the object read.
-     */
-    public Object read()
-    {
-        return super.read();
-    }
-
-    /**
-     * Writes an object over the channel. This method will throw an exception if
-     * <code>reject()</code> is called to reject the data before a process is ready to accept the
-     * data.
-     *
-     * @param data the object to write.
-     * @throws ChannelDataRejectedException if <code>reject</code> was called.
-     */
-    public void write(Object data)
-    {
-        super.write(data);
-    }
+	public RejectableChannelOutput out() {
+		return new RejectableChannelOutputImpl(innerChannel,0);
+	}
 }

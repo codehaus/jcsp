@@ -67,7 +67,7 @@ package org.jcsp.lang;
  * @author P.D.Austin
  */
 
-public interface ChannelOutputInt
+public interface ChannelOutputInt extends Poisonable
 {
     /**
      * Write an int to the channel.

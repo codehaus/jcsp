@@ -165,5 +165,12 @@ public class AltingChannelInputWrapper extends AltingChannelInput
     boolean disable()
     {
         return channel.disable();
-    }    
+    }
+
+	public void poison(int strength) 
+	{
+		channel.poison(strength);	
+	}
+    
+    
 }

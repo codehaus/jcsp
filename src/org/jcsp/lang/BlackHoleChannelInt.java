@@ -59,7 +59,13 @@ public class BlackHoleChannelInt implements ChannelOutputInt
    *
    * @param value the object to write to the channel.
    */
+
   public void write(int i)
   {    
   }  
+  
+  public void poison(int strength) 
+  {    
+  }
+
 }

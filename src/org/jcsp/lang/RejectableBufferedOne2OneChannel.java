@@ -46,10 +46,11 @@ import org.jcsp.util.*;
  * 
  * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}
  */
-public class RejectableBufferedOne2OneChannel
-        extends BufferedOne2OneChannel
+public class RejectableBufferedOne2OneChannel        
         implements RejectableChannel
 {    
+	BufferedOne2OneChannel innerChannel;	
+	
     /**
      * Constructs a new channel.
      *
@@ -57,39 +58,15 @@ public class RejectableBufferedOne2OneChannel
      */
     public RejectableBufferedOne2OneChannel(ChannelDataStore buffer)
     {
-        super(buffer);
+        innerChannel = (BufferedOne2OneChannel)Channel.one2one(buffer);
     }
 
-    /**
-     * Writes an object to the channel. If the reader process calls <code>reject</code> rather than
-     * accept the data an exception will be thrown.
-     *
-     * @param value the object to write.
-     * @throws ChannelDataRejectedException if <code>reject</code> was called.
-     */
-    public void write(Object value)
-    {
-        super.write(value);
-    }
+	public RejectableChannelInput in() {
+		return new RejectableChannelInputImpl(innerChannel,0);
+	}
 
-    /**
-     * Reads an object from the channel.
-     *
-     * @return the object read.
-     */
-    public Object read()
-    {
-        return super.read();
-    }
+	public RejectableChannelOutput out() {
+		return new RejectableChannelOutputImpl(innerChannel,0);
+	}
 
-    /**
-     * Marks the channel as rejected. If there is a currently blocked writer it will be notified and
-     * raise an exception. Any subsequent write attempts will immediately cause an exception to be
-     * raised. Once this method has been called no more calls can be made to <code>read</code> or
-     * <code>reject</code> by the reading process.
-     */
-    public void reject()
-    {
-        poisonIn(new ChannelDataRejectedException());
-    }
 }

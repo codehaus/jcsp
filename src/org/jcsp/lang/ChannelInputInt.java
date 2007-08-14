@@ -71,7 +71,7 @@ package org.jcsp.lang;
  * @author P.D.Austin
  */
 
-public interface ChannelInputInt
+public interface ChannelInputInt extends Poisonable
 {
     /**
      * Read an <TT>int</TT> from the channel.

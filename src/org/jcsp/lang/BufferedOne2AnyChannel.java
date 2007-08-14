@@ -80,133 +80,15 @@ import org.jcsp.util.*;
  * @author P.H.Welch
  */
 
-class BufferedOne2AnyChannel implements One2AnyChannel, SharedChannelInput, ChannelOutput 
+class BufferedOne2AnyChannel extends One2AnyImpl 
 {
-    /** The ChannelDataStore used to store the data for the channel */
-    private final ChannelDataStore data;
-    
-    /** The mutex on which readers must synchronize */
-    private final Mutex readMutex = new Mutex();
-    
-    private final Object rwMonitor = new Object();
-    
     /**
-     * Constructs a new BufferedAny2AnyChannel with the specified ChannelDataStore.
+     * Constructs a new BufferedOne2AnyChannel with the specified ChannelDataStore.
      *
      * @param data The ChannelDataStore used to store the data for the channel
      */
     public BufferedOne2AnyChannel(ChannelDataStore data)
     {
-        if (data == null)
-            throw new IllegalArgumentException
-                    ("Null ChannelDataStore given to channel constructor ...\n");
-        this.data = (ChannelDataStore) data.clone();
-    }
-
-    /**
-     * Reads an <TT>Object</TT> from the channel.  This method also ensures only one
-     * of the readers can actually be reading at any time. All other readers
-     * are blocked until it completes the read.
-     *
-     * @return the object read from the Channel.
-     */
-    public Object read () {
-      Object retValue;
-      readMutex.claim();
-        synchronized (rwMonitor) {
-          if (data.getState () == ChannelDataStore.EMPTY) {
-            try {
-              rwMonitor.wait ();
-  	    while (data.getState () == ChannelDataStore.EMPTY) {
-  	      if (Spurious.logging) {
-  	        SpuriousLog.record (SpuriousLog.One2AnyChannelXRead);
-  	      }
-  	      rwMonitor.wait ();
-  	    }
-            }
-            catch (InterruptedException e) {
-              throw new ProcessInterruptedException (
-                "*** Thrown from One2AnyChannel.read ()\n" + e.toString ()
-              );
-            }
-          }
-          rwMonitor.notify ();
-          retValue = data.get ();
-        }
-      readMutex.release();
-      return retValue;
-    }
-    
-    public Object startRead() {
-      Object retValue;
-      readMutex.claim();
-        synchronized (rwMonitor) {
-          if (data.getState () == ChannelDataStore.EMPTY) {
-            try {
-              rwMonitor.wait ();
-          while (data.getState () == ChannelDataStore.EMPTY) {
-            if (Spurious.logging) {
-              SpuriousLog.record (SpuriousLog.Any2AnyChannelXRead);
-            }
-            rwMonitor.wait ();
-          }
-            }
-            catch (InterruptedException e) {
-              throw new ProcessInterruptedException (
-                "*** Thrown from Any2AnyChannel.read ()\n" + e.toString ()
-              );
-            }
-          }
-          rwMonitor.notify ();
-          retValue = data.startGet();
-        }
-      //We release the readMutex in the endRead() function
-      return retValue;
-    }
-    
-    public void endRead() {
-      synchronized(rwMonitor) {
-        data.endGet();
-        rwMonitor.notify();                    
-      }
-      readMutex.release();
-    }
-    
-    
-
-    /**
-     * Writes an <TT>Object</TT> to the channel. only one writer is allowed.
-     *
-     * @param value The object to write to the channel.
-     */
-    public void write (Object value) {
-      synchronized (rwMonitor) {
-        data.put (value);
-        rwMonitor.notify ();
-        if (data.getState () == ChannelDataStore.FULL) {
-          try {
-            rwMonitor.wait ();
-  	  while (data.getState () == ChannelDataStore.FULL) {
-  	    if (Spurious.logging) {
-  	      SpuriousLog.record (SpuriousLog.One2AnyChannelXWrite);
-  	    }
-  	    rwMonitor.wait ();
-  	  }
-          }
-  	catch (InterruptedException e) {
-            throw new ProcessInterruptedException (
-              "*** Thrown from One2AnyChannel.write (Object)\n" + e.toString ()
-            );
-          }
-        }
-      }
-    }
-    
-    public SharedChannelInput in() {
-      return this;
-    }
-    
-    public ChannelOutput out() {
-      return this;
+        super(new BufferedOne2OneChannel(data));
     }
 }

@@ -154,4 +154,11 @@ public interface ChannelDataStore extends Cloneable
      * @return the cloned instance of this <TT>ChannelDataStore</TT>.
      */
     public abstract Object clone();
+    
+    /**
+     * Deletes all items in the buffer, leaving it empty. 
+     *
+     */
+    
+    public abstract void removeAll();
 }

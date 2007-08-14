@@ -133,4 +133,9 @@ public class ZeroBufferInt implements ChannelDataStoreInt, Serializable
     {
         return new ZeroBufferInt();
     }
+    
+    public void removeAll()
+    {
+    	state = EMPTY;
+    }    
 }

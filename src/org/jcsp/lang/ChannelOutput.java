@@ -69,7 +69,7 @@ package org.jcsp.lang;
  * @author P.D.Austin
  */
 
-public interface ChannelOutput 
+public interface ChannelOutput extends Poisonable
 {
     /**
      * Write an Object to the channel.

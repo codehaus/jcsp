@@ -49,8 +49,6 @@ import org.jcsp.util.ChannelDataStore;
 public class StandardChannelFactory
         implements ChannelFactory, ChannelArrayFactory, BufferedChannelFactory, BufferedChannelArrayFactory
 {
-    private RiskyChannelFactory riskyFactory = RiskyChannelFactory.getDefaultInstance();
-
     private static StandardChannelFactory defaultInstance = new StandardChannelFactory();
 
     /**
@@ -78,7 +76,7 @@ public class StandardChannelFactory
      */
     public One2OneChannel createOne2One()
     {
-        return new SafeOne2OneChannel(riskyFactory.createOne2One());
+        return new One2OneChannelImpl();
     }
 
     /**
@@ -90,7 +88,7 @@ public class StandardChannelFactory
      */
     public Any2OneChannel createAny2One()
     {
-        return new SafeAny2OneChannel(riskyFactory.createAny2One());
+        return new Any2OneChannelImpl();
     }
 
     /**
@@ -102,7 +100,7 @@ public class StandardChannelFactory
      */
     public One2AnyChannel createOne2Any()
     {
-        return new SafeOne2AnyChannel(riskyFactory.createOne2Any());
+        return new One2AnyChannelImpl();
     }
 
     /**
@@ -114,7 +112,7 @@ public class StandardChannelFactory
      */
     public Any2AnyChannel createAny2Any()
     {
-        return new SafeAny2AnyChannel(riskyFactory.createAny2Any());
+        return new Any2AnyChannelImpl();
     }
 
     /**
@@ -201,7 +199,7 @@ public class StandardChannelFactory
      */
     public One2OneChannel createOne2One(ChannelDataStore buffer)
     {
-        return new SafeOne2OneChannel(riskyFactory.createOne2One(buffer));
+        return new BufferedOne2OneChannel(buffer);
     }
 
     /**
@@ -220,7 +218,7 @@ public class StandardChannelFactory
      */
     public Any2OneChannel createAny2One(ChannelDataStore buffer)
     {
-        return new SafeAny2OneChannel(riskyFactory.createAny2One(buffer));
+        return new BufferedAny2OneChannel(buffer);
     }
 
     /**
@@ -239,7 +237,7 @@ public class StandardChannelFactory
      */
     public One2AnyChannel createOne2Any(ChannelDataStore buffer)
     {
-        return new SafeOne2AnyChannel(riskyFactory.createOne2Any(buffer));
+        return new BufferedOne2AnyChannel(buffer);
     }
 
     /**
@@ -258,7 +256,7 @@ public class StandardChannelFactory
      */
     public Any2AnyChannel createAny2Any(ChannelDataStore buffer)
     {
-        return new SafeAny2AnyChannel(riskyFactory.createAny2Any(buffer));
+        return new BufferedAny2AnyChannel(buffer);
     }
 
     /**

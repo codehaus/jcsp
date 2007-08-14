@@ -736,7 +736,7 @@ public abstract class Any2OneCallChannel extends AltingChannelAccept implements 
     boolean enable(Alternative alt)
     {
         // ignore this!
-        return c.enable(alt);
+        return c.readerEnable(alt);
     }
 
     /**
@@ -745,6 +745,6 @@ public abstract class Any2OneCallChannel extends AltingChannelAccept implements 
     boolean disable()
     {
         // ignore this!
-        return c.disable();
+        return c.readerDisable();
     }
 }

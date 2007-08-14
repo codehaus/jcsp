@@ -403,7 +403,7 @@ public class Crew
     private final Any2OneChannelIntImpl poison = new Any2OneChannelIntImpl();
 
     private final ProcessManager manager =
-            new ProcessManager(new CrewServer(request, writerControl, readerRelease, poison));
+            new ProcessManager(new CrewServer(request.in(), writerControl.in(), readerRelease.in(), poison.in()));
 
     private final Object shared;
 

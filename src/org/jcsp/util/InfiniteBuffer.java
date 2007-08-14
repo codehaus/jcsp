@@ -193,4 +193,16 @@ public class InfiniteBuffer implements ChannelDataStore, Serializable
     {
         return new InfiniteBuffer(initialSize);
     }
+    
+    public void removeAll()
+    {
+        counter = 0;
+        firstIndex = 0;
+        lastIndex = 0;
+        
+        for (int i = 0;i < buffer.length;i++) {
+        	//Null the objects so they can be garbage collected:
+        	buffer[i] = null;
+        }
+    }
 }

@@ -34,6 +34,6 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public class ChannelDataRejectedException //extends PoisonException
-{
+public class ChannelDataRejectedException extends RuntimeException
+{	
 }

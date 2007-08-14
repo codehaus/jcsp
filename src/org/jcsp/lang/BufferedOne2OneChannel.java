@@ -61,7 +61,7 @@ import org.jcsp.util.*;
  * @author P.H.Welch
  */
 
-class BufferedOne2OneChannel extends AltingChannelInput implements One2OneChannel, ChannelOutput
+class BufferedOne2OneChannel implements One2OneChannel, ChannelInternals
 {
     /** The ChannelDataStore used to store the data for the channel */
     private final ChannelDataStore data;
@@ -182,7 +182,7 @@ class BufferedOne2OneChannel extends AltingChannelInput implements One2OneChanne
      * @param alt the Alternative class which will control the selection
      * @return true if the channel has data that can be read, else false
      */
-    boolean enable (Alternative alt) {
+    public boolean readerEnable (Alternative alt) {
       synchronized (rwMonitor) {
         if (data.getState () == ChannelDataStore.EMPTY) {
           this.alt = alt;
@@ -202,7 +202,7 @@ class BufferedOne2OneChannel extends AltingChannelInput implements One2OneChanne
      *
      * @return true if the channel has data that can be read, else false
      */
-    boolean disable () {
+    public boolean readerDisable () {
       synchronized (rwMonitor) {
         alt = null;
         return data.getState () != ChannelDataStore.EMPTY;
@@ -244,7 +244,7 @@ class BufferedOne2OneChannel extends AltingChannelInput implements One2OneChanne
      *
      * @return state of the channel.
      */
-    public boolean pending () {
+    public boolean readerPending () {
       synchronized (rwMonitor) {
         return (data.getState () != ChannelDataStore.EMPTY);
       }
@@ -261,7 +261,7 @@ class BufferedOne2OneChannel extends AltingChannelInput implements One2OneChanne
      */
     public AltingChannelInput in()
     {
-        return this;
+        return new AltingChannelInputImpl(this,0);
     }
 
     /**
@@ -275,6 +275,13 @@ class BufferedOne2OneChannel extends AltingChannelInput implements One2OneChanne
      */
     public ChannelOutput out()
     {
-        return this;
+        return new ChannelOutputImpl(this,0);
     }
+    
+//  No poison in these channels:
+	  public void writerPoison(int strength) {	  
+	  }
+	  public void readerPoison(int strength) {	  
+	  }
+
 }

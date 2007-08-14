@@ -192,4 +192,10 @@ public class InfiniteBufferInt implements ChannelDataStoreInt, Serializable
     {
         return new InfiniteBufferInt(initialSize);
     }
+    
+    public void removeAll() {
+  	  counter = 0;
+  	  firstIndex = 0;
+  	  lastIndex = 0;
+    }
 }

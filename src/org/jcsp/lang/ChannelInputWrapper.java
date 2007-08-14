@@ -83,5 +83,10 @@ public class ChannelInputWrapper implements ChannelInput
     {
     	in.endRead();
     }
+    
+    public void poison(int strength) 
+	{
+		in.poison(strength);	
+	}
 
 }

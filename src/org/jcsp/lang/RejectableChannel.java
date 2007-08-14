@@ -36,6 +36,9 @@ package org.jcsp.lang;
  * 
  * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}
  */
-public interface RejectableChannel extends RejectableChannelInput, RejectableChannelOutput
+public interface RejectableChannel 
 {
+	public RejectableChannelInput in();
+	
+	public RejectableChannelOutput out();
 }

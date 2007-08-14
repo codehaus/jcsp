@@ -70,7 +70,7 @@ import org.jcsp.util.ints.ChannelDataStoreInt;
  * @author P.H.Welch
  */
 
-class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutputInt, One2OneChannelInt, Serializable
+class One2OneChannelIntImpl implements ChannelInternalsInt, One2OneChannelInt
 {
     /** The monitor synchronising reader and writer on this channel */
     private Object rwMonitor = new Object();
@@ -100,7 +100,7 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      */
     public AltingChannelInputInt in()
     {
-        return this;
+        return new AltingChannelInputIntImpl(this,0);
     }
 
     /**
@@ -114,7 +114,7 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      */
     public ChannelOutputInt out()
     {
-        return this;
+        return new ChannelOutputIntImpl(this,0);
     }
 
     /**********************************************************************/
@@ -227,7 +227,7 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      * @param alt the Alternative class which will control the selection
      * @return true if the channel has data that can be read, else false
      */
-    boolean enable(Alternative alt)
+    public boolean readerEnable(Alternative alt)
     {
         synchronized (rwMonitor)
         {
@@ -249,7 +249,7 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      *
      * @return true if the channel has data that can be read, else false
      */
-    boolean disable()
+    public boolean readerDisable()
     {
         synchronized (rwMonitor)
         {
@@ -293,7 +293,7 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
      *
      * @return state of the channel.
      */
-    public boolean pending()
+    public boolean readerPending()
     {
         synchronized (rwMonitor)
         {
@@ -338,4 +338,14 @@ class One2OneChannelIntImpl extends AltingChannelInputInt implements ChannelOutp
             channels[i] = new BufferedOne2OneChannelIntImpl(store);
         return channels;
     }
+
+//  No poison on these channels:
+	public void readerPoison(int strength) {
+	}
+
+	public void writerPoison(int strength) {	
+	}
+    
+    
+    
 }

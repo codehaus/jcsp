@@ -55,11 +55,15 @@ package org.jcsp.lang;
 public class BlackHoleChannel implements ChannelOutput
 {    
     /**
-     * Write an Object to the channel and loose it.
+     * Write an Object to the channel and lose it.
      *
      * @param value the object to write to the channel.
      */
     public void write(Object object)
     {      
     }   
+    
+    public void poison(int strength) 
+    {    
+    }
 }

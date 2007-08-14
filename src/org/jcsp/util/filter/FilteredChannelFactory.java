@@ -54,7 +54,7 @@ public class FilteredChannelFactory
     /**
      * Underlying factory for creating the base channels.
      */
-    private RiskyChannelFactory factory;
+    private StandardChannelFactory factory;
 
     /**
      * Read filters to install in channels created by this factory.
@@ -73,7 +73,7 @@ public class FilteredChannelFactory
      */
     public FilteredChannelFactory()
     {
-        factory = new RiskyChannelFactory();
+        factory = new StandardChannelFactory();
     }
 
     /**

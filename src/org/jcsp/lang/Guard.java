@@ -71,4 +71,15 @@ public abstract class Guard
      * @return true if and only if the event was ready
      */
     abstract boolean disable();
+    
+    /**
+     * Schedules the process performing the given Alternative to run again.
+     * This is intended for use by advanced users of the library who want to
+     * create their own Guards that are not in the org.jcsp.lang package.
+     * 
+     * @param alt The Alternative to schedule
+     */
+    protected void schedule (Alternative alt) {
+    	alt.schedule();
+    }
 }

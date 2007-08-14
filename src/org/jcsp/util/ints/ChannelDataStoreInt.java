@@ -157,4 +157,6 @@ public interface ChannelDataStoreInt extends Cloneable {
    */
   public abstract Object clone ();
 
+  
+  public abstract void removeAll();
 }

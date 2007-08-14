@@ -99,7 +99,7 @@ package org.jcsp.lang;
  * @author P.D.Austin
  */
 
-public interface ChannelInput 
+public interface ChannelInput extends Poisonable
 {
     /**
      * Read an Object from the channel.

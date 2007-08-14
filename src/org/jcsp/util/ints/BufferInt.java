@@ -162,4 +162,9 @@ public class BufferInt implements ChannelDataStoreInt, Serializable
     return new BufferInt (buffer.length - 1);
   }
 
+  public void removeAll() {
+	  counter = 0;
+	  firstIndex = 0;
+	  lastIndex = 0;
+  }
 }

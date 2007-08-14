@@ -139,4 +139,10 @@ public class ZeroBuffer implements ChannelDataStore, Serializable
     {
         return new ZeroBuffer();
     }
+    
+    public void removeAll()
+    {
+    	state = EMPTY;
+    	value = null;
+    }
 }

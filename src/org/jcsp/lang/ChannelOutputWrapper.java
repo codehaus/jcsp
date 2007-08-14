@@ -62,5 +62,10 @@ public class ChannelOutputWrapper implements ChannelOutput
     {
         out.write(o);
     }
+    
+    public void poison(int strength) 
+	{
+		out.poison(strength);	
+	}
 
 }

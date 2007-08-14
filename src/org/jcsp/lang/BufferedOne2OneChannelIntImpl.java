@@ -62,7 +62,7 @@ import org.jcsp.util.ints.*;
  * @author P.H.Welch
  */
 
-class BufferedOne2OneChannelIntImpl extends AltingChannelInputInt implements One2OneChannelInt, ChannelOutputInt
+class BufferedOne2OneChannelIntImpl implements One2OneChannelInt, ChannelInternalsInt
 {
   /** The monitor synchronising reader and writer on this channel */
   private Object rwMonitor = new Object();
@@ -71,6 +71,7 @@ class BufferedOne2OneChannelIntImpl extends AltingChannelInputInt implements One
   private Alternative alt;
   
     /** The ChannelDataStoreInt used to store the data for the channel */
+
     private final ChannelDataStoreInt data;  
     
     /*************Methods from One2OneChannelInt******************************/
@@ -86,7 +87,7 @@ class BufferedOne2OneChannelIntImpl extends AltingChannelInputInt implements One
      */
     public AltingChannelInputInt in()
     {
-        return this;
+        return new AltingChannelInputIntImpl(this,0);
     }
 
     /**
@@ -100,7 +101,7 @@ class BufferedOne2OneChannelIntImpl extends AltingChannelInputInt implements One
      */
     public ChannelOutputInt out()
     {
-        return this;
+    	return new ChannelOutputIntImpl(this,0);
     }
 
     /**
@@ -215,7 +216,7 @@ class BufferedOne2OneChannelIntImpl extends AltingChannelInputInt implements One
      * @param alt the Alternative class which will control the selection
      * @return true if the channel has data that can be read, else false
      */
-    boolean enable (Alternative alt) {
+    public boolean readerEnable (Alternative alt) {
       synchronized (rwMonitor) {
         if (data.getState () == ChannelDataStoreInt.EMPTY) {
           this.alt = alt;
@@ -235,7 +236,7 @@ class BufferedOne2OneChannelIntImpl extends AltingChannelInputInt implements One
      *
      * @return true if the channel has data that can be read, else false
      */
-    boolean disable () {
+    public boolean readerDisable () {
       synchronized (rwMonitor) {
         alt = null;
         return data.getState () != ChannelDataStoreInt.EMPTY;
@@ -277,9 +278,15 @@ class BufferedOne2OneChannelIntImpl extends AltingChannelInputInt implements One
      *
      * @return state of the channel.
      */
-    public boolean pending () {
+    public boolean readerPending () {
       synchronized (rwMonitor) {
         return (data.getState () != ChannelDataStoreInt.EMPTY);
       }
     }
+    
+//  No poison in these channels:
+	  public void writerPoison(int strength) {	  
+	  }
+	  public void readerPoison(int strength) {	  
+	  }
 }

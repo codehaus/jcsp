@@ -192,4 +192,10 @@ public class OverWritingBufferInt implements ChannelDataStoreInt, Serializable
     {
         return new OverWritingBufferInt(buffer.length);
     }
+    
+    public void removeAll() {
+  	  counter = 0;
+  	  firstIndex = 0;
+  	  lastIndex = 0;
+    }
 }

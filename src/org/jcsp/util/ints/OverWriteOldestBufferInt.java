@@ -197,4 +197,10 @@ public class OverWriteOldestBufferInt implements ChannelDataStoreInt, Serializab
     {
         return new OverWriteOldestBufferInt(buffer.length);
     }
+    
+    public void removeAll() {
+  	  counter = 0;
+  	  firstIndex = 0;
+  	  lastIndex = 0;
+    }
 }

@@ -29,6 +29,7 @@
 package org.jcsp.lang;
 
 import org.jcsp.util.ChannelDataStore;
+import org.jcsp.util.ints.ChannelDataStoreInt;
 
 /**
  * <p>This class provides static factory methods for constructing
@@ -463,5 +464,488 @@ public class Channel
         for (int i = 0; i < c.length; i++)
             in[i] = c[i].out();
         return in;
+    }
+    
+    
+    //New create methods:
+    
+    public static One2OneChannel one2one()
+    {
+    	return new One2OneChannelImpl();
+    }
+    
+    public static One2AnyChannel one2any()
+    {
+    	return new One2AnyChannelImpl();
+    }
+    
+    public static Any2OneChannel any2one()
+    {
+    	return new Any2OneChannelImpl();
+    }
+    
+    public static Any2AnyChannel any2any()
+    {
+    	return new Any2AnyChannelImpl();
+    }
+    
+    public static One2OneChannel one2one(ChannelDataStore buffer)
+    {
+    	return new BufferedOne2OneChannel(buffer);
+    }
+    
+    public static One2AnyChannel one2any(ChannelDataStore buffer)
+    {
+    	return new BufferedOne2AnyChannel(buffer);
+    }
+    
+    public static Any2OneChannel any2one(ChannelDataStore buffer)
+    {
+    	return new BufferedAny2OneChannel(buffer);
+    }
+    
+    public static Any2AnyChannel any2any(ChannelDataStore buffer)
+    {
+    	return new BufferedAny2AnyChannel(buffer);
+    }
+    
+    public static One2OneChannel one2one(int immunity)
+    {
+    	return new PoisonableOne2OneChannelImpl(immunity);
+    }
+    
+    public static One2AnyChannel one2any(int immunity)
+    {
+    	return new PoisonableOne2AnyChannelImpl(immunity);
+    }
+    
+    public static Any2OneChannel any2one(int immunity)
+    {
+    	return new PoisonableAny2OneChannelImpl(immunity);
+    }
+    
+    public static Any2AnyChannel any2any(int immunity)
+    {
+    	return new PoisonableAny2AnyChannelImpl(immunity);
+    }
+    
+    public static One2OneChannel one2one(ChannelDataStore buffer, int immunity)
+    {
+    	return new PoisonableBufferedOne2OneChannel(buffer, immunity);
+    }
+    
+    public static One2AnyChannel one2any(ChannelDataStore buffer, int immunity)
+    {
+    	return new PoisonableBufferedOne2AnyChannel(buffer, immunity);
+    }
+    
+    public static Any2OneChannel any2one(ChannelDataStore buffer, int immunity)
+    {
+    	return new PoisonableBufferedAny2OneChannel(buffer, immunity);
+    }
+    
+    public static Any2AnyChannel any2any(ChannelDataStore buffer, int immunity)
+    {
+    	return new PoisonableBufferedAny2AnyChannel(buffer, immunity);
+    }
+    
+    public static One2OneChannel[] one2oneArray(int size)
+    {
+    	One2OneChannel[] r = new One2OneChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2one();    	
+    	}
+    	return r;
+    }
+    
+    public static One2AnyChannel[] one2anyArray(int size)
+    {
+    	One2AnyChannel[] r = new One2AnyChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2any();    	
+    	}
+    	return r;
+    }
+    
+    public static Any2OneChannel[] any2oneArray(int size)
+    {
+    	Any2OneChannel[] r = new Any2OneChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2one();    	
+    	}
+    	return r;
+    }
+    
+    public static Any2AnyChannel[] any2anyArray(int size)
+    {
+    	Any2AnyChannel[] r = new Any2AnyChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2any();
+    	}
+    	return r;
+    }
+    
+    public static One2OneChannel[] one2oneArray(int size, int immunity)
+    {
+    	One2OneChannel[] r = new One2OneChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2one(immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static One2AnyChannel[] one2anyArray(int size, int immunity)
+    {
+    	One2AnyChannel[] r = new One2AnyChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2any(immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2OneChannel[] any2oneArray(int size, int immunity)
+    {
+    	Any2OneChannel[] r = new Any2OneChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2one(immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2AnyChannel[] any2anyArray(int size, int immunity)
+    {
+    	Any2AnyChannel[] r = new Any2AnyChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2any(immunity);
+    	}
+    	return r;
+    }
+    
+    public static One2OneChannel[] one2oneArray(int size, ChannelDataStore data)
+    {
+    	One2OneChannel[] r = new One2OneChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2one(data);    	
+    	}
+    	return r;
+    }
+    
+    public static One2AnyChannel[] one2anyArray(int size, ChannelDataStore data)
+    {
+    	One2AnyChannel[] r = new One2AnyChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2any(data);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2OneChannel[] any2oneArray(int size, ChannelDataStore data)
+    {
+    	Any2OneChannel[] r = new Any2OneChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2one(data);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2AnyChannel[] any2anyArray(int size, ChannelDataStore data)
+    {
+    	Any2AnyChannel[] r = new Any2AnyChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2any(data);
+    	}
+    	return r;
+    }
+    
+    public static One2OneChannel[] one2oneArray(int size, ChannelDataStore data, int immunity)
+    {
+    	One2OneChannel[] r = new One2OneChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2one(data,immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static One2AnyChannel[] one2anyArray(int size, ChannelDataStore data, int immunity)
+    {
+    	One2AnyChannel[] r = new One2AnyChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2any(data,immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2OneChannel[] any2oneArray(int size, ChannelDataStore data, int immunity)
+    {
+    	Any2OneChannel[] r = new Any2OneChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2one(data,immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2AnyChannel[] any2anyArray(int size, ChannelDataStore data, int immunity)
+    {
+    	Any2AnyChannel[] r = new Any2AnyChannel[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2any(data,immunity);
+    	}
+    	return r;
+    }
+    
+    public static One2OneChannelInt one2oneInt()
+    {
+    	return new One2OneChannelIntImpl();
+    }
+    
+    public static One2AnyChannelInt one2anyInt()
+    {
+    	return new One2AnyChannelIntImpl();
+    }
+    
+    public static Any2OneChannelInt any2oneInt()
+    {
+    	return new Any2OneChannelIntImpl();
+    }
+    
+    public static Any2AnyChannelInt any2anyInt()
+    {
+    	return new Any2AnyChannelIntImpl();
+    }
+    
+    public static One2OneChannelInt one2oneInt(ChannelDataStoreInt buffer)
+    {
+    	return new BufferedOne2OneChannelIntImpl(buffer);
+    }
+    
+    public static One2AnyChannelInt one2anyInt(ChannelDataStoreInt buffer)
+    {
+    	return new BufferedOne2AnyChannelIntImpl(buffer);
+    }
+    
+    public static Any2OneChannelInt any2oneInt(ChannelDataStoreInt buffer)
+    {
+    	return new BufferedAny2OneChannelIntImpl(buffer);
+    }
+    
+    public static Any2AnyChannelInt any2anyInt(ChannelDataStoreInt buffer)
+    {
+    	return new BufferedAny2AnyChannelIntImpl(buffer);
+    }
+    
+    public static One2OneChannelInt one2oneInt(int immunity)
+    {
+    	return new PoisonableOne2OneChannelIntImpl(immunity);
+    }
+    
+    public static One2AnyChannelInt one2anyInt(int immunity)
+    {
+    	return new PoisonableOne2AnyChannelIntImpl(immunity);
+    }
+    
+    public static Any2OneChannelInt any2oneInt(int immunity)
+    {
+    	return new PoisonableAny2OneChannelIntImpl(immunity);
+    }
+    
+    public static Any2AnyChannelInt any2anyInt(int immunity)
+    {
+    	return new PoisonableAny2AnyChannelIntImpl(immunity);
+    }
+    
+    public static One2OneChannelInt one2oneInt(ChannelDataStoreInt buffer, int immunity)
+    {
+    	return new PoisonableBufferedOne2OneChannelInt(buffer, immunity);
+    }
+    
+    public static One2AnyChannelInt one2anyInt(ChannelDataStoreInt buffer, int immunity)
+    {
+    	return new PoisonableBufferedOne2AnyChannelInt(buffer, immunity);
+    }
+    
+    public static Any2OneChannelInt any2oneInt(ChannelDataStoreInt buffer, int immunity)
+    {
+    	return new PoisonableBufferedAny2OneChannelInt(buffer, immunity);
+    }
+    
+    public static Any2AnyChannelInt any2anyInt(ChannelDataStoreInt buffer, int immunity)
+    {
+    	return new PoisonableBufferedAny2AnyChannelInt(buffer, immunity);
+    }
+    
+    public static One2OneChannelInt[] one2oneIntArray(int size)
+    {
+    	One2OneChannelInt[] r = new One2OneChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2oneInt();    	
+    	}
+    	return r;
+    }
+    
+    public static One2AnyChannelInt[] one2anyIntArray(int size)
+    {
+    	One2AnyChannelInt[] r = new One2AnyChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2anyInt();    	
+    	}
+    	return r;
+    }
+    
+    public static Any2OneChannelInt[] any2oneIntArray(int size)
+    {
+    	Any2OneChannelInt[] r = new Any2OneChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2oneInt();    	
+    	}
+    	return r;
+    }
+    
+    public static Any2AnyChannelInt[] any2anyIntArray(int size)
+    {
+    	Any2AnyChannelInt[] r = new Any2AnyChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2anyInt();
+    	}
+    	return r;
+    }
+    
+    public static One2OneChannelInt[] one2oneIntArray(int size, int immunity)
+    {
+    	One2OneChannelInt[] r = new One2OneChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2oneInt(immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static One2AnyChannelInt[] one2anyIntArray(int size, int immunity)
+    {
+    	One2AnyChannelInt[] r = new One2AnyChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2anyInt(immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2OneChannelInt[] any2oneIntArray(int size, int immunity)
+    {
+    	Any2OneChannelInt[] r = new Any2OneChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2oneInt(immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2AnyChannelInt[] any2anyIntArray(int size, int immunity)
+    {
+    	Any2AnyChannelInt[] r = new Any2AnyChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2anyInt(immunity);
+    	}
+    	return r;
+    }
+    
+    public static One2OneChannelInt[] one2oneIntArray(int size, ChannelDataStoreInt data)
+    {
+    	One2OneChannelInt[] r = new One2OneChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2oneInt(data);    	
+    	}
+    	return r;
+    }
+    
+    public static One2AnyChannelInt[] one2anyIntArray(int size, ChannelDataStoreInt data)
+    {
+    	One2AnyChannelInt[] r = new One2AnyChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2anyInt(data);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2OneChannelInt[] any2oneIntArray(int size, ChannelDataStoreInt data)
+    {
+    	Any2OneChannelInt[] r = new Any2OneChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2oneInt(data);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2AnyChannelInt[] any2anyIntArray(int size, ChannelDataStoreInt data)
+    {
+    	Any2AnyChannelInt[] r = new Any2AnyChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2anyInt(data);
+    	}
+    	return r;
+    }
+    
+    public static One2OneChannelInt[] one2oneIntArray(int size, ChannelDataStoreInt data, int immunity)
+    {
+    	One2OneChannelInt[] r = new One2OneChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2oneInt(data,immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static One2AnyChannelInt[] one2anyIntArray(int size, ChannelDataStoreInt data, int immunity)
+    {
+    	One2AnyChannelInt[] r = new One2AnyChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = one2anyInt(data,immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2OneChannelInt[] any2oneIntArray(int size, ChannelDataStoreInt data, int immunity)
+    {
+    	Any2OneChannelInt[] r = new Any2OneChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2oneInt(data,immunity);    	
+    	}
+    	return r;
+    }
+    
+    public static Any2AnyChannelInt[] any2anyIntArray(int size, ChannelDataStoreInt data, int immunity)
+    {
+    	Any2AnyChannelInt[] r = new Any2AnyChannelInt[size];
+    	for (int i = 0;i < size;i++)
+    	{
+    		r[i] = any2anyInt(data,immunity);
+    	}
+    	return r;
     }
 }

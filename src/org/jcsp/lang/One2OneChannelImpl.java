@@ -69,7 +69,7 @@ import java.io.Serializable;
  * @author P.H.Welch
  */
 
-class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, One2OneChannel, Serializable
+class One2OneChannelImpl implements One2OneChannel, ChannelInternals
 {
 	/** The monitor synchronising reader and writer on this channel */
 	  private Object rwMonitor = new Object ();
@@ -99,7 +99,7 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
      */
     public AltingChannelInput in()
     {
-        return this;
+        return new AltingChannelInputImpl(this,0);
     }
 
     /**
@@ -113,7 +113,7 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
      */
     public ChannelOutput out()
     {
-        return this;
+        return new ChannelOutputImpl(this,0);
     }
 
     /*************Methods from ChannelOutput*******************************/
@@ -226,8 +226,9 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	   * @param alt the Alternative class which will control the selection
 	   * @return true if the channel has data that can be read, else false
 	   */
-	  boolean enable (Alternative alt) {
-	    synchronized (rwMonitor) {          
+
+	  public boolean readerEnable (Alternative alt) {
+	    synchronized (rwMonitor) {
 	      if (empty) {
 	        this.alt = alt;
 	        return false;
@@ -246,7 +247,7 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	   *
 	   * @return true if the channel has data that can be read, else false
 	   */
-	  boolean disable () {
+	  public boolean readerDisable () {
 	    synchronized (rwMonitor) {
 	      alt = null;
 	      return !empty;
@@ -288,9 +289,15 @@ class One2OneChannelImpl extends AltingChannelInput implements ChannelOutput, On
 	   *
 	   * @return state of the channel.
 	   */
-	  public boolean pending () {
+	  public boolean readerPending () {
 	    synchronized (rwMonitor) {          
 	      return !empty;
 	    }
+	  }
+	  
+	  //No poison in these channels:
+	  public void writerPoison(int strength) {	  
+	  }
+	  public void readerPoison(int strength) {	  
 	  }
 }

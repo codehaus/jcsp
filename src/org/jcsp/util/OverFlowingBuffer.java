@@ -164,4 +164,16 @@ public class OverFlowingBuffer implements ChannelDataStore, Serializable {
     {
         return new OverFlowingBuffer(buffer.length);
     }
+    
+    public void removeAll()
+    {
+        counter = 0;
+        firstIndex = 0;
+        lastIndex = 0;
+        
+        for (int i = 0;i < buffer.length;i++) {
+        	//Null the objects so they can be garbage collected:
+        	buffer[i] = null;
+        }
+    }
 }

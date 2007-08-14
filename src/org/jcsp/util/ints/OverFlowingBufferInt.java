@@ -165,4 +165,10 @@ public class OverFlowingBufferInt implements ChannelDataStoreInt, Serializable
     {
         return new OverFlowingBufferInt(buffer.length);
     }
+    
+    public void removeAll() {
+  	  counter = 0;
+  	  firstIndex = 0;
+  	  lastIndex = 0;
+    }
 }
