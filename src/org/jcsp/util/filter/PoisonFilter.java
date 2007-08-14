@@ -28,8 +28,6 @@
 
 package org.jcsp.util.filter;
 
-import org.jcsp.lang.PoisonException;
-
 /**
  * This filter will throw a <code>PoisonException</code>
  * when <code>filter(Object)</code> is called. This can be

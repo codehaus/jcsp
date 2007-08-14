@@ -40,11 +40,7 @@ import org.jcsp.lang.*;
 public class FilteredSharedChannelOutputWrapper
         extends FilteredChannelOutputWrapper
         implements FilteredSharedChannelOutput
-{
-    /**
-     * The channel output end.
-     */
-    private SharedChannelOutput out;
+{    
 
     /**
      * The synchronization object to protect the writers from each other when they read data or update
@@ -60,7 +56,6 @@ public class FilteredSharedChannelOutputWrapper
     public FilteredSharedChannelOutputWrapper(SharedChannelOutput out)
     {
         super(out);
-        this.out = out;
         synchObject = new Object();
     }
 

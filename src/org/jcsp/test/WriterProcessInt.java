@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import org.jcsp.lang.AltingBarrier;
 import org.jcsp.lang.CSProcess;
-import org.jcsp.lang.ChannelOutput;
 import org.jcsp.lang.ChannelOutputInt;
 
 /**

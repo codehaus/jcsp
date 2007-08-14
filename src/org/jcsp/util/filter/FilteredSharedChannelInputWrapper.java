@@ -40,12 +40,7 @@ import org.jcsp.lang.*;
 public class FilteredSharedChannelInputWrapper
         extends FilteredChannelInputWrapper
         implements FilteredSharedChannelInput
-{
-    /**
-     * The input end of the channel.
-     */
-    private SharedChannelInput in;
-
+{    
     /**
      * The object used for synchronization by the methods here to protect the readers from each other
      * when manipulating the filters and reading data.
@@ -59,8 +54,7 @@ public class FilteredSharedChannelInputWrapper
      */
     public FilteredSharedChannelInputWrapper(SharedChannelInput in)
     {
-        super(in);
-        this.in = in;
+        super(in);        
         synchObject = new Object();
     }
 
