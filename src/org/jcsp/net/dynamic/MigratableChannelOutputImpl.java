@@ -231,11 +231,6 @@ class MigratableChannelOutputImpl implements MigratableChannelOutput
    /**
     * Currently, network channels are unpoisonable so this method has no effect.
     */
-   public void poisonOut(PoisonException poison) {   
-   }
-   /**
-    * Currently, network channels are unpoisonable so this method will never throw a PoisonException
-    */
-   public void checkPoisonOut() throws PoisonException {   
-   }
+   public void poison(int strength) {   
+   }   
 }

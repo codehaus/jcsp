@@ -251,4 +251,12 @@ class AcknowledgementsBuffer implements ChannelDataStore, Serializable
    {
       return new AcknowledgementsBuffer(initialSize);
    }
+   
+   public void removeAll()
+   {	   
+	   counter = 0;	   
+	   firstIndex = 0;	   
+	   lastIndex = 0;	   
+	   acks = null;
+   }
 }

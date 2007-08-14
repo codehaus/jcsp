@@ -135,30 +135,25 @@ class Net2AnyChannel implements NetSharedChannelInput, Networked
     */
    public Object read()
    {
-      return ch.read();
+      return ch.in().read();
    }
    
    public Object startRead()
    {
-     return ch.startRead();
+     return ch.in().startRead();
    }
    
    public void endRead()
    {
-     ch.endRead();
+     ch.in().endRead();
    }
    
    
    /**
     * Currently, network channels are unpoisonable so this method has no effect.
     */
-   public void poisonIn(PoisonException poison) {   
-   }
-   /**
-    * Currently, network channels are unpoisonable so this method will never throw a PoisonException
-    */
-   public void checkPoisonIn() throws PoisonException {   
-   }
+   public void poison(int strength) {   
+   }   
    
    public NetChannelLocation getChannelLocation()
    {

@@ -68,7 +68,7 @@ class NetChannelInputProcess implements CSProcess
       //Remove channel from index manager - must be done before rejecting any data
       IndexManager.getInstance().removeChannel(channelIndex,fromNetOut);
       //reject data from channel
-      out.reject();
+      out.in().reject();
       stopChannel.out().write(this);
    }
    
@@ -159,7 +159,7 @@ class NetChannelInputProcess implements CSProcess
             // Output the data (will block until the user process reads it)
             try
             {
-               out.write(message.data);
+               out.out().write(message.data);
                if (message.acknowledged)
                {
                   // Prepare an acknowlegement message
