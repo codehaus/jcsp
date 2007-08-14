@@ -28,9 +28,6 @@
 
 package org.jcsp.lang;
 
-import org.jcsp.util.ints.ChannelDataStoreInt;
-import java.io.Serializable;
-
 /**
  * This implements an any-to-any integer channel,
  * safe for use by many writers and many readers. Refer to the {@link Any2AnyChannelInt} interface

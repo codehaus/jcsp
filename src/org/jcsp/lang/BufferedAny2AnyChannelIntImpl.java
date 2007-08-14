@@ -28,7 +28,6 @@
 
 package org.jcsp.lang;
 
-import org.jcsp.util.ChannelDataStore;
 import org.jcsp.util.ints.*;
 
 /**

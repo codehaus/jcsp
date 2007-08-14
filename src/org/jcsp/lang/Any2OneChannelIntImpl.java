@@ -28,9 +28,6 @@
 
 package org.jcsp.lang;
 
-import java.io.*;
-import org.jcsp.util.ints.*;
-
 /**
  * This implements an any-to-one integer channel,
  * safe for use by many writers and one reader.Refer to the {@link Any2OneChannelInt} interface for

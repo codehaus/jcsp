@@ -40,8 +40,6 @@ class One2OneConnectionImpl extends AbstractConnectionImpl implements One2OneCon
 {
     private AltingConnectionClient client;
     private AltingConnectionServer server;
-    private One2OneChannel chanToServer;
-    private One2OneChannel chanFromServer;
 
     /**
      * Initializes all the attributes to necessary values.

@@ -28,8 +28,6 @@
 
 package org.jcsp.lang;
 
-import java.io.Serializable;
-
 /**
  * This implements a one-to-one object channel.
  * <H2>Description</H2>

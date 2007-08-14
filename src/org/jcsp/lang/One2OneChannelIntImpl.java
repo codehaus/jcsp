@@ -28,7 +28,6 @@
 
 package org.jcsp.lang;
 
-import java.io.Serializable;
 import org.jcsp.util.ints.ChannelDataStoreInt;
 
 /**

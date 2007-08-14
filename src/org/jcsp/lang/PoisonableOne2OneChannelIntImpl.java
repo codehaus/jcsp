@@ -1,7 +1,5 @@
 package org.jcsp.lang;
 
-import java.io.Serializable;
-
 class PoisonableOne2OneChannelIntImpl implements One2OneChannelInt, ChannelInternalsInt
 {
 	/** The monitor synchronising reader and writer on this channel */

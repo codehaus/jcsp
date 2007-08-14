@@ -28,9 +28,6 @@
 
 package org.jcsp.lang;
 
-import org.jcsp.util.ChannelDataStore;
-import java.io.Serializable;
-
 /**
  * This implements an any-to-any object channel,
  * safe for use by many writers and many readers. Refer to the {@link Any2AnyChannel} interface
