@@ -42,25 +42,25 @@ class Net2OneChannel extends NetAltingChannelInput
    static Net2OneChannel create(String label)
    {
       RejectableOne2OneChannel chan = new RejectableOne2OneChannel();
-      return new Net2OneChannel(label, chan.in(), chan);
+      return new Net2OneChannel(label, chan.inAlt(), chan);
    }
    
    static Net2OneChannel create()
    {
       RejectableOne2OneChannel chan = new RejectableOne2OneChannel();
-      return new Net2OneChannel(chan.in(), chan);
+      return new Net2OneChannel(chan.inAlt(), chan);
    }
    
    static Net2OneChannel create(ChannelDataStore buffer)
    {
       RejectableBufferedOne2OneChannel chan = new RejectableBufferedOne2OneChannel(buffer);
-      return new Net2OneChannel(chan.in(), chan);
+      return new Net2OneChannel(chan.inAlt(), chan);
    }
    
    static Net2OneChannel create(String label, ChannelDataStore buffer)
    {
       RejectableBufferedOne2OneChannel chan = new RejectableBufferedOne2OneChannel(buffer);
-      return new Net2OneChannel(label, chan.in(), chan);
+      return new Net2OneChannel(label, chan.inAlt(), chan);
    }
    
    /**

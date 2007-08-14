@@ -56,8 +56,12 @@ public class RejectableOne2OneChannel
     {
     	innerChannel = (One2OneChannelImpl)Channel.one2one();
     }
-	public RejectableAltingChannelInput in() {
+	public RejectableAltingChannelInput inAlt() {
 		return new RejectableAltingChannelInputImpl(innerChannel,0);
+	}
+	
+	public RejectableChannelInput in() {
+		return new RejectableChannelInputImpl(innerChannel,0);
 	}
 
 	public RejectableChannelOutput out() {

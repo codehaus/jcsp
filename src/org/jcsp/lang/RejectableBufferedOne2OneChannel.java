@@ -61,8 +61,12 @@ public class RejectableBufferedOne2OneChannel
         innerChannel = (BufferedOne2OneChannel)Channel.one2one(buffer);
     }
 
-	public RejectableAltingChannelInput in() {
+	public RejectableAltingChannelInput inAlt() {
 		return new RejectableAltingChannelInputImpl(innerChannel,0);
+	}
+	
+	public RejectableChannelInput in() {
+		return new RejectableChannelInputImpl(innerChannel,0);
 	}
 
 	public RejectableChannelOutput out() {
