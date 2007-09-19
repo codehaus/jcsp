@@ -28,6 +28,7 @@
 
 package org.jcsp.lang;
 
+//{{{  javadoc
 /**
  * This enables a process to wait passively for and choose
  * between a number of {@link Guard} events.
@@ -205,8 +206,8 @@ package org.jcsp.lang;
  * <I></I>
  *   public static void main (String[] args) {
  * <I></I>
- *     final One2OneChannel[] a = Channel.createOne2One (5);
- *     final One2OneChannel b = Channel.createOne2One ();
+ *     final One2OneChannel[] a = Channel.one2OneArray (5);
+ *     final One2OneChannel b = Channel.one2One ();
  * <I></I>
  *     new Parallel (
  *       new CSProcess[] {
@@ -324,9 +325,9 @@ package org.jcsp.lang;
  * <I></I>
  *   public static void main (String[] args) {
  * <I></I>
- *     final One2OneChannel a = Channel.createOne2One ();
- *     final One2OneChannel b = Channel.createOne2One ();
- *     final One2OneChannel c = Channel.createOne2One ();
+ *     final One2OneChannel a = Channel.one2One ();
+ *     final One2OneChannel b = Channel.one2One ();
+ *     final One2OneChannel c = Channel.one2One ();
  * <I></I>
  *     final One2OneChannel reset = Channel.createOne2One (new OverWriteOldestBuffer (1));
  * <I></I>
@@ -631,7 +632,7 @@ public class Alternative
     	this.guard = guard;
 	    for (int i = 0; i < guard.length; i++)
 	    {
-	    	if (guard[i] instanceof AltingBarrier) 
+	        if (guard[i] instanceof MultiwaySynchronisation)
 	    	{
 		        barrierPresent = true;
 				return;

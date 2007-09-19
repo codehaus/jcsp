@@ -753,7 +753,7 @@ package org.jcsp.lang;
  */
 //}}}
 
-public class AltingBarrier extends Guard {
+public class AltingBarrier extends Guard implements MultiwaySynchronisation {
 
   /** This references the barrier on which this is enrolled.
    *  Also package visible (nulled by the base.contract methods).
