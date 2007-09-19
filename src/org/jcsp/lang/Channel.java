@@ -489,6 +489,11 @@ public class Channel
     	return new Any2AnyChannelImpl();
     }
     
+    public static One2OneChannelSymmetricInt one2oneSymmetricInt ()
+    {
+        return new BasicOne2OneChannelSymmetricInt ();
+    }
+    
     public static One2OneChannel one2one(ChannelDataStore buffer)
     {
     	return new BufferedOne2OneChannel(buffer);
