@@ -32,7 +32,6 @@ import org.jcsp.lang.*;
 import org.jcsp.net.*;
 import org.jcsp.net.cns.*;
 import org.jcsp.net.tcpip.*;
-import org.jcsp.plugNplay.*;
 import org.jcsp.util.*;
 import org.jcsp.demos.util.*;
 import java.util.Random;

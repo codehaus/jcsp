@@ -28,11 +28,6 @@
 
 package org.jcsp.demos.jcspchat;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import org.jcsp.lang.*;
-import org.jcsp.net.*;
-import java.awt.event.*;
 
 /**
  * @author Quickstone Technologies Limited

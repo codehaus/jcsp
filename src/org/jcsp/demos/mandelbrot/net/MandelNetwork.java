@@ -35,7 +35,6 @@ import org.jcsp.net.*;
 import org.jcsp.net.cns.*;
 
 import java.awt.*;
-import java.awt.image.*;
 
 /**
  * @author Quickstone Technologies Limited

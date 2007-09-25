@@ -30,13 +30,10 @@ package org.jcsp.demos.jcspchat;
 
 import org.jcsp.lang.*;
 import org.jcsp.net.*;
-import org.jcsp.plugNplay.*;
 import java.net.*;
 import javax.swing.*;
 import java.awt.event.*;
-import javax.swing.event.*;
 import java.awt.*;
-import org.jcsp.util.*;
 import org.jcsp.net.tcpip.*;
 import org.jcsp.net.cns.*;
 

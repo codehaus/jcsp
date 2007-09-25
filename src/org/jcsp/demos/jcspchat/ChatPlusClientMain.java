@@ -32,10 +32,7 @@ import java.awt.*;
 import javax.swing.*;
 import org.jcsp.lang.*;
 import java.util.*;
-import java.net.*;
 import org.jcsp.net.*;
-import org.jcsp.plugNplay.*;
-import org.jcsp.util.*;
 import org.jcsp.net.tcpip.*;
 import org.jcsp.net.cns.*;
 

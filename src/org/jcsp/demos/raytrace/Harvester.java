@@ -29,9 +29,7 @@
 package org.jcsp.demos.raytrace;
 
 import org.jcsp.lang.*;
-import org.jcsp.net.*;
 import org.jcsp.awt.*;
-import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
 

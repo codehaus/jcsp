@@ -30,7 +30,6 @@ package org.jcsp.demos.raytrace;
 
 import org.jcsp.lang.*;
 import org.jcsp.net.*;
-import org.jcsp.net.tcpip.*;
 import org.jcsp.plugNplay.*;
 import java.awt.event.*;
 import java.util.*;

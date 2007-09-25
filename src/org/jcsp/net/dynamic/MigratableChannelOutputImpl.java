@@ -31,7 +31,6 @@ package org.jcsp.net.dynamic;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.jcsp.lang.PoisonException;
 import org.jcsp.net.NetChannelLocation;
 import org.jcsp.net.NetChannelOutput;
 import org.jcsp.util.filter.Filter;

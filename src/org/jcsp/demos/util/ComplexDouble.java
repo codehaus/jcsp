@@ -28,8 +28,6 @@
 
 package org.jcsp.demos.util;
 
-import java.io.PrintStream;
-
 /**
  * @author Quickstone Technologies Limited
  */

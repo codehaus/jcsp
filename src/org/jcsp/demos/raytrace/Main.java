@@ -34,11 +34,9 @@ import org.jcsp.util.*;
 import org.jcsp.net.*;
 import org.jcsp.net.tcpip.*;
 import org.jcsp.net.cns.*;
-import org.jcsp.demos.*;
 import java.awt.*;
 import java.net.*;
 import java.awt.event.*;
-import java.util.*;
 
 /**
  * @author Quickstone Technologies Limited

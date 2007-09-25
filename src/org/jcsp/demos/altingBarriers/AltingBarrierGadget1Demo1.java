@@ -6,7 +6,6 @@ import org.jcsp.util.*;
 import org.jcsp.plugNplay.*;
 
 import java.awt.Color;
-import java.util.Random;
 
 public class AltingBarrierGadget1Demo1 {
 

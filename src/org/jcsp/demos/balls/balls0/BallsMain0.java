@@ -30,7 +30,6 @@ package org.jcsp.demos.balls.balls0;
 
 import org.jcsp.lang.*;
 import org.jcsp.awt.*;
-import java.awt.*;
 import org.jcsp.demos.util.Ask;
 
 /**

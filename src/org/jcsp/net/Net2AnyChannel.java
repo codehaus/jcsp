@@ -28,7 +28,6 @@
 
 package org.jcsp.net;
 
-import org.jcsp.lang.PoisonException;
 import org.jcsp.lang.ProcessManager;
 import org.jcsp.lang.RejectableBufferedOne2AnyChannel;
 import org.jcsp.lang.RejectableChannel;

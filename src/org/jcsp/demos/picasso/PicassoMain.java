@@ -29,7 +29,6 @@
 package org.jcsp.demos.picasso;
 
 import org.jcsp.lang.*;
-import org.jcsp.util.*;
 import org.jcsp.awt.*;
 import org.jcsp.demos.util.Ask;
 

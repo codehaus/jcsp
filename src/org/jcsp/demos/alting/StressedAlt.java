@@ -29,7 +29,6 @@
 package org.jcsp.demos.alting;
 
 import org.jcsp.lang.*;
-import org.jcsp.util.*;
 import org.jcsp.demos.util.*;
 
 /**

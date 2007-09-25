@@ -28,8 +28,6 @@
 
 package org.jcsp.lang;
 
-import org.jcsp.util.ChannelDataStore;
-
 /**
  * This implements a one-to-any object channel,
  * safe for use by one writer and many readers.

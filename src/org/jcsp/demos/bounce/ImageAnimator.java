@@ -29,8 +29,6 @@
 package org.jcsp.demos.bounce;
 
 import java.awt.*;
-import java.awt.image.*;
-import java.net.*;
 import org.jcsp.lang.*;
 import org.jcsp.awt.*;
 

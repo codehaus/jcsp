@@ -31,7 +31,6 @@ package org.jcsp.demos.jcspchat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.event.*;
 
 /**
  * @author Quickstone Technologies Limited

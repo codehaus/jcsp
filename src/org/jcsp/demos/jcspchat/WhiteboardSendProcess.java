@@ -29,13 +29,10 @@
 package org.jcsp.demos.jcspchat;
 
 import javax.swing.*;
-import java.awt.geom.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.image.*;
-import java.awt.event.*;
-import org.jcsp.net.*;
 import org.jcsp.lang.*;
 
 /**

@@ -29,7 +29,6 @@
 package org.jcsp.demos.balls.balls2;
 
 import org.jcsp.lang.*;
-import org.jcsp.awt.*;
 import java.util.*;
 import java.awt.*;
 

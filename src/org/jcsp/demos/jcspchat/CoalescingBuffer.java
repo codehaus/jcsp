@@ -29,7 +29,6 @@
 package org.jcsp.demos.jcspchat;
 
 import org.jcsp.lang.*;
-import org.jcsp.net.*;
 import java.util.*;
 
 /**

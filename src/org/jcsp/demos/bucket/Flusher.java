@@ -29,7 +29,6 @@
 package org.jcsp.demos.bucket;
 
 import org.jcsp.lang.*;
-import java.util.*;
 
 /**
  * @author P.H.Welch

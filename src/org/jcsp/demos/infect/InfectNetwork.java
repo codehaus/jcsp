@@ -33,7 +33,6 @@ import org.jcsp.util.*;
 import org.jcsp.util.ints.*;
 import org.jcsp.awt.*;
 import java.awt.*;
-import java.awt.image.*;
 
 /**
  * @author P.H.Welch

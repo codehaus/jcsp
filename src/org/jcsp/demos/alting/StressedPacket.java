@@ -28,7 +28,6 @@
 
 package org.jcsp.demos.alting;
 
-import org.jcsp.lang.*;
 
 /**
  * @author P.H.Welch

@@ -1,7 +1,6 @@
 package org.jcsp.demos.altingBarriers;
 
 import org.jcsp.lang.*;
-import org.jcsp.awt.*;
 import java.awt.*;
 
 public class AltingBarrierGadget0 implements CSProcess {

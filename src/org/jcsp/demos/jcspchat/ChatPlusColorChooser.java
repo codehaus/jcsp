@@ -29,10 +29,6 @@
 package org.jcsp.demos.jcspchat;
 
 import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.event.*;
-import javax.swing.colorchooser.*;
 
 /**
  * @author Quickstone Technologies Limited

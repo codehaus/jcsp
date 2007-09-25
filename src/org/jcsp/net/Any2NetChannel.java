@@ -29,7 +29,6 @@
 package org.jcsp.net;
 import java.io.Serializable;
 
-import org.jcsp.lang.PoisonException;
 
 /**
  * A channel for network output (TX).  This is a "Any2Net" channel,

@@ -1,7 +1,6 @@
 package org.jcsp.demos.altingBarriers;
 
 import org.jcsp.lang.*;
-import org.jcsp.awt.*;
 import org.jcsp.util.*;
 
 import java.awt.Color;

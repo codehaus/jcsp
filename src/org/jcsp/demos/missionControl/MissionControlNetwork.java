@@ -33,8 +33,6 @@ import org.jcsp.util.*;
 import org.jcsp.util.ints.*;
 import org.jcsp.awt.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
 
 /**
  * @author P.H.Welch
