@@ -260,7 +260,7 @@ public class WhiteboardSendProcess implements CSProcess {
 
   public void run() {
     while (true) {
-      int i = in.read();
+      in.read();
       if (ds.textActive()) {
         this.drawLocalText();
       }

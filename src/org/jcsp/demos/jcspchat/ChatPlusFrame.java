@@ -128,9 +128,7 @@ public class ChatPlusFrame extends JFrame {
 
     strokeSizeMenu.setSelectedIndex(2);
 
-    toolMenu.setSelectedIndex(0);
-    Dimension smallgap = new Dimension(2,2);
-    Dimension biggap = new Dimension(4,4);
+    toolMenu.setSelectedIndex(0);    
     whiteboardBar.setFloatable(false);
     whiteboardBar.add(new JLabel("Tool:"));
     whiteboardBar.add(Box.createHorizontalStrut(2));

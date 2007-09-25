@@ -239,8 +239,7 @@ final class Farmer implements CSProcess {
 		imageHeight = ((requestedHeight + (numWorkers - 1)) / numWorkers) * numWorkers;
 	}
 	
-	public final void run () {
-		final CSTimer tim = new CSTimer ();
+	public final void run () {		
 		boolean configChanged = false;
 		int changeLock = Main.BUFFERING + 1;
 		System.out.println ("Farmer: started");

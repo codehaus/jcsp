@@ -110,7 +110,7 @@ class Harvester implements CSProcess {
 				// Image has probably changed size. I don't care for elegance so just skip any outstanding packets
 				i++;
 				for (; i < numWorkers; i++) {
-    				ResultPacket rp = (ResultPacket)fromWorkers[currentFrame % fromWorkers.length].read ();
+    				fromWorkers[currentFrame % fromWorkers.length].read ();
 				}
 			}
 			currentFrame++;

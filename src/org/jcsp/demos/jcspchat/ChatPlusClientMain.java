@@ -61,8 +61,7 @@ public class ChatPlusClientMain {
 
     String channelName = cd.getChannelName();
     String username = cd.getUsername();
-    String connectName = channelName + ".client2serverconnect";
-    String messageChan = channelName + ".client2servermessage";
+    String connectName = channelName + ".client2serverconnect";    
 
     //setup channels
     ChannelOutput messageOutChan;

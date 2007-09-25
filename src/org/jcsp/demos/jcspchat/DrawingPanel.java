@@ -64,8 +64,7 @@ public class DrawingPanel extends JPanel {
   int strokeType = 3;
   Point startDrag = null;
 
-  public DrawingPanel () {
-    DrawingPanel panel = this;
+  public DrawingPanel () {    
     bg.setColor(Color.white);
     bg.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
     bg.fillRect(0,0,buffer.getWidth(),buffer.getHeight());

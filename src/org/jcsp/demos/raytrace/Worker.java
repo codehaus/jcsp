@@ -53,7 +53,7 @@ public final class Worker implements CSProcess {
 		System.out.println ("Worker: started");
 		final ResultPacket[] results = new ResultPacket[Main.BUFFERING];
 		for (int i = 0; i < Main.BUFFERING; i++) results[i] = new ResultPacket ();
-		int currentResult = 0, frameCount = 0;
+		int currentResult = 0;
 		final Counter frameCounter = new Counter (), dataCounter = new Counter ();
 		while (true) {
 			final ResultPacket result = results[currentResult];

@@ -119,8 +119,7 @@ public class ChatPlusServerMain {
       td.width,
       td.height);
     serverFrame.show();
-
-    String messageChannelName = chatChanName + messageChannelNameExt;
+    
     String connectChannelName = chatChanName + connectChannelNameExt;
 
     NetAltingChannelInput connectIn = CNS.createNet2One(connectChannelName);

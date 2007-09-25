@@ -70,8 +70,7 @@ class MandelFarmer implements CSProcess {
         final Guard[] guards = new Guard[] { fromCancel, fromWorkers };
         final Alternative alt = new Alternative(guards);
 
-        final int CANCEL = 0;
-        final int WORK = 1;
+        final int CANCEL = 0;        
 
         Object object = fromControl.read();
         final int width = ((Integer) object).intValue();

@@ -395,7 +395,7 @@ public abstract class Link implements CSProcess
    {
       long startTime = System.currentTimeMillis();
       txChannel.out().write(Message.PING_MESSAGE);
-      Object obj = pingReplyChan.in().read();
+      pingReplyChan.in().read();
       long endTime = System.currentTimeMillis();
       this.pingTime = endTime - startTime;
       return pingTime;

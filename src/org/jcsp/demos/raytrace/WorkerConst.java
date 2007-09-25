@@ -55,7 +55,7 @@ public final class WorkerConst implements CSProcess {
 		final ResultPacket[] results = new ResultPacket[Main.BUFFERING];
 		final Counter frameCounter = new Counter(), dataCounter = new Counter ();
 		for (int i = 0; i < Main.BUFFERING; i++) results[i] = new ResultPacket ();
-		int currentResult = 0, frameCount = 0;
+		int currentResult = 0;
 		final int c = new Random ().nextInt ();
 		while (true) {
 			final ResultPacket result = results[currentResult];

@@ -477,8 +477,7 @@ public class XMLNodeFactory implements NodeFactory
       LinkManager.getInstance().start();
       attribs.setInitialized();
       
-      //Setup CNS
-      boolean cnsInitialized = false;
+      //Setup CNS      
       ServiceManager sm = attribs.getServiceManager();
       org.jcsp.net.settings.Service[] services = config.getServices().getServices();
       

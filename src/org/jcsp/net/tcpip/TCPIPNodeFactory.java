@@ -224,14 +224,13 @@ public class TCPIPNodeFactory implements NodeFactory
       {
          uiFactory = new UIFactory();
       }
-      NodeID nodeID = attribs.setUIFactory(uiFactory);
+      attribs.setUIFactory(uiFactory);
       
       // Setup protocols ...
       // Setup local addresses (defaults to all local addresses)
       try
       {
-         InetAddress[] allLocal = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
-         TCPIPAddressID[] localAddressIDs = new TCPIPAddressID[allLocal.length];
+         InetAddress[] allLocal = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());         
          for (int i = 0; i < allLocal.length; i++)
          {
             try
