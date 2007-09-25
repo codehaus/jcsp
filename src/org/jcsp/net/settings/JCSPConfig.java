@@ -87,7 +87,7 @@ public class JCSPConfig
    
    public void setNodeSpecs(Specs specs)
    {
-      this.nodeSpecs = nodeSpecs;
+      this.nodeSpecs = specs;
    }
    
    public Specs getNodeSpecs()

@@ -102,7 +102,7 @@ class MigratableAltingChannelInputImpl extends MigratableAltingChannelInput
       if (actualIn == null)
          throw new NullPointerException("Input channel provided is null");
       filteredIn = FACTORY.createFiltered(actualIn);
-      mgr = mgr;
+      this.mgr = mgr;
    }
    
    /**

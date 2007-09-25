@@ -93,7 +93,7 @@ class DynamicClassLoaderMessage implements Serializable
     */
    public void setClassLoader(ClassLoader classLoader)
    {
-      this.classLoaderToUse = classLoaderToUse;
+      this.classLoaderToUse = classLoader;
    }
    
    /**
