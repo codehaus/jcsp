@@ -363,6 +363,38 @@ public class Parallel implements CSProcess
     {
         this(processes, false);
     }
+    
+    /**
+	   * Construct a new <TT>Parallel</TT> object with the processes specified.
+	   *
+	   * @param processes The processes to be executed in parallel
+	   */
+	  public Parallel (CSProcess[][] processes) {
+	    if (processes != null) {
+	      int count = 0;
+	      for (int i = 0; i < processes.length; i++) {
+	        if (processes[i] != null) count += processes[i].length;
+	      }
+	      nProcesses = count;
+	      this.processes = new CSProcess[nProcesses];
+	      count = 0;
+	      for (int i = 0; i < processes.length; i++) {
+	        if (processes[i] != null) {
+		  int n = processes[i].length;
+	          System.arraycopy (processes[i], 0, this.processes, count, n);
+		  count += n;
+		}
+	      }
+	      parThreads = new ParThread[nProcesses];
+	    }
+	    else {
+	      nProcesses = 0;
+	      this.processes = new CSProcess[0];
+	      parThreads = new ParThread[0];
+	    }
+	    processesChanged = true;
+	    this.priority = false;
+	  }
 
     /**
      * Construct a new <TT>Parallel</TT> object with the processes specified.
