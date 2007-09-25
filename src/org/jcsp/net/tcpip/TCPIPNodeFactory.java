@@ -137,11 +137,8 @@ public class TCPIPNodeFactory implements NodeFactory
       }
       catch (Exception e)
       {
-      }
-      finally
-      {
-         return null;
-      }
+    	  return null;
+      }      
    }
    
    /**
