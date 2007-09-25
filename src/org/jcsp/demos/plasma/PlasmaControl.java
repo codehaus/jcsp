@@ -316,7 +316,7 @@ class PlasmaControl implements CSProcess {
         case RESIZE_EVENT :
           if (resizeChannel.pending ()) {
             ComponentEvent e = (ComponentEvent)resizeChannel.read ();
-            if (e.getID () != e.COMPONENT_RESIZED) break;
+            if (e.getID () != ComponentEvent.COMPONENT_RESIZED) break;
           }
           toGraphics.write (GraphicsProtocol.GET_DIMENSION);
           graphicsDim = (Dimension) fromGraphics.read ();

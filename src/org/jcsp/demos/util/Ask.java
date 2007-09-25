@@ -222,7 +222,7 @@ public class Ask
                         break;
                     case 2:
                         WindowEvent e = (WindowEvent) frameEvent.in().read();
-                        if (e.getID() != e.WINDOW_CLOSING)break;
+                        if (e.getID() != WindowEvent.WINDOW_CLOSING)break;
                     case 1:
                         System.exit(0);
                     }

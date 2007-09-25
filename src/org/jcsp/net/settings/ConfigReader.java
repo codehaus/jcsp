@@ -370,7 +370,7 @@ public class ConfigReader implements XMLConfigConstants
          }
          if (t.name.equals(ELEMENT_RELIABLE))
          {
-            boolean value = t.getBooleanValue(t.getAttrib("value"));
+            boolean value = Tag.getBooleanValue(t.getAttrib("value"));
             Reliable r = new Reliable(value, false);
             Protocol p = config.getProtocols().getLastProtocol();
             p.addSpec(r);
@@ -378,7 +378,7 @@ public class ConfigReader implements XMLConfigConstants
          }
          if (t.name.equals(ELEMENT_CONNECTION_ORIENTED))
          {
-            boolean value = t.getBooleanValue(t.getAttrib("value"));
+            boolean value = Tag.getBooleanValue(t.getAttrib("value"));
             ConnectionOriented co = new ConnectionOriented(value, false);
             Protocol p = config.getProtocols().getLastProtocol();
             p.addSpec(co);
@@ -392,19 +392,19 @@ public class ConfigReader implements XMLConfigConstants
             OtherSpec os = null;
             if (type.equals(DATA_TYPE_INDICATOR_INT))
             {
-               int intVal = t.getIntValue(value);
+               int intVal = Tag.getIntValue(value);
                os = new OtherSpec(name, intVal, false);
             }
             else if (type.equals(DATA_TYPE_INDICATOR_DOUBLE))
             {
-               double dblVal = t.getDoubleValue(value);
+               double dblVal = Tag.getDoubleValue(value);
                os = new OtherSpec(name, dblVal, false);
             }
             else if (type.equals(DATA_TYPE_INDICATOR_STRING))
                os = new OtherSpec(name, value, false);
             else if (type.equals(DATA_TYPE_INDICATOR_BOOLEAN))
             {
-               boolean booVal = t.getBooleanValue(value);
+               boolean booVal = Tag.getBooleanValue(value);
                os = new OtherSpec(name, booVal, false);
             }
             Protocol p = config.getProtocols().getLastProtocol();
@@ -449,7 +449,7 @@ public class ConfigReader implements XMLConfigConstants
          {
             String protocolid = t.getAttrib("protocolid");
             String value = t.getAttrib("value");
-            boolean unique = t.getBooleanValue(t.getAttrib("unique"));
+            boolean unique = Tag.getBooleanValue(t.getAttrib("unique"));
             Address add = new Address(protocolid, value, unique);
             config.getAddresses().addAddress(add);
             if (!t.terminated) 
@@ -508,7 +508,7 @@ public class ConfigReader implements XMLConfigConstants
          }
          if (t.name.equals(ELEMENT_RELIABLE))
          {
-            boolean value = t.getBooleanValue(t.getAttrib("value"));
+            boolean value = Tag.getBooleanValue(t.getAttrib("value"));
             Reliable r = new Reliable(value, false);
             Address a = config.getAddresses().getLastAddress();
             a.addSpec(r);
@@ -516,7 +516,7 @@ public class ConfigReader implements XMLConfigConstants
          }
          if (t.name.equals(ELEMENT_CONNECTION_ORIENTED))
          {
-            boolean value = t.getBooleanValue(t.getAttrib("value"));
+            boolean value = Tag.getBooleanValue(t.getAttrib("value"));
             ConnectionOriented co = new ConnectionOriented(value, false);
             Address a = config.getAddresses().getLastAddress();
             a.addSpec(co);
@@ -530,19 +530,19 @@ public class ConfigReader implements XMLConfigConstants
             OtherSpec os = null;
             if (type.equals(DATA_TYPE_INDICATOR_INT))
             {
-               int intVal = t.getIntValue(value);
+               int intVal = Tag.getIntValue(value);
                os = new OtherSpec(name, intVal, false);
             }
             else if (type.equals(DATA_TYPE_INDICATOR_DOUBLE))
             {
-               double dblVal = t.getDoubleValue(value);
+               double dblVal = Tag.getDoubleValue(value);
                os = new OtherSpec(name, dblVal, false);
             }
             else if (type.equals(DATA_TYPE_INDICATOR_STRING))
                os = new OtherSpec(name, value, false);
             else if (type.equals(DATA_TYPE_INDICATOR_BOOLEAN))
             {
-               boolean booVal = t.getBooleanValue(value);
+               boolean booVal = Tag.getBooleanValue(value);
                os = new OtherSpec(name, booVal, false);
             }
             Address a = config.getAddresses().getLastAddress();
@@ -560,14 +560,14 @@ public class ConfigReader implements XMLConfigConstants
       {
          if (t.name.equals(ELEMENT_MAXSPEED))
          {
-            int value = t.getIntValue(t.getAttrib("value"));
+            int value = Tag.getIntValue(t.getAttrib("value"));
             MaxSpeed m = new MaxSpeed(value);
             config.getNodeSpecs().addSpec(m);
             continue;
          }
          if (t.name.equals(ELEMENT_MEMORY))
          {
-            int value = t.getIntValue(t.getAttrib("value"));
+            int value = Tag.getIntValue(t.getAttrib("value"));
             Memory m = new Memory(value);
             config.getNodeSpecs().addSpec(m);
             continue;
@@ -580,19 +580,19 @@ public class ConfigReader implements XMLConfigConstants
             OtherSpec os = null;
             if (type.equals(DATA_TYPE_INDICATOR_INT))
             {
-               int intVal = t.getIntValue(value);
+               int intVal = Tag.getIntValue(value);
                os = new OtherSpec(name, intVal, false);
             }
             else if (type.equals(DATA_TYPE_INDICATOR_DOUBLE))
             {
-               double dblVal = t.getDoubleValue(value);
+               double dblVal = Tag.getDoubleValue(value);
                os = new OtherSpec(name, dblVal, false);
             }
             else if (type.equals(DATA_TYPE_INDICATOR_STRING))
                os = new OtherSpec(name, value, false);
             else if (type.equals(DATA_TYPE_INDICATOR_BOOLEAN))
             {
-               boolean booVal = t.getBooleanValue(value);
+               boolean booVal = Tag.getBooleanValue(value);
                os = new OtherSpec(name, booVal, false);
             }
             config.getNodeSpecs().addSpec(os);
@@ -610,7 +610,7 @@ public class ConfigReader implements XMLConfigConstants
          if (t.name.equals(ELEMENT_LINK_PROFILE))
          {
             String name = t.getAttrib("name");
-            boolean exactMatchRequired = t.getBooleanValue(t.getAttrib("requireExactMatch"));
+            boolean exactMatchRequired = Tag.getBooleanValue(t.getAttrib("requireExactMatch"));
             LinkProfile lp = new LinkProfile(name, exactMatchRequired);
             config.getLinkProfiles().addProfile(lp);
             if (!t.terminated) 
@@ -643,7 +643,7 @@ public class ConfigReader implements XMLConfigConstants
       {
          if (t.name.equals(ELEMENT_LINK_REQ_MINSPEED))
          {
-            int value = t.getIntValue(t.getAttrib("value"));
+            int value = Tag.getIntValue(t.getAttrib("value"));
             MinSpeed ms = new MinSpeed(value);
             config.getLinkProfiles().getLastProfile().addReq(ms);
             continue;
@@ -674,21 +674,21 @@ public class ConfigReader implements XMLConfigConstants
          }
          if (t.name.equals(ELEMENT_RELIABLE))
          {
-            boolean value = t.getBooleanValue(t.getAttrib("value"));
+            boolean value = Tag.getBooleanValue(t.getAttrib("value"));
             Reliable r = new Reliable(value, true);
             config.getLinkProfiles().getLastProfile().addReq(r);
             continue;
          }
          if (t.name.equals(ELEMENT_CONNECTION_ORIENTED))
          {
-            boolean value = t.getBooleanValue(t.getAttrib("value"));
+            boolean value = Tag.getBooleanValue(t.getAttrib("value"));
             ConnectionOriented co = new ConnectionOriented(value, true);
             config.getLinkProfiles().getLastProfile().addReq(co);
             continue;
          }
          if (t.name.equals(ELEMENT_LINK_REQ_MAXPING))
          {
-            int value = t.getIntValue(t.getAttrib("value"));
+            int value = Tag.getIntValue(t.getAttrib("value"));
             MaxPing mp = new MaxPing(value);
             config.getLinkProfiles().getLastProfile().addReq(mp);
             continue;
@@ -702,19 +702,19 @@ public class ConfigReader implements XMLConfigConstants
             OtherReq or = null;
             if (type.equals(DATA_TYPE_INDICATOR_INT))
             {
-               int intVal = t.getIntValue(value);
+               int intVal = Tag.getIntValue(value);
                or = new OtherReq(name, intVal, comparator);
             }
             else if (type.equals(DATA_TYPE_INDICATOR_DOUBLE))
             {
-               double dblVal = t.getDoubleValue(value);
+               double dblVal = Tag.getDoubleValue(value);
                or = new OtherReq(name, dblVal, comparator);
             }
             else if (type.equals(DATA_TYPE_INDICATOR_STRING))
                or = new OtherReq(name, value, comparator);
             else if (type.equals(DATA_TYPE_INDICATOR_BOOLEAN))
             {
-               boolean booVal = t.getBooleanValue(value);
+               boolean booVal = Tag.getBooleanValue(value);
                or = new OtherReq(name, booVal, comparator);
             }
             config.getLinkProfiles().getLastProfile().addReq(or);
@@ -732,7 +732,7 @@ public class ConfigReader implements XMLConfigConstants
          if (t.name.equals(ELEMENT_NODE_PROFILE))
          {
             String name = t.getAttrib("name");
-            boolean exactMatchRequired = t.getBooleanValue(t.getAttrib("requireExactMatch"));
+            boolean exactMatchRequired = Tag.getBooleanValue(t.getAttrib("requireExactMatch"));
             NodeProfile np = new NodeProfile(name, exactMatchRequired);
             config.getNodeProfiles().addProfile(np);
             if (!t.terminated) doNodeProfile(in);
@@ -764,14 +764,14 @@ public class ConfigReader implements XMLConfigConstants
       {
          if (t.name.equals(ELEMENT_NODE_REQ_MINSPEED))
          {
-            int value = t.getIntValue(t.getAttrib("value"));
+            int value = Tag.getIntValue(t.getAttrib("value"));
             MinSpeed ms = new MinSpeed(value);
             config.getNodeProfiles().getLastProfile().addReq(ms);
             continue;
          }
          if (t.name.equals(ELEMENT_NODE_REQ_MINMEMORY))
          {
-            int value = t.getIntValue(t.getAttrib("value"));
+            int value = Tag.getIntValue(t.getAttrib("value"));
             MinMemory mm = new MinMemory(value);
             config.getNodeProfiles().getLastProfile().addReq(mm);
             continue;
@@ -785,19 +785,19 @@ public class ConfigReader implements XMLConfigConstants
             OtherReq or = null;
             if(type.equals(DATA_TYPE_INDICATOR_INT))
             {
-               int intVal = t.getIntValue(value);
+               int intVal = Tag.getIntValue(value);
                or = new OtherReq(name, intVal, comparator);
             }
             else if(type.equals(DATA_TYPE_INDICATOR_DOUBLE))
             {
-               double dblVal = t.getDoubleValue(value);
+               double dblVal = Tag.getDoubleValue(value);
                or = new OtherReq(name, dblVal, comparator);
             }
             else if(type.equals(DATA_TYPE_INDICATOR_STRING))
                or = new OtherReq(name, value, comparator);
             else if(type.equals(DATA_TYPE_INDICATOR_BOOLEAN))
             {
-               boolean booVal = t.getBooleanValue(value);
+               boolean booVal = Tag.getBooleanValue(value);
                or = new OtherReq(name, booVal, comparator);
             }
             config.getNodeProfiles().getLastProfile().addReq(or);
