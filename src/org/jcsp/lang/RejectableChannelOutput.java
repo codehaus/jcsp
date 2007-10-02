@@ -34,7 +34,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  * 
- * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}
+ * @deprecated This channel is superceded by the poison mechanisms, please see {@link PoisonException}.  It remains only because it is used by some of the networking features.
  */
 public interface RejectableChannelOutput extends ChannelOutput
 {
