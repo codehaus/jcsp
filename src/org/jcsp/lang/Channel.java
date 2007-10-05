@@ -37,19 +37,6 @@ import org.jcsp.util.ints.ChannelDataStoreInt;
  * for constructing arrays of identical channels.
  * </p>
  *
- * <p>The current implementation constructs "safe" channels which have separate
- * delegate objects for their read and write ends. This stops a
- * <code>ChannelInput</code> from being cast into a <code>ChannelOutput</code>
- * object. The <code>StandardChannelFactory</code> class is used to construct the
- * channels.
- * </p>
- *
- * <p>Non-safe channels can be constructed by using an instance of the
- * <code>RiskyChannelFactory</code> class. The channels produced by this
- * factory have read and write ends implemented by the same object. This is
- * is more efficient (there are two less objects and delegate method calls)
- * but could lead to errors if users make incorrect casts.
- * </p>
  *
  * @author Quickstone Technologies Limited
  */
@@ -79,6 +66,8 @@ public class Channel
      * @return the channel object.
      *
      * @see org.jcsp.lang.ChannelFactory#createOne2One()
+     * 
+     * @deprecated Use the one2one() function instead.
      */
     public static One2OneChannel createOne2One()
     {
@@ -91,6 +80,8 @@ public class Channel
      * @return the channel object.
      *
      * @see org.jcsp.lang.ChannelFactory#createAny2One()
+     * 
+     * @deprecated Use the any2one() function instead. 
      */
     public static Any2OneChannel createAny2One()
     {
@@ -103,6 +94,8 @@ public class Channel
      * @return the channel object.
      *
      * @see org.jcsp.lang.ChannelFactory#createOne2Any()
+     * 
+     * @deprecated Use the one2any() function instead.
      */
     public static One2AnyChannel createOne2Any()
     {
@@ -115,6 +108,8 @@ public class Channel
      * @return the channel object.
      *
      * @see org.jcsp.lang.ChannelFactory#createAny2Any()
+     * 
+     * @deprecated Use the any2any() function instead.
      */
     public static Any2AnyChannel createAny2Any()
     {
@@ -129,6 +124,8 @@ public class Channel
      * @return the array of channels.
      *
      * @see org.jcsp.lang.ChannelArrayFactory#createOne2One(int)
+     * 
+     * @deprecated Use the one2oneArray() function instead.
      */
     public static One2OneChannel[] createOne2One(int n)
     {
@@ -143,6 +140,8 @@ public class Channel
      * @return the array of channels.
      *
      * @see org.jcsp.lang.ChannelArrayFactory#createAny2One(int)
+     * 
+     * @deprecated Use the any2oneArray() function instead.
      */
     public static Any2OneChannel[] createAny2One(int n)
     {
@@ -157,6 +156,8 @@ public class Channel
      * @return the array of channels.
      *
      * @see org.jcsp.lang.ChannelArrayFactory#createOne2Any(int)
+     * 
+     * @deprecated Use the one2anyArray() function instead.
      */
     public static One2AnyChannel[] createOne2Any(int n)
     {
@@ -171,6 +172,8 @@ public class Channel
      * @return the array of channels.
      *
      * @see org.jcsp.lang.ChannelArrayFactory#createAny2Any(int)
+     * 
+     * @deprecated Use the any2anyArray() function instead.
      */
     public static Any2AnyChannel[] createAny2Any(int n)
     {
@@ -190,6 +193,8 @@ public class Channel
      *
      * @see org.jcsp.lang.BufferedChannelFactory#createOne2One(ChannelDataStore)
      * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the one2one() function instead.
      */
     public static One2OneChannel createOne2One(ChannelDataStore buffer)
     {
@@ -209,6 +214,8 @@ public class Channel
      *
      * @see org.jcsp.lang.BufferedChannelFactory#createAny2One(ChannelDataStore)
      * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the any2one() function instead.
      */
     public static Any2OneChannel createAny2One(ChannelDataStore buffer)
     {
@@ -228,6 +235,8 @@ public class Channel
      *
      * @see org.jcsp.lang.BufferedChannelFactory#createOne2Any(ChannelDataStore)
      * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the one2any() function instead.
      */
     public static One2AnyChannel createOne2Any(ChannelDataStore buffer)
     {
@@ -247,6 +256,8 @@ public class Channel
      *
      * @see org.jcsp.lang.BufferedChannelFactory#createAny2Any(ChannelDataStore)
      * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the any2any() function instead.
      */
     public static Any2AnyChannel createAny2Any(ChannelDataStore buffer)
     {
@@ -268,6 +279,8 @@ public class Channel
      *
      * @see org.jcsp.lang.BufferedChannelArrayFactory#createOne2One(ChannelDataStore, int)
      * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the one2oneArray() function instead.
      */
     public static One2OneChannel[] createOne2One(ChannelDataStore buffer, int n)
     {
@@ -289,6 +302,8 @@ public class Channel
      *
      * @see org.jcsp.lang.BufferedChannelArrayFactory#createAny2One(ChannelDataStore, int)
      * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the any2oneArray() function instead.
      */
     public static Any2OneChannel[] createAny2One(ChannelDataStore buffer, int n)
     {
@@ -310,6 +325,8 @@ public class Channel
      *
      * @see org.jcsp.lang.BufferedChannelArrayFactory#createOne2Any(ChannelDataStore, int)
      * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the one2anyArray() function instead.
      */
     public static One2AnyChannel[] createOne2Any(ChannelDataStore buffer, int n)
     {
@@ -331,6 +348,8 @@ public class Channel
      *
      * @see org.jcsp.lang.BufferedChannelArrayFactory#createAny2Any(ChannelDataStore, int)
      * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the any2anyArray() function instead.
      */
     public static Any2AnyChannel[] createAny2Any(ChannelDataStore buffer, int n)
     {
