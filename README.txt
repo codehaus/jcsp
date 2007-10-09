@@ -10,9 +10,14 @@ This file contains:
   o installation notes;
   o incremental change list since JCSP 0.5.
 
-Please read the LICENSE-JCSP-1.1-rc1.txt file.  Retention of these files is assumed
-to imply acceptance of the terms in that license.
+Please read the LICENSE-JCSP-1.1-rc1.txt file.  Retention of these files is
+assumed to imply acceptance of the terms in that license.
 
+This release is licenced under the Lesser GNU Public Licence, version 2.1
+(LGPL 2.1).  A copy is included with the distribution, or you can read an online
+version at:
+
+  http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 
 
 =============================================================================
@@ -20,19 +25,25 @@ to imply acceptance of the terms in that license.
 =============================================================================
 
 
-  jcsp.jar					(class library containing all features, both net and core - add either this or jcsp-core.jar to your CLASSPATH)
-  jcsp-core.jar				(class library containing just the core features - add either this or jcsp.jar to your CLASSPATH)
-  jcsp-demos.jar			(class library containing all the compiled demos)
-  jcsp-demos-src.jar		(class library containing the source of all the demos)
-  jcsp-demos-util.jar		(optional class library - add to your CLASSPATH)  
+  jcsp.jar                  (class library containing all features, both net
+                             and core - add either this, or jcsp-core.jar,
+                             to your CLASSPATH)
+  jcsp-core.jar             (class library containing just the core features
+                             - add either this or jcsp.jar to your CLASSPATH)
 
-  LICENCE-JCSP-1.1-rc1.txt	(licence agreement)
-  README-JCSP-1.1-rc1.txt	(this file)
+  jcsp-demos.jar            (class library containing all the compiled demos)
+  jcsp-demos-src.jar        (class library containing the source of all the demos)
+  jcsp-demos-util.jar       (optional class library - add to your CLASSPATH)  
+
+  LICENCE-JCSP-1.1-rc1.txt  (licence agreement)
+  README-JCSP-1.1-rc1.txt   (this file)
   
-  jcsp-core-docs/			(javadoc HTML tree for jcsp-core.jar)
-  jcsp-all-docs/			(javadoc HTML tree for jcsp.jar)
+  jcsp-core-docs/           (javadoc HTML tree for jcsp-core.jar)
+  jcsp-all-docs/            (javadoc HTML tree for jcsp.jar)
 
-  *.bat						(one file per demo - an easy way to run the demos that are inside jcsp-demos.jar)
+  *.bat                     (one file per demo - an easy way to run the demos
+                             that are inside jcsp-demos.jar ... for Windows
+                             platforms, at least)
 
 
 You will need the JDK1.3 libraries (or any later JDK) installed to work
@@ -45,20 +56,20 @@ with the JCSP library.
 =============================================================================
 
 
-Put the file jcsp.jar in your CLASSPATH.
+Put the file jcsp.jar (or jcsp-core.jar) in your CLASSPATH.
 You do *not* need to unpack these files.
 
 Point your web browser at (and, maybe, bookmark):
 
-  jcsp-all-docs/index.html
+  jcsp-all-docs/index.html    or    jcsp-core-docs/index.html
 
-for the on-line documentation to the JCSP library.
+for the documentation to the JCSP library.
 
 The jcsp-demos.jar file contains many JCSP demonstration applications
 and applets.
 
 Peter Welch and Neil Brown.
-(5th October, 2007)
+(8th. October, 2007)
 
 
 
@@ -79,7 +90,7 @@ deprecated ready for future removal.  Symmetric Object channels have been
 added.
 
 Neil Brown and Peter Welch.
-(5th October 2007).
+(5th. October, 2007).
 
 
 Changes since JCSP 1.0 (rc7) release
