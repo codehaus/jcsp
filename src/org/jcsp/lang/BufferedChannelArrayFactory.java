@@ -35,6 +35,8 @@ import org.jcsp.util.*;
  * buffering semantics.
  *
  * @author Quickstone Technologies Limited
+ * 
+ * @deprecated These channel factories are deprecated in favour of the new one2one() methods in the Channel class.
  */
 public interface BufferedChannelArrayFactory
 {

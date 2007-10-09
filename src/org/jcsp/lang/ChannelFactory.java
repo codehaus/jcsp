@@ -32,6 +32,8 @@ package org.jcsp.lang;
  * Defines an interface for a factory to create instances of channels.
  *
  * @author Quickstone Technologies Limited
+ * 
+ * @deprecated These channel factories are deprecated in favour of the new one2one() methods in the Channel class.
  */
 public interface ChannelFactory
 {

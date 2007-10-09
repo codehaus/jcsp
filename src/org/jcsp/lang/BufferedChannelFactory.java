@@ -34,6 +34,8 @@ import org.jcsp.util.ChannelDataStore;
  * Defines an interface for a factory that can create channels with user-definable buffering semantics.
  *
  * @author Quickstone Technologies Limited
+ * 
+ * @deprecated These channel factories are deprecated in favour of the new one2one() methods in the Channel class.
  */
 public interface BufferedChannelFactory
 {
