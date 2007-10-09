@@ -19,6 +19,7 @@ Processes interact solely via CSP synchronising primitives, such as
 {@link jcsp.lang.CSTimer <I>timers</I>},
 {@link jcsp.lang.Crew <I>crews</I>},
 {@link jcsp.lang.Barrier <I>barriers</I>},
+{@link jcsp.lang.AltingBarrier <I>alting barriers</I>},
 {@link jcsp.lang.Bucket <I>buckets</I>}
 or other well-defined modes of access
 to shared passive objects.  Processes do not invoke each other's methods.
@@ -59,17 +60,23 @@ parameters and whose <TT>run</TT> method mirrors the <TT>PROC</TT> body.
 <P>
 <H2>Acknowledgements</H2>
 This <A HREF="http://www.cs.ukc.ac.uk/projects/ofa/jcsp/">JCSP</A>
-library was developed from work originally carried out and
+library is being developed from work originally carried out and
 presented by numerous individuals at
 the <A HREF="http://wotug.ukc.ac.uk/">WoTUG</A>
 <A HREF="http://wotug.ukc.ac.uk/parallel/groups/wotug/java/"><I>Java Threads Workshop</I></A>
 and conferences
 (<A HREF="http://www.rt.el.utwente.nl/wotug20/"><I>WoTUG-20</I></A>,
 <A HREF="http://wotug.ukc.ac.uk/parallel/groups/wotug/wotug21/"><I>WoTUG-21</I></A>,
-<A HREF="http://www.keele.ac.uk/depts/cs/events/wotug22/"><I>WoTUG-22</I></A>
-<A HREF="http://wotug.ukc.ac.uk/cpa2000/"><I>WoTUG-23/CPA-2000</I></A> and
-<A HREF="http://www.cs.bris.ac.uk/Events/CPA2001/"><I>WoTUG-24/CPA-2001</I></A>)
-in the period 1996-2000.
+<A HREF="http://www.keele.ac.uk/depts/cs/events/wotug22/"><I>WoTUG-22</I></A>,
+<A HREF="http://wotug.ukc.ac.uk/cpa2000/"><I>WoTUG-23/CPA-2000</I></A>,
+<A HREF="http://www.cs.bris.ac.uk/Events/CPA2001/"><I>WoTUG-24/CPA-2001</I></A>),
+<A HREF="http://wotug.org/cpa2002/"><I>WoTUG-25/CPA-2002</I></A>),
+<A HREF="http://www.ce.utwente.nl/cpa2003/"><I>WoTUG-26/CPA-2003</I></A>),
+<A HREF="http://wotug.org/cpa2004/"><I>WoTUG-27/CPA-2004</I></A>),
+<A HREF="http://www.wotug.org/cpa2005/"><I>WoTUG-28/CPA-2005</I></A>),
+<A HREF="http://www.wotug.org/cpa2006/"><I>WoTUG-29/CPA-2006</I></A>),
+<A HREF="http://www.cs.surrey.ac.uk/host/cpa2007/"><I>WoTUG-30/CPA-2007</I></A>),
+in the period 1996-2007 and continuing.
 Please follow the links to find the original sources.
 Special thanks are owed to <A HREF="mailto:p_d_austin@hotmail.com">Paul Austin</A>,
 who developed 
