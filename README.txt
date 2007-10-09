@@ -1,6 +1,6 @@
 
 =============================================================================
-              CSP for Java : JCSP 1.1 Release Candidate 1 (rc1)
+              CSP for Java : JCSP 1.1 Release Candidate 1 (rc2)
 =============================================================================
 
 
@@ -21,7 +21,7 @@ version at:
 
 
 =============================================================================
-                            JCSP 1.1 (rc1) Manifest
+                            JCSP 1.1 (rc2) Manifest
 =============================================================================
 
 
@@ -35,8 +35,8 @@ version at:
   jcsp-demos-src.jar        (class library containing the source of all the demos)
   jcsp-demos-util.jar       (optional class library - add to your CLASSPATH)  
 
-  LICENCE-JCSP-1.1-rc1.txt  (licence agreement)
-  README-JCSP-1.1-rc1.txt   (this file)
+  LICENCE-JCSP-1.1-rc2.txt  (licence agreement)
+  README-JCSP-1.1-rc2.txt   (this file)
   
   jcsp-core-docs/           (javadoc HTML tree for jcsp-core.jar)
   jcsp-all-docs/            (javadoc HTML tree for jcsp.jar)
@@ -76,6 +76,15 @@ Peter Welch and Neil Brown.
 =============================================================================
                                  Change List
 =============================================================================
+
+Changes since JCSP 1.1 (rc1) release
+------------------------------------
+
+Deprecated some of the channel factories, and updated the overview of the
+documentation and this README file.
+
+Neil Brown and Peter Welch.
+(9th. October, 2007).
 
 Changes since JCSP 1.0 (rc8) release
 ------------------------------------
