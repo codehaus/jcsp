@@ -33,6 +33,8 @@ package org.jcsp.lang;
  * away without any risk of the user of that end casting it to a channel input because they cannot
  * gain access to the actual channel end.
  *
+ * @deprecated There is no longer any need to use this class, after the 1.1 class reorganisation.
+ *
  * @author Quickstone Technologies Limited
  */
 public class ChannelOutputWrapper implements ChannelOutput

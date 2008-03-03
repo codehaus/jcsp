@@ -1,6 +1,6 @@
 package org.jcsp.lang;
 
-public class ChannelOutputImpl implements ChannelOutput {
+class ChannelOutputImpl implements ChannelOutput {
 	
 	private ChannelInternals channel;
 	private int immunity;

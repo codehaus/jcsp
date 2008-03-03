@@ -47,6 +47,8 @@ import org.jcsp.util.ints.ChannelDataStoreInt;
  * is more efficient (there are two extra objects and delegate method calls)
  * but could lead to errors if users make incorrect casts.
  *
+ * @deprecated To create integer channels, use the methods in the Channel class.
+ *
  * @author Quickstone Technologies Limited
  */
 public class ChannelInt
