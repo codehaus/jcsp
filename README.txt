@@ -1,6 +1,6 @@
 
 =============================================================================
-              CSP for Java : JCSP 1.1 Release Candidate 1 (rc2)
+              CSP for Java : JCSP 1.1 Release Candidate 1 (rc3)
 =============================================================================
 
 
@@ -10,7 +10,7 @@ This file contains:
   o installation notes;
   o incremental change list since JCSP 0.5.
 
-Please read the LICENSE-JCSP-1.1-rc1.txt file.  Retention of these files is
+Please read the LICENSE-JCSP-1.1-rc3.txt file.  Retention of these files is
 assumed to imply acceptance of the terms in that license.
 
 This release is licenced under the Lesser GNU Public Licence, version 2.1
@@ -21,7 +21,7 @@ version at:
 
 
 =============================================================================
-                            JCSP 1.1 (rc2) Manifest
+                            JCSP 1.1 (rc3) Manifest
 =============================================================================
 
 
@@ -76,6 +76,15 @@ Peter Welch and Neil Brown.
 =============================================================================
                                  Change List
 =============================================================================
+
+Changes since JCSP 1.1 (rc2) release
+------------------------------------
+
+Deprecated the remaining old methods of channel creation and fixed some
+public visibility mistakes.
+
+Neil Brown and Peter Welch.
+(3rd. March, 2008).
 
 Changes since JCSP 1.1 (rc1) release
 ------------------------------------
