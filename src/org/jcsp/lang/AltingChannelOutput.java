@@ -63,7 +63,7 @@ package org.jcsp.lang;
  *         break;
  *         case 1:
  *           out1.write (1);
- *           System.out.println ("out1 written" + out1.read ());
+ *           System.out.println ("out1 written");
  *         break;
  *       }
  *     }

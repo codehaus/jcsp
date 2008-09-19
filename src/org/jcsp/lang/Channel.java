@@ -508,6 +508,10 @@ public class Channel
     	return new Any2AnyChannelImpl();
     }
     
+    public static One2OneChannelSymmetricInt one2oneSymmetric ()
+    {
+        return new BasicOne2OneChannelSymmetric ();
+    
     public static One2OneChannelSymmetricInt one2oneSymmetricInt ()
     {
         return new BasicOne2OneChannelSymmetricInt ();
