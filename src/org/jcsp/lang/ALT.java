@@ -2,16 +2,41 @@
 public class ALT extends Guard {
 
 	//{{{ constants
+	// ALT states
 	public static final int ENABLING = 0;
 	public static final int WAITING = 1;
 	public static final int READY = 2;
 	public static final int INACTIVE = 3;
+
+	// enumeration of default traversal methods
+	public static final int ARB = 0; // regualar ALT
+	public static final int PRI = 1; // PRI ALT
+	public static final int FAIR= 2; // FAIR ALT
+
+	//{{{ anonymous inner class for standard ALTs
+	public TraversalMethod ARB_STANDARD = new TraversalMethod() {
+		public Guard enableALT (ALT alt, Vector enabled) {
+			return null;
+		}
+
+		public Guard disableALT(Vector enabled) {
+			Guard selected = null;
+			for (int i = enabled.size()-1; i>=0; i--) {
+				Guard guard = (Guard) enabled.remove(i);
+				if (guard.disable()) {
+					selected = guard;
+				}
+			}
+		}
+	}
+	//}}}
 	//}}}
 	//{{{ fields
 	private Object altMonitor;
 	private ALT parent;
 	private Guard[] guards;
 	private Vector enabledGuards;
+	private TraversalMethod defaultTraversal;
 
 	private boolean hasTimer = false; // any timers?
 	private boolean hasAltBar1 = false; // any oracle barriers
@@ -80,8 +105,10 @@ public class ALT extends Guard {
 			}
 		}
 		//}}}
-	//{{{ selecting
-	//}}}
+		//{{{ selecting
+		disable();
+		return selected;
+		//}}}
 	}
 	//}}}
 	
