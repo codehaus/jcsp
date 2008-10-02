@@ -8,6 +8,7 @@ public class ALT extends Guard {
 	public static final int INACTIVE = 3;
 	//}}}
 	//{{{ fields
+	private Object altMonitor;
 	private ALT parent;
 	private Guard[] guards;
 	private Vector enabledGuards;
@@ -15,6 +16,8 @@ public class ALT extends Guard {
 	private boolean hasTimer = false; // any timers?
 	private boolean hasAltBar1 = false; // any oracle barriers
 	private boolean hasAltBar2 = false; // any dnw3 barriers
+
+	private long timeout_msecs; // the earliest timeout.
         //}}}
 
 	//{{{ constructors
@@ -40,7 +43,9 @@ public class ALT extends Guard {
 	}
 	//}}}
 
+	// {{{ public final int select()
 	public final int select() {
+		//{{{ notes on what this method should do FIXME delete/update
 		// start enabling sequence
 		// if none initially found - wait
 		// wait for timeout or event
@@ -49,19 +54,58 @@ public class ALT extends Guard {
 		/*
   		 * should not return index but should return primative
   		 */
-
+		//}}}
+		// {{{ enabling sequence
 		enable(this);
-		if (state == ENABLE)
-	}
+		//}}}
+		//{{{ waiting procedure
+		if (state == ENABLE) {
+			// if still enabling wait to be woken up again
+			// this will mean that at least one guard is now
+			// ready, disabling sequence will determine which
+			// one
+			
+			state = WAITING;
+			while (state == WAITING) {
+				if (hasTimeout) {
+					long delay = timeout_msecs - System.currentTimeMillis();
+					if (delay > Spurious.earlyTimeout) {
+						getMonitor().wait(delay);
+					}
+				} else {
+					getMonitor().wait();
+				}
 
-	//{{{ enable (Alternative alt)
+				// FIXME sort out any possible logging here
+			}
+		}
+		//}}}
+	//{{{ selecting
+	//}}}
+	}
+	//}}}
+	
+
+	//{{{ public Object getMonitor()
+	/*
+ 	 * get the monitor that the entire ALT tree works from
+ 	 */
+	public Object getMonitor() {
+		if (parent != null) {
+			return parent.getMonitor();
+		}
+		return altMonitor;
+	}
+	//}}}
+
+	//{{{ boolean enable (Alternative alt)
 	/*
 	 * enable all of the guards in this ALT and return true if any
 	 * of them are ready.
 	 */
 	boolean enable(Alternative alt) {return false;}
 	//}}}
-	//{{{ disable()
+	//{{{ boolean disable()
 	boolean disable() {return false;}
         //}}}
 }
