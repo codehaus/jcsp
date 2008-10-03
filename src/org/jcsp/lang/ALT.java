@@ -14,8 +14,16 @@ public class ALT extends Guard {
 	public static final int FAIR= 2; // FAIR ALT
 
 	//{{{ anonymous inner class for standard ALTs
-	public TraversalMethod ARB_STANDARD = new TraversalMethod() {
+	public TraversalMethod PRI_STANDARD = new TraversalMethod() {
 		public Guard enableALT (ALT alt, Vector enabled) {
+			for (int i = 0; i < guards.length; i++) {
+				Guard guard = guards[i];
+				enabled.add(guard);
+				if (guard.enable()) {
+					return guard
+				}
+			}
+
 			return null;
 		}
 
