@@ -786,10 +786,10 @@ public class ActiveApplet extends Applet implements CSProcess
     * is truncated to either <TT>min</TT> or <TT>max</TT> (depending on the direction
     * of the error) and returned.
     *
-    * @param <TT>parameter</TT> the applet parameter name.
-    * @param <TT>min</TT> the minimum acceptable parameter value.
-    * @param <TT>max</TT> the maximum acceptable parameter value.
-    * @param <TT>standby</TT> the value to retun in case the applet parameter is bad.
+    * @param parameter the applet parameter name.
+    * @param min the minimum acceptable parameter value.
+    * @param max the maximum acceptable parameter value.
+    * @param standby the value to retun in case the applet parameter is bad.
     *
     * @return either the value of the named parameter or <TT>standby</TT>.
     */
@@ -834,8 +834,8 @@ public class ActiveApplet extends Applet implements CSProcess
     * and attempts to parse it into a <TT>boolean</TT>.  If the parameter is not present
     * or doesn't parse, the <TT>standby</TT> value is returned.
     *
-    * @param <TT>parameter</TT> the applet parameter name.
-    * @param <TT>standby</TT> the value to retun in case the applet parameter is bad.
+    * @param parameter the applet parameter name.
+    * @param standby the value to retun in case the applet parameter is bad.
     *
     * @return either the value of the named parameter or <TT>standby</TT>.
     */
@@ -865,10 +865,10 @@ public class ActiveApplet extends Applet implements CSProcess
     * is truncated to either <TT>min</TT> or <TT>max</TT> (depending on the direction
     * of the error) and returned.
     *
-    * @param <TT>parameter</TT> the applet parameter name.
-    * @param <TT>min</TT> the minimum acceptable parameter value.
-    * @param <TT>max</TT> the maximum acceptable parameter value.
-    * @param <TT>standby</TT> the value to retun in case the applet parameter is bad.
+    * @param parameter the applet parameter name.
+    * @param min the minimum acceptable parameter value.
+    * @param max the maximum acceptable parameter value.
+    * @param standby the value to retun in case the applet parameter is bad.
     *
     * @return either the value of the named parameter or <TT>standby</TT>.
     */
@@ -916,10 +916,10 @@ public class ActiveApplet extends Applet implements CSProcess
     * is truncated to either <TT>min</TT> or <TT>max</TT> (depending on the direction
     * of the error) and returned.
     *
-    * @param <TT>parameter</TT> the applet parameter name.
-    * @param <TT>min</TT> the minimum acceptable parameter value.
-    * @param <TT>max</TT> the maximum acceptable parameter value.
-    * @param <TT>standby</TT> the value to retun in case the applet parameter is bad.
+    * @param parameter the applet parameter name.
+    * @param min the minimum acceptable parameter value.
+    * @param max the maximum acceptable parameter value.
+    * @param standby the value to retun in case the applet parameter is bad.
     *
     * @return either the value of the named parameter or <TT>standby</TT>.
     */
@@ -967,10 +967,10 @@ public class ActiveApplet extends Applet implements CSProcess
     * is truncated to either <TT>min</TT> or <TT>max</TT> (depending on the direction
     * of the error) and returned.
     *
-    * @param <TT>parameter</TT> the applet parameter name.
-    * @param <TT>min</TT> the minimum acceptable parameter value.
-    * @param <TT>max</TT> the maximum acceptable parameter value.
-    * @param <TT>standby</TT> the value to retun in case the applet parameter is bad.
+    * @param parameter the applet parameter name.
+    * @param min the minimum acceptable parameter value.
+    * @param max the maximum acceptable parameter value.
+    * @param standby the value to retun in case the applet parameter is bad.
     *
     * @return either the value of the named parameter or <TT>standby</TT>.
     */
@@ -1018,10 +1018,10 @@ public class ActiveApplet extends Applet implements CSProcess
     * is truncated to either <TT>min</TT> or <TT>max</TT> (depending on the direction
     * of the error) and returned.
     *
-    * @param <TT>parameter</TT> the applet parameter name.
-    * @param <TT>min</TT> the minimum acceptable parameter value.
-    * @param <TT>max</TT> the maximum acceptable parameter value.
-    * @param <TT>standby</TT> the value to retun in case the applet parameter is bad.
+    * @param parameter the applet parameter name.
+    * @param min the minimum acceptable parameter value.
+    * @param max the maximum acceptable parameter value.
+    * @param standby the value to retun in case the applet parameter is bad.
     *
     * @return either the value of the named parameter or <TT>standby</TT>.
     */
@@ -1069,10 +1069,10 @@ public class ActiveApplet extends Applet implements CSProcess
     * is truncated to either <TT>min</TT> or <TT>max</TT> (depending on the direction
     * of the error) and returned.
     *
-    * @param <TT>parameter</TT> the applet parameter name.
-    * @param <TT>min</TT> the minimum acceptable parameter value.
-    * @param <TT>max</TT> the maximum acceptable parameter value.
-    * @param <TT>standby</TT> the value to retun in case the applet parameter is bad.
+    * @param parameter the applet parameter name.
+    * @param min the minimum acceptable parameter value.
+    * @param max the maximum acceptable parameter value.
+    * @param standby the value to retun in case the applet parameter is bad.
     *
     * @return either the value of the named parameter or <TT>standby</TT>.
     */
@@ -1162,7 +1162,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>containerEvent</TT> the channel down which to send <TT>ContainerEvent</TT>s.
+    * @param containerEvent the channel down which to send <TT>ContainerEvent</TT>s.
     */
    public void addContainerEventChannel(ChannelOutput containerEvent)
    {
@@ -1183,7 +1183,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>componentEvent</TT> the channel down which to send <TT>ComponentEvent</TT>s.
+    * @param componentEvent the channel down which to send <TT>ComponentEvent</TT>s.
     */
    public void addComponentEventChannel(ChannelOutput componentEvent)
    {
@@ -1204,7 +1204,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>focusEvent</TT> the channel down which to send <TT>FocusEvent</TT>s.
+    * @param focusEvent the channel down which to send <TT>FocusEvent</TT>s.
     */
    public void addFocusEventChannel(ChannelOutput focusEvent)
    {
@@ -1225,7 +1225,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>keyEvent</TT> the channel down which to send <TT>KeyEvent</TT>s.
+    * @param keyEvent the channel down which to send <TT>KeyEvent</TT>s.
     */
    public void addKeyEventChannel(ChannelOutput keyEvent)
    {
@@ -1246,7 +1246,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseEvent</TT> the channel down which to send <TT>MouseEvent</TT>s.
+    * @param mouseEvent the channel down which to send <TT>MouseEvent</TT>s.
     */
    public void addMouseEventChannel(ChannelOutput mouseEvent)
    {
@@ -1267,7 +1267,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseMotionEvent</TT> the channel down which to send <TT>MouseMotionEvent</TT>s.
+    * @param mouseMotionEvent the channel down which to send <TT>MouseMotionEvent</TT>s.
     */
    public void addMouseMotionEventChannel(ChannelOutput mouseMotionEvent)
    {
@@ -1317,7 +1317,7 @@ public class ActiveApplet extends Applet implements CSProcess
    static public interface Configure
    {
       /**
-       * @param <TT>applet</TT> the Applet being configured.
+       * @param applet the Applet being configured.
        */
       public void configure(final Applet applet);
       

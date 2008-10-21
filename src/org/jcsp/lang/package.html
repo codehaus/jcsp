@@ -24,11 +24,16 @@ Channels come in two varieties: those that carry <TT>Object</TT> references and
 those that carry <TT>int</TT>s.  For completeness, JCSP should provide channels
 specific to all the Java primitive types.  These could trivially be added but,
 so far, do not seem to be needed in practice.
+Specialised channels, using Java <i>generics</i>, are easy to add and will be done
+soon &ndash; please <A HREF=\'mailto:jcsp-team@kent.ac.uk\'>mail us</A> if you have urgent need.
 
 <H3>Channels (from the Point of View of a Process)</H3>
-Processes should drive their channels through <I>channel interfaces</I>:
+Processes should drive their channels through <I>channel ends</I>:
 {@link org.jcsp.lang.ChannelInput} / {@link org.jcsp.lang.ChannelOutput} (for <TT>Object</TT> channels)
 and {@link org.jcsp.lang.ChannelInputInt} / {@link org.jcsp.lang.ChannelOutputInt} (for <TT>int</TT> channels).
+To allow <i>choice</i> of receiving input (see next paragraph), processes must drive
+their channels through {@link org.jcsp.lang.AltingChannelInput} / {@link org.jcsp.lang.AltingChannelInputInt}
+(rather than {@link org.jcsp.lang.ChannelInput} / {@link org.jcsp.lang.ChannelInputInt}).
 <P>
 Processes may passively wait for a number of events using {@link org.jcsp.lang.Alternative}.
 These events include <I>channel inputs</I>
@@ -44,7 +49,7 @@ The <I>super-interface</I> for all these ALTable events is {@link org.jcsp.lang.
 
 <H3>Channels (from the Point of View of a Network)</H3>
 Actual channels must be constructed by the {@link org.jcsp.lang.Parallel} network builder
-and passed to the processes needing them (usually via their constructors).
+with appropriate <i>channel ends</i> passed to the processes needing them (usually via their constructors).
 Four varieties are available for <TT>Object</TT> channels:
 {@link org.jcsp.lang.One2OneChannel}, {@link org.jcsp.lang.Any2OneChannel},
 {@link org.jcsp.lang.One2AnyChannel} and {@link org.jcsp.lang.Any2AnyChannel}.
@@ -53,6 +58,10 @@ Similarly, four varieties are available for <TT>int</TT> channels:
 {@link org.jcsp.lang.One2AnyChannelInt} and {@link org.jcsp.lang.Any2AnyChannelInt}.
 Please note that the last two in each set are <I>not</I> broadcasting channels
 - broadcasting has to be achieved by active processes (e.g. {@link org.jcsp.plugNplay.Delta}).
+Channels are constructed by the <tt>static</tt> manufacturing methods of
+the {@link org.jcsp.lang.Channel} class.
+Input and output <i>channel ends</i> are obtained from channels by their <tt>in()</tt> and <tt>out</tt>
+methods, respectively.
 <P>
 Note that the default semantics for all the above channels are zero-buffering and full
 synchronisation.  This means that a writer to a channel will wait for a matching reader
@@ -94,5 +103,13 @@ from one of
 {@link org.jcsp.lang.One2AnyCallChannel} and {@link org.jcsp.lang.Any2AnyCallChannel}.
 Precise rules for making this extension are given in their documentation.
 
+<H3>Symmetric Channels</H3>
+Thanks to <i>alting barriers</i> ({@link org.jcsp.lang.AltingBarrier}),
+<i>symmetric</i> channels are now available:
+{@link org.jcsp.lang.One2OneChannelSymmetric} and {@link  org.jcsp.lang.One2OneChannelSymmetricInt}.
+These work the same as ordinary channels but, in addition, their <i>output ends</i>
+can be used as guards in a choice ({@link org.jcsp.lang.Alternative}).
+It is quite safe for both the sending and receiving process to be alting
+on these symmetric channels.
 
 </body>

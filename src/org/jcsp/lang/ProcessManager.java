@@ -173,7 +173,7 @@ public class ProcessManager implements CSProcess
     private Thread thread;
 
     /**
-     * @param <TT>proc</TT> the {@link CSProcess} to be executed by this ProcessManager
+     * @param proc the {@link CSProcess} to be executed by this ProcessManager
      */
     public ProcessManager(CSProcess proc)
     {
@@ -221,7 +221,7 @@ public class ProcessManager implements CSProcess
      * The priority should be specified as an <code>int</code> between
      * <code>PRIORITY_MIN<code> and <code>PRIORITY_MAX<code>.
      *
-     * @param priority   the priority at which to start the process.
+     * @param priority the priority at which to start the process.
      */
     public void start(int priority)
     {
@@ -296,7 +296,7 @@ public class ProcessManager implements CSProcess
      * <code>PRIORITY_MIN<code> and <code>PRIORITY_MAX<code>.
      * </p>
      *
-     * @param  the priority to use.
+     * @param priority the priority to use.
      */
     public void setPriority(int priority)
     {

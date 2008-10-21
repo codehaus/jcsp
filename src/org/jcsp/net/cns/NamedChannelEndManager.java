@@ -68,7 +68,7 @@ public interface NamedChannelEndManager extends NamedChannelEndFactory
     * that was constructed with this instance. This will simply
     * destroy the channel end.
     *
-    * @param chanInEnd  the channel end to destroy.
+    * @param chanOutEnd the channel end to destroy.
     */
    public void destroyChannelEnd(NetChannelOutput chanOutEnd);
    

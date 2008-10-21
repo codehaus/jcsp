@@ -7,9 +7,9 @@ gets to the communication point first has to wait for the other party.
 <P>
 This package provides a variety of classes conforming
 to the {@link org.jcsp.util.ints.ChannelDataStoreInt} interface.
-These classes can be used as <I>plug-ins</I> to the <TT>static</TT> channel
-{@link org.jcsp.lang.One2OneChannelInt#create(org.jcsp.util.ints.ChannelDataStoreInt) <TT>create</TT>}
-methods to customise its semantics.  Classes are provided for blocking FIFO buffers,
+These classes can be used as <I>plug-ins</I> to the <TT>static</TT>
+{@link org.jcsp.lang.Channel} manufacturing methods to customise their semantics.
+Classes are provided for blocking FIFO buffers,
 overwriting buffers (losing either the newest or oldest data) and
 infinite (within the realms of your virtual memory) buffers.
 <P>

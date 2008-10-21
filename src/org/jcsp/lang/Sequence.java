@@ -373,7 +373,7 @@ public class Sequence implements CSProcess
      * The extended network
      * will be executed the next time run() is invoked.
      *
-     * @param processes the processes to be added
+     * @param newProcesses the processes to be added
      */
     public synchronized void addProcess(CSProcess[] newProcesses)
     {
