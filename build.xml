@@ -262,5 +262,11 @@
 	<target name="all-jars" depends="jcsp-core-jar,jcsp-all-jar,jcsp-demos-jar,jcsp-demos-util-jar,jcsp-demos-src-jar"/>
 	<target name="all-javadoc" depends="jcsp-core-javadoc,jcsp-all-javadoc"/>
 	<target name="all" depends="all-jars,all-javadoc,demo-batch-files,release-jar"/>
+
+	<target name="clean" >
+		<delete dir="${build}" />
+		<delete dir="${docs}" />
+		<delete dir="${dist}" />
+	</target>		
 	
 </project>
