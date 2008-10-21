@@ -2,7 +2,7 @@
 
 <property name="src" location="src"/>
 <property name="build" location="jartemp"/>
-<property name="jcsp-version" value="1.1-rc3"/>
+<property name="jcsp-version" value="1.1-rc4"/>
 <property name="dist"  location="dist/jcsp-${jcsp-version}"/>
 <property name="copyright" value="Copyright 1997-2008 P.D.Austin and P.H.Welch - All Rights Reserved"/>
 	
