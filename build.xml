@@ -127,7 +127,7 @@
 		<include name="GenerateBatchFiles.java"/>
 	</javac>
 	<java classpath="${build}" classname="GenerateBatchFiles" fork="true" dir="${dist}">
-		<arg value="../../demos-list.txt"/>
+		<arg value="..\..\demos-list.txt"/>
 	</java>
 </target>
 	

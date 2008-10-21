@@ -365,36 +365,42 @@ public class Parallel implements CSProcess
     }
     
     /**
-	   * Construct a new <TT>Parallel</TT> object with the processes specified.
-	   *
-	   * @param processes The processes to be executed in parallel
-	   */
-	  public Parallel (CSProcess[][] processes) {
-	    if (processes != null) {
-	      int count = 0;
-	      for (int i = 0; i < processes.length; i++) {
-	        if (processes[i] != null) count += processes[i].length;
-	      }
-	      nProcesses = count;
-	      this.processes = new CSProcess[nProcesses];
-	      count = 0;
-	      for (int i = 0; i < processes.length; i++) {
-	        if (processes[i] != null) {
-		  int n = processes[i].length;
-	          System.arraycopy (processes[i], 0, this.processes, count, n);
-		  count += n;
-		}
-	      }
-	      parThreads = new ParThread[nProcesses];
-	    }
-	    else {
-	      nProcesses = 0;
-	      this.processes = new CSProcess[0];
-	      parThreads = new ParThread[0];
-	    }
-	    processesChanged = true;
-	    this.priority = false;
-	  }
+     * Construct a new <TT>Parallel</TT> object with the processes specified.
+     *
+     * @param processes The processes to be executed in parallel
+     */
+    public Parallel (CSProcess[][] processes)
+    {
+        if (processes != null)
+        {
+            int count = 0;
+            for (int i = 0; i < processes.length; i++)
+            {
+                if (processes[i] != null) count += processes[i].length;
+            }
+            nProcesses = count;
+            this.processes = new CSProcess[nProcesses];
+            count = 0;
+            for (int i = 0; i < processes.length; i++)
+            {
+                if (processes[i] != null)
+                {
+                    int n = processes[i].length;
+                    System.arraycopy (processes[i], 0, this.processes, count, n);
+                    count += n;
+                }
+            }
+            parThreads = new ParThread[nProcesses];
+        }
+        else
+        {
+            nProcesses = 0;
+            this.processes = new CSProcess[0];
+            parThreads = new ParThread[0];
+        }
+        processesChanged = true;
+        this.priority = false;
+    }
 
     /**
      * Construct a new <TT>Parallel</TT> object with the processes specified.
@@ -454,7 +460,7 @@ public class Parallel implements CSProcess
      * The extended network will be executed the next time
      * <TT>run()</TT> is invoked.
      *
-     * @param processes the CSProcesses to be added
+     * @param newProcesses the CSProcesses to be added
      */
     public void addProcess(CSProcess[] newProcesses)
     {
@@ -486,7 +492,7 @@ public class Parallel implements CSProcess
      * @param process the process to be inserted
      * @param index the index at which to insert the process
      */
-    void insertProcessAt(CSProcess process, int index)
+    public void insertProcessAt(CSProcess process, int index)
     {
         synchronized (sync)
         {
@@ -584,8 +590,12 @@ public class Parallel implements CSProcess
     /**
      * @return the number of processes currently registered.
      */
-    public synchronized int getNumberProcesses() {
-        return nProcesses;
+    public int getNumberProcesses() {
+        int n;
+        synchronized (sync) {
+            n = nProcesses;
+        }
+        return n;
     }
 
     /**
@@ -600,23 +610,31 @@ public class Parallel implements CSProcess
      * of thread creation happens only once).</I></P>
      */
     public void run() {
-        if (nProcesses > 0) {
 
-            CSProcess myProcess;
+        boolean emptyRun = true;
 
-            int currentPriority = 0;
-            int maxPriority = 0;
-            if (priority) {
-                Thread thread = Thread.currentThread();
-                currentPriority = thread.getPriority();
-                maxPriority =
-                        Math.min(
-                                currentPriority + nProcesses - 1,
-                                Math.min(Thread.MAX_PRIORITY,
-                                         thread.getThreadGroup().getMaxPriority()));
-            }
+        CSProcess myProcess = null;
 
-            synchronized (sync) {
+        synchronized (sync) {
+
+            if (nProcesses > 0) {
+
+                emptyRun = false;
+
+                int currentPriority = 0;
+                int maxPriority = 0;
+                if (priority)
+                {
+                    Thread thread = Thread.currentThread();
+                    currentPriority = thread.getPriority();
+                    maxPriority = Math.min(
+                        currentPriority + nProcesses - 1,
+                        Math.min(Thread.MAX_PRIORITY,
+                            thread.getThreadGroup().getMaxPriority()
+                        )
+                    );
+                }
+
                 barrier.reset(nProcesses);
                 myProcess = processes[nProcesses - 1];
                 if (processesChanged) {
@@ -665,11 +683,17 @@ public class Parallel implements CSProcess
                 }
             }
 
+        }   // end synchronized block
+
+        if (! emptyRun) {
+
             try {
                 myProcess.run();
             } catch (ProcessInterruptedException e) {
                 // If this was raised then we must propogate the interrupt signal to other processes
-                synchronized (sync) {
+                // PHW: Why?  This seems unnecessary ... and, in any case, isn't done if sibling
+                // processes (in their parThreads) are interrupted!
+                synchronized (sync) {     // PHW: why synchronize?
                     for (int i = 0; i < nThreads; i++) {
                         try {
                             parThreads[i].interrupt();

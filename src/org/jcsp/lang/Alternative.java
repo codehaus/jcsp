@@ -48,7 +48,7 @@ package org.jcsp.lang;
  * that need to <I>Alt</I> over more than one set of guards will need a separate
  * <code>Alternative</code> instance for each set.
  * <P>
- * Six types of <code>Guard</code> are provided in <code>jcsp.lang</code>:
+ * Eight types of <code>Guard</code> are provided in <code>jcsp.lang</code>:
  * <UL>
  *   <LI>
  *      {@link AltingChannelInput}: <I>object channel input</I> --
@@ -57,8 +57,16 @@ package org.jcsp.lang;
  *      {@link AltingChannelInputInt}: <I>integer channel input</I> --
  *      ready if unread data is pending in the channel.
  *   <LI>
- *      {@link AltingChannelAccept}: <I>CALL channel accept</I> --
- *      ready if an unaccepted call is pending on the channel.
+ *      {@link AltingChannelOutput}: <I>object channel output</I> --
+ *      ready if a reading process can take the offered data
+ *      ({@link One2OneChannelSymmetric <i>symmetric</i>} channels only).
+ *   <LI>
+ *      {@link AltingChannelOutputInt}: <I>integer channel output</I> --
+ *      ready if a reading process can take the offered data
+ *      ({@link One2OneChannelSymmetricInt <i>symmetric</i>} channels only).
+ *   <LI>
+ *      {@link AltingChannelAccept}: <I>CALL accept</I> --
+ *      ready if an unaccepted call is pending.
  *   <LI>
  *      {@link AltingBarrier}: <I>barrier synchronisation</I> --
  *      ready if all enrolled processes are offering to synchronise.

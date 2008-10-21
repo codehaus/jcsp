@@ -57,10 +57,10 @@ public class BlackHoleChannelInt implements ChannelOutputInt
   /**
    * Write an integer to the channel and loose it.
    *
-   * @param value the object to write to the channel.
+   * @param n the integer to write to the channel.
    */
 
-  public void write(int i)
+  public void write(int n)
   {    
   }  
   
