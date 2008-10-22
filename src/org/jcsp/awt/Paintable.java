@@ -69,7 +69,7 @@ public interface Paintable
     * Register the <TT>Component</TT> that will delegate its <TT>paint</TT> and
     * <TT>update</TT> methods here.
     *
-    * @param <TT>c</TT> the <TT>Component</TT> that will do the delegating.
+    * @param c the Component that will do the delegating.
     */
    public void register(final Component c);
    
@@ -77,7 +77,7 @@ public interface Paintable
     * This is the call-back delegated here by the registered <TT>Component</TT>.
     * It will normally be the JVM <I>event thread</I> that is making this call.
     *
-    * @param <TT>g</TT> the graphics context for the painting.
+    * @param g the graphics context for the painting.
     */
    public void paint(final Graphics g);
    
@@ -85,7 +85,7 @@ public interface Paintable
     * This is the call-back delegated here by the registered <TT>Component</TT>.
     * It will normally be the JVM <I>event thread</I> that is making this call.
     *
-    * @param <TT>g</TT> the graphics context for the painting.
+    * @param g the graphics context for the painting.
     */
    public void update(final Graphics g);
 }

@@ -107,7 +107,7 @@ public class ZeroBuffer implements ChannelDataStore, Serializable
      * <P>
      * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>FULL</TT>.
      *
-     * @param value the <TT>Object</TT> to put into the <TT>ZeroBuffer</TT>
+     * @param value the Object to put into the ZeroBuffer
      */
     public void put(Object value)
     {

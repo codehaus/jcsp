@@ -101,7 +101,7 @@ public class ZeroBufferInt implements ChannelDataStoreInt, Serializable
      * <P>
      * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>FULL</TT>.
      *
-     * @param value the <TT>int</TT> to put into the <TT>ZeroBufferInt</TT>
+     * @param value the int to put into the ZeroBufferInt
      */
     public void put(int value)
     {

@@ -69,7 +69,7 @@ public class BufferInt implements ChannelDataStoreInt, Serializable
   /**
    * Construct a new <TT>BufferInt</TT> with the specified size.
    *
-   * @param size the number of <TT>int</TT>s the <TT>BufferInt</TT> can store.
+   * @param size the number of ints the BufferInt can store.
    * @throws BufferIntSizeError if <TT>size</TT> is negative.  Note: no action
    * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
    * - application code generating it is in error and needs correcting.
@@ -124,7 +124,7 @@ public class BufferInt implements ChannelDataStoreInt, Serializable
    * <P>
    * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>FULL</TT>.
    *
-   * @param value the <TT>int</TT> to put into the <TT>BufferInt</TT>
+   * @param value the int to put into the BufferInt
    */
   public void put (int value) { 
     buffer[lastIndex] = value;

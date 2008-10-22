@@ -341,7 +341,7 @@ public class ActiveCheckboxMenuItem extends CheckboxMenuItem implements CSProces
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>actionEvent</TT> the channel down which to send <TT>ActionEvent</TT>s.
+    * @param actionEvent the channel down which to send ActionEvents.
     */
    public void addActionEventChannel(ChannelOutput actionEvent)
    {
@@ -363,7 +363,7 @@ public class ActiveCheckboxMenuItem extends CheckboxMenuItem implements CSProces
    static public interface Configure
    {
       /**
-       * @param <TT>checkboxMenuItem</TT> the CheckboxMenuItem being configured.
+       * @param checkboxMenuItem the CheckboxMenuItem being configured.
        */
       public void configure(final CheckboxMenuItem checkboxMenuItem);
    }

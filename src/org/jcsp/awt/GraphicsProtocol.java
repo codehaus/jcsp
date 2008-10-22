@@ -127,7 +127,7 @@ public abstract class GraphicsProtocol extends TaggedProtocol
       
       /**
        *
-       * @param <TT>color</TT> the new background colour for the graphics component.
+       * @param color the new background colour for the graphics component.
        */
       public SetBackground(final Color color)
       {
@@ -161,7 +161,7 @@ public abstract class GraphicsProtocol extends TaggedProtocol
       final MemoryImageSource mis;
       
       /**
-       * @param <TT>mis</TT> the MemoryImageSource for the graphics component.
+       * @param mis the MemoryImageSource for the graphics component.
        */
       public MakeMISImage(final MemoryImageSource mis)
       {
@@ -180,7 +180,7 @@ public abstract class GraphicsProtocol extends TaggedProtocol
       final Paintable paintable;
       
       /**
-       * @param <TT>paintable</TT> the Paintable object to which the graphics component
+       * @param paintable the Paintable object to which the graphics component
        * will delegate its paint/update methods.
        */
       public SetPaintable(final Paintable paintable)
@@ -197,7 +197,7 @@ public abstract class GraphicsProtocol extends TaggedProtocol
    static public interface Configure
    {
       /**
-       * @param <TT>c</TT> the Component being configured.
+       * @param c the Component being configured.
        */
       public Object configure(final Component c);
    }
@@ -216,7 +216,7 @@ public abstract class GraphicsProtocol extends TaggedProtocol
       final Configure c;
       
       /**
-       * @param <TT>c</TT> the object implementing the user's configuration requirements
+       * @param c the object implementing the user's configuration requirements
        * for the graphics component.
        */
       public General(final Configure c)

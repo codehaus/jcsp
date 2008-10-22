@@ -59,10 +59,10 @@ public class ActiveButtonState
     * Constructs a new <TT>ActiveButtonState</TT>, performing consistency
     * checks on its supplied arguments.
     *
-    * @param <TT>labelId</TT> the button labels for this state.
-    * @param <TT>enable</TT> the enable/disable status of each button for this state
+    * @param labelId the button labels for this state.
+    * @param enable the enable/disable status of each button for this state
     *   (true <==> enabled).
-    * @param <TT>next</TT> the next state after each button is pushed.
+    * @param next the next state after each button is pushed.
     * @throws ActiveButtonState.BadArguments if the consistency check fails.
     *   The exception contains details of the error.
     */
@@ -76,11 +76,11 @@ public class ActiveButtonState
     * Constructs a new <TT>ActiveButtonState</TT>, performing consistency
     * checks on its supplied arguments, with a <I>verbose</I> reporting option.
     *
-    * @param <TT>labelId</TT> the button labels for this state.
-    * @param <TT>enable</TT> the enable/disable status of each button for this state
+    * @param labelId the button labels for this state.
+    * @param enable the enable/disable status of each button for this state
     *   (true <==> enabled).
-    * @param <TT>next</TT> the next state after each button is pushed.
-    * @param <TT>verbose</TT> if true, a running commentary is printed on the consistency checks.
+    * @param next the next state after each button is pushed.
+    * @param verbose if true, a running commentary is printed on the consistency checks.
     * @throws ActiveButtonState.BadArguments if the consistency check fails.
     *   The exception contains details of the error.
     */
@@ -176,7 +176,7 @@ public class ActiveButtonState
    {
       /**
        *
-       * @param <TT>s</TT> details of the consistency failure.
+       * @param s details of the consistency failure.
        */
       public BadArguments(String s)
       {

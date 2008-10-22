@@ -49,7 +49,7 @@ public interface Display
    * be interpreted in ascending order of index.
    * <P>
    * 
-   * @param <TT>c</TT> the array of <TT>GraphicsCommand</TT>s to be interpreted.
+   * @param c the array of GraphicsCommands to be interpreted.
    */
   public void set (final GraphicsCommand[] c);
 
@@ -57,7 +57,7 @@ public interface Display
    * Sets the <TT>GraphicsCommand</TT> to be interpreted.
    * <P>
    * 
-   * @param <TT>c</TT> the array of <TT>GraphicsCommand</TT>s to be interpreted.
+   * @param c the array of GraphicsCommands to be interpreted.
    */
   public void set (final GraphicsCommand c);
 
@@ -65,7 +65,7 @@ public interface Display
    * Extends the array of <TT>GraphicsCommand</TT>s to be interpreted.
    * <P>
    * 
-   * @param <TT>c</TT> the extra <TT>GraphicsCommand</TT>s to be interpreted.
+   * @param c the extra GraphicsCommands to be interpreted.
    * @return the start index of the extension.
    */
   public int extend (final GraphicsCommand[] c);
@@ -74,7 +74,7 @@ public interface Display
    * Extends the array of <TT>GraphicsCommand</TT>s to be executed by one command.
    * <P>
    * 
-   * @param <TT>c</TT> the extra <TT>GraphicsCommand</TT> to be interpreted.
+   * @param c the extra GraphicsCommand to be interpreted.
    * @return the start index of the extension.
    */
   public int extend (final GraphicsCommand c);
@@ -86,8 +86,8 @@ public interface Display
    * return false.
    * <P>
    * 
-   * @param <TT>c</TT> the new <TT>GraphicsCommand</TT>s to be interpreted.
-   * @param <TT>i</TT> the start index for the replacement.
+   * @param c the new GraphicsCommands to be interpreted.
+   * @param i the start index for the replacement.
    * @return true if and only if the changes are successfully made.
    */
   public boolean change (final GraphicsCommand[] c, final int i);
@@ -99,8 +99,8 @@ public interface Display
    * return false.
    * <P>
    * 
-   * @param <TT>c</TT> the new <TT>GraphicsCommand</TT> to be interpreted.
-   * @param <TT>i</TT> the index for the replacement.
+   * @param c the new GraphicsCommand to be interpreted.
+   * @param i the index for the replacement.
    * @return true if and only if the changes are successfully made.
    */
   public boolean change (final GraphicsCommand c, final int i);

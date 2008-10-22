@@ -248,7 +248,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * and no configuration or event channels.
     *
     * @param parent the parent frame for the fileDialog.
-    * @param mode <TT>java.awt.FileDialog.LOAD</TT> or <TT>java.awt.FileDialog.SAVE</TT>.
+    * @param mode java.awt.FileDialog.LOAD or java.awt.FileDialog.SAVE.
     */
    public ActiveFileDialog(Frame parent, int mode)
    {
@@ -273,7 +273,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     *
     * @param parent the parent frame for the fileDialog.
     * @param title the title of the fileDialog.
-    * @param mode <TT>java.awt.FileDialog.LOAD</TT> or <TT>java.awt.FileDialog.SAVE</TT>.
+    * @param mode java.awt.FileDialog.LOAD or java.awt.FileDialog.SAVE.
     */
    public ActiveFileDialog(Frame parent, String title, int mode)
    {
@@ -302,7 +302,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * @param event the directory and file names will be output whenever selected
     * -- can be null if no notification is required.
     * @param parent the parent frame for the fileDialog.
-    * @param mode <TT>java.awt.FileDialog.LOAD</TT> or <TT>java.awt.FileDialog.SAVE</TT>.
+    * @param mode java.awt.FileDialog.LOAD or java.awt.FileDialog.SAVE.
     */
    public ActiveFileDialog(ChannelInput configure, ChannelOutput event, Frame parent, int mode)
    {
@@ -333,7 +333,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * -- can be null if no notification is required.
     * @param parent the parent frame for the fileDialog.
     * @param title the title of the fileDialog.
-    * @param mode <TT>java.awt.FileDialog.LOAD</TT> or <TT>java.awt.FileDialog.SAVE</TT>.
+    * @param mode java.awt.FileDialog.LOAD or java.awt.FileDialog.SAVE.
     * @param modal if true, fileDialog blocks input to the parent window when shown.
     */
    public ActiveFileDialog(ChannelInput configure, ChannelOutput event, Frame parent, String title, int mode)
@@ -364,7 +364,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>windowEvent</TT> the channel down which to send <TT>ContainerEvent</TT>s.
+    * @param windowEvent the channel down which to send ContainerEvents.
     */
    public void addWindowEventChannel(ChannelOutput windowEvent)
    {
@@ -385,7 +385,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>containerEvent</TT> the channel down which to send <TT>ContainerEvent</TT>s.
+    * @param containerEvent the channel down which to send ContainerEvents.
     */
    public void addContainerEventChannel(ChannelOutput containerEvent)
    {
@@ -406,7 +406,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>componentEvent</TT> the channel down which to send <TT>ComponentEvent</TT>s.
+    * @param componentEvent the channel down which to send ComponentEvents.
     */
    public void addComponentEventChannel(ChannelOutput componentEvent)
    {
@@ -427,7 +427,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>focusEvent</TT> the channel down which to send <TT>FocusEvent</TT>s.
+    * @param focusEvent the channel down which to send FocusEvents.
     */
    public void addFocusEventChannel(ChannelOutput focusEvent)
    {
@@ -448,7 +448,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>keyEvent</TT> the channel down which to send <TT>KeyEvent</TT>s.
+    * @param keyEvent the channel down which to send KeyEvents.
     */
    public void addKeyEventChannel(ChannelOutput keyEvent)
    {
@@ -469,7 +469,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseEvent</TT> the channel down which to send <TT>MouseEvent</TT>s.
+    * @param mouseEvent the channel down which to send MouseEvents.
     */
    public void addMouseEventChannel(ChannelOutput mouseEvent)
    {
@@ -490,7 +490,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseMotionEvent</TT> the channel down which to send <TT>MouseMotionEvent</TT>s.
+    * @param mouseMotionEvent the channel down which to send MouseMotionEvents.
     */
    public void addMouseMotionEventChannel(ChannelOutput mouseMotionEvent)
    {
@@ -512,7 +512,7 @@ public class ActiveFileDialog extends FileDialog implements CSProcess
    static public interface Configure
    {
       /**
-       * @param <TT>fileDialog</TT> the FileDialog being configured.
+       * @param fileDialog the FileDialog being configured.
        */
       public void configure(final FileDialog fileDialog);
    }

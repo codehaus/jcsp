@@ -333,18 +333,18 @@ public class ActiveButtonControl implements CSProcess
     * Constructs a new <TT>ActiveButtonControl</TT>, performing consistency
     * checks on its supplied arguments.
     *
-    * @param <TT>event</TT> equal-indexed elements of <TT>event</TT> and <TT>configure</TT>
+    * @param event equal-indexed elements of event and configure
     *   must be connected to the <I>same</I> {@link ActiveButton}.
-    * @param <TT>configure</TT> equal-indexed elements of <TT>event</TT> and <TT>configure</TT>
+    * @param configure equal-indexed elements of event and configure
     *   must be connected to the <I>same</I> {@link ActiveButton}.
-    * @param <TT>report</TT> the channel on which state transitions are reported.  A report has
+    * @param report the channel on which state transitions are reported.  A report has
     *   up to three messages: the new state, the index of the button triggering
     *   the transition ({@link #setReportButtonIndex optional}) and its label
     *   ({@link #setReportButtonLabel optional}).
-    * @param <TT>label</TT> an array of string arrays (one for each controlled botton).  Each
+    * @param label an array of string arrays (one for each controlled botton).  Each
     *   string array defines the label set allowed for each button.
-    * @param <TT>state</TT> the state transition table.
-    * @param <TT>startState</TT> the starting state for this finite state machine.
+    * @param state the state transition table.
+    * @param startState the starting state for this finite state machine.
     * @throws ActiveButtonControl.BadArguments if the consistency check fails.
     *   The exception contains details of the error.
     */
@@ -363,19 +363,19 @@ public class ActiveButtonControl implements CSProcess
     * Constructs a new <TT>ActiveButtonControl</TT>, performing consistency
     * checks on its supplied arguments, with a <I>verbose</I> reporting option.
     *
-    * @param <TT>event</TT> equal-indexed elements of <TT>event</TT> and <TT>configure</TT>
+    * @param event equal-indexed elements of event and configure
     *   must be connected to the <I>same</I> {@link ActiveButton}.
-    * @param <TT>configure</TT> equal-indexed elements of <TT>event</TT> and <TT>configure</TT>
+    * @param configure equal-indexed elements of event and configure
     *   must be connected to the <I>same</I> {@link ActiveButton}.
-    * @param <TT>report</TT> the channel on which state transitions are reported.  A report has
+    * @param report the channel on which state transitions are reported.  A report has
     *   up to three messages: the new state, the index of the button triggering
     *   the transition ({@link #setReportButtonIndex optional}) and its label
     *   ({@link #setReportButtonLabel optional}).
-    * @param <TT>label</TT> an array of string arrays (one for each controlled botton).  Each
+    * @param label an array of string arrays (one for each controlled botton).  Each
     *   string array defines the label set allowed for each button.
-    * @param <TT>state</TT> the state transition table.
-    * @param <TT>startState</TT> the starting state for this finite state machine.
-    * @param <TT>verbose</TT> if true, a running commentary is printed on the consistency checks
+    * @param state the state transition table.
+    * @param startState the starting state for this finite state machine.
+    * @param verbose if true, a running commentary is printed on the consistency checks
     *   and state transitions as they occur.
     * @throws ActiveButtonControl.BadArguments if the consistency check fails.
     *   The exception contains details of the error.
@@ -480,7 +480,7 @@ public class ActiveButtonControl implements CSProcess
     * Defines whether the index of the pushed button causing a state transition should
     * be included in the report.  The default is that it should not be reported.
     *
-    * @param <TT>condition</TT> if true, the button index is reported - otherwise it is not reported.
+    * @param condition if true, the button index is reported - otherwise it is not reported.
     */
    public void setReportButtonIndex(final boolean condition)
    {
@@ -491,7 +491,7 @@ public class ActiveButtonControl implements CSProcess
     * Defines whether the label on the pushed button causing a state transition should
     * be included in the report.  The default is that it should not be reported.
     *
-    * @param <TT>condition</TT> if true, the button label is reported - otherwise it is not reported.
+    * @param condition if true, the button label is reported - otherwise it is not reported.
     */
    public void setReportButtonLabel(final boolean condition)
    {
@@ -572,7 +572,7 @@ public class ActiveButtonControl implements CSProcess
    {
       /**
        *
-       * @param <TT>s</TT> details of the consistency failure.
+       * @param s details of the consistency failure.
        */
       public BadArguments(String s)
       {

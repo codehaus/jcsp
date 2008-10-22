@@ -39,7 +39,7 @@ import org.jcsp.net.*;
  * <p>
  * They also supply methods for destroying the channel ends created, either
  * an individual end or all constructed so far. The later provides a convenient
- * way for a releasing all jcsp.net resources used by a process network. An
+ * way for a releasing all org.jcsp.net resources used by a process network. An
  * instance of an implementing class could be passed as parameter around a
  * process network and used to construct all channels. Once the network has
  * terminated the rousources can be released by calling

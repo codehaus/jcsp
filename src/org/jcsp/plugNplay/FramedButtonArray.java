@@ -42,8 +42,8 @@ import org.jcsp.awt.*;
  * <H2>Description</H2>
  * This process provides a free-standing array of button processes in their
  * own frame.
- * They are just {@link jcsp.awt.ActiveButton}s wrapped in
- * an {@link jcsp.awt.ActiveClosingFrame},
+ * They are just {@link org.jcsp.awt.ActiveButton}s wrapped in
+ * an {@link org.jcsp.awt.ActiveClosingFrame},
  * but save us the trouble of constructing them.
  * They may be displayed in a row or column.
  * <p>
@@ -68,7 +68,7 @@ import org.jcsp.awt.*;
  * </p>
  * <p>
  * For other configuration options, send objects implementing
- * the {@link jcsp.awt.ActiveButton.Configure} interface.
+ * the {@link org.jcsp.awt.ActiveButton.Configure} interface.
  * </p>
  * <p>
  * <I>IMPORTANT: it is essential that event channels from this process are
@@ -86,16 +86,16 @@ import org.jcsp.awt.*;
  * </p>
  * <H2>Example</H2>
  * This runs a framed button array in parallel with a simple application process
- * (<i>in-lined</i> in the {@link jcsp.lang.Parallel <tt>Parallel</tt>} below).
+ * (<i>in-lined</i> in the {@link org.jcsp.lang.Parallel <tt>Parallel</tt>} below).
  * All <i>event</i> channels from the buttons are mulitplexed through
  * an {@link Any2OneChannel} to the application process.
  * The application configures the buttons with their labels, then reports
  * each time any of them is pressed.
  * The application ends when the button labelled <i>`Goodbye World'</i> is pressed.
  * <PRE>
- * import jcsp.lang.*;
- * import jcsp.util.*;
- * import jcsp.plugNplay.*;
+ * import org.jcsp.lang.*;
+ * import org.jcsp.util.*;
+ * import org.jcsp.plugNplay.*;
  * 
  * public class FramedButtonArrayTest {
  * 
@@ -179,10 +179,10 @@ import org.jcsp.awt.*;
  * }
  * </PRE>
  *
- * @see jcsp.awt.ActiveButton
- * @see jcsp.plugNplay.FramedButton
- * @see jcsp.plugNplay.FramedButtonGrid
- * @see jcsp.plugNplay.FramedScrollbar
+ * @see org.jcsp.awt.ActiveButton
+ * @see org.jcsp.plugNplay.FramedButton
+ * @see org.jcsp.plugNplay.FramedButtonGrid
+ * @see org.jcsp.plugNplay.FramedScrollbar
  *
  * @author P.H.Welch
  *

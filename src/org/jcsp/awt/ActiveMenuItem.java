@@ -239,7 +239,7 @@ public class ActiveMenuItem extends MenuItem implements CSProcess
     * with no configuration or event channels.
     *
     * @param s the initial label displayed on the menuItem.
-    * @param ms the <TT>MenuShortcut</TT> for the menuItem.
+    * @param ms the MenuShortcut for the menuItem.
     */
    public ActiveMenuItem(String s, MenuShortcut ms)
    {
@@ -280,7 +280,7 @@ public class ActiveMenuItem extends MenuItem implements CSProcess
     * @param event the current label will be output when the menuItem is selected
     * -- can be null if no notification is required.
     * @param s the initial label displayed on the menuItem.
-    * @param ms the <TT>MenuShortcut</TT> for the menuItem.
+    * @param ms the MenuShortcut for the menuItem.
     */
    public ActiveMenuItem(ChannelInput configure, ChannelOutput event, String s, MenuShortcut ms)
    {
@@ -316,7 +316,7 @@ public class ActiveMenuItem extends MenuItem implements CSProcess
    static public interface Configure
    {
       /**
-       * @param <TT>menuItem</TT> the MenuItem being configured.
+       * @param menuItem the MenuItem being configured.
        */
       public void configure(final MenuItem menuItem);
    }

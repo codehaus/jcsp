@@ -246,7 +246,7 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     * Constructs an <TT>ActiveCheckbox</TT> with the label s, initial state false
     * and no configuration or event channels.
     *
-    * @param s the label displayed on the <TT>ActiveCheckbox</TT>.
+    * @param s the label displayed on the ActiveCheckbox.
     */
    public ActiveCheckbox(String s)
    {
@@ -257,8 +257,8 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     * Constructs an <TT>ActiveCheckbox</TT> with the label <TT>s</TT>,
     * initial <TT>state</TT> and no configuration or event channels.
     *
-    * @param s the label displayed on the <TT>ActiveCheckbox</TT>.
-    * @param state the initial state of the <TT>ActiveCheckbox</TT>
+    * @param s the label displayed on the ActiveCheckbox.
+    * @param state the initial state of the ActiveCheckbox
     * (<TT>true</TT> => <I>on</I>, <TT>false</TT> => <I>off</I>).
     */
    public ActiveCheckbox(String s, boolean state)
@@ -271,10 +271,10 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     * <TT>group</TT> with the label <TT>s</TT>,
     * initial <TT>state</TT> and no configuration or event channels.
     *
-    * @param s the label displayed on the <TT>ActiveCheckbox</TT>.
-    * @param state the initial state of the <TT>ActiveCheckbox</TT>.
+    * @param s the label displayed on the ActiveCheckbox.
+    * @param state the initial state of the ActiveCheckbox.
     * (<TT>true</TT> => <I>on</I>, <TT>false</TT> => <I>off</I>)
-    * @param group the CheckboxGroup for the <TT>ActiveCheckbox</TT>.
+    * @param group the CheckboxGroup for the ActiveCheckbox.
     */
    public ActiveCheckbox(String s, boolean state, CheckboxGroup group)
    {
@@ -287,7 +287,7 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event the <TT>ItemEvent</TT> will be output when the choice
+    * @param event the ItemEvent will be output when the choice
     * is exercised -- can be null if no notification is required.
     */
    public ActiveCheckbox(ChannelInput configure, ChannelOutput event)
@@ -301,9 +301,9 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event the <TT>ItemEvent</TT> will be output when the choice
+    * @param event the ItemEvent will be output when the choice
     * is exercised -- can be null if no notification is required.
-    * @param s the label displayed on the <TT>ActiveCheckbox</TT>.
+    * @param s the label displayed on the ActiveCheckbox.
     */
    public ActiveCheckbox(ChannelInput configure, ChannelOutput event, String s)
    {
@@ -316,10 +316,10 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event the <TT>ItemEvent</TT> will be output when the choice
+    * @param event the ItemEvent will be output when the choice
     * is exercised -- can be null if no notification is required.
-    * @param s the label displayed on the <TT>ActiveCheckbox</TT>.
-    * @param state the initial state of the <TT>ActiveCheckbox</TT>.
+    * @param s the label displayed on the ActiveCheckbox.
+    * @param state the initial state of the ActiveCheckbox.
     * (<TT>true</TT> => <I>on</I>, <TT>false</TT> => <I>off</I>)
     */
    public ActiveCheckbox(ChannelInput configure, ChannelOutput event, String s, boolean state)
@@ -334,12 +334,12 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event the <TT>ItemEvent</TT> will be output when the choice
+    * @param event the ItemEvent will be output when the choice
     * is exercised -- can be null if no notification is required.
-    * @param s the label displayed on the <TT>ActiveCheckbox</TT>.
-    * @param state the initial state of the <TT>ActiveCheckbox</TT>.
+    * @param s the label displayed on the ActiveCheckbox.
+    * @param state the initial state of the ActiveCheckbox.
     * (<TT>true</TT> => <I>on</I>, <TT>false</TT> => <I>off</I>)
-    * @param group the CheckboxGroup for the <TT>ActiveCheckbox</TT>.
+    * @param group the CheckboxGroup for the ActiveCheckbox.
     */
    public ActiveCheckbox(ChannelInput configure, ChannelOutput event,
                          String s, boolean state, CheckboxGroup group)
@@ -377,7 +377,7 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>componentEvent</TT> the channel down which to send <TT>ComponentEvent</TT>s.
+    * @param componentEvent the channel down which to send ComponentEvents.
     */
    public void addComponentEventChannel(ChannelOutput componentEvent)
    {
@@ -398,7 +398,7 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>focusEvent</TT> the channel down which to send <TT>FocusEvent</TT>s.
+    * @param focusEvent the channel down which to send FocusEvents.
     */
    public void addFocusEventChannel(ChannelOutput focusEvent)
    {
@@ -419,7 +419,7 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>keyEvent</TT> the channel down which to send <TT>KeyEvent</TT>s.
+    * @param keyEvent the channel down which to send KeyEvents.
     */
    public void addKeyEventChannel(ChannelOutput keyEvent)
    {
@@ -440,7 +440,7 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseEvent</TT> the channel down which to send <TT>MouseEvent</TT>s.
+    * @param mouseEvent the channel down which to send MouseEvents.
     */
    public void addMouseEventChannel(ChannelOutput mouseEvent)
    {
@@ -461,7 +461,7 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseMotionEvent</TT> the channel down which to send <TT>MouseMotionEvent</TT>s.
+    * @param mouseMotionEvent the channel down which to send MouseMotionEvents.
     */
    public void addMouseMotionEventChannel(ChannelOutput mouseMotionEvent)
    {
@@ -483,7 +483,7 @@ public class ActiveCheckbox extends Checkbox implements CSProcess
    static public interface Configure
    {
       /**
-       * @param <TT>checkbox</TT> the Checkbox being configured.
+       * @param checkbox the Checkbox being configured.
        */
       public void configure(final Checkbox checkbox);  
    }

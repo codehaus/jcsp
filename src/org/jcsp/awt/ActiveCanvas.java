@@ -262,8 +262,8 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * <I>NOTE: This method must be called before this process is run.</I>
     * <P>
     *
-    * @param <TT>toGraphics</TT> the channel down which <TT>GraphicsProtocol</TT> objects are sent.
-    * @param <TT>fromGraphics</TT> the reply/acknowledgement channel responding to the <TT>GraphicsProtocol</TT> object.
+    * @param toGraphics the channel down which GraphicsProtocol objects are sent.
+    * @param fromGraphics the reply/acknowledgement channel responding to the GraphicsProtocol object.
     */
    public void setGraphicsChannels(ChannelInput toGraphics, ChannelOutput fromGraphics)
    {
@@ -303,7 +303,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * channel.
     * <P>
     *
-    * @param <TT>paintable</TT> the object to be used for painting/updating the canvas.
+    * @param paintable the object to be used for painting/updating the canvas.
     */
    public void setPaintable(Paintable paintable)
    {
@@ -360,7 +360,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * <I>NOTE: This method must be called before this process is run.</I>
     * <P>
     *
-    * @param <TT>componentEvent</TT> the channel down which to send <TT>ComponentEvent</TT>s.
+    * @param componentEvent the channel down which to send ComponentEvents.
     */
    public void addComponentEventChannel(ChannelOutput componentEvent)
    {
@@ -382,7 +382,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * <I>NOTE: This method must be called before this process is run.</I>
     * <P>
     *
-    * @param <TT>focusEvent</TT> the channel down which to send <TT>FocusEvent</TT>s.
+    * @param focusEvent the channel down which to send FocusEvents.
     */
    public void addFocusEventChannel(ChannelOutput focusEvent)
    {
@@ -404,7 +404,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * <I>NOTE: This method must be called before this process is run.</I>
     * <P>
     *
-    * @param <TT>keyEvent</TT> the channel down which to send <TT>KeyEvent</TT>s.
+    * @param keyEvent the channel down which to send KeyEvents.
     */
    public void addKeyEventChannel(ChannelOutput keyEvent)
    {
@@ -426,7 +426,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * <I>NOTE: This method must be called before this process is run.</I>
     * <P>
     *
-    * @param <TT>mouseEvent</TT> the channel down which to send <TT>MouseEvent</TT>s.
+    * @param mouseEvent the channel down which to send MouseEvents.
     */
    public void addMouseEventChannel(ChannelOutput mouseEvent)
    {
@@ -448,7 +448,7 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * <I>NOTE: This method must be called before this process is run.</I>
     * <P>
     *
-    * @param <TT>mouseMotionEvent</TT> the channel down which to send <TT>MouseMotionEvent</TT>s.
+    * @param mouseMotionEvent the channel down which to send MouseMotionEvents.
     */
    public void addMouseMotionEventChannel(ChannelOutput mouseMotionEvent)
    {
@@ -471,8 +471,8 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * <I>NOTE: This method must be called before this process is run.</I>
     * <P>
     *
-    * @param <TT>requestedWidth</TT> the requested width for the canvas.
-    * @param <TT>requestedHeight</TT> the requested height for the canvas.
+    * @param requestedWidth the requested width for the canvas.
+    * @param requestedHeight the requested height for the canvas.
     */
    public void setSize(int requestedWidth, int requestedHeight)
    {

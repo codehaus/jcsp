@@ -295,7 +295,7 @@ public class ActiveTextEnterArea implements CSProcess
     * @param s the initial text displayed in the area.
     * @param rows the rows of the area.
     * @param columns the columns of the area.
-    * @param scrollbars the columns of the area (<TT>java.awt.TextArea.SCROLLBARS_BOTH</TT>,
+    * @param scrollbars the columns of the area (java.awt.TextArea.SCROLLBARS_BOTH,
     * <TT>java.awt.TextArea.SCROLLBARS_VERTICAL_ONLY</TT>,
     * <TT>java.awt.TextArea.SCROLLBARS_HORIZONTAL_ONLY</TT>
     * or <TT>java.awt.TextArea.SCROLLBARS_NONE</TT>).
@@ -309,7 +309,7 @@ public class ActiveTextEnterArea implements CSProcess
     * Constructs a new <TT>ActiveTextEnterArea</TT> with configuration and event channels and scrollbars,
     * but with no initial text or size.
     *
-    * @param configure the <TT>AltingChannelInput</TT> for configuration events
+    * @param configure the AltingChannelInput for configuration events
     * -- can be null if no configuration is required.
     * @param event the current text will be output when the text area is changed
     * -- can be null if no notification is required.
@@ -323,7 +323,7 @@ public class ActiveTextEnterArea implements CSProcess
     * Constructs a new <TT>ActiveTextEnterArea</TT> with configuration and event channels
     * and scrollbars and initial text, but with no initial size.
     *
-    * @param configure the <TT>AltingChannelInput</TT> for configuration events
+    * @param configure the AltingChannelInput for configuration events
     * -- can be null if no configuration is required.
     * @param event the current text will be output when the text area is changed
     * -- can be null if no notification is required.
@@ -338,7 +338,7 @@ public class ActiveTextEnterArea implements CSProcess
     * Constructs a new <TT>ActiveTextEnterArea</TT> with configuration and event channels
     * and scrollbars and initial text and size.
     *
-    * @param configure the <TT>AltingChannelInput</TT> for configuration events
+    * @param configure the AltingChannelInput for configuration events
     * -- can be null if no configuration is required.
     * @param event the current text will be output when the text area is changed
     * -- can be null if no notification is required.
@@ -356,14 +356,14 @@ public class ActiveTextEnterArea implements CSProcess
     * Constructs a new <TT>ActiveTextEnterArea</TT> with configuration and event channels
     * and user-defined scrollbars and initial text and size.
     *
-    * @param configure the <TT>AltingChannelInput</TT> for configuration events
+    * @param configure the AltingChannelInput for configuration events
     * -- can be null if no configuration is required.
     * @param event the current text will be output when the text area is changed
     * -- can be null if no notification is required.
     * @param s the initial text displayed in the area.
     * @param rows the rows of the area.
     * @param columns the columns of the area.
-    * @param scrollbars the columns of the area (<TT>java.awt.TextArea.SCROLLBARS_BOTH</TT>,
+    * @param scrollbars the columns of the area (java.awt.TextArea.SCROLLBARS_BOTH,
     * <TT>java.awt.TextArea.SCROLLBARS_VERTICAL_ONLY</TT>,
     * <TT>java.awt.TextArea.SCROLLBARS_HORIZONTAL_ONLY</TT>
     * or <TT>java.awt.TextArea.SCROLLBARS_NONE</TT>).

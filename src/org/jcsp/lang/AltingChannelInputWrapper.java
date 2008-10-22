@@ -37,7 +37,7 @@ package org.jcsp.lang;
  * Note that usually you do not need the absolute guarantee that this class
  * provides - you can usually just cast the channel to an AltingChannelInput,
  * which prevents you from <I>accidentally</I> writing to the channel.  This
- * class mainly exists for use by some of the jcsp.net classes, where the
+ * class mainly exists for use by some of the org.jcsp.net classes, where the
  * absolute guarantee that you cannot write to it is important.
  *
  * @see org.jcsp.lang.AltingChannelInput

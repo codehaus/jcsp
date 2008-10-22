@@ -102,7 +102,7 @@ public interface ChannelDataStoreInt extends Cloneable {
    * <P>
    * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>FULL</TT>.
    *
-   * @param value the <TT>int</TT> to put into the <TT>ChannelDataStoreInt</TT>
+   * @param value the int to put into the ChannelDataStoreInt
    */
   public abstract void put (int value);
 

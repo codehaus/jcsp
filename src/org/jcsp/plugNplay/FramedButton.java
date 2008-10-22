@@ -49,7 +49,7 @@ import org.jcsp.awt.*;
  * </PRE>
  * <H2>Description</H2>
  * This process provides a free-standing button in its own frame.  It is just
- * an {@link jcsp.awt.ActiveButton} wrapped in an {@link jcsp.awt.ActiveClosingFrame},
+ * an {@link org.jcsp.awt.ActiveButton} wrapped in an {@link org.jcsp.awt.ActiveClosingFrame},
  * but saves us the trouble of constructing it.
  * <p>
  * Wire it to application processes with a <i>configure</i>
@@ -70,7 +70,7 @@ import org.jcsp.awt.*;
  * </p>
  * <p>
  * For other configuration options, send objects implementing
- * the {@link jcsp.awt.ActiveButton.Configure} interface.
+ * the {@link org.jcsp.awt.ActiveButton.Configure} interface.
  * </p>
  * <p>
  * <I>IMPORTANT: it is essential that event channels from this process are
@@ -88,14 +88,14 @@ import org.jcsp.awt.*;
  * </p>
  * <H2>Example</H2>
  * This runs a framed button in parallel with a simple application process
- * (<i>in-lined</i> in the {@link jcsp.lang.Parallel <tt>Parallel</tt>} below).
+ * (<i>in-lined</i> in the {@link org.jcsp.lang.Parallel <tt>Parallel</tt>} below).
  * The application process configures the button with the first of an array
  * of <tt>String</tt> labels, reporting and changing it each time the button
  * is pressed.
  * <PRE>
- * import jcsp.lang.*;
- * import jcsp.util.*;
- * import jcsp.plugNplay.*;
+ * import org.jcsp.lang.*;
+ * import org.jcsp.util.*;
+ * import org.jcsp.plugNplay.*;
  * 
  * public class FramedButtonTest {
  * 
@@ -157,10 +157,10 @@ import org.jcsp.awt.*;
  * }
  * </PRE>
  *
- * @see jcsp.awt.ActiveButton
- * @see jcsp.plugNplay.FramedButtonArray
- * @see jcsp.plugNplay.FramedButtonGrid
- * @see jcsp.plugNplay.FramedScrollbar
+ * @see org.jcsp.awt.ActiveButton
+ * @see org.jcsp.plugNplay.FramedButtonArray
+ * @see org.jcsp.plugNplay.FramedButtonGrid
+ * @see org.jcsp.plugNplay.FramedScrollbar
  * 
  * @author P.H.Welch
  *

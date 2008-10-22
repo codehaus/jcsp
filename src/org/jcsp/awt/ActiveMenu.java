@@ -345,7 +345,7 @@ public class ActiveMenu extends Menu implements CSProcess
    static public interface Configure
    {
       /**
-       * @param <TT>menu</TT> the Menu being configured.
+       * @param menu the Menu being configured.
        */
       public void configure(final Menu menu);
    }

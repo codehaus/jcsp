@@ -65,8 +65,8 @@ public final class Generate implements CSProcess
    /**
     * Construct a new <TT>Generate</TT> process with the output channel <TT>out</TT>.
     *
-    * @param <TT>out</TT> the output channel
-    * @param <TT>n</TT> the integer to generate
+    * @param out the output channel
+    * @param n the integer to generate
     */
    public Generate(final ChannelOutput out, final int n)
    {

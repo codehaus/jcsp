@@ -238,7 +238,7 @@ public class ActiveComponent extends Component implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>componentEvent</TT> the channel down which <TT>ComponentEvent</TT>s will be sent.
+    * @param componentEvent the channel down which ComponentEvents will be sent.
     */
    public void addComponentEventChannel(ChannelOutput componentEvent)
    {
@@ -259,7 +259,7 @@ public class ActiveComponent extends Component implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>focusEvent</TT> the channel down which <TT>FocusEvent</TT>s will be sent.
+    * @param focusEvent the channel down which FocusEvents will be sent.
     */
    public void addFocusEventChannel(ChannelOutput focusEvent)
    {
@@ -280,7 +280,7 @@ public class ActiveComponent extends Component implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>keyEvent</TT> the channel down which <TT>KeyEvent</TT>s will be sent.
+    * @param keyEvent the channel down which KeyEvents will be sent.
     */
    public void addKeyEventChannel(ChannelOutput keyEvent)
    {
@@ -301,7 +301,7 @@ public class ActiveComponent extends Component implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseEvent</TT> the channel down which <TT>MouseEvent</TT>s will be sent.
+    * @param mouseEvent the channel down which MouseEvents will be sent.
     */
    public void addMouseEventChannel(ChannelOutput mouseEvent)
    {
@@ -322,7 +322,7 @@ public class ActiveComponent extends Component implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseMotionEvent</TT> the channel down which <TT>MouseMotionEvent</TT>s will be sent.
+    * @param mouseMotionEvent the channel down which MouseMotionEvents will be sent.
     */
    public void addMouseMotionEventChannel(ChannelOutput mouseMotionEvent)
    {
@@ -344,7 +344,7 @@ public class ActiveComponent extends Component implements CSProcess
    static public interface Configure
    {
       /**
-       * @param <TT>component</TT> the Component being configured.
+       * @param component the Component being configured.
        */
       public void configure(final Component component);  
    }

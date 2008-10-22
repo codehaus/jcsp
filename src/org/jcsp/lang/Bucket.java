@@ -452,7 +452,7 @@ public class Bucket implements Serializable
    * Creates an array of Buckets.
    * <P>
    *
-   * @param n the number of <TT>Bucket</TT>s to create in the array
+   * @param n the number of Buckets to create in the array
    * @return the array of <TT>Bucket</TT>s
    */
   public static Bucket[] create (int n) {

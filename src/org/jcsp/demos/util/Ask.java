@@ -696,7 +696,7 @@ public class Ask
      * from which the <I>standard input</I> stream will later be redirected, so that
      * each line of input can be documented.
      *
-     * @param b if <TT>true</TT>, the response must consist of a single token
+     * @param b if true, the response must consist of a single token
      * - otherwise, multiple tokens are allowed but only the first will be processed.
      */
     public static void setOneTokenReply (boolean b) {

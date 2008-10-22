@@ -65,8 +65,8 @@ public final class GenerateInt implements CSProcess
    /**
     * Construct a new <TT>GenerateInt</TT> process with the output channel <TT>out</TT>.
     *
-    * @param <TT>out</TT> the output channel
-    * @param <TT>n</TT> the number to generate
+    * @param out the output channel
+    * @param n the number to generate
     */
    public GenerateInt(final ChannelOutputInt out, final int n)
    {

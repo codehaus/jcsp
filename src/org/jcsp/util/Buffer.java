@@ -69,7 +69,7 @@ public class Buffer implements ChannelDataStore, Serializable
     /**
      * Construct a new <TT>Buffer</TT> with the specified size.
      *
-     * @param size the number of <TT>Object</TT>s the <TT>Buffer</TT> can store.
+     * @param size the number of Objects the Buffer can store.
      * @throws BufferSizeError if <TT>size</TT> is negative.  Note: no action
      * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
      * - application code generating it is in error and needs correcting.
@@ -125,7 +125,7 @@ public class Buffer implements ChannelDataStore, Serializable
      * <P>
      * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>FULL</TT>.
      *
-     * @param value the <TT>Object</TT> to put into the <TT>Buffer</TT>
+     * @param value the Object to put into the Buffer
      */
     public void put(Object value)
     {

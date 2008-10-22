@@ -1028,7 +1028,7 @@ public class Alternative
     // }
     if (preCondition.length != guard.length) {
       throw new IllegalArgumentException (
-        "*** jcsp.lang.Alternative.select called with a preCondition array\n" +
+        "*** org.jcsp.lang.Alternative.select called with a preCondition array\n" +
         "*** whose length does not match its guard array"
       );
     }
@@ -1099,7 +1099,7 @@ public class Alternative
   public final int fairSelect (boolean[] preCondition) {
     if (preCondition.length != guard.length) {
       throw new IllegalArgumentException (
-        "*** jcsp.lang.Alternative.select called with a preCondition array\n" +
+        "*** org.jcsp.lang.Alternative.select called with a preCondition array\n" +
         "*** whose length does not match its guard array"
       );
     }

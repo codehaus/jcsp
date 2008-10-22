@@ -71,7 +71,7 @@ public class OverFlowingBuffer implements ChannelDataStore, Serializable {
     /**
      * Construct a new <TT>OverFlowingBuffer</TT> with the specified size.
      *
-     * @param size the number of <TT>Object</TT>s the <TT>OverFlowingBuffer</TT> can store.
+     * @param size the number of Objects the OverFlowingBuffer can store.
      * @throws BufferSizeError if <TT>size</TT> is zero or negative.  Note: no action
      * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
      * - application code generating it is in error and needs correcting.
@@ -127,7 +127,7 @@ public class OverFlowingBuffer implements ChannelDataStore, Serializable {
      * <P>
      * If <TT>OverFlowingBuffer</TT> is full, the item is discarded.
      *
-     * @param value the <TT>Object</TT> to put into the <TT>OverFlowingBuffer</TT>
+     * @param value the Object to put into the OverFlowingBuffer
      */
     public void put(Object value) {
         if (counter < buffer.length) {

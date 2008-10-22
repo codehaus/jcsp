@@ -263,7 +263,7 @@ public class ActiveClosingFrame implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event a <TT>WindowEvent</TT> will be output whenever it occurs
+    * @param event a WindowEvent will be output whenever it occurs
     * -- can be null if no notification is required.
     */
    public ActiveClosingFrame(ChannelInput configure, ChannelOutput event)
@@ -277,7 +277,7 @@ public class ActiveClosingFrame implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event a <TT>WindowEvent</TT> will be output whenever it occurs
+    * @param event a WindowEvent will be output whenever it occurs
     * -- can be null if no notification is required.
     * @param title the title for the frame.
     */

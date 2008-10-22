@@ -99,7 +99,7 @@ package org.jcsp.lang;
  * It performs group work as often as the group will allow (i.e. until it, or
  * one of its partner gadgets, is clicked back to <i>individual</i> mode).
  * <PRE>
- * import jcsp.lang.*;
+ * import org.jcsp.lang.*;
  * 
  * public class AltingBarrierGadget0 implements CSProcess {
  * 
@@ -162,8 +162,8 @@ package org.jcsp.lang;
  * an array of <code>AltingBarrier</code> <i>front-ends</i> to operate --
  * one for each gadget:
  * <PRE>
- * import jcsp.lang.*;
- * import jcsp.plugNplay.*;
+ * import org.jcsp.lang.*;
+ * import org.jcsp.plugNplay.*;
  * 
  * public class AltingBarrierGadget0Demo0 {
  * 
@@ -295,8 +295,8 @@ package org.jcsp.lang;
  * Here is the code for these processes.
  * As usual, the constructor just saves all parameters:
  * <PRE>
- * import jcsp.lang.*;
- * import jcsp.awt.*;
+ * import org.jcsp.lang.*;
+ * import org.jcsp.awt.*;
  * 
  * import java.awt.Color;
  * import java.util.Random;
@@ -428,9 +428,9 @@ package org.jcsp.lang;
  * for each <code>AltingBarrier</code> to the correct gadgets --
  * see the <i>re-arrangement</i> below:
  * <PRE>
- * import jcsp.lang.*;
- * import jcsp.util.*;
- * import jcsp.plugNplay.*;
+ * import org.jcsp.lang.*;
+ * import org.jcsp.util.*;
+ * import org.jcsp.plugNplay.*;
  * 
  * import java.awt.Color;
  * import java.util.Random;
@@ -518,9 +518,9 @@ package org.jcsp.lang;
  * The barriers, gadgets and rail track are still one dimensional.
  * Only code differences from the above are shown:
  * <PRE>
- * import jcsp.lang.*;
- * import jcsp.util.*;
- * import jcsp.plugNplay.*;
+ * import org.jcsp.lang.*;
+ * import org.jcsp.util.*;
+ * import org.jcsp.plugNplay.*;
  * 
  * import java.awt.Color;
  * import java.util.Random;
@@ -745,8 +745,8 @@ package org.jcsp.lang;
  * <p>
  * 
  *
- * @see jcsp.lang.Barrier
- * @see jcsp.lang.Alternative
+ * @see org.jcsp.lang.Barrier
+ * @see org.jcsp.lang.Alternative
  * <p>
  * 
  * @author P.H.Welch

@@ -51,7 +51,7 @@ import org.jcsp.awt.*;
  * </PRE>
  * <H2>Description</H2>
  * This process provides a free-standing scrollbar in its own frame.  It is just
- * an {@link jcsp.awt.ActiveScrollbar} wrapped in an {@link jcsp.awt.ActiveClosingFrame},
+ * an {@link org.jcsp.awt.ActiveScrollbar} wrapped in an {@link org.jcsp.awt.ActiveClosingFrame},
  * but saves us the trouble of constructing it.
  * <p>
  * Wire it to application processes with a <i>configure</i> channel (for setting
@@ -73,7 +73,7 @@ import org.jcsp.awt.*;
  * </p>
  * <p>
  * For other configuration options, send objects implementing
- * the {@link jcsp.awt.ActiveScrollbar.Configure} interface.
+ * the {@link org.jcsp.awt.ActiveScrollbar.Configure} interface.
  * </p>
  * <p>
  * <I>IMPORTANT: it is essential that event channels from this process are
@@ -91,13 +91,13 @@ import org.jcsp.awt.*;
  * </p>
  * <H2>Example</H2>
  * This runs a framed scrollbar in parallel with two simple application processes
- * (<i>in-lined</i> in the {@link jcsp.lang.Parallel <tt>Parallel</tt>} below).
+ * (<i>in-lined</i> in the {@link org.jcsp.lang.Parallel <tt>Parallel</tt>} below).
  * One application process reports all movements of the scrollbar.
  * The other disables the scrollbar for 5 seconds at 15 second intervals.
  * <PRE>
- * import jcsp.lang.*;
- * import jcsp.util.ints.*;
- * import jcsp.plugNplay.*;
+ * import org.jcsp.lang.*;
+ * import org.jcsp.util.ints.*;
+ * import org.jcsp.plugNplay.*;
  * 
  * public class FramedScrollbarTest {
  * 
@@ -169,10 +169,10 @@ import org.jcsp.awt.*;
  * }
  * </PRE>
  *
- * @see jcsp.awt.ActiveScrollbar
- * @see jcsp.plugNplay.FramedButton
- * @see jcsp.plugNplay.FramedButtonArray
- * @see jcsp.plugNplay.FramedButtonGrid
+ * @see org.jcsp.awt.ActiveScrollbar
+ * @see org.jcsp.plugNplay.FramedButton
+ * @see org.jcsp.plugNplay.FramedButtonArray
+ * @see org.jcsp.plugNplay.FramedButtonGrid
  *
  * @author P.H.Welch
  *

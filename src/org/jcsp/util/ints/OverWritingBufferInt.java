@@ -77,7 +77,7 @@ public class OverWritingBufferInt implements ChannelDataStoreInt, Serializable
     /**
      * Construct a new <TT>OverWritingBufferInt</TT> with the specified size.
      *
-     * @param size the number of <TT>int</TT>s the <TT>OverWritingBufferInt</TT> can store.
+     * @param size the number of ints the OverWritingBufferInt can store.
      * @throws BufferIntSizeError if <TT>size</TT> is zero or negative.  Note: no action
      * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
      * - application code generating it is in error and needs correcting.
@@ -148,7 +148,7 @@ public class OverWritingBufferInt implements ChannelDataStoreInt, Serializable
      * If <TT>OverWritingBufferInt</TT> is full, the last item
      * previously put into the buffer will be overwritten.
      *
-     * @param value the <TT>int</TT> to put into the <TT>OverWritingBufferInt</TT>
+     * @param value the int to put into the OverWritingBufferInt
      */
     public void put(int value)
     {      

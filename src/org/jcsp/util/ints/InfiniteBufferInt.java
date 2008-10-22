@@ -90,7 +90,7 @@ public class InfiniteBufferInt implements ChannelDataStoreInt, Serializable
     /**
      * Construct a new <TT>InfiniteBufferInt</TT> with the specified initial size.
      *
-     * @param initialSize the number of <TT>int</TT>s
+     * @param initialSize the number of ints
      * the <TT>InfiniteBufferInt</TT> can initially  store.
      * @throws BufferIntSizeError if <TT>initialSize</TT> is zero or negative.  Note: no action
      * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
@@ -147,7 +147,7 @@ public class InfiniteBufferInt implements ChannelDataStoreInt, Serializable
      * <I>Implementation note:</I> if <TT>InfiniteBufferInt</TT> is full, a new internal
      * buffer with double the capacity is constructed and the old data copied across.
      *
-     * @param value the <TT>int</TT> to put into the <TT>InfiniteBufferInt</TT>
+     * @param value the int to put into the InfiniteBufferInt
      */
     public void put(int value)
     {

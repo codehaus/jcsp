@@ -73,7 +73,7 @@ public class OverWriteOldestBuffer implements ChannelDataStore, Serializable
     /**
      * Construct a new <TT>OverWriteOldestBuffer</TT> with the specified size.
      *
-     * @param size the number of <TT>Object</TT>s the <TT>OverWriteOldestBuffer</TT> can store.
+     * @param size the number of Objects the OverWriteOldestBuffer can store.
      * @throws BufferSizeError if <TT>size</TT> is zero or negative.  Note: no action
      * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
      * - application code generating it is in error and needs correcting.
@@ -104,14 +104,13 @@ public class OverWriteOldestBuffer implements ChannelDataStore, Serializable
     
     /**
      * Begins an extended rendezvous by the reader.  
-     * 
      * The semantics of an extended rendezvous on an overwrite-oldest buffer are slightly
      * complicated, but hopefully intuitive.
-     * 
+     * <p>
      * When a reader begins an extended rendezvous, the oldest value is returned from the buffer
-     * (as it would be for a call to {@link get()}).  While an extended rendezvous is ongoing, the
+     * (as it would be for a call to {@link #get()}).  While an extended rendezvous is ongoing, the
      * writer may (repeatedly) write to the buffer, without ever blocking.  
-     * 
+     * <p>
      * When the reader finishes an extended rendezvous, the following options are possible:
      * <ul>
      *   <li> The writer has not written to the channel during the rendezvous.  In this case,
@@ -134,9 +133,9 @@ public class OverWriteOldestBuffer implements ChannelDataStore, Serializable
     }
     
     /**
-     * See {@link startGet()} for a description of the semantics of this method.
+     * This ends an extended rendezvous by the reader.
      * 
-     * @see startGet()
+     * @see #startGet()
      */
     public void endGet()
     {
@@ -154,7 +153,7 @@ public class OverWriteOldestBuffer implements ChannelDataStore, Serializable
      * If <TT>OverWriteOldestBuffer</TT> is full, the <I>oldest</I> item
      * left unread in the buffer will be overwritten.
      *
-     * @param value the <TT>Object</TT> to put into the <TT>OverWriteOldestBuffer</TT>
+     * @param value the Object to put into the OverWriteOldestBuffer
      */
     public void put(Object value)
     {

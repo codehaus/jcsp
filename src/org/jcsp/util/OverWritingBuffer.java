@@ -63,10 +63,10 @@ public class OverWritingBuffer implements ChannelDataStore, Serializable
     /** The number of Objects stored in the Buffer */
     private int counter = 0;
 
-    /** The index of the oldest element (when counter > 0) */
+    /** The index of the oldest element (when counter &gt; 0) */
     private int firstIndex = 0;
 
-    /** The index of the next free element (when counter < buffer.length) */
+    /** The index of the next free element (when counter &lt; buffer.length) */
     private int lastIndex = 0;
     
     private boolean valueWrittenWhileFull = false;
@@ -74,7 +74,7 @@ public class OverWritingBuffer implements ChannelDataStore, Serializable
     /**
      * Construct a new <TT>OverWritingBuffer</TT> with the specified size.
      *
-     * @param size the number of <TT>Object</TT>s the <TT>OverWritingBuffer</TT> can store.
+     * @param size the number of Objects the OverWritingBuffer can store.
      * @throws BufferSizeError if <TT>size</TT> is zero or negative.  Note: no action
      * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
      * - application code generating it is in error and needs correcting.
@@ -109,7 +109,7 @@ public class OverWritingBuffer implements ChannelDataStore, Serializable
      * If <TT>OverWritingBuffer</TT> is full, the last item
      * previously put into the buffer will be overwritten.
      *
-     * @param value the <TT>Object</TT> to put into the <TT>OverWritingBuffer</TT>
+     * @param value the Object to put into the OverWritingBuffer
      */
     public void put(Object value)
     {
@@ -127,19 +127,18 @@ public class OverWritingBuffer implements ChannelDataStore, Serializable
     }
     
     /**
-     * Begins an extended rendezvous by the reader.  
-     * 
+     * This begins an extended rendezvous by the reader.  
      * The semantics of an extended rendezvous on an overwrite-newest buffer are slightly
      * complicated, but hopefully intuitive.
-     * 
+     * <p>
      * If the buffer is of size 2 or larger, the semantics are as follows.
      * Beginning an extended rendezvous will return the oldest value in the buffer, but not remove it.
      * If the writer writes to the buffer during the rendezvous, it will grow the buffer and end up
      * overwriting the newest value as normal.  At the end of the extended rendezvous, the oldest
      * value is removed.
-     * 
+     * <p>
      * If the buffer is of size 1, the semantics are identical to those of an {@link OverWriteOldestBuffer}.
-     * For a complete description, refer to the documentation for the {@link OverWriteOldestBuffer.startGet()} method.
+     * For a complete description, refer to the documentation for the {@link OverWriteOldestBuffer#startGet()} method.
      * 
      * @return The oldest value in the buffer at this time
      */
@@ -150,9 +149,9 @@ public class OverWritingBuffer implements ChannelDataStore, Serializable
     }
     
     /**
-     * See {@link startGet()} for a description of the semantics of this method.
+     * This ends an extended rendezvous by the reader.  
      * 
-     * @see startGet()
+     * @see #startGet()
      */
     public void endGet()
     {

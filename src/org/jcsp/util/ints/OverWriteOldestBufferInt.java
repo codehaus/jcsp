@@ -74,7 +74,7 @@ public class OverWriteOldestBufferInt implements ChannelDataStoreInt, Serializab
     /**
      * Construct a new <TT>OverWriteOldestBufferInt</TT> with the specified size.
      *
-     * @param size the number of <TT>int</TT>s the <TT>OverWriteOldestBufferInt</TT> can store.
+     * @param size the number of ints the OverWriteOldestBufferInt can store.
      * @throws BufferIntSizeError if <TT>size</TT> is zero or negative.  Note: no action
      * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
      * - application code generating it is in error and needs correcting.
@@ -153,7 +153,7 @@ public class OverWriteOldestBufferInt implements ChannelDataStoreInt, Serializab
      * If <TT>OverWriteOldestBufferInt</TT> is full, the <I>oldest</I> item
      * left unread in the buffer will be overwritten.
      *
-     * @param value the <TT>int</TT> to put into the <TT>OverWriteOldestBufferInt</TT>
+     * @param value the int to put into the OverWriteOldestBufferInt
      */
     public void put(int value)
     {

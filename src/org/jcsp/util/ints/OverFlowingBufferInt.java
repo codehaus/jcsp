@@ -72,7 +72,7 @@ public class OverFlowingBufferInt implements ChannelDataStoreInt, Serializable
     /**
      * Construct a new <TT>OverFlowingBufferInt</TT> with the specified size.
      *
-     * @param size the number of <TT>int</TT>s the <TT>OverFlowingBufferInt</TT> can store.
+     * @param size the number of ints the OverFlowingBufferInt can store.
      * @throws BufferIntSizeError if <TT>size</TT> is zero or negative.  Note: no action
      * should be taken to <TT>try</TT>/<TT>catch</TT> this exception
      * - application code generating it is in error and needs correcting.
@@ -126,7 +126,7 @@ public class OverFlowingBufferInt implements ChannelDataStoreInt, Serializable
      * <P>
      * If <TT>OverFlowingBufferInt</TT> is full, the item is discarded.
      *
-     * @param value the <TT>int</TT> to put into the <TT>OverFlowingBufferInt</TT>
+     * @param value the int to put into the OverFlowingBufferInt
      */
     public void put(int value)
     {

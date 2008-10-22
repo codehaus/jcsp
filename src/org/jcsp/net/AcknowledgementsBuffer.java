@@ -130,7 +130,7 @@ class AcknowledgementsBuffer implements ChannelDataStore, Serializable
    /**
     * Construct a new <TT>AcknowledgementsBuffer</TT> with the specified initial size.
     *
-    * @param initialSize the number of <TT>Object</TT>s
+    * @param initialSize the number of Objects
     * the <TT>AcknowledgementsBuffer</TT> can initially  store
     */
    //package-private
@@ -180,7 +180,7 @@ class AcknowledgementsBuffer implements ChannelDataStore, Serializable
     * <I>Implementation note:</I> if <TT>InfiniteBuffer</TT> is full, a new internal
     * buffer with double the capacity is constructed and the old data copied across.
     *
-    * @param value the <TT>Object</TT> to put into the <TT>InfiniteBuffer</TT>
+    * @param value the Object to put into the InfiniteBuffer
     */
    public void put(Object value)
    {

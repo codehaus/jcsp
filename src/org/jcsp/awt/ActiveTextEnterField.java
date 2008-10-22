@@ -256,7 +256,7 @@ public class ActiveTextEnterField implements CSProcess
     * Constructs a new <TT>ActiveTextEnterField</TT> with configuration and event channels,
     * but no initial text.
     *
-    * @param configure the <TT>AltingChannelInput</TT> for configuration events
+    * @param configure the AltingChannelInput for configuration events
     * -- can be null if no configuration is required.
     * @param event the current text will be output when the <I>ENTER</I> or <I>ESCAPE</I> key is pressed
     * -- can be null if no notification is required.
@@ -270,7 +270,7 @@ public class ActiveTextEnterField implements CSProcess
     * Constructs a new <TT>ActiveTextEnterField</TT> with configuration and event channels,
     * initial text and default width.
     *
-    * @param configure the <TT>AltingChannelInput</TT> for configuration events
+    * @param configure the AltingChannelInput for configuration events
     * -- can be null if no configuration is required.
     * @param event the current text will be output when the <I>ENTER</I> or <I>ESCAPE</I> key is pressed
     * -- can be null if no notification is required.
@@ -285,7 +285,7 @@ public class ActiveTextEnterField implements CSProcess
     * Constructs a new <TT>ActiveTextEnterField</TT> with configuration and event channels,
     * initial text and width.
     *
-    * @param configure the <TT>AltingChannelInput</TT> for configuration events
+    * @param configure the AltingChannelInput for configuration events
     * -- can be null if no configuration is required.
     * @param event the current text will be output when the <I>ENTER</I> or <I>ESCAPE</I> key is pressed
     * -- can be null if no notification is required.

@@ -102,7 +102,7 @@ public abstract class NodeAddressID implements Serializable, Cloneable
    /**
     * <p>
     * Returns <CODE>true</CODE> if this <CODE>NodeAddressID</CODE> is known to be
-    * unique within the global jcsp.net domain.
+    * unique within the global org.jcsp.net domain.
     * </p>
     * <p>
     * A Node may have several addresses. If a Node is on an internal network that

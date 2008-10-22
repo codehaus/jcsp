@@ -38,7 +38,7 @@ package org.jcsp.lang;
  * </P>
  * <H2>Example</H2>
  * <PRE>
- * import jcsp.lang.*;
+ * import org.jcsp.lang.*;
  * <I></I>
  * public class AltingIntOutputExample implements CSProcess {
  * <I></I>
@@ -73,8 +73,8 @@ package org.jcsp.lang;
  * }
  * </PRE>
  *
- * @see jcsp.lang.Guard
- * @see jcsp.lang.Alternative
+ * @see org.jcsp.lang.Guard
+ * @see org.jcsp.lang.Alternative
  * @author P.D.Austin and P.H.Welch
  */
 //}}}

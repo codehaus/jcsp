@@ -1162,7 +1162,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param containerEvent the channel down which to send <TT>ContainerEvent</TT>s.
+    * @param containerEvent the channel down which to send ContainerEvents.
     */
    public void addContainerEventChannel(ChannelOutput containerEvent)
    {
@@ -1183,7 +1183,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param componentEvent the channel down which to send <TT>ComponentEvent</TT>s.
+    * @param componentEvent the channel down which to send ComponentEvents.
     */
    public void addComponentEventChannel(ChannelOutput componentEvent)
    {
@@ -1204,7 +1204,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param focusEvent the channel down which to send <TT>FocusEvent</TT>s.
+    * @param focusEvent the channel down which to send FocusEvents.
     */
    public void addFocusEventChannel(ChannelOutput focusEvent)
    {
@@ -1225,7 +1225,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param keyEvent the channel down which to send <TT>KeyEvent</TT>s.
+    * @param keyEvent the channel down which to send KeyEvents.
     */
    public void addKeyEventChannel(ChannelOutput keyEvent)
    {
@@ -1246,7 +1246,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param mouseEvent the channel down which to send <TT>MouseEvent</TT>s.
+    * @param mouseEvent the channel down which to send MouseEvents.
     */
    public void addMouseEventChannel(ChannelOutput mouseEvent)
    {
@@ -1267,7 +1267,7 @@ public class ActiveApplet extends Applet implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param mouseMotionEvent the channel down which to send <TT>MouseMotionEvent</TT>s.
+    * @param mouseMotionEvent the channel down which to send MouseMotionEvents.
     */
    public void addMouseMotionEventChannel(ChannelOutput mouseMotionEvent)
    {

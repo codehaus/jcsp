@@ -122,7 +122,7 @@ public class DisplayList implements Paintable, Display
     * All commands will be executed.
     * <P>
     *
-    * @param <TT>c</TT> the array of <TT>GraphicsCommand</TT>s to be executed.
+    * @param c the array of GraphicsCommands to be executed.
     */
    public void set(final GraphicsCommand[] c)
    {
@@ -165,7 +165,7 @@ public class DisplayList implements Paintable, Display
     * the {@link #update <TT>update</TT>} callback on this object.
     * <P>
     *
-    * @param <TT>c</TT> the <TT>GraphicsCommand</TT> to be executed.
+    * @param c the GraphicsCommand to be executed.
     */
    public void set(final GraphicsCommand c)
    {
@@ -189,7 +189,7 @@ public class DisplayList implements Paintable, Display
     * Only the new commands will be executed.
     * <P>
     *
-    * @param <TT>c</TT> the extra <TT>GraphicsCommand</TT>s to be executed.
+    * @param c the extra GraphicsCommands to be executed.
     * @return the start index of the extension.
     */
    public synchronized int extend(final GraphicsCommand[] c)
@@ -238,7 +238,7 @@ public class DisplayList implements Paintable, Display
     * Only the new command will be executed.
     * <P>
     *
-    * @param <TT>c</TT> the extra <TT>GraphicsCommand</TT> to be executed.
+    * @param c the extra GraphicsCommand to be executed.
     * @return the start index of the extension.
     */
    public synchronized int extend(final GraphicsCommand c)
@@ -286,8 +286,8 @@ public class DisplayList implements Paintable, Display
     * All commands will be executed.
     * <P>
     *
-    * @param <TT>c</TT> the new <TT>GraphicsCommand</TT>s to be executed.
-    * @param <TT>i</TT> the start index for the replacement.
+    * @param c the new GraphicsCommands to be executed.
+    * @param i the start index for the replacement.
     * @return true if and only if the changes are successfully made.
     */
    public boolean change(final GraphicsCommand[] c, final int i)
@@ -326,8 +326,8 @@ public class DisplayList implements Paintable, Display
     * All commands will be executed.
     * <P>
     *
-    * @param <TT>c</TT> the new <TT>GraphicsCommand</TT> to be executed.
-    * @param <TT>i</TT> the index for the replacement.
+    * @param c the new GraphicsCommand to be executed.
+    * @param i the index for the replacement.
     * @return true if and only if the change is successfully made.
     */
    public boolean change(final GraphicsCommand c, final int i)
@@ -373,7 +373,7 @@ public class DisplayList implements Paintable, Display
     * {@link java.awt.Component#repaint <TT>repaint</TT>} method from {@link java.awt.Component}).
     * <P>
     *
-    * @param <TT>minRefreshInterval</TT> the display commands will be executed at most once
+    * @param minRefreshInterval the display commands will be executed at most once
     * per <TT>minRefreshInterval</TT> milliseconds.
     */
    public void setMinRefreshInterval(final long minRefreshInterval)
@@ -558,7 +558,7 @@ public class DisplayList implements Paintable, Display
     * perform this registration (in response to being passed this <TT>Paintable</TT>).
     * <P>
     *
-    * @param <TT>c</TT> the <TT>Component</TT> that will do the delegating.
+    * @param c the Component that will do the delegating.
     */
    public synchronized void register(final Component c)
    {
@@ -570,7 +570,7 @@ public class DisplayList implements Paintable, Display
     * It will normally be the JVM <I>event thread</I> that is making this call.
     * <P>
     *
-    * @param <TT>g</TT> the graphics context for the painting.
+    * @param g the graphics context for the painting.
     */
    public synchronized void paint(final Graphics g)
    {
@@ -597,7 +597,7 @@ public class DisplayList implements Paintable, Display
     * It will normally be the JVM <I>event thread</I> that is making this call.
     * <P>
     *
-    * @param <TT>g</TT> the graphics context for the painting.
+    * @param g the graphics context for the painting.
     */
    public synchronized void update(final Graphics g)
    {

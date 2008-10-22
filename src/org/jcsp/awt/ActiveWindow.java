@@ -219,7 +219,7 @@ public class ActiveWindow extends Window implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event the <TT>WindowEvent</TT> will be output whenever it occurs
+    * @param event the WindowEvent will be output whenever it occurs
     * -- can be null if no notification is required.
     * @param f the parent frame for the window.
     */
@@ -256,7 +256,7 @@ public class ActiveWindow extends Window implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>containerEvent</TT> the channel down which to send <TT>ContainerEvent</TT>s.
+    * @param containerEvent the channel down which to send ContainerEvents.
     */
    public void addContainerEventChannel(ChannelOutput containerEvent)
    {
@@ -277,7 +277,7 @@ public class ActiveWindow extends Window implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>componentEvent</TT> the channel down which to send <TT>ComponentEvent</TT>s.
+    * @param componentEvent the channel down which to send ComponentEvents.
     */
    public void addComponentEventChannel(ChannelOutput componentEvent)
    {
@@ -298,7 +298,7 @@ public class ActiveWindow extends Window implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>focusEvent</TT> the channel down which to send <TT>FocusEvent</TT>s.
+    * @param focusEvent the channel down which to send FocusEvents.
     */
    public void addFocusEventChannel(ChannelOutput focusEvent)
    {
@@ -319,7 +319,7 @@ public class ActiveWindow extends Window implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>keyEvent</TT> the channel down which to send <TT>KeyEvent</TT>s.
+    * @param keyEvent the channel down which to send KeyEvents.
     */
    public void addKeyEventChannel(ChannelOutput keyEvent)
    {
@@ -340,7 +340,7 @@ public class ActiveWindow extends Window implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseEvent</TT> the channel down which to send <TT>MouseEvent</TT>s.
+    * @param mouseEvent the channel down which to send MouseEvents.
     */
    public void addMouseEventChannel(ChannelOutput mouseEvent)
    {
@@ -361,7 +361,7 @@ public class ActiveWindow extends Window implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseMotionEvent</TT> the channel down which to send <TT>MouseMotionEvent</TT>s.
+    * @param mouseMotionEvent the channel down which to send MouseMotionEvents.
     */
    public void addMouseMotionEventChannel(ChannelOutput mouseMotionEvent)
    {
@@ -383,7 +383,7 @@ public class ActiveWindow extends Window implements CSProcess
    static public interface Configure
    {
       /**
-       * @param <TT>window</TT> the Window being configured.
+       * @param window the Window being configured.
        */
       public void configure(final Window window);
    }

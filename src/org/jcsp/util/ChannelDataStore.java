@@ -99,7 +99,7 @@ public interface ChannelDataStore extends Cloneable
      * <P>
      * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>FULL</TT>.
      *
-     * @param value the <TT>Object</TT> to put into the <TT>ChannelDataStore</TT>
+     * @param value the Object to put into the ChannelDataStore
      */
     public abstract void put(Object value);
 
@@ -113,17 +113,17 @@ public interface ChannelDataStore extends Cloneable
     public abstract Object get();
     
     /**
-     * Begins an extended read on the buffer, returning the data for the extended read
-     * 
+     * Begins an extended read on the buffer, returning the data for the extended read.
+     * <p>
      * <I>Pre-condition</I>: <TT>getState</TT> must not currently return <TT>EMPTY</TT>.
-     * 
+     * <p>
      * The exact behaviour of this method depends on your buffer.  When a process performs an
      * extended rendezvous on a buffered channel, it will first call this method, then the
-     * {@link endGet} method.  
-     * 
+     * {@link #endGet} method.  
+     * <p>
      * A FIFO buffer would implement this method as returning the value from the front of the buffer
      * and the next call would remove the value.  An overflowing buffer would do the same.
-     * 
+     * <p>
      * However, for an overwriting buffer it is more complex.  Refer to the documentation for
      * {@link OverWritingBuffer#startGet} and {@link OverWriteOldestBuffer#startGet}
      * for details  
@@ -135,11 +135,13 @@ public interface ChannelDataStore extends Cloneable
     /**
      * Ends an extended read on the buffer.
      * 
-     * The channels guarantee that this method will be called exactly once after each beginExtRead call.
-     * During the period between startGet and endGet, it is possible that {@link put} will be called,
-     * but not {@link get}. 
+     * The channels guarantee that this method will be called exactly once after each
+     * {@link #startGet <code>startGet</code>} call.
+     * During the period between {@link #startGet <code>startGet</code>} and
+     * {@link #endGet <code>endGet</code>}, it is possible that
+     * {@link #put <code>put</code>} will be called, but not {@link #get <code>get</code>}. 
      *
-     * @see endGet
+     * @see #startGet
      */
     public abstract void endGet();
     

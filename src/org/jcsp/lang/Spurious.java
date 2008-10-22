@@ -34,7 +34,7 @@ package org.jcsp.lang;
  * These fields are held in this separate class to minimise class loading when
  * spurious wakeups are not logged - the default condition.
  *
- * @see jcsp.lang.SpuriousLog
+ * @see org.jcsp.lang.SpuriousLog
  *
  * @author P.H.Welch
  */

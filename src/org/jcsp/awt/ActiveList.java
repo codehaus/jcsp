@@ -313,7 +313,7 @@ public class ActiveList extends List implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event the <TT>String</TT> label from a list item will be output when
+    * @param event the String label from a list item will be output when
     * it is double-clicked -- can be null if no notification is required.
     */
    public ActiveList(ChannelInput configure, ChannelOutput event)
@@ -327,7 +327,7 @@ public class ActiveList extends List implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event the <TT>String</TT> label from a list item will be output when
+    * @param event the String label from a list item will be output when
     * it is double-clicked -- can be null if no notification is required.
     * @param rows the number of visible lines.
     */
@@ -342,7 +342,7 @@ public class ActiveList extends List implements CSProcess
     *
     * @param configure the channel for configuration events
     * -- can be null if no configuration is required.
-    * @param event the <TT>String</TT> label from a list item will be output when
+    * @param event the String label from a list item will be output when
     * it is double-clicked -- can be null if no notification is required.
     * @param rows the number of visible lines.
     * @param multipleMode the multiple selection option.
@@ -380,7 +380,7 @@ public class ActiveList extends List implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>itemEvent</TT> the channel down which to send <TT>ItemEvent</TT>s.
+    * @param itemEvent the channel down which to send ItemEvents.
     */
    public void addItemEventChannel(ChannelOutput itemEvent)
    {
@@ -401,7 +401,7 @@ public class ActiveList extends List implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>componentEvent</TT> the channel down which to send <TT>ComponentEvent</TT>s.
+    * @param componentEvent the channel down which to send ComponentEvents.
     */
    public void addComponentEventChannel(ChannelOutput componentEvent)
    {
@@ -422,7 +422,7 @@ public class ActiveList extends List implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>focusEvent</TT> the channel down which to send <TT>FocusEvent</TT>s.
+    * @param focusEvent the channel down which to send FocusEvents.
     */
    public void addFocusEventChannel(ChannelOutput focusEvent)
    {
@@ -443,7 +443,7 @@ public class ActiveList extends List implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>keyEvent</TT> the channel down which to send <TT>KeyEvent</TT>s.
+    * @param keyEvent the channel down which to send KeyEvents.
     */
    public void addKeyEventChannel(ChannelOutput keyEvent)
    {
@@ -464,7 +464,7 @@ public class ActiveList extends List implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseEvent</TT> the channel down which to send <TT>MouseEvent</TT>s.
+    * @param mouseEvent the channel down which to send MouseEvents.
     */
    public void addMouseEventChannel(ChannelOutput mouseEvent)
    {
@@ -485,7 +485,7 @@ public class ActiveList extends List implements CSProcess
     * <P>
     * <I>NOTE: This method must be called before this process is run.</I>
     *
-    * @param <TT>mouseMotionEvent</TT> the channel down which to send <TT>MouseMotionEvent</TT>s.
+    * @param mouseMotionEvent the channel down which to send MouseMotionEvents.
     */
    public void addMouseMotionEventChannel(ChannelOutput mouseMotionEvent)
    {
@@ -507,7 +507,7 @@ public class ActiveList extends List implements CSProcess
    {
       
       /**
-       * @param <TT>list</TT> the List being configured.
+       * @param list the List being configured.
        */
       public void configure(final List list);
       
