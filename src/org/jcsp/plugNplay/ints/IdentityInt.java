@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * This copies its input stream to its output stream, adding a one-place buffer
  * to the stream.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\IdentityInt1.gif"></p>
+ * <p><IMG SRC="doc-files/IdentityInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>IdentityInt</TT> is a process stream whose output stream is the same
  * as its input stream.  The difference between a bare wire and a wire

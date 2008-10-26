@@ -45,7 +45,7 @@ import org.jcsp.awt.*;
  *                   ----->-----|  FramedScrollbar  |----->-----
  *          <I>(java.lang.Integer)</I> |                   | <I>(int)</I>
  *          <I>(java.lang.Boolean)</I> |                   |
- *  <I>(</I>{@link ActiveScrollbar.Configure <I>ActiveScrollbar.Configure</I>}<I>)</I> |                   |
+ *  <I>(</I>{@link org.jcsp.awt.ActiveScrollbar.Configure <I>ActiveScrollbar.Configure</I>}<I>)</I> |                   |
  *                              |                   |
  *                              |___________________|  
  * </PRE>

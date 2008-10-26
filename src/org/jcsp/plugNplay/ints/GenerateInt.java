@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * Generates an infinite (constant) sequence of <TT>int</TT>s.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\GenerateInt1.gif"></p>
+ * <p><IMG SRC="doc-files/GenerateInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>GenerateInt</TT> is a process that generates an infinite sequence
  * of the integer, <TT>n</TT>, with which it is configured.

@@ -36,7 +36,7 @@ import org.jcsp.lang.*;
  * to its output channel array -- those output channels can be changed dynamically.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\DynamicDelta1.gif"></p>
+ * <p><img src="doc-files/DynamicDelta1.gif"></p>
  * <H2>Description</H2>
  * A <TT>DynamicDelta</TT> process is a broadcasting node whose array of broadcasting
  * channels can be changed dynamically.  Any process can become one of the recipients

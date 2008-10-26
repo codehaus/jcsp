@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * This demultiplexes data from its input channel to its output channel array.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Deparaplex1.gif"></p>
+ * <p><img src="doc-files/Deparaplex1.gif"></p>
  * <H2>Description</H2>
  * <TT>Deparaplex</TT> is a process to convert the single stream of
  * <TT>Object[]</TT> packets sent from a {@link Paraplex} process on the other

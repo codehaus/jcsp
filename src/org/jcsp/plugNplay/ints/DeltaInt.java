@@ -35,7 +35,7 @@ import org.jcsp.lang.*;
  * to its array of output channels.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\DeltaInt1.gif"></p>
+ * <p><IMG SRC="doc-files/DeltaInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>Delta2Int</TT> is a process that broadcasts (<I>in parallel</I>) on its
  * array of output channels everything that arrives on its input channel.

@@ -35,7 +35,13 @@ import org.jcsp.lang.*;
  * to its two output channels.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\Delta2Int1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><IMG SRC="doc-files/Delta2Int1.gif"></p> -->
+ * <PRE>
+ *         ___________  out0 
+ *    in  |           |--->---
+ *   -->--| Delta2Int | out1
+ *        |___________|--->---
+ * </PRE>
  * <H2>Description</H2>
  * <TT>Delta2Int</TT> is a process that broadcasts (<I>in parallel</I>) on its two output channels
  * everything that arrives on its input channel.

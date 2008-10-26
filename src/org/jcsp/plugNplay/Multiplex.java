@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * <I>Fair</I> multiplexes its input Object stream array into one output stream
  * (carrying source channel and data pairs).
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Multiplex1.gif"></p>
+ * <p><img src="doc-files/Multiplex1.gif"></p>
  * <H2>Description</H2>
  * <TT>Multiplex</TT> is a process to convert multiple streams of
  * objects to a single stream in such a way that it can be

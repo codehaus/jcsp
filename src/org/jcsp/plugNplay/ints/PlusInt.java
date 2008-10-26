@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * <I>Sums</I> two integer streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\PlusInt1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/PlusInt.gif"></p> -->
+ * <PRE>
+ *    in0  _________
+ *   -->--|         | out
+ *    in1 | PlusInt |-->--
+ *   -->--|_________|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>PlusInt</TT> is a process whose output stream is the sum
  * of the integers on its input streams.

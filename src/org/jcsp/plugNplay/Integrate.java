@@ -35,9 +35,29 @@ import org.jcsp.lang.*;
  * to its output stream.
  * <H2>Process Diagram</H2>
  * <H3>External View</H3>
- * <p><img src="doc-files\Integrate1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/Integrate1.gif"></p> -->
+ * <PRE>
+ *         ___________  
+ *     in |           | out
+ *    -->-| Integrate |-->---
+ *        |___________|
+ * </PRE>
  * <H3>Internal View</H3>
- * <p><img src="doc-files\Integrate2.gif"></p>
+ * <!-- <p><img src="doc-files/Integrate2.gif"></p> -->
+ * <PRE>
+ *         ___________________________________________ 
+ *        |  _______                   ________       |
+ *     in | |       |                 |        |      | out
+ *    -->---| {@link Plus Plus}  |------->---------| {@link Delta2 Delta2} |--------->--- 
+ *        | |_______|                 |________|      |
+ *        |     |                        |            |
+ *        |     |      ____________      |            |
+ *        |     |     |            |     |            |
+ *        |     +--<--| {@link Prefix Prefix (0)} |--<--+            |
+ *        |           |____________|                  |
+ *        |                                 Integrate |
+ *        |___________________________________________|
+ * </PRE>
  * <H2>Description</H2>
  * The Integrate class is a process which outputs running totals of
  * the Numbers sent down the in Channel.

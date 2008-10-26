@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * <I>Prefixes</I> a user-supplied integer to the <TT>int</TT> stream
  * flowing through.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\PrefixInt1.gif"></p>
+ * <p><IMG SRC="doc-files/PrefixInt1.gif"></p>
  * <H2>Description</H2>
  * The output stream from <TT>PrefixInt</TT> is its input stream prefixed
  * by the integer, <TT>n</TT>, with which it is configured.

@@ -34,9 +34,9 @@ import org.jcsp.lang.*;
  * Generates sums of successive pairs of input values.
  * <H2>Process Diagram</H2>
  * <H3>External View</H3>
- * <p><IMG SRC="doc-files\PairsInt1.gif"></p>
+ * <p><IMG SRC="doc-files/PairsInt1.gif"></p>
  * <H3>Internal View</H3>
- * <p><IMG SRC="doc-files\PairsInt2.gif"></p>
+ * <p><IMG SRC="doc-files/PairsInt2.gif"></p>
  * <P>
  * <H2>Description</H2>
  * <TT>PairsInt</TT> is a process whose output is always the sum of its previous

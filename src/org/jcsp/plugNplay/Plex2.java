@@ -33,7 +33,13 @@ import org.jcsp.lang.*;
 /**
  * <I>Fair</I> multiplexes two Object streams into one.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Plex21.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/Plex2.gif"></p> -->
+ * <PRE>
+ *    in0  _______
+ *   -->--|       | out
+ *    in1 | Plex2 |-->--
+ *   -->--|_______|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>Plex2</TT> is a process whose output stream is a <I>fair</I> multiplexing
  * of its input streams.  It makes no assumptions about the traffic patterns occuring

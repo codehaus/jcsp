@@ -35,9 +35,32 @@ import org.jcsp.lang.*;
  *
  * <H2>CSProcess Diagram</H2>
  * <H3>External View</H3>
- * <p><IMG SRC="doc-files\FibonacciInt1.gif"></p>
+ * <!-- <p><IMG SRC="doc-files/FibonacciInt1.gif"></p> -->
+ * <PRE>
+ *         ______________  
+ *        |              | out
+ *        | FibonacciInt |------>
+ *        |______________|
+ * </PRE>
  * <H3>Internal View</H3>
- * <p><IMG SRC="doc-files\FibonacciInt2.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><IMG SRC="doc-files/FibonacciInt2.gif"></p> -->
+ * <PRE>
+ *         _______________________________________
+ *        |                                       |
+ *        |  _______________       ___________    |
+ *        | |               |     |           |   | out
+ *        | | {@link PrefixInt PrefixInt (0)} |-->--| {@link Delta2Int Delta2Int} |------>-- 
+ *        | |_______________|     |___________|   |
+ *        |        |                    |         |
+ *        |        ^                    v         |
+ *        |  ______|________       _____|____     |
+ *        | |               |     |          |    |
+ *        | | {@link PrefixInt PrefixInt (1)} |--<--| {@link PairsInt PairsInt} |    |
+ *        | |_______________|     |__________|    |
+ *        |                                       |
+ *        |                          FibonacciInt |
+ *        |_______________________________________|
+ * </PRE>
  * <P>
  * <H2>Description</H2>
  * <TT>FibonacciInt</TT> generates the sequence of <I>Fibonacci</I>

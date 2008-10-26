@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * <I>Black holes</I> anything sent to it.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\BlackHoleInt1.gif"></p>
+ * <p><IMG SRC="doc-files/BlackHoleInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>BlackHoleInt</TT> is a process that accepts everything sent to it.
  * This class can be used to ignore the output from a process while ensuring

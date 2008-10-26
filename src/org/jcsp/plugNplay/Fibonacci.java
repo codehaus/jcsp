@@ -35,9 +35,32 @@ import org.jcsp.lang.*;
  *
  * <H2>CSProcess Diagram</H2>
  * <H3>External View</H3>
- * <p><img src="doc-files\Fibonacci1.gif"></p>
+ * <!-- <p><img src="doc-files/Fibonacci1.gif"></p> -->
+ * <PRE>
+ *         ___________  
+ *        |           | out
+ *        | Fibonacci |------>
+ *        |___________|
+ * </PRE>
  * <H3>Internal View</H3>
- * <p><img src="doc-files\Fibonacci2.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/Fibonacci2.gif"></p> -->
+ * <PRE>
+ *         ________________________________
+ *        |                                |
+ *        |  ____________       ________   |
+ *        | |            |     |        |  | out
+ *        | | {@link Prefix Prefix (0)} |-->--| {@link Delta2 Delta2} |------>-- 
+ *        | |____________|     |________|  |
+ *        |        |               |       |
+ *        |        ^               V       |
+ *        |  ______|_____       ___|___    |
+ *        | |            |     |       |   |
+ *        | | {@link Prefix Prefix (1)} |--<--| {@link Pairs Pairs} |   |
+ *        | |____________|     |_______|   |
+ *        |                                |
+ *        |                      Fibonacci |
+ *        |________________________________|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>FibonacciInt</TT> generates the sequence of <I>Fibonacci</I>
  * Numbers on its output channel.
@@ -77,10 +100,10 @@ public class Fibonacci implements CSProcess
     */
    public void run()
    {
-      final One2OneChannel a = Channel.createOne2One();
-      final One2OneChannel b = Channel.createOne2One();
-      final One2OneChannel c = Channel.createOne2One();
-      final One2OneChannel d = Channel.createOne2One();
+      final One2OneChannel a = Channel.one2one();
+      final One2OneChannel b = Channel.one2one();
+      final One2OneChannel c = Channel.one2one();
+      final One2OneChannel d = Channel.one2one();
       
       new Parallel(new CSProcess[] 
                   {

@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * Substitutes a user-configured <I>constant</I> for each integer in the stream
  * flowing through.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\SubstituteInt1.gif"></p>
+ * <p><IMG SRC="doc-files/SubstituteInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>SubstituteInt</TT> is a process that substitutes the (constant) <TT>n</TT>
  * with which it is configured for everything recieved on its <TT>in</TT> channel.

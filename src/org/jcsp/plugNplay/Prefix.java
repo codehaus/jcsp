@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * <I>Prefixes</I> a user-supplied object to the <TT>Object</TT> stream
  * flowing through.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Prefix1.gif"></p>
+ * <p><img src="doc-files/Prefix1.gif"></p>
  * <H2>Description</H2>
  * The Prefix class is a process which outputs an initial Object and then
  * has an infinite loop that waits a Object of any type to be sent down the

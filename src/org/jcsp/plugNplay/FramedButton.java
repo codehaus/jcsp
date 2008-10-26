@@ -43,7 +43,7 @@ import org.jcsp.awt.*;
  *                ----->-----|   FramedButton   |----->-----
  *        <I>(java.lang.String)</I> |                  | <I>(java.lang.String)</I>
  *       <I>(java.lang.Boolean)</I> |                  |
- *  <I>(</I>{@link ActiveButton.Configure <I>ActiveButton.Configure</I>}<I>)</I> |                  |
+ *  <I>(</I>{@link org.jcsp.awt.ActiveButton.Configure <I>ActiveButton.Configure</I>}<I>)</I> |                  |
  *                           |                  |
  *                           |__________________|  
  * </PRE>

@@ -35,9 +35,29 @@ import org.jcsp.lang.*;
  * to its output stream.
  * <H2>Process Diagram</H2>
  * <H3>External View</H3>
- * <p><IMG SRC="doc-files\IntegrateInt1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><IMG SRC="doc-files/IntegrateInt1.gif"></p> -->
+ * <PRE>
+ *          ______________  
+ *     in  |              | out
+ *    -->--| IntegrateInt |-->---
+ *         |______________|
+ * </PRE>
  * <H3>Internal View</H3>
- * <p><IMG SRC="doc-files\IntegrateInt1.gif"></p>
+ * <!-- <p><IMG SRC="doc-files/IntegrateInt1.gif"></p> -->
+ * <PRE>
+ *         ____________________________________________
+ *        |  __________                   ___________  |
+ *     in | |          |                 |           | | out
+ *    -->---| {@link PlusInt PlusInt}  |------->---------| {@link Delta2Int Delta2Int} |---->--- 
+ *        | |__________|                 |___________| |
+ *        |     |                              |       |
+ *        |     |       _______________        |       |
+ *        |     |      |               |       |       |
+ *        |     +---<--| {@link PrefixInt PrefixInt (0)} |---<---+       |
+ *        |            |_______________|               |
+ *        |                               IntegrateInt |
+ *        |____________________________________________|
+ * </PRE>
  * <H2>Description</H2>
  * The IntegrateInt class is a process which outputs running totals of
  * the Numbers sent down its input channel.

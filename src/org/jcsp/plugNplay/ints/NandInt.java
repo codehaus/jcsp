@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * Bitwise <I>nands</I> two integer streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\NandInt1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/NandInt1.gif"></p> -->
+ * <PRE>
+ *    in0  _________
+ *   -->--|         | out
+ *    in1 | NandInt |-->--
+ *   -->--|_________|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>NandInt</TT> is a process whose output strean is the bitwise <I>nand</I>
  * of the integers on its input streams.

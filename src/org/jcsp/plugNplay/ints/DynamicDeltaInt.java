@@ -36,7 +36,7 @@ import org.jcsp.lang.*;
  * to its output channel array -- those output channels can be changed dynamically.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\DynamicDeltaInt1.gif"></p>
+ * <p><IMG SRC="doc-files/DynamicDeltaInt1.gif"></p>
  * <H2>Description</H2>
  * A <TT>DynamicDeltaInt</TT> process is a broadcasting node whose array of broadcasting
  * channels can be changed dynamically.  Any process can become one of the recipients
@@ -104,7 +104,7 @@ public final class DynamicDeltaInt implements CSProcess
     * the configuration channel <TT>configure</TT>.
     *
     * @param in the input Channel
-    * @param configure the configuration Channel
+    * @param config the configuration channel
     */
    public DynamicDeltaInt(AltingChannelInputInt in, AltingChannelInput config)
    {
@@ -118,7 +118,7 @@ public final class DynamicDeltaInt implements CSProcess
     * no difference to the functionality of this process.
     *
     * @param in the input channel
-    * @param configure the configuration channel
+    * @param config the configuration channel
     * @param out the output channels
     */
    public DynamicDeltaInt(AltingChannelInputInt in, AltingChannelInput config,

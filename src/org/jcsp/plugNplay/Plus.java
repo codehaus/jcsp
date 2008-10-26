@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * <I>Sums</I> two <TT>Integer</TT> streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Plus1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/Plus.gif"></p> -->
+ * <PRE>
+ *    in0  ______
+ *   -->--|      | out
+ *    in1 | Plus |-->--
+ *   -->--|______|
+ * </PRE>
  * <H2>Description</H2>
  * The Plus class is a process which has an infinite loop that waits for
  * a Object of type Number to be sent down each of the in1 and in2 Channels.

@@ -35,7 +35,7 @@ import org.jcsp.lang.*;
  * it on to its output channel.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\FixedDelayInt1.gif"></p>
+ * <p><IMG SRC="doc-files/FixedDelayInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>FixedDelayInt</TT> is a process that delays passing on input to its output
  * by a constant delay.

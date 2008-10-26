@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * <I>Parallel</I> multiplexes its input Object stream array on to one output stream.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Paraplex1.gif"></p>
+ * <p><img src="doc-files/Paraplex1.gif"></p>
  * <H2>Description</H2>
  * <TT>Paraplex</TT> is a process to convert multiple streams of
  * <TT>Object</TT>s to a single stream.  It assumes data will always be available

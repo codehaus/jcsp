@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * Scales an integer stream.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\MultInt1.gif"></p>
+ * <p><IMG SRC="doc-files/MultInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>MultInt</TT> multiplies each integer that flows through it by the multiplier
  * with which it is configured.

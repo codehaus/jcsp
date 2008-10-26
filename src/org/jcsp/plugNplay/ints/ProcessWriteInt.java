@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * Writes one <TT>int</TT> to its output channel.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\ProcessWriteInt1.gif"></p>
+ * <p><IMG SRC="doc-files/ProcessWriteInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>ProcessWriteInt</TT> is a process that performs a single write
  * to its <TT>out</TT> channel and then terminates.  The <TT>int</TT>

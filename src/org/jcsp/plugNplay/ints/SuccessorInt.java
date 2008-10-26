@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * Adds <I>one</I> to each integer in the stream flowing through.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\SuccessorInt1.gif"></p>
+ * <p><IMG SRC="doc-files/SuccessorInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>SuccessorInt</TT> increments each integer that flows through it.
  * <H2>Channel Protocols</H2>

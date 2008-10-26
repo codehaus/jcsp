@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * <I>Fair</I> multiplexes its input integer stream array into one output stream.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\PlexInt1.gif"></p>
+ * <p><IMG SRC="doc-files/PlexInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>PlexInt</TT> is a process whose output stream is a <I>fair</I> multiplexing
  * of its input streams.  It makes no assumptions about the traffic patterns occuring

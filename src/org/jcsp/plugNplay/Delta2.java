@@ -35,7 +35,13 @@ import org.jcsp.lang.*;
  * to its two output channels.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Delta21.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/Delta21.gif"></p> -->
+ * <PRE>
+ *         ________  out0 
+ *    in  |        |--->---
+ *   -->--| Delta2 | out1
+ *        |________|--->---
+ * </PRE>
  * <H2>Description</H2>
  * The Delta2 class is a process which has an infinite loop that waits
  * for Objects of any type to be sent down the in Channel. The process then

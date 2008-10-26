@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * Bitwise <I>nors</I> two integer streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\NorInt1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/NorInt1.gif"></p> -->
+ * <PRE>
+ *    in0  ________
+ *   -->--|        | out
+ *    in1 | NorInt |-->--
+ *   -->--|________|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>NorInt</TT> is a process whose output strean is the bitwise <I>nor</I>
  * of the integers on its input streams.

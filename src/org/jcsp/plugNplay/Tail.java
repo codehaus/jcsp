@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * The output stream is the tail of its input stream.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Tail1.gif"></p>
+ * <p><img src="doc-files/Tail1.gif"></p>
  * <H2>Description</H2>
  * The output stream from <TT>Prefix</TT> is the tail of its input stream.
  * <P>

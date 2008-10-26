@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * Converts each input <TT>Object</TT> to a <TT>String</TT>, prefixing it
  * with a user-defined <TT>sign</TT>.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Sign1.gif"></p>
+ * <p><img src="doc-files/Sign1.gif"></p>
  * <H2>Description</H2>
  * <TT>Sign</TT> converts each input <TT>Object</TT> to a <TT>String</TT>,
  * prefixing it with a user-defined <TT>sign</TT>.

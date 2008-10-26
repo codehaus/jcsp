@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * This demultiplexes data from its input channel to its output channel array.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Demultiplex1.gif"></p>
+ * <p><img src="doc-files/Demultiplex1.gif"></p>
  * <H2>Description</H2>
  * <TT>Demultiplex</TT> is a process to convert the single stream of
  * (Integer, Object) messages sent from a <TT>Multiplex</TT> process on the other

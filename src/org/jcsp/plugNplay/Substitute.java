@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * Substitutes a user-configured <I>Object</I> for each Object in the stream
  * flowing through.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Substitute1.gif"></p>
+ * <p><img src="doc-files/Substitute1.gif"></p>
  * <H2>Description</H2>
  * <TT>Substitute</TT> is a process that substitutes the (Object) <TT>o</TT>
  * with which it is configured for everything recieved on its <TT>in</TT> channel.

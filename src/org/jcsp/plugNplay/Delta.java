@@ -35,7 +35,7 @@ import org.jcsp.lang.*;
  * to its array of output channels.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Delta1.gif"></p>
+ * <p><img src="doc-files/Delta1.gif"></p>
  * <H2>Description</H2>
  * The Delta class is a process which has an infinite loop that waits
  * for Objects of any type to be sent down the in Channel. The process then

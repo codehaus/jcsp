@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * Bitwise <I>xors</I> two integer streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\XorInt1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/XorInt1.gif"></p> -->
+ * <PRE>
+ *    in0  ________
+ *   -->--|        | out
+ *    in1 | XorInt |-->--
+ *   -->--|________|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>XorInt</TT> is a process whose output strean is the bitwise <I>xor</I>
  * of the integers on its input streams.

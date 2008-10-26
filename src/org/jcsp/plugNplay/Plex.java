@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * <I>Fair</I> multiplexes its input Object stream array into one output stream.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Plex1.gif"></p>
+ * <p><img src="doc-files/Plex1.gif"></p>
  * <H2>Description</H2>
  * <TT>Plex</TT> is a process whose output stream is a <I>fair</I> multiplexing
  * of its input streams.  It makes no assumptions about the traffic patterns occuring

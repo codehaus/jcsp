@@ -33,7 +33,13 @@ import org.jcsp.lang.*;
 /**
  * <I>Fair</I> multiplexes two integer streams into one.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\Plex2Int1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><IMG SRC="doc-files/Plex2Int1.gif"></p> -->
+ * <PRE>
+ *    in0  __________
+ *   -->--|          | out
+ *    in1 | Plex2Int |-->--
+ *   -->--|__________|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>Plex2Int</TT> is a process whose output stream is a <I>fair</I> multiplexing
  * of its input streams.  It makes no assumptions about the traffic patterns occuring

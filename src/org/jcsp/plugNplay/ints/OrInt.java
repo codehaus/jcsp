@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * Bitwise <I>ors</I> two integer streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\OrInt1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/OrInt1.gif"></p> -->
+ * <PRE>
+ *    in0  _______
+ *   -->--|       | out
+ *    in1 | OrInt |-->--
+ *   -->--|_______|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>OrInt</TT> is a process whose output strean is the bitwise <I>or</I>
  * of the integers on its input streams.

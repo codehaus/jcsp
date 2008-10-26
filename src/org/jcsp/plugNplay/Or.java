@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * Bitwise <I>ors</I> two <TT>Integer</TT> streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Or1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/Or1.gif"></p> -->
+ * <PRE>
+ *    in0  ____
+ *   -->--|    | out
+ *    in1 | Or |-->--
+ *   -->--|____|
+ * </PRE>
  * <H2>Description</H2>
  * The Or class is a process which has an infinite loop that waits
  * a Object of type Number to be sent down each of the in1 and in2 Channels.

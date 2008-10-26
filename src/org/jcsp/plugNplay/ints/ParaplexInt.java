@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * <I>Parallel</I> multiplexes its input integer stream array on to one output stream.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\ParaplexInt1.gif"></p>
+ * <p><IMG SRC="doc-files/ParaplexInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>ParaplexInt</TT> is a process to convert multiple streams of
  * <TT>int</TT>s to a single stream.  It assumes data will always be available

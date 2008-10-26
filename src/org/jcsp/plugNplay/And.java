@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * Bitwise <I>ands</I> two <TT>Integer</TT> streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\And1.gif"></p>
+ * <p><img src="doc-files/And1.gif"></p>
  * <H2>Description</H2>
  * The And class is a process which has an infinite loop that waits
  * a Object of type Number to be sent down each of the in0 and in1 Channels.

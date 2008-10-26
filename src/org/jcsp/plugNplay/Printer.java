@@ -34,7 +34,7 @@ import java.io.*;
 /**
  * Prints each <TT>int</TT> from its input channel to a <TT>PrintStream</TT>.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Printer1.gif"></p>
+ * <p><img src="doc-files/Printer1.gif"></p>
  * <H2>Description</H2>
  * <TT>Printer</TT> is a process for printing each object from its
  * <TT>in</TT> channel to a <TT>PrintStream</TT> object (by default,

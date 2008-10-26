@@ -36,7 +36,7 @@ import org.jcsp.lang.*;
  * {@link java.awt.Frame <TT>java.awt.Frame</TT>}
  * with a channel interface.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\ActiveFrame1.gif"></p>
+ * <p><IMG SRC="doc-files/ActiveFrame1.gif"></p>
  * <H2>Description</H2>
  * <TT>ActiveFrame</TT> is a process extension of <TT>java.awt.Frame</TT>
  * with channels for run-time configuration and event notification.  The event channels

@@ -36,9 +36,29 @@ import org.jcsp.lang.*;
  *
  * <H2>Process Diagram</H2>
  * <H3>External View</H3>
- * <p><img src="doc-files\Numbers1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files\Numbers1.gif"></p> -->
+ * <PRE>
+ *         ___________  
+ *        |           | out
+ *        |  Numbers  |-->----
+ *        |___________|
+ * </PRE>
  * <H3>Internal View</H3>
- * <p><img src="doc-files\Numbers2.gif"></p>
+ * <!-- <p><img src="doc-files\Numbers2.gif"></p> -->
+ * <PRE>
+ *         ___________________________________________
+ *        |  ____________             ________        |
+ *        | |            |           |        |       | out
+ *        | | {@link Prefix Prefix (0)} |----->-----| {@link Delta2 Delta2} |---------->-- 
+ *        | |____________|           |________|       |
+ *        |     |                        |            |
+ *        |     |       ___________      |            |
+ *        |     |      |           |     |            |
+ *        |     +---<--| {@link Successor Successor} |--<--+            |
+ *        |            |___________|                  |
+ *        |                                   Numbers |
+ *        |___________________________________________|
+ * </PRE>
  * <H2>Description</H2>
  * The <TT>Numbers</TT> process generates the sequence of Natural Numbers.
  * <P>

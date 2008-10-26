@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * <I>Fair</I> multiplexes its input integer stream array into one output stream
  * (carrying source channel and data pairs).
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\MultiplexInt1.gif"></p>
+ * <p><IMG SRC="doc-files/MultiplexInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>MultiplexInt</TT> is a process to convert multiple streams of
  * <TT>int</TT>s to a single stream in such a way that it can be

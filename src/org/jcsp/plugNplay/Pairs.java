@@ -34,9 +34,9 @@ import org.jcsp.lang.*;
  * Generates sums of successive pairs of input <TT>Integer</TT>s.
  * <H2>Process Diagram</H2>
  * <H3>External View</H3>
- * <p><img src="doc-files\Pairs1.gif"></p>
+ * <p><img src="doc-files/Pairs1.gif"></p>
  * <H3>Internal View</H3>
- * <p><img src="doc-files\Pairs2.gif"></p>
+ * <p><img src="doc-files/Pairs2.gif"></p>
  * <H2>Description</H2>
  * <TT>Pairs</TT> is a process whose output is always the sum of its previous
  * two inputs.

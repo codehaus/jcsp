@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * Writes one <TT>Object</TT> to its output channel.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\ProcessWrite1.gif"></p>
+ * <p><img src="doc-files/ProcessWrite1.gif"></p>
  * <H2>Description</H2>
  * <TT>ProcessWrite</TT> is a process that performs a single write
  * to its <TT>out</TT> channel and then terminates.  The <TT>Object</TT>

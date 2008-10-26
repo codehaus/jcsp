@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * <I>Merges</I> two strictly increasing <TT>Integer</TT> input streams into one
  * strictly increasing output stream.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Merge21.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><IMG SRC="doc-files/Merge21.gif"></p> -->
+ * <PRE>
+ *    in0  ________
+ *   -->--|        | out
+ *    in1 | Merge2 |-->--
+ *   -->--|________|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>Merge2</TT> is a process whose output stream is the <I>ordered merging</I>
  * of the Integers on its input streams.  It assumes that each input stream is

@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * Bitwise <I>ands</I> two integer streams to one stream.
  * <H2>Process Diagram</H2>
- * <p><IMG SRC="doc-files\AndInt1.gif"></p>
+ * <p><IMG SRC="doc-files/AndInt1.gif"></p>
  * <H2>Description</H2>
  * <TT>AndInt</TT> is a process whose output stream is the bitwise <I>and</I>
  * of the integers on its input streams.

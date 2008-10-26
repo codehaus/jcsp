@@ -33,7 +33,7 @@ import org.jcsp.lang.*;
 /**
  * Reads one <TT>Object</TT> from its input channel.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\ProcessRead1.gif"></p>
+ * <p><img src="doc-files/ProcessRead1.gif"></p>
  * <H2>Description</H2>
  * <TT>ProcessRead</TT> is a process that performs a single read
  * from its <TT>in</TT> channel and then terminates.  It stores

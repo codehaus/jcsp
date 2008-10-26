@@ -34,7 +34,13 @@ import org.jcsp.lang.*;
  * <I>Multiplies</I> two <TT>Integer</TT> streams to one stream.
  *
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\Times1.gif"></p>
+ * <!-- INCORRECT DIAGRAM: <p><img src="doc-files/Times1.gif"></p> -->
+ * <PRE>
+ *    in0  _______
+ *   -->--|       | out
+ *    in1 | Times |-->--
+ *   -->--|_______|
+ * </PRE>
  * <H2>Description</H2>
  * <TT>Times</TT> is a process whose output stream is the product
  * of the Integers on its input streams.

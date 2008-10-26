@@ -35,9 +35,9 @@ import org.jcsp.lang.*;
  *
  * <H2>Process Diagram</H2>
  * <H3>External View</H3>
- * <p><IMG SRC="doc-files\SquaresInt1.gif"></p>
+ * <p><IMG SRC="doc-files/SquaresInt1.gif"></p>
  * <H3>Internal View</H3>
- * <p><IMG SRC="doc-files\SquaresInt2.gif"></p>
+ * <p><IMG SRC="doc-files/SquaresInt2.gif"></p>
  * <H2>Description</H2>
  * <TT>SquaresInt</TT> generates the sequence of squares of the
  * Natural numbers (starting from 1).

@@ -34,6 +34,8 @@ package org.jcsp.lang;
  * this (and use getChannel()) or keep a reference to the original
  * channel.  <p>
  *
+ * @deprecated There is no longer any need to use this class, after the 1.1 class reorganisation.
+ *
  * Note that usually you do not need the absolute guarantee that this class
  * provides - you can usually just cast the channel to an AltingChannelInput,
  * which prevents you from <I>accidentally</I> writing to the channel.  This

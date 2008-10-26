@@ -34,7 +34,7 @@ import org.jcsp.lang.*;
  * This holds on to data from its input channel for a fixed delay before passing
  * it on to its output channel.
  * <H2>Process Diagram</H2>
- * <p><img src="doc-files\FixedDelay1.gif"></p>
+ * <p><img src="doc-files/FixedDelay1.gif"></p>
  * <H2>Description</H2>
  * <TT>FixedDelay</TT> is a process that delays passing on input to its output
  * by a constant delay.

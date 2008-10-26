@@ -35,9 +35,9 @@ import org.jcsp.lang.*;
  *
  * <H2>Process Diagram</H2>
  * <H3>External View</H3>
- * <p><img src="doc-files\Squares1.gif"></p>
+ * <p><img src="doc-files/Squares1.gif"></p>
  * <H3>Internal View</H3>
- * <p><img src="doc-files\Squares2.gif"></p>
+ * <p><img src="doc-files/Squares2.gif"></p>
  * <H2>Description</H2>
  * The Squares class is a process which generates a sequence of squares of
  * Natural numbers that are output down the out Channel.
