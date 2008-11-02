@@ -74,7 +74,7 @@ import java.awt.event.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myTextFieldEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myTextFieldEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveTextEnterField myTextEnterField =
  *     new ActiveTextEnterField (null, myTextFieldEvent.out (), "Edit Me");
@@ -246,11 +246,11 @@ public class ActiveTextEnterField implements CSProcess
    
    private ActiveTextField field;
    
-   private One2OneChannel keyEvent = Channel.createOne2One(new OverWriteOldestBuffer(10));
-   private One2OneChannel textEvent = Channel.createOne2One(new OverWriteOldestBuffer(10));
+   private One2OneChannel keyEvent = Channel.one2one(new OverWriteOldestBuffer(10));
+   private One2OneChannel textEvent = Channel.one2one(new OverWriteOldestBuffer(10));
    
-   private One2OneChannel configureA = Channel.createOne2One();
-   private One2OneChannel configureB = Channel.createOne2One();
+   private One2OneChannel configureA = Channel.one2one();
+   private One2OneChannel configureB = Channel.one2one();
    
    /**
     * Constructs a new <TT>ActiveTextEnterField</TT> with configuration and event channels,
@@ -295,7 +295,7 @@ public class ActiveTextEnterField implements CSProcess
    public ActiveTextEnterField(AltingChannelInput configure, ChannelOutput event, String s, int columns)
    {
       if (configure == null)
-         this.configure = Channel.createOne2One().in();  // the Plex2 process must have non-null channels
+         this.configure = Channel.one2one().in();  // the Plex2 process must have non-null channels
       else
          this.configure = configure;
       this.event = event;

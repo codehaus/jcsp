@@ -64,7 +64,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myButtonEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myButtonEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveButton myButton =
  *     new ActiveButton (null, myButtonEvent.out (), "Press Me");
@@ -156,7 +156,7 @@ import org.jcsp.lang.*;
  *     final String[] label = {"Hello World", "Rocket Science", "CSP",
  *                             "Monitors", "Ignore Me", "Goodbye World"};
  * <I></I>
- *     final Any2OneChannel event = Channel.createAny2One (new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveButton[] button = new ActiveButton[label.length];
  *     for (int i = 0; i < label.length; i++) {
@@ -442,18 +442,32 @@ public class ActiveButton extends Button implements CSProcess
          {
             Object message = configure.read();
             if (message == null)
+            {
                break;
+            }
             else if (message instanceof String)
+            {
                setLabel((String) message);
+            }
             else if (message instanceof Boolean)
             {
                if (message == Boolean.TRUE)
+	       {
                   setEnabled(true);
+	       }
                else if (message == Boolean.FALSE)
+	       {
                   setEnabled(false);
+	       }
+            }
+            else if (message instanceof Color)
+            {
+               setBackground((Color) message);
             }
             else if (message instanceof Configure)
+            {
                ((Configure) message).configure(this);
+            }
          }
       }
    }

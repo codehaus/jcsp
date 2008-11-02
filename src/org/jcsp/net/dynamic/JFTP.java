@@ -79,7 +79,7 @@ class JFTP implements CSProcess
     */
    public void run()
    {
-      final One2OneChannel toQueueFlusher = Channel.createOne2One(), fromQueueFlusher = Channel.createOne2One();
+      final One2OneChannel toQueueFlusher = Channel.one2one(), fromQueueFlusher = Channel.one2one();
       final AltingChannelInput notifyIn = classNotify.in(), queueIn = classQueue.in(), flushNotifyIn = fromQueueFlusher.in();
       final ChannelOutput notifyOut = classNotify.out(), queueOut = classQueue.out();
       // This process will be sent class names from the output queue. It will look up the
@@ -368,13 +368,13 @@ class JFTP implements CSProcess
     * Child processes spawned to load classes from disk or from another node pass the loaded data on
     * this channel to the main process fror forwarding to the requesting clients.
     */
-   private final Any2OneChannel classNotify = Channel.createAny2One();
+   private final Any2OneChannel classNotify = Channel.any2one();
    
    /**
     * Child processes spawned to load classes from Java archives will create additional requests on
     * this channel to queue other files from the archive to be sent to a client.
     */
-   private final Any2OneChannel classQueue = Channel.createAny2One();
+   private final Any2OneChannel classQueue = Channel.any2one();
    
    /**
     * Incoming requests from the clients.

@@ -89,20 +89,20 @@ public class MissionControlNetwork implements CSProcess {
     
   public void run () {
 
-    final One2OneChannel mouseEvent = Channel.createOne2One ();           // applet panel
-    final One2OneChannel panelConfigure = Channel.createOne2One ();       // channels
+    final One2OneChannel mouseEvent = Channel.one2one ();           // applet panel
+    final One2OneChannel panelConfigure = Channel.one2one ();       // channels
 
-    final One2OneChannel abortEvent = Channel.createOne2One (new OverWriteOldestBuffer (1));           // abort button
-    final One2OneChannel abortConfigure = Channel.createOne2One ();       // channels
+    final One2OneChannel abortEvent = Channel.one2one (new OverWriteOldestBuffer (1));           // abort button
+    final One2OneChannel abortConfigure = Channel.one2one ();       // channels
 
-    final One2OneChannelInt hold = ChannelInt.createOne2One ();           // launch control
-    final One2OneChannelInt cancel = ChannelInt.createOne2One ();         // channels
-    final One2OneChannelInt abort = ChannelInt.createOne2One (new OverWriteOldestBufferInt (1));
-    final One2OneChannelInt countdown = ChannelInt.createOne2One ();
-    final One2OneChannelInt fire = ChannelInt.createOne2One ();
+    final One2OneChannelInt hold = Channel.one2oneInt ();           // launch control
+    final One2OneChannelInt cancel = Channel.one2oneInt ();         // channels
+    final One2OneChannelInt abort = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
+    final One2OneChannelInt countdown = Channel.one2oneInt ();
+    final One2OneChannelInt fire = Channel.one2oneInt ();
 
-    final One2OneChannel countdown2 = Channel.createOne2One ();
-    final One2OneChannel fire2 = Channel.createOne2One ();
+    final One2OneChannel countdown2 = Channel.one2one ();
+    final One2OneChannel fire2 = Channel.one2one ();
 
     parent.addMouseEventChannel (mouseEvent.out ());
     parent.setConfigureChannel (panelConfigure.in ());

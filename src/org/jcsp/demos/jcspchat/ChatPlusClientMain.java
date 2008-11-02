@@ -71,15 +71,15 @@ public class ChatPlusClientMain {
 
     NetChannelOutput serverOutChan =
       NetChannelEnd.createOne2Net(messageInChan.getChannelLocation());
-    One2OneChannel sorter2WhiteboardChan = Channel.createOne2One();
-    One2OneChannel sorter2ChatChan = Channel.createOne2One();
-    Any2OneChannel output2BufferChan = Channel.createAny2One();
+    One2OneChannel sorter2WhiteboardChan = Channel.one2one();
+    One2OneChannel sorter2ChatChan = Channel.one2one();
+    Any2OneChannel output2BufferChan = Channel.any2one();
     DrawingSettings ds =
       new DrawingSettings(Color.blue, Color.orange, true, 3, 1);
     ChatPlusFrame cpf = new ChatPlusFrame(ds);
-    One2OneChannel buffer2IdChan = Channel.createOne2One();
-    One2OneChannelInt id2BufferChan = ChannelInt.createOne2One();
-    One2OneChannelInt localRedrawNotifyChan = ChannelInt.createOne2One();
+    One2OneChannel buffer2IdChan = Channel.one2one();
+    One2OneChannelInt id2BufferChan = Channel.one2oneInt();
+    One2OneChannelInt localRedrawNotifyChan = Channel.one2oneInt();
 
     connectChan.write(new ConnectionBundle(username, serverOutChan, true));
     Object o = messageInChan.read();

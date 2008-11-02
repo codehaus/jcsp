@@ -60,11 +60,11 @@ public final class PrimeMultiples2 implements CSProcess {
 
   public void run () {
 
-    final One2OneChannelInt[] a = ChannelInt.createOne2One (howMany + 1);
-    final One2OneChannelInt[] b = ChannelInt.createOne2One (new InfiniteBufferInt (), howMany);
-    final One2OneChannelInt c = ChannelInt.createOne2One ();
-    final One2OneChannelInt d = ChannelInt.createOne2One ();
-    final One2OneChannelInt e = ChannelInt.createOne2One ();
+    final One2OneChannelInt[] a = Channel.one2oneIntArray (howMany + 1);
+    final One2OneChannelInt[] b = Channel.one2oneIntArray (howMany, new InfiniteBufferInt ());
+    final One2OneChannelInt c = Channel.one2oneInt ();
+    final One2OneChannelInt d = Channel.one2oneInt ();
+    final One2OneChannelInt e = Channel.one2oneInt ();
 
     final CSProcess[] Multipliers = new CSProcess[howMany];
     for (int i = 0; i < howMany; i++) {

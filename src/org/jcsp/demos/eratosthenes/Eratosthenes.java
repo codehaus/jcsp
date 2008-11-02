@@ -53,7 +53,7 @@ public class Eratosthenes {
   	Ask.show ();
   	Ask.blank ();
 
-    One2OneChannelInt c = ChannelInt.createOne2One ();
+    One2OneChannelInt c = Channel.one2oneInt ();
     new Parallel (
       new CSProcess[] {
         new Primes (c.out ()),

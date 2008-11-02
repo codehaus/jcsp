@@ -32,12 +32,12 @@ public class AltingBarrierGadget4Demo0 {
     
     final One2OneChannel[][] click = new One2OneChannel[depth][];
     for (int i = 0; i < depth; i++) {
-      click[i] = Channel.createOne2One (new OverWriteOldestBuffer (1), width);
+      click[i] = Channel.one2oneArray (width, new OverWriteOldestBuffer (1));
     }
     
     final One2OneChannel[][] configure = new One2OneChannel[depth][];
     for (int i = 0; i < depth; i++) {
-      configure[i] = Channel.createOne2One (width);
+      configure[i] = Channel.one2oneArray (width);
     }
 
     final FramedButtonGrid buttons =
@@ -57,7 +57,7 @@ public class AltingBarrierGadget4Demo0 {
 
     final Any2OneChannel[][] connect = new Any2OneChannel [depth][];
     for (int row = 0; row < depth; row++) {
-      connect[row] = Channel.createAny2One (width);
+      connect[row] = Channel.any2oneArray (width);
     }
 
     final Random random = new Random ();

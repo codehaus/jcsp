@@ -57,8 +57,8 @@ class DiningPhilosophersCollege implements CSProcess {
 
   public void run () {
 
-    final One2OneChannelInt[] left = ChannelInt.createOne2One (nPhilosophers);
-    final One2OneChannelInt[] right = ChannelInt.createOne2One (nPhilosophers);
+    final One2OneChannelInt[] left = Channel.one2oneIntArray (nPhilosophers);
+    final One2OneChannelInt[] right = Channel.one2oneIntArray (nPhilosophers);
 
     final Any2OneChannelInt down = ChannelInt.createAny2One ();
     final Any2OneChannelInt up = ChannelInt.createAny2One ();

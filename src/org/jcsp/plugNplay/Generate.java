@@ -79,7 +79,11 @@ public final class Generate implements CSProcess
     */
    public void run()
    {
-      while (true)
-         out.write(N);
+      try {
+	while (true)
+          out.write(N);
+      } catch (PoisonException p) {
+	// nothing to do
+      }
    }
 }

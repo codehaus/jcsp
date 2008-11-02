@@ -92,7 +92,7 @@ public class Connection
     /**
      * @see org.jcsp.lang.ConnectionArrayFactory#createAny2One(int)
      */
-    public static Any2OneConnection[] createAny2One(int n)
+    public static Any2OneConnection[] any2oneArray(int n)
     {
         return factory.createAny2One(n);
     }

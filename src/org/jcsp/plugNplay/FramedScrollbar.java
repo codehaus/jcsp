@@ -83,7 +83,7 @@ import org.jcsp.awt.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myScrollbarEvent =
- *     One2OneChannel.create (new OverWriteOldestBuffer (n));
+ *     Channel.one2one (new OverWriteOldestBuffer (n));
  * </PRE>
  * <I>This will ensure that the Java Event Thread will never be blocked.
  * Slow or inattentive readers may miss rapidly generated events, but 
@@ -105,24 +105,27 @@ import org.jcsp.awt.*;
  *   
  *     // initial pixel sizes for the scrollbar frame
  *     
- *     final int pixDown = 400;
- *     final int pixAcross = 120;
- * 
+ *     final boolean horizontal = true;
+ *   
+ *     final int pixDown = horizontal ? 300 : 400;
+ *     final int pixAcross = horizontal ? 400 : 300;
+ *   
  *     // the event channel is wired up to the scrollbar & reports all slider movements ...
  * 
  *     final One2OneChannelInt event =
- *       One2OneChannelInt.create (new OverWriteOldestBufferInt (10));
+ *       Channel.one2oneInt (new OverWriteOldestBufferInt (10));
  * 
  *     // the configure channel is wired up to the scrollbar  ...
  * 
- *     final One2OneChannel configure = new One2OneChannel ();
+ *     final One2OneChannel configure = Channel.one2one ();
  * 
  *     // make the framed scrollbar (connecting up its wires) ...
  * 
  *     final FramedScrollbar scrollbar =
  *       new FramedScrollbar (
- *         "FramedScrollbar Demo", pixDown, pixAcross, configure, event,
- *         false, 0, 10, 0, 100
+ *         "FramedScrollbar Demo", pixDown, pixAcross,
+ *         configure.in (), event.out (),
+ *         horizontal, 0, 10, 0, 100
  *       );
  * 
  *     // testrig ...
@@ -136,7 +139,7 @@ import org.jcsp.awt.*;
  *         new CSProcess () {        
  *           public void run () {            
  *             while (true) {
- *               final int n = event.read ();
+ *               final int n = event.in ().read ();
  *               System.out.println ("FramedScrollbar ==> " + n);
  *             }            
  *           }          
@@ -150,12 +153,12 @@ import org.jcsp.awt.*;
  *             final CSTimer tim = new CSTimer ();
  *             while (true) {
  *               tim.sleep (enabledTime);
- *               configure.write (Boolean.FALSE);
+ *               configure.out ().write (Boolean.FALSE);
  *               for (int i = disabledCountdown; i > 0; i--) {
  *                 System.out.println ("\t\t\t\tScrollbar disabled ... " + i);
  *                 tim.sleep (second);
  *               }
- *               configure.write (Boolean.TRUE);
+ *               configure.out ().write (Boolean.TRUE);
  *               System.out.println ("\t\t\t\tScrollbar enabled ...");
  *             }            
  *           }          

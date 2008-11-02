@@ -38,7 +38,7 @@ import org.jcsp.util.ints.ChannelDataStoreInt;
  * </p>
  *
  *
- * @author Quickstone Technologies Limited
+ * @author P.H.Welch
  */
 public class Channel
 {
@@ -57,436 +57,7 @@ public class Channel
      */
     private static final StandardChannelFactory factory = new StandardChannelFactory();
 
-
-    /* Methods that are the same as the Factory Methods */
-
-    /**
-     * Constructs and returns a <code>One2OneChannel</code> object.
-     *
-     * @return the channel object.
-     *
-     * @see org.jcsp.lang.ChannelFactory#createOne2One()
-     * 
-     * @deprecated Use the {@link #one2one()} function instead.
-     */
-    public static One2OneChannel createOne2One()
-    {
-        return factory.createOne2One();
-    }
-
-    /**
-     * Constructs and returns an <code>Any2OneChannel</code> object.
-     *
-     * @return the channel object.
-     *
-     * @see org.jcsp.lang.ChannelFactory#createAny2One()
-     * 
-     * @deprecated Use the {@link #any2one()} function instead. 
-     */
-    public static Any2OneChannel createAny2One()
-    {
-        return factory.createAny2One();
-    }
-
-    /**
-     * Constructs and returns a <code>One2AnyChannel</code> object.
-     *
-     * @return the channel object.
-     *
-     * @see org.jcsp.lang.ChannelFactory#createOne2Any()
-     * 
-     * @deprecated Use the {@link #one2any()} function instead.
-     */
-    public static One2AnyChannel createOne2Any()
-    {
-        return factory.createOne2Any();
-    }
-
-    /**
-     * Constructs and returns an <code>Any2AnyChannel</code> object.
-     *
-     * @return the channel object.
-     *
-     * @see org.jcsp.lang.ChannelFactory#createAny2Any()
-     * 
-     * @deprecated Use the {@link #any2any()} function instead.
-     */
-    public static Any2AnyChannel createAny2Any()
-    {
-        return factory.createAny2Any();
-    }
-
-    /**
-     * Constructs and returns an array of <code>One2OneChannel</code>
-     * objects.
-     *
-     * @param	n	the size of the array of channels.
-     * @return the array of channels.
-     *
-     * @see org.jcsp.lang.ChannelArrayFactory#createOne2One(int)
-     * 
-     * @deprecated Use the {@link #one2oneArray(int)} function instead.
-     */
-    public static One2OneChannel[] createOne2One(int n)
-    {
-        return factory.createOne2One(n);
-    }
-
-    /**
-     * Constructs and returns an array of <code>Any2OneChannel</code>
-     * objects.
-     *
-     * @param	n	the size of the array of channels.
-     * @return the array of channels.
-     *
-     * @see org.jcsp.lang.ChannelArrayFactory#createAny2One(int)
-     * 
-     * @deprecated Use the {@link #any2oneArray(int)} function instead.
-     */
-    public static Any2OneChannel[] createAny2One(int n)
-    {
-        return factory.createAny2One(n);
-    }
-
-    /**
-     * Constructs and returns an array of <code>One2AnyChannel</code>
-     * objects.
-     *
-     * @param	n	the size of the array of channels.
-     * @return the array of channels.
-     *
-     * @see org.jcsp.lang.ChannelArrayFactory#createOne2Any(int)
-     * 
-     * @deprecated Use the {@link #one2anyArray(int)} function instead.
-     */
-    public static One2AnyChannel[] createOne2Any(int n)
-    {
-        return factory.createOne2Any(n);
-    }
-
-    /**
-     * Constructs and returns an array of <code>Any2AnyChannel</code>
-     * objects.
-     *
-     * @param	n	the size of the array of channels.
-     * @return the array of channels.
-     *
-     * @see org.jcsp.lang.ChannelArrayFactory#createAny2Any(int)
-     * 
-     * @deprecated Use the {@link #any2anyArray(int)} function instead.
-     */
-    public static Any2AnyChannel[] createAny2Any(int n)
-    {
-        return factory.createAny2Any(n);
-    }
-
-    /**
-     * <p>Constructs and returns a <code>One2OneChannel</code> object which
-     * uses the specified <code>ChannelDataStore</code> object as a buffer.
-     * </p>
-     * <p>The buffer supplied to this method is cloned before it is inserted into
-     * the channel.
-     * </p>
-     *
-     * @param	buffer	the <code>ChannelDataStore</code> to use.
-     * @return the buffered channel.
-     *
-     * @see org.jcsp.lang.BufferedChannelFactory#createOne2One(ChannelDataStore)
-     * @see org.jcsp.util.ChannelDataStore
-     * 
-     * @deprecated Use the {@link #one2one(ChannelDataStore)} function instead.
-     */
-    public static One2OneChannel createOne2One(ChannelDataStore buffer)
-    {
-        return factory.createOne2One(buffer);
-    }
-
-    /**
-     * <p>Constructs and returns a <code>Any2OneChannel</code> object which
-     * uses the specified <code>ChannelDataStore</code> object as a buffer.
-     * </p>
-     * <p>The buffer supplied to this method is cloned before it is inserted into
-     * the channel.
-     * </p>
-     *
-     * @param	buffer	the <code>ChannelDataStore</code> to use.
-     * @return the buffered channel.
-     *
-     * @see org.jcsp.lang.BufferedChannelFactory#createAny2One(ChannelDataStore)
-     * @see org.jcsp.util.ChannelDataStore
-     * 
-     * @deprecated Use the {@link #any2one(ChannelDataStore)} function instead.
-     */
-    public static Any2OneChannel createAny2One(ChannelDataStore buffer)
-    {
-        return factory.createAny2One(buffer);
-    }
-
-    /**
-     * <p>Constructs and returns a <code>One2AnyChannel</code> object which
-     * uses the specified <code>ChannelDataStore</code> object as a buffer.
-     * </p>
-     * <p>The buffer supplied to this method is cloned before it is inserted into
-     * the channel.
-     * </p>
-     *
-     * @param	buffer	the <code>ChannelDataStore</code> to use.
-     * @return the buffered channel.
-     *
-     * @see org.jcsp.lang.BufferedChannelFactory#createOne2Any(ChannelDataStore)
-     * @see org.jcsp.util.ChannelDataStore
-     * 
-     * @deprecated Use the {@link #one2any(ChannelDataStore)} function instead.
-     */
-    public static One2AnyChannel createOne2Any(ChannelDataStore buffer)
-    {
-        return factory.createOne2Any(buffer);
-    }
-
-    /**
-     * <p>Constructs and returns a <code>Any2AnyChannel</code> object which
-     * uses the specified <code>ChannelDataStore</code> object as a buffer.
-     * </p>
-     * <p>The buffer supplied to this method is cloned before it is inserted into
-     * the channel.
-     * </p>
-     *
-     * @param	buffer	the <code>ChannelDataStore</code> to use.
-     * @return the buffered channel.
-     *
-     * @see org.jcsp.lang.BufferedChannelFactory#createAny2Any(ChannelDataStore)
-     * @see org.jcsp.util.ChannelDataStore
-     * 
-     * @deprecated Use the {@link #any2any(ChannelDataStore)} function instead.
-     */
-    public static Any2AnyChannel createAny2Any(ChannelDataStore buffer)
-    {
-        return factory.createAny2Any(buffer);
-    }
-
-    /**
-     * <p>Constructs and returns an array of <code>One2OneChannel</code> objects
-     * which use the specified <code>ChannelDataStore</code> object as a
-     * buffer.
-     * </p>
-     * <p>The buffer supplied to this method is cloned before it is inserted into
-     * the channel. This is why an array of buffers is not required.
-     * </p>
-     *
-     * @param	buffer	the <code>ChannelDataStore</code> to use.
-     * @param	n	    the size of the array of channels.
-     * @return the array of buffered channels.
-     *
-     * @see org.jcsp.lang.BufferedChannelArrayFactory#createOne2One(ChannelDataStore, int)
-     * @see org.jcsp.util.ChannelDataStore
-     * 
-     * @deprecated Use the {@link #one2oneArray(int,ChannelDataStore)} function instead.
-     */
-    public static One2OneChannel[] createOne2One(ChannelDataStore buffer, int n)
-    {
-        return factory.createOne2One(buffer, n);
-    }
-
-    /**
-     * <p>Constructs and returns an array of <code>Any2OneChannel</code> objects
-     * which use the specified <code>ChannelDataStore</code> object as a
-     * buffer.
-     * </p>
-     * <p>The buffer supplied to this method is cloned before it is inserted into
-     * the channel. This is why an array of buffers is not required.
-     * </p>
-     *
-     * @param	buffer	the <code>ChannelDataStore</code> to use.
-     * @param	n	    the size of the array of channels.
-     * @return the array of buffered channels.
-     *
-     * @see org.jcsp.lang.BufferedChannelArrayFactory#createAny2One(ChannelDataStore, int)
-     * @see org.jcsp.util.ChannelDataStore
-     * 
-     * @deprecated Use the {@link #any2oneArray(int,ChannelDataStore)} function instead.
-     */
-    public static Any2OneChannel[] createAny2One(ChannelDataStore buffer, int n)
-    {
-        return factory.createAny2One(buffer, n);
-    }
-
-    /**
-     * <p>Constructs and returns an array of <code>One2AnyChannel</code> objects
-     * which use the specified <code>ChannelDataStore</code> object as a
-     * buffer.
-     * </p>
-     * <p>The buffer supplied to this method is cloned before it is inserted into
-     * the channel. This is why an array of buffers is not required.
-     * </p>
-     *
-     * @param	buffer	the <code>ChannelDataStore</code> to use.
-     * @param	n	    the size of the array of channels.
-     * @return the array of buffered channels.
-     *
-     * @see org.jcsp.lang.BufferedChannelArrayFactory#createOne2Any(ChannelDataStore, int)
-     * @see org.jcsp.util.ChannelDataStore
-     * 
-     * @deprecated Use the {@link #one2anyArray(int,ChannelDataStore)} function instead.
-     */
-    public static One2AnyChannel[] createOne2Any(ChannelDataStore buffer, int n)
-    {
-        return factory.createOne2Any(buffer, n);
-    }
-
-    /**
-     * <p>Constructs and returns an array of <code>Any2AnyChannel</code> objects
-     * which use the specified <code>ChannelDataStore</code> object as a
-     * buffer.
-     * </p>
-     * <p>The buffer supplied to this method is cloned before it is inserted into
-     * the channel. This is why an array of buffers is not required.
-     * </p>
-     *
-     * @param	buffer	the <code>ChannelDataStore</code> to use.
-     * @param	n	    the size of the array of channels.
-     * @return the array of buffered channels.
-     *
-     * @see org.jcsp.lang.BufferedChannelArrayFactory#createAny2Any(ChannelDataStore, int)
-     * @see org.jcsp.util.ChannelDataStore
-     * 
-     * @deprecated Use the {@link #any2anyArray(int,ChannelDataStore)} function instead.
-     */
-    public static Any2AnyChannel[] createAny2Any(ChannelDataStore buffer, int n)
-    {
-        return factory.createAny2Any(buffer, n);
-    }
-
-    /**
-     * <p>Constructs and returns an array of input channel ends, each of which can be shared by multiple
-     * concurrent readers. The returned array, <code>r</code>, is constructed such that
-     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
-     * </p>
-     *
-     * @param c the array of channel to obtain input ends from.
-     * @return the array of channel input ends.
-     */
-    public static SharedChannelInput[] getInputArray(Any2AnyChannel[] c)
-    {
-        SharedChannelInput[] in = new SharedChannelInput[c.length];
-        for (int i = 0; i < c.length; i++)
-            in[i] = c[i].in();
-        return in;
-    }
-
-    /**
-     * Constructs and returns an array of input channel ends, each of which can be used as guards
-     * in an <code>Alternative</code>. The returned array, <code>r</code>, is constructed such that
-     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
-     *
-     * @param c the array of channel to obtain input ends from.
-     * @return the array of channel input ends.
-     */
-    public static AltingChannelInput[] getInputArray(Any2OneChannel[] c)
-    {
-        AltingChannelInput[] in = new AltingChannelInput[c.length];
-        for (int i = 0; i < c.length; i++)
-            in[i] = c[i].in();
-        return in;
-    }
-
-    /**
-     * Constructs and returns an array of input channel ends, each of which can be shared by multiple
-     * concurrent readers. The returned array, <code>r</code>, is constructed such that
-     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
-     *
-     * @param c the array of channel to obtain input ends from.
-     * @return the array of channel input ends.
-     */
-    public static SharedChannelInput[] getInputArray(One2AnyChannel[] c)
-    {
-        SharedChannelInput[] in = new SharedChannelInput[c.length];
-        for (int i = 0; i < c.length; i++)
-            in[i] = c[i].in();
-        return in;
-    }
-
-    /**
-     * Constructs and returns an array of input channel ends, each of which can be used as guards
-     * in an <code>Alternative</code>. The returned array, <code>r</code>, is constructed such that
-     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
-     *
-     * @param c the array of channel to obtain input ends from.
-     * @return the array of channel input ends.
-     */
-    public static AltingChannelInput[] getInputArray(One2OneChannel[] c)
-    {
-        AltingChannelInput[] in = new AltingChannelInput[c.length];
-        for (int i = 0; i < c.length; i++)
-           in[i] = c[i].in();
-        return in;
-    }
-
-    /**
-     * Constructs and returns an array of output channel ends, each of which can be shared by multiple
-     * concurrent writers. The returned array, <code>r</code>, is constructed such that
-     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
-     *
-     * @param c the array of channel to obtain output ends from.
-     * @return the array of output input ends.
-     */
-    public static SharedChannelOutput[] getOutputArray(Any2AnyChannel[] c)
-    {
-        SharedChannelOutput[] in = new SharedChannelOutput[c.length];
-        for (int i = 0; i < c.length; i++)
-            in[i] = c[i].out();
-        return in;
-    }
-
-    /**
-     * Constructs and returns an array of output channel ends, each of which can be shared by multiple
-     * concurrent writers. The returned array, <code>r</code>, is constructed such that
-     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
-     *
-     * @param c the array of channel to obtain output ends from.
-     * @return the array of output input ends.
-     */
-    public static SharedChannelOutput[] getOutputArray(Any2OneChannel[] c)
-    {
-        SharedChannelOutput[] in = new SharedChannelOutput[c.length];
-        for (int i = 0; i < c.length; i++)
-            in[i] = c[i].out();
-        return in;
-    }
-
-    /**
-     * Constructs and returns an array of output channel ends, each of which can only be used by a
-     * single writer. The returned array, <code>r</code>, is constructed such that
-     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
-     *
-     * @param c the array of channel to obtain output ends from.
-     * @return the array of output input ends.
-     */
-    public static ChannelOutput[] getOutputArray(One2AnyChannel[] c)
-    {
-        ChannelOutput[] in = new ChannelOutput[c.length];
-        for (int i = 0; i < c.length; i++)
-            in[i] = c[i].out();
-        return in;
-    }
-
-    /**
-     * Constructs and returns an array of output channel ends, each of which can only be used by a
-     * single writer. The returned array, <code>r</code>, is constructed such that
-     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
-     *
-     * @param c the array of channel to obtain output ends from.
-     * @return the array of output input ends.
-     */
-    public static ChannelOutput[] getOutputArray(One2OneChannel[] c)
-    {
-        ChannelOutput[] in = new ChannelOutput[c.length];
-        for (int i = 0; i < c.length; i++)
-            in[i] = c[i].out();
-        return in;
-    }
-    
-    
-    //New create methods:
+    /* New channel construction methods ... */
     
     /**
      * Constructs and returns a {@link One2OneChannel}.
@@ -570,7 +141,7 @@ public class Channel
     {
     	return new PoisonableOne2OneChannelImpl(immunity);
     }
-    
+
     public static One2AnyChannel one2any(int immunity)
     {
     	return new PoisonableOne2AnyChannelImpl(immunity);
@@ -1016,4 +587,562 @@ public class Channel
         return new BasicOne2OneChannelSymmetricInt ();
     }
     
+    /* Helper methods to get arrays of channel ends ... */
+    
+    /**
+     * <p>Constructs and returns an array of input channel ends, each of which can be shared by multiple
+     * concurrent readers. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
+     * </p>
+     *
+     * @param c the array of channel to obtain input ends from.
+     * @return the array of channel input ends.
+     */
+    public static SharedChannelInput[] getInputArray(Any2AnyChannel[] c)
+    {
+        SharedChannelInput[] in = new SharedChannelInput[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].in();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of input channel ends, each of which can be used as guards
+     * in an <code>Alternative</code>. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain input ends from.
+     * @return the array of channel input ends.
+     */
+    public static AltingChannelInput[] getInputArray(Any2OneChannel[] c)
+    {
+        AltingChannelInput[] in = new AltingChannelInput[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].in();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of input channel ends, each of which can be shared by multiple
+     * concurrent readers. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain input ends from.
+     * @return the array of channel input ends.
+     */
+    public static SharedChannelInput[] getInputArray(One2AnyChannel[] c)
+    {
+        SharedChannelInput[] in = new SharedChannelInput[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].in();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of input channel ends, each of which can be used as guards
+     * in an <code>Alternative</code>. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain input ends from.
+     * @return the array of channel input ends.
+     */
+    public static AltingChannelInput[] getInputArray(One2OneChannel[] c)
+    {
+        AltingChannelInput[] in = new AltingChannelInput[c.length];
+        for (int i = 0; i < c.length; i++)
+           in[i] = c[i].in();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of output channel ends, each of which can be shared by multiple
+     * concurrent writers. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain output ends from.
+     * @return the array of output input ends.
+     */
+    public static SharedChannelOutput[] getOutputArray(Any2AnyChannel[] c)
+    {
+        SharedChannelOutput[] in = new SharedChannelOutput[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].out();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of output channel ends, each of which can be shared by multiple
+     * concurrent writers. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain output ends from.
+     * @return the array of output input ends.
+     */
+    public static SharedChannelOutput[] getOutputArray(Any2OneChannel[] c)
+    {
+        SharedChannelOutput[] in = new SharedChannelOutput[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].out();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of output channel ends, each of which can only be used by a
+     * single writer. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain output ends from.
+     * @return the array of output input ends.
+     */
+    public static ChannelOutput[] getOutputArray(One2AnyChannel[] c)
+    {
+        ChannelOutput[] in = new ChannelOutput[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].out();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of output channel ends, each of which can only be used by a
+     * single writer. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain output ends from.
+     * @return the array of output input ends.
+     */
+    public static ChannelOutput[] getOutputArray(One2OneChannel[] c)
+    {
+        ChannelOutput[] in = new ChannelOutput[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].out();
+        return in;
+    }
+    
+    /**
+     * <p>Constructs and returns an array of input channel ends, each of which can be shared by multiple
+     * concurrent readers. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
+     * </p>
+     *
+     * @param c the array of channel to obtain input ends from.
+     * @return the array of channel input ends.
+     */
+    public static SharedChannelInputInt[] getInputArray(Any2AnyChannelInt[] c)
+    {
+        SharedChannelInputInt[] in = new SharedChannelInputInt[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].in();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of input channel ends, each of which can be used as guards
+     * in an <code>Alternative</code>. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain input ends from.
+     * @return the array of channel input ends.
+     */
+    public static AltingChannelInputInt[] getInputArray(Any2OneChannelInt[] c)
+    {
+        AltingChannelInputInt[] in = new AltingChannelInputInt[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].in();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of input channel ends, each of which can be shared by multiple
+     * concurrent readers. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain input ends from.
+     * @return the array of channel input ends.
+     */
+    public static SharedChannelInputInt[] getInputArray(One2AnyChannelInt[] c)
+    {
+        SharedChannelInputInt[] in = new SharedChannelInputInt[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].in();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of input channel ends, each of which can be used as guards
+     * in an <code>Alternative</code>. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].in ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain input ends from.
+     * @return the array of channel input ends.
+     */
+    public static AltingChannelInputInt[] getInputArray(One2OneChannelInt[] c)
+    {
+        AltingChannelInputInt[] in = new AltingChannelInputInt[c.length];
+        for (int i = 0; i < c.length; i++)
+           in[i] = c[i].in();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of output channel ends, each of which can be shared by multiple
+     * concurrent writers. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain output ends from.
+     * @return the array of output input ends.
+     */
+    public static SharedChannelOutputInt[] getOutputArray(Any2AnyChannelInt[] c)
+    {
+        SharedChannelOutputInt[] in = new SharedChannelOutputInt[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].out();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of output channel ends, each of which can be shared by multiple
+     * concurrent writers. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain output ends from.
+     * @return the array of output input ends.
+     */
+    public static SharedChannelOutputInt[] getOutputArray(Any2OneChannelInt[] c)
+    {
+        SharedChannelOutputInt[] in = new SharedChannelOutputInt[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].out();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of output channel ends, each of which can only be used by a
+     * single writer. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain output ends from.
+     * @return the array of output input ends.
+     */
+    public static ChannelOutputInt[] getOutputArray(One2AnyChannelInt[] c)
+    {
+        ChannelOutputInt[] in = new ChannelOutputInt[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].out();
+        return in;
+    }
+
+    /**
+     * Constructs and returns an array of output channel ends, each of which can only be used by a
+     * single writer. The returned array, <code>r</code>, is constructed such that
+     * <code>r[i] = c[i].out ()</code> for <code>0 <= i < c.length</code>.
+     *
+     * @param c the array of channel to obtain output ends from.
+     * @return the array of output input ends.
+     */
+    public static ChannelOutputInt[] getOutputArray(One2OneChannelInt[] c)
+    {
+        ChannelOutputInt[] in = new ChannelOutputInt[c.length];
+        for (int i = 0; i < c.length; i++)
+            in[i] = c[i].out();
+        return in;
+    }
+    
+    /* Methods that are the same as the Factory Methods (all now deprecated) */
+
+    /**
+     * Constructs and returns a <code>One2OneChannel</code> object.
+     *
+     * @return the channel object.
+     *
+     * @see org.jcsp.lang.ChannelFactory#createOne2One()
+     * 
+     * @deprecated Use the {@link #one2one()} function instead.
+     */
+    public static One2OneChannel createOne2One()
+    {
+        return factory.createOne2One();
+    }
+
+    /**
+     * Constructs and returns an <code>Any2OneChannel</code> object.
+     *
+     * @return the channel object.
+     *
+     * @see org.jcsp.lang.ChannelFactory#createAny2One()
+     * 
+     * @deprecated Use the {@link #any2one()} function instead. 
+     */
+    public static Any2OneChannel createAny2One()
+    {
+        return factory.createAny2One();
+    }
+
+    /**
+     * Constructs and returns a <code>One2AnyChannel</code> object.
+     *
+     * @return the channel object.
+     *
+     * @see org.jcsp.lang.ChannelFactory#createOne2Any()
+     * 
+     * @deprecated Use the {@link #one2any()} function instead.
+     */
+    public static One2AnyChannel createOne2Any()
+    {
+        return factory.createOne2Any();
+    }
+
+    /**
+     * Constructs and returns an <code>Any2AnyChannel</code> object.
+     *
+     * @return the channel object.
+     *
+     * @see org.jcsp.lang.ChannelFactory#createAny2Any()
+     * 
+     * @deprecated Use the {@link #any2any()} function instead.
+     */
+    public static Any2AnyChannel createAny2Any()
+    {
+        return factory.createAny2Any();
+    }
+
+    /**
+     * Constructs and returns an array of <code>One2OneChannel</code>
+     * objects.
+     *
+     * @param	n	the size of the array of channels.
+     * @return the array of channels.
+     *
+     * @see org.jcsp.lang.ChannelArrayFactory#createOne2One(int)
+     * 
+     * @deprecated Use the {@link #one2oneArray(int)} function instead.
+     */
+    public static One2OneChannel[] createOne2One(int n)
+    {
+        return factory.createOne2One(n);
+    }
+
+    /**
+     * Constructs and returns an array of <code>Any2OneChannel</code>
+     * objects.
+     *
+     * @param	n	the size of the array of channels.
+     * @return the array of channels.
+     *
+     * @see org.jcsp.lang.ChannelArrayFactory#createAny2One(int)
+     * 
+     * @deprecated Use the {@link #any2oneArray(int)} function instead.
+     */
+    public static Any2OneChannel[] createAny2One(int n)
+    {
+        return factory.createAny2One(n);
+    }
+
+    /**
+     * Constructs and returns an array of <code>One2AnyChannel</code>
+     * objects.
+     *
+     * @param	n	the size of the array of channels.
+     * @return the array of channels.
+     *
+     * @see org.jcsp.lang.ChannelArrayFactory#createOne2Any(int)
+     * 
+     * @deprecated Use the {@link #one2anyArray(int)} function instead.
+     */
+    public static One2AnyChannel[] createOne2Any(int n)
+    {
+        return factory.createOne2Any(n);
+    }
+
+    /**
+     * Constructs and returns an array of <code>Any2AnyChannel</code>
+     * objects.
+     *
+     * @param	n	the size of the array of channels.
+     * @return the array of channels.
+     *
+     * @see org.jcsp.lang.ChannelArrayFactory#createAny2Any(int)
+     * 
+     * @deprecated Use the {@link #any2anyArray(int)} function instead.
+     */
+    public static Any2AnyChannel[] createAny2Any(int n)
+    {
+        return factory.createAny2Any(n);
+    }
+
+    /**
+     * <p>Constructs and returns a <code>One2OneChannel</code> object which
+     * uses the specified <code>ChannelDataStore</code> object as a buffer.
+     * </p>
+     * <p>The buffer supplied to this method is cloned before it is inserted into
+     * the channel.
+     * </p>
+     *
+     * @param	buffer	the <code>ChannelDataStore</code> to use.
+     * @return the buffered channel.
+     *
+     * @see org.jcsp.lang.BufferedChannelFactory#createOne2One(ChannelDataStore)
+     * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the {@link #one2one(ChannelDataStore)} function instead.
+     */
+    public static One2OneChannel createOne2One(ChannelDataStore buffer)
+    {
+        return factory.createOne2One(buffer);
+    }
+
+    /**
+     * <p>Constructs and returns a <code>Any2OneChannel</code> object which
+     * uses the specified <code>ChannelDataStore</code> object as a buffer.
+     * </p>
+     * <p>The buffer supplied to this method is cloned before it is inserted into
+     * the channel.
+     * </p>
+     *
+     * @param	buffer	the <code>ChannelDataStore</code> to use.
+     * @return the buffered channel.
+     *
+     * @see org.jcsp.lang.BufferedChannelFactory#createAny2One(ChannelDataStore)
+     * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the {@link #any2one(ChannelDataStore)} function instead.
+     */
+    public static Any2OneChannel createAny2One(ChannelDataStore buffer)
+    {
+        return factory.createAny2One(buffer);
+    }
+
+    /**
+     * <p>Constructs and returns a <code>One2AnyChannel</code> object which
+     * uses the specified <code>ChannelDataStore</code> object as a buffer.
+     * </p>
+     * <p>The buffer supplied to this method is cloned before it is inserted into
+     * the channel.
+     * </p>
+     *
+     * @param	buffer	the <code>ChannelDataStore</code> to use.
+     * @return the buffered channel.
+     *
+     * @see org.jcsp.lang.BufferedChannelFactory#createOne2Any(ChannelDataStore)
+     * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the {@link #one2any(ChannelDataStore)} function instead.
+     */
+    public static One2AnyChannel createOne2Any(ChannelDataStore buffer)
+    {
+        return factory.createOne2Any(buffer);
+    }
+
+    /**
+     * <p>Constructs and returns a <code>Any2AnyChannel</code> object which
+     * uses the specified <code>ChannelDataStore</code> object as a buffer.
+     * </p>
+     * <p>The buffer supplied to this method is cloned before it is inserted into
+     * the channel.
+     * </p>
+     *
+     * @param	buffer	the <code>ChannelDataStore</code> to use.
+     * @return the buffered channel.
+     *
+     * @see org.jcsp.lang.BufferedChannelFactory#createAny2Any(ChannelDataStore)
+     * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the {@link #any2any(ChannelDataStore)} function instead.
+     */
+    public static Any2AnyChannel createAny2Any(ChannelDataStore buffer)
+    {
+        return factory.createAny2Any(buffer);
+    }
+
+    /**
+     * <p>Constructs and returns an array of <code>One2OneChannel</code> objects
+     * which use the specified <code>ChannelDataStore</code> object as a
+     * buffer.
+     * </p>
+     * <p>The buffer supplied to this method is cloned before it is inserted into
+     * the channel. This is why an array of buffers is not required.
+     * </p>
+     *
+     * @param	buffer	the <code>ChannelDataStore</code> to use.
+     * @param	n	    the size of the array of channels.
+     * @return the array of buffered channels.
+     *
+     * @see org.jcsp.lang.BufferedChannelArrayFactory#createOne2One(ChannelDataStore, int)
+     * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the {@link #one2oneArray(int,ChannelDataStore)} function instead.
+     */
+    public static One2OneChannel[] createOne2One(ChannelDataStore buffer, int n)
+    {
+        return factory.createOne2One(buffer, n);
+    }
+
+    /**
+     * <p>Constructs and returns an array of <code>Any2OneChannel</code> objects
+     * which use the specified <code>ChannelDataStore</code> object as a
+     * buffer.
+     * </p>
+     * <p>The buffer supplied to this method is cloned before it is inserted into
+     * the channel. This is why an array of buffers is not required.
+     * </p>
+     *
+     * @param	buffer	the <code>ChannelDataStore</code> to use.
+     * @param	n	    the size of the array of channels.
+     * @return the array of buffered channels.
+     *
+     * @see org.jcsp.lang.BufferedChannelArrayFactory#createAny2One(ChannelDataStore, int)
+     * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the {@link #any2oneArray(int,ChannelDataStore)} function instead.
+     */
+    public static Any2OneChannel[] createAny2One(ChannelDataStore buffer, int n)
+    {
+        return factory.createAny2One(buffer, n);
+    }
+
+    /**
+     * <p>Constructs and returns an array of <code>One2AnyChannel</code> objects
+     * which use the specified <code>ChannelDataStore</code> object as a
+     * buffer.
+     * </p>
+     * <p>The buffer supplied to this method is cloned before it is inserted into
+     * the channel. This is why an array of buffers is not required.
+     * </p>
+     *
+     * @param	buffer	the <code>ChannelDataStore</code> to use.
+     * @param	n	    the size of the array of channels.
+     * @return the array of buffered channels.
+     *
+     * @see org.jcsp.lang.BufferedChannelArrayFactory#createOne2Any(ChannelDataStore, int)
+     * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the {@link #one2anyArray(int,ChannelDataStore)} function instead.
+     */
+    public static One2AnyChannel[] createOne2Any(ChannelDataStore buffer, int n)
+    {
+        return factory.createOne2Any(buffer, n);
+    }
+
+    /**
+     * <p>Constructs and returns an array of <code>Any2AnyChannel</code> objects
+     * which use the specified <code>ChannelDataStore</code> object as a
+     * buffer.
+     * </p>
+     * <p>The buffer supplied to this method is cloned before it is inserted into
+     * the channel. This is why an array of buffers is not required.
+     * </p>
+     *
+     * @param	buffer	the <code>ChannelDataStore</code> to use.
+     * @param	n	    the size of the array of channels.
+     * @return the array of buffered channels.
+     *
+     * @see org.jcsp.lang.BufferedChannelArrayFactory#createAny2Any(ChannelDataStore, int)
+     * @see org.jcsp.util.ChannelDataStore
+     * 
+     * @deprecated Use the {@link #any2anyArray(int,ChannelDataStore)} function instead.
+     */
+    public static Any2AnyChannel[] createAny2Any(ChannelDataStore buffer, int n)
+    {
+        return factory.createAny2Any(buffer, n);
+    }
+
 }

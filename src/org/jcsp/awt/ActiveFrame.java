@@ -63,8 +63,8 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myWindowEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
- *   final One2OneChannel myMouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myWindowEvent = Channel.one2one (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveFrame myFrame = new ActiveFrame (myWindowEvent.out ());
  *   myFrame.addMouseEventChannel (myMouseEvent.out ());
@@ -154,7 +154,7 @@ import org.jcsp.lang.*;
  * <I></I>
  *   public static void main (String argv[]) {
  * <I></I>
- *     final Any2OneChannel windowEvent = Channel.createAny2One (new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel windowEvent = Channel.any2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveFrame frame =
  *       new ActiveFrame (null, windowEvent.out (), "ActiveButton Example");
@@ -162,7 +162,7 @@ import org.jcsp.lang.*;
  *     final String[] label = {"Hello World", "Rocket Science", "CSP",
  *                             "Monitors", "Ignore Me", "Goodbye World"};
  * <I></I>
- *     final Any2OneChannel buttonEvent = Channel.createAny2One (new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel buttonEvent = Channel.any2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveButton[] button = new ActiveButton[label.length];
  *     for (int i = 0; i < label.length; i++) {

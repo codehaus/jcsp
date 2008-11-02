@@ -40,8 +40,8 @@ import java.io.Serializable;
  * the underlying memory system will permit).  So, it <I>never</I> gets full and blocks
  * a writer.
  * See the static
- * {@link org.jcsp.lang.ChannelInt#createOne2One(org.jcsp.util.ints.ChannelDataStoreInt)
- * <TT>create</TT>} methods of {@link org.jcsp.lang.ChannelInt} etc.
+ * {@link org.jcsp.lang.Channel#one2oneInt(org.jcsp.util.ints.ChannelDataStoreInt)
+ * construction} methods of {@link org.jcsp.lang.Channel}.
  * <P>
  * The <TT>getState</TT> method returns <TT>EMPTY</TT> or <TT>NONEMPTYFULL</TT>, but
  * never <TT>FULL</TT>.

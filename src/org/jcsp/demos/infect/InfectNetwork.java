@@ -55,21 +55,21 @@ class InfectNetwork implements CSProcess {
 
     System.out.println ("Infect creating channels ...");
     
-    final One2OneChannel[] event = Channel.createOne2One (new OverWriteOldestBuffer (1), InfectionControl.NUMBER + 1);
-    final One2OneChannel[] configure = Channel.createOne2One (InfectionControl.NUMBER + 1);
+    final One2OneChannel[] event = Channel.one2oneArray (InfectionControl.NUMBER + 1, new OverWriteOldestBuffer (1));
+    final One2OneChannel[] configure = Channel.one2oneArray (InfectionControl.NUMBER + 1);
 
-    final One2OneChannelInt scrollEvent = ChannelInt.createOne2One (new OverWriteOldestBufferInt (1));
-    final One2OneChannel scrollConfigure = Channel.createOne2One ();
+    final One2OneChannelInt scrollEvent = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
+    final One2OneChannel scrollConfigure = Channel.one2one ();
 
-    final One2OneChannel report = Channel.createOne2One ();
+    final One2OneChannel report = Channel.one2one ();
 
-    final One2OneChannel toGraphics = Channel.createOne2One ();
-    final One2OneChannel fromGraphics = Channel.createOne2One ();
+    final One2OneChannel toGraphics = Channel.one2one ();
+    final One2OneChannel fromGraphics = Channel.one2one ();
 
-    final One2OneChannel feedBack = Channel.createOne2One ();
+    final One2OneChannel feedBack = Channel.one2one ();
 
-    final One2OneChannel infoConfigure = Channel.createOne2One ();
-    final One2OneChannel rateConfigure = Channel.createOne2One ();
+    final One2OneChannel infoConfigure = Channel.one2one ();
+    final One2OneChannel rateConfigure = Channel.one2one ();
 
     System.out.println ("InfectNetwork created channels");
     System.out.println ("InfectNetwork creating ActiveButtons ...");

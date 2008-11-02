@@ -331,13 +331,13 @@ public class CNS implements Service, CSProcess
    
    private boolean running = false;
    
-   private Any2OneChannel stopChan = Channel.createAny2One();
+   private Any2OneChannel stopChan = Channel.any2one();
    
    private Hashtable toClientChans = new Hashtable();
    
    private long channelKeyCount = 0;
    
-   private One2OneChannel startedReplyChan = Channel.createOne2One();
+   private One2OneChannel startedReplyChan = Channel.one2one();
    
    /**
     * The registered channel names and indexes.

@@ -39,7 +39,7 @@ class NetSharedConnectionServerImpl extends SharedConnectionServerImpl implement
    static NetSharedConnectionServerImpl create()
    {
       NetAltingChannelInput in = NetChannelEnd.createNet2One();
-      Any2OneChannel synchChan = Channel.createAny2One(new Buffer(1));
+      Any2OneChannel synchChan = Channel.any2one(new Buffer(1));
       return new NetSharedConnectionServerImpl(synchChan, in);
    }
    

@@ -103,7 +103,7 @@ import org.jcsp.net.*;
  *   NodeAddressID slaveNode2 = new TCPIPAddressID ("123.45.6.79", 6000);
  *   NetChannelInput workers2farmer    = NetChannelEnd.createNet2One ();
  *   NetChannelInput workers2harvester = NetChannelEnd.createNet2One ();
- *   One2OneChannel farmer2harvester   = Channel.createOne2One ();
+ *   One2OneChannel farmer2harvester   = Channel.one2one ();
  *   new Parallel (new CSProcess[] {
  *     new Farmer (farmer2harvester.out (), workers2farmer),
  *     new Harvester (farmer2harvester.in (), workers2harvester),

@@ -145,17 +145,17 @@ public class Ask
 
     public static void show() {
 
-        final One2OneChannel frameEvent = Channel.createOne2One(new
+        final One2OneChannel frameEvent = Channel.one2one(new
                 OverWritingBuffer(1));
-        final One2OneChannel frameConfig = Channel.createOne2One(new
+        final One2OneChannel frameConfig = Channel.one2one(new
                 OverWritingBuffer(1));
-        final One2OneChannel okEvent = Channel.createOne2One(new
+        final One2OneChannel okEvent = Channel.one2one(new
                 OverWritingBuffer(1));
-        final One2OneChannel okConfig = Channel.createOne2One(new
+        final One2OneChannel okConfig = Channel.one2one(new
                 OverWritingBuffer(1));
-        final One2OneChannel cancelEvent = Channel.createOne2One(new
+        final One2OneChannel cancelEvent = Channel.one2one(new
                 OverWritingBuffer(1));
-        final One2OneChannel cancelConfig = Channel.createOne2One(new
+        final One2OneChannel cancelConfig = Channel.one2one(new
                 OverWritingBuffer(1));
 
         final ActiveFrame frame = new ActiveFrame(frameConfig.in(),

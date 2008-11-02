@@ -57,11 +57,11 @@ public class Bounce implements CSProcess {
 
     // channels ...
 
-    final One2OneChannel mouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (10));
-    final One2OneChannel toGraphics = Channel.createOne2One ();
-    final One2OneChannel fromGraphics = Channel.createOne2One ();
-    final One2OneChannelInt control = ChannelInt.createOne2One ();
-    final One2OneChannelInt scroll = ChannelInt.createOne2One (new OverWriteOldestBufferInt (1));
+    final One2OneChannel mouseEvent = Channel.one2one (new OverWriteOldestBuffer (10));
+    final One2OneChannel toGraphics = Channel.one2one ();
+    final One2OneChannel fromGraphics = Channel.one2one ();
+    final One2OneChannelInt control = Channel.one2oneInt ();
+    final One2OneChannelInt scroll = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
 
     final DisplayList displayList = new DisplayList ();
 

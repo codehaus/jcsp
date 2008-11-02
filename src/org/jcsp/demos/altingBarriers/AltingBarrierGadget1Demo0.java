@@ -36,9 +36,9 @@ public class AltingBarrierGadget1Demo0 {
     // make the buttons
     
     final One2OneChannel[] click =
-      Channel.createOne2One (new OverWriteOldestBuffer (1), nUnits);
+      Channel.one2oneArray (nUnits, new OverWriteOldestBuffer (1));
 
-    final One2OneChannel[] configure = Channel.createOne2One (nUnits);
+    final One2OneChannel[] configure = Channel.one2oneArray (nUnits);
 
     final boolean horizontal = true;
 
@@ -66,7 +66,7 @@ public class AltingBarrierGadget1Demo0 {
 
     // make the track and the gadgets
 
-    One2OneChannel[] track = Channel.createOne2One (nUnits);
+    One2OneChannel[] track = Channel.one2oneArray (nUnits);
 
     AltingBarrierGadget1[] gadgets = new AltingBarrierGadget1[nUnits];
     for (int i = 0; i < nUnits; i++) {

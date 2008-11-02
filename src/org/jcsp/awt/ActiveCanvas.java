@@ -74,7 +74,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myMouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveCanvas myCanvas = new ActiveCanvas ();
  *   myCanvas.addMouseEventChannel (myMouseEvent.out ());
@@ -157,7 +157,7 @@ import org.jcsp.lang.*;
  *       new ActiveClosingFrame ("ActiveCanvas Example");
  *     final Frame frame = activeClosingFrame.getActiveFrame ();
  * <I></I>
- *     final One2OneChannel mouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (10));
+ *     final One2OneChannel mouseEvent = Channel.one2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final DisplayList displayList = new DisplayList ();
  * <I></I>

@@ -231,12 +231,12 @@ class NodeClassLoader extends ClassLoader
    /**
     * Channel for passing requests from the <code>findClass</code> method to the child process.
     */
-   private final One2OneChannel classReq = Channel.createOne2One();
+   private final One2OneChannel classReq = Channel.one2one();
    
    /**
     * Channel for returning data from the child process to the <code>findClass</code> method.
     */
-   private final One2OneChannel classResp = Channel.createOne2One();
+   private final One2OneChannel classResp = Channel.one2one();
    
    /**
     * The class manager responsible for managing dynamically loaded classes at this node.

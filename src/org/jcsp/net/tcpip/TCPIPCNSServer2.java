@@ -45,7 +45,7 @@ public class TCPIPCNSServer2
     * For use by other sub classes of this class to terminate the server. To terminate the server write a null
     * to this channel. This gets used in the NT service implementation to response to the STOP event.
     */
-   static final One2OneChannel terminate = Channel.createOne2One();
+   static final One2OneChannel terminate = Channel.one2one();
    
    private TCPIPCNSServer2()
    {

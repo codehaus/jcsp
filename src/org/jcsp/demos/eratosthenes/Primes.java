@@ -43,7 +43,7 @@ class Primes implements CSProcess {
   
   public void run () {
     out.write (2);
-    One2OneChannelInt c = ChannelInt.createOne2One ();
+    One2OneChannelInt c = Channel.one2oneInt ();
     new Parallel (
       new CSProcess[] {
         new NumbersFrom (3, 2, c.out ()),

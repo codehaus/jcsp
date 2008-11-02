@@ -50,8 +50,8 @@ public class PriPlexTimeIntTest {
   	Ask.show ();
   	Ask.blank ();
 
-    final One2OneChannelInt[] a = ChannelInt.createOne2One(5);
-    final One2OneChannelInt b = ChannelInt.createOne2One();
+    final One2OneChannelInt[] a = Channel.one2oneIntArray(5);
+    final One2OneChannelInt b = Channel.one2oneInt();
 
     new Parallel (                         // this won't see the higher
       new CSProcess[] {                    // indexed guards, including

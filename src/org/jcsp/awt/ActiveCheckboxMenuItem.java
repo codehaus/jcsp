@@ -63,7 +63,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myCheckboxMenuItemEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myCheckboxMenuItemEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveCheckboxMenuItem myCheckboxMenuItem =
  *     new ActiveCheckboxMenuItem (null, myCheckboxMenuItemEvent.out (), "Choose Me");
@@ -151,7 +151,7 @@ import org.jcsp.lang.*;
  *     final String[] langOptions = {"occam", "Java", "Smalltalk", "Algol-60",
  *                                   "Pascal", "Haskell", "SML", "Lisp"};
  * <I></I>
- *     final Any2OneChannel event[] = Channel.createAny2One (2, new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel event[] = Channel.any2oneArray (2, new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveMenuItem[] fileMenuItem =
  *       new ActiveMenuItem[fileOptions.length];

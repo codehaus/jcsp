@@ -63,23 +63,23 @@ class MandelNetwork implements CSProcess {
         // channels
 
         final One2OneChannel mouseChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(10));
+            Channel.one2one(new OverWriteOldestBuffer(10));
         final One2OneChannel mouseMotionChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(1));
+            Channel.one2one(new OverWriteOldestBuffer(1));
         final One2OneChannel keyChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(10));
+            Channel.one2one(new OverWriteOldestBuffer(10));
 
-        final One2OneChannel farmer2harvester = Channel.createOne2One();
-        final One2OneChannel harvester2farmer = Channel.createOne2One();
+        final One2OneChannel farmer2harvester = Channel.one2one();
+        final One2OneChannel harvester2farmer = Channel.one2one();
         
         final NetAltingChannelInput workers2farmer = CNS.createNet2One ("org.jcsp.demos.mandelbrot.net.Farmer");
         final NetAltingChannelInput workers2harvester = CNS.createNet2One ("org.jcsp.demos.mandelbrot.net.Harvester");
 
-        final One2OneChannel request = Channel.createOne2One();
-        final One2OneChannel reply = Channel.createOne2One();
+        final One2OneChannel request = Channel.one2one();
+        final One2OneChannel reply = Channel.one2one();
 
-        final One2OneChannel toGraphics = Channel.createOne2One();
-        final One2OneChannel fromGraphics = Channel.createOne2One();
+        final One2OneChannel toGraphics = Channel.one2one();
+        final One2OneChannel fromGraphics = Channel.one2one();
 
         // processes
 
@@ -101,8 +101,8 @@ class MandelNetwork implements CSProcess {
         south.setBackground(Color.green);
 
         final One2OneChannel backwardChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(1));
-        final One2OneChannel backwardConfigure = Channel.createOne2One();
+            Channel.one2one(new OverWriteOldestBuffer(1));
+        final One2OneChannel backwardConfigure = Channel.one2one();
         backwardButton =
             new ActiveButton(
                 backwardConfigure.in(),
@@ -113,8 +113,8 @@ class MandelNetwork implements CSProcess {
         south.add(backwardButton);
 
         final One2OneChannel forwardChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(1));
-        final One2OneChannel forwardConfigure = Channel.createOne2One();
+            Channel.one2one(new OverWriteOldestBuffer(1));
+        final One2OneChannel forwardConfigure = Channel.one2one();
         forwardButton =
             new ActiveButton(
                 forwardConfigure.in(),
@@ -127,8 +127,8 @@ class MandelNetwork implements CSProcess {
         // south.add (new Label ("      ", Label.CENTER));    // padding
 
         final One2OneChannel scrollChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(1));
-        final One2OneChannel scrollConfigure = Channel.createOne2One();
+            Channel.one2one(new OverWriteOldestBuffer(1));
+        final One2OneChannel scrollConfigure = Channel.one2one();
         scrollChoice =
             new ActiveChoice(scrollConfigure.in(), scrollChannel.out());
         final String[] scrollMenu = { "Silent", "Up", "Down", "None" };
@@ -139,8 +139,8 @@ class MandelNetwork implements CSProcess {
         south.add(scrollChoice);
 
         final One2OneChannel iterationsChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(1));
-        final One2OneChannel iterationsConfigure = Channel.createOne2One();
+            Channel.one2one(new OverWriteOldestBuffer(1));
+        final One2OneChannel iterationsConfigure = Channel.one2one();
         iterationsChoice =
             new ActiveChoice(iterationsConfigure.in(), iterationsChannel.out());
         final String[] iterationsMenu =
@@ -152,8 +152,8 @@ class MandelNetwork implements CSProcess {
         south.add(iterationsChoice);
 
         final One2OneChannel targetChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(1));
-        final One2OneChannel targetConfigure = Channel.createOne2One();
+            Channel.one2one(new OverWriteOldestBuffer(1));
+        final One2OneChannel targetConfigure = Channel.one2one();
         targetChoice =
             new ActiveChoice(targetConfigure.in(), targetChannel.out());
         /*
@@ -167,8 +167,8 @@ class MandelNetwork implements CSProcess {
         south.add(targetChoice);
 
         final One2OneChannel colourChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(1));
-        final One2OneChannel colourConfigure = Channel.createOne2One();
+            Channel.one2one(new OverWriteOldestBuffer(1));
+        final One2OneChannel colourConfigure = Channel.one2one();
         colourChoice =
             new ActiveChoice(colourConfigure.in(), colourChannel.out());
         final String[] colourMenu = { "Step", "Fade" };
@@ -181,8 +181,8 @@ class MandelNetwork implements CSProcess {
         south.add(new Label("      ", Label.CENTER)); // padding
 
         final One2OneChannel cancelChannel =
-            Channel.createOne2One(new OverWriteOldestBuffer(1));
-        final One2OneChannel cancelConfigure = Channel.createOne2One();
+            Channel.one2one(new OverWriteOldestBuffer(1));
+        final One2OneChannel cancelConfigure = Channel.one2one();
         cancelButton =
             new ActiveButton(
                 cancelConfigure.in(),
@@ -206,7 +206,7 @@ class MandelNetwork implements CSProcess {
                 "XXXXXXXXXXXXXXXXXXXXXX",
                 "XXXXXXXXXXXXXXXXXXXXXX" };
         final One2OneChannel[] infoConfigure =
-            Channel.createOne2One(infoTitle.length);
+            Channel.one2oneArray(infoTitle.length);
         infoLabel = new ActiveLabel[infoTitle.length];
         for (int i = 0; i < infoTitle.length; i++) {
             infoLabel[i] = new ActiveLabel(infoConfigure[i].in(), infoWidth[i]);

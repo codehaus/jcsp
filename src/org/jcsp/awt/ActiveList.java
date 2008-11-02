@@ -63,8 +63,8 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myListEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
- *   final One2OneChannel myListItemEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myListEvent = Channel.one2one (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myListItemEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveList myList = new ActiveList (null, myListEvent.out ());
  *   myList.addItemEventChannel (myListItemEvent.out ());
@@ -175,10 +175,10 @@ import org.jcsp.lang.*;
  * <I></I>
  *     final Frame root = new Frame ("ActiveList Example");
  * <I></I>
- *     final One2OneChannel configure = Channel.createOne2One ();
+ *     final One2OneChannel configure = Channel.one2one ();
  * <I></I>
- *     final One2OneChannel event = Channel.createOne2One (new OverWriteOldestBuffer (10));
- *     final One2OneChannel itemEvent = Channel.createOne2One (new OverWriteOldestBuffer (10));
+ *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
+ *     final One2OneChannel itemEvent = Channel.one2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveList list = new ActiveList (configure.in (), event.out (), 0, true);
  *     list.addItemEventChannel (itemEvent.out ());

@@ -61,7 +61,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myMenuEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myMenuEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveMenu myMenu =
  *     new ActiveMenu (null, myMenuEvent.out (), "Look at this");
@@ -143,7 +143,7 @@ import org.jcsp.lang.*;
  *     final String[] fileOptions = {"Hello World", "Rocket Science", "CSP",
  *                                   "Monitors", "Ignore Me", "Goodbye World"};
  * <I></I>
- *     final Any2OneChannel event[] = Channel.createAny2One (2, new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel event[] = Channel.any2oneArray (2, new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveMenuItem[] fileMenuItem =
  *       new ActiveMenuItem[fileOptions.length];
@@ -154,7 +154,7 @@ import org.jcsp.lang.*;
  * <I></I>
  *     fileMenu.addSeparator ();
  * <I></I>
- *     final Any2OneChannel langConfigure = Channel.createAny2One ();
+ *     final Any2OneChannel langConfigure = Channel.any2one ();
  *     final ActiveMenu langMenu = new ActiveMenu (langConfigure.in (), null, "Language");
  *     fileMenu.add (langMenu);  // set up the active langMenu as a sub-menu
  * <I></I>

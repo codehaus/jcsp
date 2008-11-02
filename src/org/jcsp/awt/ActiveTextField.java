@@ -64,7 +64,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myTextFieldEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myTextFieldEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveTextField myTextField =
  *     new ActiveTextField (null, myTextFieldEvent.out (), "Edit Me");
@@ -158,7 +158,7 @@ import org.jcsp.lang.*;
  *     final ActiveClosingFrame frame =
  *       new ActiveClosingFrame ("ActiveTextFieldExample Example");
  * <I></I>
- *     final Any2OneChannel event = Channel.createAny2One (new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final String[] string =
  *       {"Entia Non Sunt Multiplicanda Praeter Necessitatem",

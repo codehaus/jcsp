@@ -86,17 +86,17 @@ class LinkManager implements CSProcess
    
    private final Any2OneConnection registerConn = Connection.createAny2One();
    
-   private final Any2OneChannel requestLink = Channel.createAny2One();
+   private final Any2OneChannel requestLink = Channel.any2one();
    
-   private final Any2OneChannel lostLinkChan = Channel.createAny2One();
+   private final Any2OneChannel lostLinkChan = Channel.any2one();
    
-   private final Any2OneChannel linkFailureChan = Channel.createAny2One();
+   private final Any2OneChannel linkFailureChan = Channel.any2one();
    
-   private final Any2OneChannel checkForLink = Channel.createAny2One();
+   private final Any2OneChannel checkForLink = Channel.any2one();
    
-   private final Any2OneChannel getNodeIDChan = Channel.createAny2One();
+   private final Any2OneChannel getNodeIDChan = Channel.any2one();
    
-   private final Any2OneChannel registerEventChannel = Channel.createAny2One();
+   private final Any2OneChannel registerEventChannel = Channel.any2one();
    
    private static final int ALT_LOST_LINK = 0;
    private static final int ALT_LINK_FAIL = 1;
@@ -115,7 +115,7 @@ class LinkManager implements CSProcess
       //Start a process to hand event channel registration and
       //distribution of events
       
-      final Any2OneChannel sendEvent = Channel.createAny2One(new Buffer(10));
+      final Any2OneChannel sendEvent = Channel.any2one(new Buffer(10));
       
       CSProcess eventProc = new CSProcess()
       {
@@ -400,7 +400,7 @@ class LinkManager implements CSProcess
       if(Node.getInstance().isThisNode(target))
          //attempt to get a link to the local Node - return the LoopbackLink
          return loopbackLink;
-      One2OneChannel channel = Channel.createOne2One(new InfiniteBuffer());
+      One2OneChannel channel = Channel.one2one(new InfiniteBuffer());
      
       requestLink.out().write(new LinkRequest(channel.out(), target, linkProfile));
       
@@ -439,7 +439,7 @@ class LinkManager implements CSProcess
    {
       Node.getInstance().checkInitialized();
       
-      One2OneChannel channel = Channel.createOne2One(new InfiniteBuffer());
+      One2OneChannel channel = Channel.one2one(new InfiniteBuffer());
       checkForLink.out().write(new LinkCheck(channel.out(), otherNode));
       return (channel.in().read() != null);
    }
@@ -448,7 +448,7 @@ class LinkManager implements CSProcess
    {
       Node.getInstance().checkInitialized();
       
-      final One2OneChannel eventChan = Channel.createOne2One(new InfiniteBuffer());
+      final One2OneChannel eventChan = Channel.one2one(new InfiniteBuffer());
       registerEventChannel.out().write(eventChan.out());
       //this should be a Safe channel
       return eventChan.in();

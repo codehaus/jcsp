@@ -58,8 +58,8 @@ public class College {
     int n_philosophers = 5;
 
     final Any2OneChannelInt service = ChannelInt.createAny2One ();
-    final One2OneChannelInt deliver = ChannelInt.createOne2One ();
-    final One2OneChannelInt supply = ChannelInt.createOne2One ();
+    final One2OneChannelInt deliver = Channel.one2oneInt ();
+    final One2OneChannelInt supply = Channel.one2oneInt ();
 
     final Phil[] phil = new Phil[n_philosophers];
     for (int i = 0; i < n_philosophers; i++) {

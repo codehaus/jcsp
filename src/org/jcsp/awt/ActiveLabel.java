@@ -60,7 +60,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myMouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveLabel myLabel = new ActiveLabel ("Look at Me");
  *   myContainer.addMouseEventChannel (myMouseEvent.out ());
@@ -147,7 +147,7 @@ import org.jcsp.lang.*;
  *     final int nLabels = 8;
  *     final int countdown = 10;
  * <I></I>
- *     final One2OneChannel[] configureLabel = Channel.createOne2One (nLabels);
+ *     final One2OneChannel[] configureLabel = Channel.one2oneArray (nLabels);
  * <I></I>
  *     final ActiveLabel[] label = new ActiveLabel[nLabels];
  *     for (int i = 0; i < label.length; i++) {
@@ -155,8 +155,8 @@ import org.jcsp.lang.*;
  *       label[i].setAlignment (Label.CENTER);
  *     }
  * <I></I>
- *     final One2OneChannel configureButton = Channel.createOne2One ();
- *     final One2OneChannel event = Channel.createOne2One (new OverWriteOldestBuffer (10));
+ *     final One2OneChannel configureButton = Channel.one2one ();
+ *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveButton button = new ActiveButton (configureButton.in (), event.out (), "Start");
  * <I></I>

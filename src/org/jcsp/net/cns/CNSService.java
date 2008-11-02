@@ -87,16 +87,16 @@ public class CNSService implements Service, CNSUser
     *
     */
    
-   private final Any2OneChannel resolveRequestChan = Channel.createAny2One();
+   private final Any2OneChannel resolveRequestChan = Channel.any2one();
    private final AltingChannelInput resolveRequestChanIn;
    private final SharedChannelOutput resolveRequestChanOut;
-   private final Any2OneChannel registerRequestChan = Channel.createAny2One();
+   private final Any2OneChannel registerRequestChan = Channel.any2one();
    private final AltingChannelInput registerRequestChanIn;
    private final SharedChannelOutput registerRequestChanOut;
-   private final Any2OneChannel deregisterRequestChan = Channel.createAny2One();
+   private final Any2OneChannel deregisterRequestChan = Channel.any2one();
    private final AltingChannelInput deregisterRequestChanIn;
    private final SharedChannelOutput deregisterRequestChanOut;
-   private final Any2OneChannel leaseRequestChan = Channel.createAny2One();
+   private final Any2OneChannel leaseRequestChan = Channel.any2one();
    private final AltingChannelInput leaseRequestChanIn;
    private final SharedChannelOutput leaseRequestChanOut;
    
@@ -104,16 +104,16 @@ public class CNSService implements Service, CNSUser
     * Channels used to get replies from the service process
     *
     */
-   private final One2OneChannel registerReplyChan = Channel.createOne2One();
+   private final One2OneChannel registerReplyChan = Channel.one2one();
    private final AltingChannelInput registerReplyChanIn;
    private final ChannelOutput registerReplyChanOut;
-   private final One2OneChannel deregisterReplyChan = Channel.createOne2One();
+   private final One2OneChannel deregisterReplyChan = Channel.one2one();
    private final AltingChannelInput deregisterReplyChanIn;
    private final ChannelOutput deregisterReplyChanOut;
-   private final One2OneChannel leaseReplyChan = Channel.createOne2One();
+   private final One2OneChannel leaseReplyChan = Channel.one2one();
    private final AltingChannelInput leaseReplyChanIn;
    private final ChannelOutput leaseReplyChanOut;
-   private final Any2OneChannel stopChan = Channel.createAny2One();
+   private final Any2OneChannel stopChan = Channel.any2one();
    
    /**
     * List of all pending resolve requests.
@@ -480,7 +480,7 @@ public class CNSService implements Service, CNSUser
             return false;
          if (running)
             return true;
-         One2OneChannel startedChan = Channel.createOne2One();
+         One2OneChannel startedChan = Channel.one2one();
          new ProcessManager(new ServiceProcess(startedChan.out())).start();
          return ((Boolean) startedChan.in().read()).booleanValue();
       }
@@ -973,7 +973,7 @@ public class CNSService implements Service, CNSUser
       {
          channelName = name;
          next = null;
-         sync = Channel.createOne2One();
+         sync = Channel.one2one();
          this.nameAccessLevel = nameAccessLevel;
       }
       

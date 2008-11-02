@@ -85,8 +85,8 @@ import java.util.*;
  * <I></I>
  *   public static void main (String[] args) {
  * <I></I>
- *     final One2OneChannelInt[] a = ChannelInt.createOne2One (3);
- *     final One2OneChannel b = Channel.createOne2One ();
+ *     final One2OneChannelInt[] a = Channel.one2oneIntArray (3);
+ *     final One2OneChannel b = Channel.one2one ();
  * <I></I>
  *     new Parallel (
  *       new CSProcess[] {

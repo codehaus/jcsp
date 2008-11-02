@@ -76,8 +76,8 @@ import org.jcsp.lang.*;
  * <I></I>
  *   public static void main (String[] argv) {
  * <I></I>
- *     One2OneChannel a = Channel.createOne2One ();
- *     One2OneChannel b = Channel.createOne2One ();
+ *     One2OneChannel a = Channel.one2one ();
+ *     One2OneChannel b = Channel.one2one ();
  * <I></I>
  *     new Parallel (
  *       new CSProcess[] {

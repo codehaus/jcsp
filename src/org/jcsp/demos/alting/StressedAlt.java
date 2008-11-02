@@ -56,8 +56,8 @@ public class StressedAlt {
     final int nChannels = 8;
     final int nWritersPerChannel = 8;
 
-    //Any2OneChannel[] c = Channel.createAny2One (new OverWriteOldestBuffer (1), nChannels);
-    Any2OneChannel[] c = Channel.createAny2One (nChannels);
+    //Any2OneChannel[] c = Channel.any2oneArray (nChannels, new OverWriteOldestBuffer (1));
+    Any2OneChannel[] c = Channel.any2oneArray (nChannels);
 
     StressedWriter[] writers = new StressedWriter[nChannels*nWritersPerChannel];
 

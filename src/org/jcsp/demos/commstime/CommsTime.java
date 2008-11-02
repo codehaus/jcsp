@@ -57,10 +57,10 @@ public class CommsTime {
     int nLoops = 10000;
     System.out.println (nLoops + " loops ...\n");
 
-    One2OneChannelInt a = ChannelInt.createOne2One ();
-    One2OneChannelInt b = ChannelInt.createOne2One ();
-    One2OneChannelInt c = ChannelInt.createOne2One ();
-    One2OneChannelInt d = ChannelInt.createOne2One ();
+    One2OneChannelInt a = Channel.one2oneInt ();
+    One2OneChannelInt b = Channel.one2oneInt ();
+    One2OneChannelInt c = Channel.one2oneInt ();
+    One2OneChannelInt d = Channel.one2oneInt ();
 
     new Parallel (
       new CSProcess[] {

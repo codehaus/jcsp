@@ -136,11 +136,15 @@ public class Printer implements CSProcess
     */
    public synchronized void run()
    {
-      while (true)
-      {
-         printStream.print(prefix);
-         printStream.print(in.read());
-         printStream.print(postfix);
+      try {
+	while (true)
+        {
+           printStream.print(prefix);
+           printStream.print(in.read());
+           printStream.print(postfix);
+        }
+      } catch (PoisonException p) {
+	// nothing to do
       }
    }
 }

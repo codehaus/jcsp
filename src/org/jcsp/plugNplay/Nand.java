@@ -76,38 +76,36 @@ import org.jcsp.lang.*;
  * <H2>Example</H2>
  * The following example shows how to use the Nand process in a small program.
  * The program also uses some of the other building block processes. The
- * program generates a sequence of numbers and calculates the negative value
- * and prints this on the screen.
+ * program generates a sequence of numbers,
+ * rounds each odd number down to the nearest even number,
+ * negates them
+ * and prints them to the screen.
  *
  * <PRE>
- * import org.org.jcsp.lang.*;
- * import org.jcsp.util.*;
- *
+ * import org.jcsp.lang.*;
+ * import org.jcsp.plugNplay.*;
+ * 
  * public class NandExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     One2OneChannel a = Channel.createOne2One ();
- *     One2OneChannel b = Channel.createOne2One ();
- *     One2OneChannel c = Channel.createOne2One ();
- *     One2OneChannel d = Channel.createOne2One ();
- * <I></I>
- *     new Parallel (new CSProcess[] {
- *       new Numbers (a.out ()),
- *       new Nand (a.in (), b.in (), c.out ()),
- *       new Successor (c.in (), d.out ()),
- *       new Printer (d.in ()),
- *       new CSProcess () {
- *         public void run () {
- *           Integer nandVal = new Integer (Integer.MAX_VALUE);
- *           while (true) {
- *             b.out ().write (nandVal);
- *           }
- *         }
+ * 
+ *     One2OneChannel a = Channel.one2one ();
+ *     One2OneChannel b = Channel.one2one ();
+ *     One2OneChannel c = Channel.one2one ();
+ *     One2OneChannel d = Channel.one2one ();
+ * 
+ *     new Parallel (
+ *       new CSProcess[] {
+ *         new Numbers (a.out ()),
+ *         new Generate (b.out (), Integer.MAX_VALUE - 1),
+ *         new Nand (a.in (), b.in (), c.out ()),
+ *         new Successor (c.in (), d.out ()),
+ *         new Printer (d.in (), "--> ", "\n")
  *       }
- *     }).run ();
- * <I></I>
+ *     ).run ();
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

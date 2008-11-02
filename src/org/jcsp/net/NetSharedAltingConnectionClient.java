@@ -51,7 +51,7 @@ public class NetSharedAltingConnectionClient extends SharedAltingConnectionClien
 {
    static NetSharedAltingConnectionClient create(NetChannelLocation serverLoc)
    {
-      Any2OneChannel synchChan = Channel.createAny2One(new Buffer(1));
+      Any2OneChannel synchChan = Channel.any2one(new Buffer(1));
       NetChannelOutput openToServer = NetChannelEnd.createOne2Net(serverLoc);
       NetChannelOutput reqToServer = NetChannelEnd.createOne2Net(serverLoc);
       NetAltingChannelInput fromServer = NetChannelEnd.createNet2One(new Buffer(1));

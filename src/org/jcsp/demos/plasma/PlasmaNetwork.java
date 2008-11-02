@@ -51,15 +51,15 @@ class PlasmaNetwork implements CSProcess {
     // channels
 
     // final One2OneChannel mouseChannel =
-    //   One2OneChannel.create (new OverWriteOldestBuffer (10));
+    //   Channel.one2one (new OverWriteOldestBuffer (10));
     // final One2OneChannel mouseMotionChannel =
-    //   One2OneChannel.create (new OverWriteOldestBuffer (1));
+    //   Channel.one2one (new OverWriteOldestBuffer (1));
     // final One2OneChannel keyChannel =
-    //   One2OneChannel.create (new OverWriteOldestBuffer (10));
+    //   Channel.one2one (new OverWriteOldestBuffer (10));
 
-    final One2OneChannel toGraphics = Channel.createOne2One ();
-    final One2OneChannel fromGraphics = Channel.createOne2One ();
-    final One2OneChannel canvasResize = Channel.createOne2One (new OverWritingBuffer (1));
+    final One2OneChannel toGraphics = Channel.one2one ();
+    final One2OneChannel fromGraphics = Channel.one2one ();
+    final One2OneChannel canvasResize = Channel.one2one (new OverWritingBuffer (1));
 
     // processes
 
@@ -87,16 +87,16 @@ class PlasmaNetwork implements CSProcess {
     final Panel south = new Panel ();
     south.setBackground (Color.green);
 
-    final One2OneChannel codeChannel = Channel.createOne2One (new OverWriteOldestBuffer (1));
-    final One2OneChannel codeConfigure = Channel.createOne2One ();
+    final One2OneChannel codeChannel = Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel codeConfigure = Channel.one2one ();
     codeTextField = new ActiveTextField (codeConfigure.in (), codeChannel.out (), "XXXXXXXXXXXXXX", 24);
     codeTextField.setBackground (Color.white);
     codeTextField.setEnabled (true);
     south.add (new Label ("Genetic Code", Label.CENTER));
     south.add (codeTextField);
 
-    final One2OneChannel scaleChannel = Channel.createOne2One (new OverWriteOldestBuffer (1));
-    final One2OneChannel scaleConfigure = Channel.createOne2One ();
+    final One2OneChannel scaleChannel = Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel scaleConfigure = Channel.one2one ();
     scaleChoice = new ActiveChoice (scaleConfigure.in (), scaleChannel.out ());
     final String[] scaleMenu = {"1:1", "1:2", "1:4", "1:8", "1:16"};
     for (int i = 0; i < scaleMenu.length; i++) {
@@ -105,8 +105,8 @@ class PlasmaNetwork implements CSProcess {
     south.add (new Label ("Scale", Label.CENTER));
     south.add (scaleChoice);
 
-    final One2OneChannel colourChannel = Channel.createOne2One (new OverWriteOldestBuffer (1));
-    final One2OneChannel colourConfigure = Channel.createOne2One ();
+    final One2OneChannel colourChannel = Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel colourConfigure = Channel.one2one ();
     colourChoice = new ActiveChoice (colourConfigure.in (), colourChannel.out ());
     final String[] colourMenu = {"Red/Green/Blue", "Red/Blue", "Red/Green", "Green/Blue", "Jumpy"};
     for (int i = 0; i < colourMenu.length; i++) {
@@ -122,14 +122,14 @@ class PlasmaNetwork implements CSProcess {
     final Panel north = new Panel ();
     north.setBackground (Color.green);
 
-    final One2OneChannel freezeChannel = Channel.createOne2One (new OverWriteOldestBuffer (1));
-    final One2OneChannel freezeConfigure = Channel.createOne2One ();
+    final One2OneChannel freezeChannel = Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel freezeConfigure = Channel.one2one ();
     freezeButton = new ActiveButton (freezeConfigure.in (), freezeChannel.out (), "XXXXXXXXXXXXXX");
     freezeButton.setBackground (Color.white);
     freezeButton.setEnabled (true);
     north.add (freezeButton);
 
-    final One2OneChannel fpsConfigure = Channel.createOne2One ();
+    final One2OneChannel fpsConfigure = Channel.one2one ();
     fpsLabel = new ActiveLabel (fpsConfigure.in (), "XXXXXXXXXXXXXX");
     fpsLabel.setAlignment (Label.CENTER);
     fpsLabel.setBackground (Color.white);

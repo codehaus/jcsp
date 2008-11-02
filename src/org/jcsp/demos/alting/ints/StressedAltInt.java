@@ -57,7 +57,7 @@ public class StressedAltInt {
     final int nChannels = 8;
     final int nWritersPerChannel = 8;
 
-    Any2OneChannelInt[] c = ChannelInt.createAny2One(nChannels);
+    Any2OneChannelInt[] c = ChannelInt.any2oneArray(nChannels);
 
     StressedWriterInt[] writers = new StressedWriterInt[nChannels*nWritersPerChannel];
 

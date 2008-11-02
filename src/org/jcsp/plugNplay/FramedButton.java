@@ -80,7 +80,7 @@ import org.jcsp.awt.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myButtonEvent =
- *     One2OneChannel.create (new OverWriteOldestBuffer (n));
+ *     Channel.one2one (new OverWriteOldestBuffer (n));
  * </PRE>
  * <I>This will ensure that the Java Event Thread will never be blocked.
  * Slow or inattentive readers may miss rapidly generated events, but 
@@ -100,60 +100,61 @@ import org.jcsp.awt.*;
  * public class FramedButtonTest {
  * 
  *   public static void main (String argv[]) {
- *
+ *   
  *     // initial pixel sizes for the button frame
- *  
+ *     
  *     final int pixDown = 100;
  *     final int pixAcross = 250;
- *
+ *   
  *     // labels for the button
- *
+ * 
  *     final String[] label = {"JCSP", "Rocket Science", "occam-pi", "Goodbye World"};
- *
+ * 
  *     // the event channel is wired up to the button & reports all button presses ...
- *
- *     final One2OneChannel event =
- *       One2OneChannel.create (new OverWriteOldestBuffer (10));
- *
+ * 
+ *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
+ * 
  *     // the configure channel is wired up to the button  ...
- *
- *     final One2OneChannel configure = new One2OneChannel ();
- *
+ * 
+ *     final One2OneChannel configure = Channel.one2one ();
+ * 
  *     // make the framed button (connecting up its wires) ...
- *
+ * 
  *     final FramedButton button =
- *       new FramedButton ("FramedButton Demo", pixDown, pixAcross, configure, event);
- *
+ *       new FramedButton (
+ *         "FramedButton Demo", pixDown, pixAcross, configure.in (), event.out ()
+ *       );
+ * 
  *     // testrig ...
- *
+ * 
  *     new Parallel (
- *  
+ *     
  *       new CSProcess[] {
- *    
+ *       
  *         button,
- *      
+ *         
  *         new CSProcess () {
- *      
+ *         
  *           public void run () {
- *  
+ *     
  *             int i = 0;
- *          
+ *             
  *             while (true) {
- *               configure.write (label[i]);
+ *               configure.out ().write (label[i]);
  *               i = (i + 1) % label.length;
- *               final String s = (String) event.read ();
+ *               final String s = (String) event.in ().read ();
  *               System.out.println ("Button `" + s + "' pressed ...");
  *             }
- *          
+ *             
  *           }
- *        
+ *           
  *         }
- *      
+ *         
  *       }
  *     ).run ();
- *
+ * 
  *   }
- *
+ * 
  * }
  * </PRE>
  *

@@ -113,9 +113,9 @@ public class FilteredChannel
      *
      * @see org.jcsp.lang.ChannelArrayFactory#createAny2One(int)
      */
-    public static FilteredAny2OneChannel[] createAny2One(int n)
+    public static FilteredAny2OneChannel[] any2oneArray(int n)
     {
-        return (FilteredAny2OneChannel[])factory.createAny2One(n);
+        return (FilteredAny2OneChannel[])factory.any2oneArray(n);
     }
 
     /**
@@ -215,9 +215,9 @@ public class FilteredChannel
      *
      * @see org.jcsp.lang.ChannelArrayFactory#createAny2One(int)
      */
-    public static FilteredAny2OneChannel[] createAny2One(ChannelDataStore buffer, int n)
+    public static FilteredAny2OneChannel[] any2oneArray(ChannelDataStore buffer, int n)
     {
-        return (FilteredAny2OneChannel[])factory.createAny2One(buffer, n);
+        return (FilteredAny2OneChannel[])factory.any2oneArray(buffer, n);
     }
 
     /**

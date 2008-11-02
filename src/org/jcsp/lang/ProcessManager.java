@@ -52,14 +52,13 @@ package org.jcsp.lang;
  * it is managing.
  * </P>
  *
- * <H2>Examples</H2>
- *
  * <H3>Spawning a CSProcess</H3>
  *
- * This first example demonstrates that the managed <TT>CSProcess</TT> is
+ * This example demonstrates that the managed <TT>CSProcess</TT> is
  * executed concurrently with the spawning process and that it dies when
  * its manager terminates.  The managed process is `infinite' and
- * just counts and chatters.
+ * just counts and chatters.  The managed process is automatically terminated
+ * if the main Java thread terminates (as in the case, eventually, below).
  * <PRE>
  * import org.jcsp.lang.*;
  * <I></I>
@@ -103,46 +102,51 @@ package org.jcsp.lang;
  * }
  * </PRE>
  *
- * * <H3>Stopping Race-Hazards</H3>
+ * <H3>Stopping, Interrupting, Race-Hazards and Poison</H3>
  *
- * Stopping a process releases any locks it (or any sub-process) may be
- * holding, so there is little danger of deadlock.  Of course, we
- * are assuming that nobody attempts a committed interaction afterwards.
+ * Stopping a Java thread releases any locks it (or any sub-process) may be
+ * holding, so this reduces the danger of other threads deadlocking through
+ * a failure to acquire a needed lock.
  * However, if the stopped process were in the middle of some synchronised
- * transaction, the data update may be incomplete depending on the precise
- * moment of the stopping.  This is a race-hazard.
+ * transaction, the data update may be incomplete (and, hence,  corrupt)
+ * depending on the precise moment of the stopping.  This is a race-hazard.
+ * Further, if some other thread later needed to interact with the stopped
+ * thread, it would deadlock.
  * <P>
- * To avoid this, a managed process should only be stopped if we know it
- * is in a state where it is not interacting with its environment - <I>or</I>,
- * as in the above example, we do not care about such spoilt data.  To know
- * that it is in a stoppable state, the manager ought to listen for a message
- * (e.g. channel communication) from the process that it is ready to be stopped.
- * [An example of such cooperation between managed and manager processes is
- * given in the <TT>Hamming</TT> demonstration (see <TT>jcsp-demos.hamming</TT>).]
+ * Instead of <i>stopping</i> a JCSP process, it is much safer to
+ * {@link #interrupt() <i>interrupt</i>} it.
+ * This gives the process the chance to notice the interrupt (through an
+ * exception handler) and tidy up.
+ * If no such handler is provided and the JCSP process attempts any
+ * synchronisation afterwards, the process will bomb out with
+ * a {@link ProcessInterruptedException}.
  * <P>
- * If the managed process is purely serial, there is not much point in the above trick,
- * since it could simply terminate.  However, having a manager stop a complex process
- * network means that the network does not have to make its own provision for termination.
- * The latter can add considerable algorithmic complexity, often to the detriment
- * of the clarity of individual process logic.
+ * For historical reasons, a {@link #stop()} method is provided below &ndash;
+ * but it is implemented as {@link #interrupt()} (and deprecated).
  * <P>
+ * If the managed process has gone parallel, managing an interrupt to achieve
+ * a clean exit is more tricky.
  * Stopping a network by setting a global <TT>volatile</TT> flag that each process polls
- * from time to time (the first suggestion in the documentation of the <I>deprecated</I>
- * <TT>stop</TT> method in <TT>java.lang.Thread</TT>) is not, in general, safe.
+ * from time to time is not safe.
  * For example, a thread blocked on a monitor <TT>wait</TT> will remain blocked
  * if the thread that was going to <TT>notify</TT> it spots the shut-down flag
- * and terminates.  The JDK1.2 documentation describes some work-arounds, but
- * they are not simple and depend in part on the application logic.
+ * and terminates.
  * <P>
  * For JCSP processes, <I>there is</I> a general solution to this [<I>`Graceful Termination
  * and Graceful Resetting'</I>, P.H.Welch, Proceedings of OUG-10, pp. 310-317,
  * Ed. A.W.P.Bakkers, IOS Press (Amsterdam), ISBN 90 5199 011 1, April, 1989],
  * based on the careful distribution of <I>poison</I> over the network's normal
- * communication channels.  Future versions of JCSP may take account of this.
+ * communication channels.
+ * <P>
+ * However, JCSP now supports graceful termination of process networks and sub-networks
+ * through a notion of <i>poisoning</i> synchoronisation objects (e.g. channels)
+ * &ndash; see {@link Poisonable}.
  *
  * @see org.jcsp.lang.CSProcess
  * @see org.jcsp.lang.Parallel
  * @see org.jcsp.awt.ActiveApplet
+ * @see org.jcsp.lang.Poisonable
+ * @see org.jcsp.lang.PoisonException
  *
  * @author P.H.Welch
  * @author P.D.Austin

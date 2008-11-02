@@ -36,29 +36,18 @@ package org.jcsp.util;
  * Buffered channels must have (usually non-zero) positive sized buffers.
  * The following constructions will all throw this {@link java.lang.Error}:
  * <pre>
- *   One2OneChannel c = Channel.createOne2One
- *                      (new Buffer (-42));
- *                      // zero allowed
- *   One2OneChannel c = Channel.createOne2One
- *                      (new OverFlowingBuffer (-42));
- *                      // zero not allowed
- *   One2OneChannel c = Channel.createOne2One
- *                     (new OverWriteOldestBuffer (-42));
- *                      // zero not allowed
- *   One2OneChannel c = Channel.createOne2One
- *                     (new OverWritingBuffer (-42));
- *                      // zero not allowed
- *   One2OneChannel c = Channel.createOne2One
- *                      (new InfiniteBuffer (-42));
- *                      // zero not allowed
+ *   One2OneChannel c = Channel.one2one (new Buffer (-42));                 // must be &gt;= 0
+ *   One2OneChannel c = Channel.one2one (new OverFlowingBuffer (-42));      // must be &gt; 0
+ *   One2OneChannel c = Channel.one2one (new OverWriteOldestBuffer (-42));  // must be &gt; 0
+ *   One2OneChannel c = Channel.one2one (new OverWritingBuffer (-42));      // must be &gt; 0
+ *   One2OneChannel c = Channel.one2one (new InfiniteBuffer (-42));         // must be &gt; 0
  * </pre>
  * Zero-buffered non-overwriting channels are, of course, the default channel semantics.
  * The following constructions are all legal and equivalent:
  * <pre>
- *   One2OneChannel c = Channel.createOne2One ();
- *   One2OneChannel c = Channel.createOne2One (new ZeroBuffer ());
- *   One2OneChannel c = Channel.createOne2One (new Buffer (0));
- *   // legal but less efficient
+ *   One2OneChannel c = Channel.one2one ();
+ *   One2OneChannel c = Channel.one2one (new ZeroBuffer ());    // less efficient
+ *   One2OneChannel c = Channel.one2one (new Buffer (0));       // less efficient
  * </pre>
  * No action should be taken to catch <TT>BufferSizeError</TT>.
  * Application code generating it is in error and needs correcting.

@@ -44,12 +44,12 @@ public class AltingBarrierGadget4 implements CSProcess {
     // for the group this gadget is leading ...
 
     final AltingBarrier[] myAltingBarrier = AltingBarrier.create (out.length + 1);
-    final Any2OneChannel myChannel = Channel.createAny2One (new OverWritingBuffer (1));
+    final Any2OneChannel myChannel = Channel.any2one (new OverWritingBuffer (1));
     final Shared myShared = new Shared (myChannel.out());
 
     // parallel-I/O distribution of barriers and shared variables
 
-    final One2OneChannel finished = Channel.createOne2One ();   // used only once
+    final One2OneChannel finished = Channel.one2one ();   // used only once
 
     new ProcessManager  (
       new CSProcess () {

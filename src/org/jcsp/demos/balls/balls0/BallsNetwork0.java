@@ -52,10 +52,10 @@ class BallsNetwork0 implements CSProcess {
     // displayList.setMinRefreshInterval (10);
     // System.out.println ("BallsNetwork: displayList.setMinRefreshInterval (10) ...");
 
-    final One2OneChannel[] toBalls = Channel.createOne2One (nBalls);
+    final One2OneChannel[] toBalls = Channel.one2oneArray (nBalls);
 
-    final One2OneChannel toGraphics = Channel.createOne2One ();
-    final One2OneChannel fromGraphics = Channel.createOne2One ();
+    final One2OneChannel toGraphics = Channel.one2one ();
+    final One2OneChannel fromGraphics = Channel.one2one ();
 
     final Barrier dead = new Barrier (nBalls);
 

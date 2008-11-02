@@ -53,8 +53,8 @@ public class PollingIntTest {
   	Ask.show ();
   	Ask.blank ();
 
-    final One2OneChannelInt[] a = ChannelInt.createOne2One(5);
-    final One2OneChannelInt b = ChannelInt.createOne2One();
+    final One2OneChannelInt[] a = Channel.one2oneIntArray(5);
+    final One2OneChannelInt b = Channel.one2oneInt();
 
     new Parallel (
       new CSProcess[] {

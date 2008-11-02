@@ -36,29 +36,18 @@ package org.jcsp.util.ints;
  * Buffered channels must have (usually non-zero) positive sized buffers.
  * The following constructions will all throw this {@link java.lang.Error}:
  * <pre>
- *   One2OneChannelInt c = ChannelInt.createOne2One
- *                     (new BufferInt (-42));
- *                     // zero allowed
- *   One2OneChannelInt c = ChannelInt.createOne2One
- *                     (new OverFlowingBufferInt (-42));
- *                     // zero not allowed
- *   One2OneChannelInt c = ChannelInt.createOne2One
- *                     (new OverWriteOldestBufferInt (-42));
- *                     // zero not allowed
- *   One2OneChannelInt c = ChannelInt.createOne2One
- *                     (new OverWritingBufferInt (-42));
- *                     // zero not allowed
- *   One2OneChannelInt c = ChannelInt.createOne2One
- *                     (new InfiniteBufferInt (-42));
- *                     // zero not allowed
+ *   One2OneChannelInt c = Channel.one2oneInt (new BufferInt (-42));                 // must be &gt;= 0
+ *   One2OneChannelInt c = Channel.one2oneInt (new OverFlowingBufferInt (-42));      // must be &gt; 0
+ *   One2OneChannelInt c = Channel.one2oneInt (new OverWriteOldestBufferInt (-42));  // must be &gt; 0
+ *   One2OneChannelInt c = Channel.one2oneInt (new OverWritingBufferInt (-42));      // must be &gt; 0
+ *   One2OneChannelInt c = Channel.one2oneInt (new InfiniteBufferInt (-42));         // must be &gt; 0
  * </pre>
  * Zero-buffered non-overwriting channels are, of course, the default channel semantics.
  * The following constructions are all legal and equivalent:
  * <pre>
- *   One2OneChannelInt c = ChannelInt.createOne2One ();
- *   One2OneChannelInt c = ChannelInt.createOne2One (new ZeroBufferInt ());
- *   One2OneChannelInt c = ChannelInt.createOne2One (new BufferInt (0));
- *   // legal but less efficient
+ *   One2OneChannelInt c = Channel.one2oneInt ();
+ *   One2OneChannelInt c = Channel.one2oneInt (new ZeroBufferInt ());      // less efficient
+ *   One2OneChannelInt c = Channel.one2oneInt (new BufferInt (0));         // less efficient
  * </pre>
  * No action should be taken to catch <TT>BufferSizeError</TT>.
  * Application code generating it is in error and needs correcting.

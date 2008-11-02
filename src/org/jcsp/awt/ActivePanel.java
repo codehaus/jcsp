@@ -60,7 +60,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myMouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActivePanel myPanel = new ActivePanel ();
  *   myPanel.addMouseEventChannel (myMouseEvent.out ());
@@ -135,7 +135,7 @@ import org.jcsp.lang.*;
  * <I></I>
  *     final Frame root = new Frame ("ActivePanel Example");
  * <I></I>
- *     final One2OneChannel mouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (10));
+ *     final One2OneChannel mouseEvent = Channel.one2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActivePanel panel = new ActivePanel ();
  *     panel.addMouseEventChannel (mouseEvent.out ());

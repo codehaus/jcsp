@@ -50,9 +50,9 @@ public class RegulateTest {
   	Ask.show ();
   	Ask.blank ();
 
-    final One2OneChannel a = Channel.createOne2One();
-    final One2OneChannel b = Channel.createOne2One();
-    final One2OneChannel reset = Channel.createOne2One();
+    final One2OneChannel a = Channel.one2one();
+    final One2OneChannel b = Channel.one2one();
+    final One2OneChannel reset = Channel.one2one();
 
     new Parallel (
       new CSProcess[] {

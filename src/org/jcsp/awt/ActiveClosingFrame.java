@@ -69,8 +69,8 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myWindowEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
- *   final One2OneChannel myMouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myWindowEvent = Channel.one2one (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveClosingFrame myFrame = new ActiveClosingFrame (myWindowEvent.out ());
  *   final ActiveFrame myActiveFrame = myFrame.getActiveFrame ();
@@ -175,7 +175,7 @@ import org.jcsp.lang.*;
  *     final String[] label = {"Hello World", "Rocket Science", "CSP",
  *                             "Monitors", "Ignore Me", "Goodbye World"};
  * <I></I>
- *     final Any2OneChannel buttonEvent = Channel.createAny2One (new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel buttonEvent = Channel.any2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveButton[] button = new ActiveButton[label.length];
  *     for (int i = 0; i < label.length; i++) {
@@ -234,7 +234,7 @@ public class ActiveClosingFrame implements CSProcess
    
    private ActiveFrame frame;
    
-   private One2OneChannel windowEvent = Channel.createOne2One();
+   private One2OneChannel windowEvent = Channel.one2one();
    
    /**
     * Constructs a new <TT>ActiveClosingFrame</TT> with no title and no configuration

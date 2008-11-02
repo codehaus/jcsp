@@ -123,7 +123,7 @@ public class ChatPlusServerMain {
     String connectChannelName = chatChanName + connectChannelNameExt;
 
     NetAltingChannelInput connectIn = CNS.createNet2One(connectChannelName);
-    One2OneChannel connectAuth2dd = Channel.createOne2One();
+    One2OneChannel connectAuth2dd = Channel.one2one();
     NetAltingChannelInput messageChan = NetChannelEnd.createNet2One();
 
     new Parallel(

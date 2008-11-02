@@ -204,9 +204,9 @@ public final class Worker implements CSProcess {
 		System.out.println ("Worker: joining network");
 		joinNetwork.write (fromFarmer.getChannelLocation ());
 
-		final One2OneChannel farmer2worker = Channel.createOne2One (new InfiniteBuffer ()),
-							  worker2harvester = Channel.createOne2One (new InfiniteBuffer ()),
-							  flushSignal = Channel.createOne2One ();
+		final One2OneChannel farmer2worker = Channel.one2one (new InfiniteBuffer ()),
+							  worker2harvester = Channel.one2one (new InfiniteBuffer ()),
+							  flushSignal = Channel.one2one ();
 
 		Worker w = new Worker (farmer2worker.in (), worker2harvester.out ());
 		new Parallel (

@@ -70,8 +70,8 @@ public class SplatMain extends ActiveApplet {
 
       // final One2OneChannelInt stopStart = One2OneChannelInt.create (new OverWriteOldestBufferInt (1));
       // setStopStartChannel (stopStart);
-      final One2OneChannelInt destroy = ChannelInt.createOne2One (new OverWriteOldestBufferInt (1));
-      final One2OneChannelInt destroyAck = ChannelInt.createOne2One ();
+      final One2OneChannelInt destroy = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
+      final One2OneChannelInt destroyAck = Channel.one2oneInt ();
       setDestroyChannels (destroy.out (), destroyAck.in ());
       // setDestroyChannels (destroy, destroyAck, -1);    // cheat for Sun's Java Plug-in
 

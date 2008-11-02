@@ -141,7 +141,7 @@ public class ChannelInt
      *
      * @see org.jcsp.lang.ChannelIntArrayFactory#createAny2One(int)
      */
-    public static Any2OneChannelInt[] createAny2One(int n)
+    public static Any2OneChannelInt[] any2oneArray(int n)
     {
         return factory.createAny2One(n);
     }
@@ -263,7 +263,7 @@ public class ChannelInt
      * @see org.jcsp.lang.BufferedChannelIntArrayFactory#createAny2One(ChannelDataStoreInt, int)
      * @see org.jcsp.util.ints.ChannelDataStoreInt
      */
-    public static Any2OneChannelInt[] createAny2One(ChannelDataStoreInt buffer, int n)
+    public static Any2OneChannelInt[] any2oneArray(ChannelDataStoreInt buffer, int n)
     {
         return factory.createAny2One(buffer, n);
     }

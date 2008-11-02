@@ -63,7 +63,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myCheckboxEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myCheckboxEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveCheckbox myCheckbox =
  *     new ActiveCheckbox (null, myCheckboxEvent);
@@ -162,7 +162,7 @@ import org.jcsp.lang.*;
  *     final String[] box = {"Hello World", "Rocket Science", "CSP",
  *                           "Monitors", "Ignore Me", "Goodbye World"};
  * <I></I>
- *     final Any2OneChannel event = Channel.createAny2One (new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveCheckbox[] check = new ActiveCheckbox[box.length];
  *     for (int i = 0; i < box.length; i++) {

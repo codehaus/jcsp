@@ -74,7 +74,7 @@ import java.awt.event.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myTextAreaEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myTextAreaEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveTextEnterArea myTextEnterArea =
  *     new ActiveTextEnterArea (null, myTextAreaEvent.out (), "Edit Me", 5, 20);
@@ -173,7 +173,7 @@ import java.awt.event.*;
  *     final ActiveClosureFrame frame =
  *       new ActiveClosureFrame ("ActiveTextEnterArea Example");
  * <I></I>
- *     final Any2OneChannel event = Channel.createAny2One (new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final String[] string =
  *       {"Entia Non Sunt Multiplicanda Praeter Necessitatem",
@@ -248,11 +248,11 @@ public class ActiveTextEnterArea implements CSProcess
    
    private ActiveTextArea area;
    
-   private One2OneChannel keyEvent = Channel.createOne2One(new OverWriteOldestBuffer(10));
-   private One2OneChannel textEvent = Channel.createOne2One(new OverWriteOldestBuffer(10));
+   private One2OneChannel keyEvent = Channel.one2one(new OverWriteOldestBuffer(10));
+   private One2OneChannel textEvent = Channel.one2one(new OverWriteOldestBuffer(10));
    
-   private One2OneChannel configureA = Channel.createOne2One();
-   private One2OneChannel configureB = Channel.createOne2One();
+   private One2OneChannel configureA = Channel.one2one();
+   private One2OneChannel configureB = Channel.one2one();
    
    
    /**
@@ -372,7 +372,7 @@ public class ActiveTextEnterArea implements CSProcess
            String s, int rows, int columns, int scrollbars)
    {
       if (configure == null)
-         this.configure = Channel.createOne2One().in();  // the Plex2 process must have non-null channels
+         this.configure = Channel.one2one().in();  // the Plex2 process must have non-null channels
       else
          this.configure = configure;
       this.event = event;

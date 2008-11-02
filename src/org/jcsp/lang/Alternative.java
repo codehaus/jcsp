@@ -337,7 +337,7 @@ package org.jcsp.lang;
  *     final One2OneChannel b = Channel.one2One ();
  *     final One2OneChannel c = Channel.one2One ();
  * <I></I>
- *     final One2OneChannel reset = Channel.createOne2One (new OverWriteOldestBuffer (1));
+ *     final One2OneChannel reset = Channel.one2one (new OverWriteOldestBuffer (1));
  * <I></I>
  *     new Parallel (
  *       new CSProcess[] {

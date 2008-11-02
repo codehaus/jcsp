@@ -404,7 +404,7 @@ class One2NetChannel implements NetChannelOutput, Serializable
       }
    }
    
-   static Any2OneChannel failedLinks = Channel.createAny2One(new InfiniteBuffer());
+   static Any2OneChannel failedLinks = Channel.any2one(new InfiniteBuffer());
    
    static
    {

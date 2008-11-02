@@ -47,7 +47,7 @@ public final class Hamming2 {
   	Ask.show ();
   	Ask.blank ();
 
-    final One2OneChannelInt trap = ChannelInt.createOne2One ();
+    final One2OneChannelInt trap = Channel.one2oneInt ();
 
     final int[] primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 

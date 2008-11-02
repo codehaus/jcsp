@@ -49,13 +49,13 @@ public class PicassoNetwork implements CSProcess {
     parent.setLayout (new BorderLayout ());
     parent.setBackground (Color.blue);
 
-    final One2OneChannel mouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (10));
-    final One2OneChannel mouseMotionEvent = Channel.createOne2One (new OverWriteOldestBuffer (1));
+    final One2OneChannel mouseEvent = Channel.one2one (new OverWriteOldestBuffer (10));
+    final One2OneChannel mouseMotionEvent = Channel.one2one (new OverWriteOldestBuffer (1));
 
     final DisplayList display = new DisplayList ();
 
-    final One2OneChannel toGraphics = Channel.createOne2One ();
-    final One2OneChannel fromGraphics = Channel.createOne2One ();
+    final One2OneChannel toGraphics = Channel.one2one ();
+    final One2OneChannel fromGraphics = Channel.one2one ();
 
     activeCanvas = new ActiveCanvas ();
     activeCanvas.setBackground (Color.black);

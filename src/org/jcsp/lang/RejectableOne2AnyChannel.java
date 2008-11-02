@@ -53,7 +53,7 @@ public class RejectableOne2AnyChannel
      */
     public RejectableOne2AnyChannel()
     {
-    	innerChannel = (One2AnyChannelImpl)Channel.createOne2Any();
+    	innerChannel = (One2AnyChannelImpl)Channel.one2any();
     }
 
 	public RejectableChannelInput in() {

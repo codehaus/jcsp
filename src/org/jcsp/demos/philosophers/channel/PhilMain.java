@@ -51,7 +51,7 @@ public class PhilMain {
   	final int nPhilosophers = Ask.readInt ("philosophers");
   	Ask.blank ();
 
-    Any2OneChannel report = Channel.createAny2One ();
+    Any2OneChannel report = Channel.any2one ();
 
     new Parallel (
       new CSProcess[] {

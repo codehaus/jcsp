@@ -138,10 +138,10 @@ import org.jcsp.lang.*;
  * <I></I>
  *     final int nButtons = labels.length;
  * <I></I>
- *     final One2OneChannel[] fromButton = Channel.createOne2One (nButtons, new OverWriteOldestBuffer (1));
- *     final Any2OneChannel[] toButton = Channel.createAny2One (nButtons);
+ *     final One2OneChannel[] fromButton = Channel.one2oneArray (nButtons, new OverWriteOldestBuffer (1));
+ *     final Any2OneChannel[] toButton = Channel.any2oneArray (nButtons);
  * <I></I>
- *     final One2OneChannel report = Channel.createOne2One ();
+ *     final One2OneChannel report = Channel.one2one ();
  * <I></I>
  *     final ActiveButton[] button = new ActiveButton[nButtons];
  *     for (int i = 0; i < nButtons; i++) {

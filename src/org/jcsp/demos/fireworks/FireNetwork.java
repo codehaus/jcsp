@@ -52,14 +52,14 @@ public class FireNetwork implements CSProcess {
     // displayList.setMinRefreshInterval (10);
     // System.out.println ("FireNetwork: displayList.setMinRefreshInterval (10) ...");
     
-    // final Any2OneChannel fromMouse = Any2OneChannel.create (new OverWriteOldestBuffer (9));
-    final One2OneChannel fromMouse = Channel.createOne2One (new OverWriteOldestBuffer (9));
-    final One2OneChannel fromMouseMotion = Channel.createOne2One (new OverWriteOldestBuffer (9));
-    final One2OneChannel fromKeyboard = Channel.createOne2One (new OverWriteOldestBuffer (9));
-    final One2OneChannel fromCanvas = Channel.createOne2One (new OverWriteOldestBuffer (1));
+    // final Any2OneChannel fromMouse = Channel.any2one (new OverWriteOldestBuffer (9));
+    final One2OneChannel fromMouse = Channel.one2one (new OverWriteOldestBuffer (9));
+    final One2OneChannel fromMouseMotion = Channel.one2one (new OverWriteOldestBuffer (9));
+    final One2OneChannel fromKeyboard = Channel.one2one (new OverWriteOldestBuffer (9));
+    final One2OneChannel fromCanvas = Channel.one2one (new OverWriteOldestBuffer (1));
 
-    final One2OneChannel toGraphics = Channel.createOne2One ();
-    final One2OneChannel fromGraphics = Channel.createOne2One ();
+    final One2OneChannel toGraphics = Channel.one2one ();
+    final One2OneChannel fromGraphics = Channel.one2one ();
 
     activeCanvas = new ActiveCanvas ();
     activeCanvas.setBackground (Color.black);

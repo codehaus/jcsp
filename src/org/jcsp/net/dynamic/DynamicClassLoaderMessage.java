@@ -143,7 +143,7 @@ class DynamicClassLoaderMessage implements Serializable
        */
       protected Class resolveClass(ObjectStreamClass v) throws IOException, ClassNotFoundException
       {
-         One2OneChannel in = Channel.createOne2One();
+         One2OneChannel in = Channel.one2one();
          cm.getClass(v.getName(), classSourceChannelLoc, in.out());
          Object reply = in.in().read();
          if(reply instanceof Class)

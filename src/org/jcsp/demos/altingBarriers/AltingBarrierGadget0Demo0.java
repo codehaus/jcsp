@@ -14,9 +14,9 @@ public class AltingBarrierGadget0Demo0 {
     
     // make the buttons
 
-    final One2OneChannel[] event = Channel.createOne2One(nUnits);
+    final One2OneChannel[] event = Channel.one2oneArray(nUnits);
     
-    final One2OneChannel[] configure = Channel.createOne2One (nUnits);
+    final One2OneChannel[] configure = Channel.one2oneArray (nUnits);
 
     final boolean horizontal = true;
 

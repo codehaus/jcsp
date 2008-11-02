@@ -83,8 +83,8 @@ public class Squares implements CSProcess
     */
    public void run()
    {
-      One2OneChannel a = Channel.createOne2One();
-      One2OneChannel b = Channel.createOne2One();
+      One2OneChannel a = Channel.one2one();
+      One2OneChannel b = Channel.one2one();
       
       new Parallel(new CSProcess[] 
                   {

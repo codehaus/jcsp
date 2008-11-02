@@ -39,8 +39,8 @@ import java.io.Serializable;
  * direct synchronisation between reader and writer.  Unless specified otherwise,
  * this is the default behaviour for channels.
  * See the static
- * {@link org.jcsp.lang.Channel#createOne2One(org.jcsp.util.ChannelDataStore) <TT>create</TT>}
- * methods of {@link org.jcsp.lang.Channel} etc.
+ * {@link org.jcsp.lang.Channel#one2one(org.jcsp.util.ChannelDataStore)
+ * construction} methods of {@link org.jcsp.lang.Channel}.
  * <P>
  * The <TT>getState</TT> method will return <TT>FULL</TT> if there is an output
  * waiting on the channel and <TT>EMPTY</TT> if there is not.

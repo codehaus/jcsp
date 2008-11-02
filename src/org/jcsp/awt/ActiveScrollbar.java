@@ -64,7 +64,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannelInt myScrollbarEvent = ChannelInt.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannelInt myScrollbarEvent = Channel.one2oneInt (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveScrollbar myScrollbar =
  *     new ActiveScrollbar (null, myScrollbarEvent.out (), Scrollbar.HORIZONTAL, 0, 10, 0, 110);
@@ -156,7 +156,7 @@ import org.jcsp.lang.*;
  * <I></I>
  *     final Frame root = new Frame ("ActiveScrollbar Example");
  * <I></I>
- *     final One2OneChannelInt scrollEvent = ChannelInt.createOne2One (new OverWriteOldestBufferInt (10));
+ *     final One2OneChannelInt scrollEvent = Channel.one2oneInt (new OverWriteOldestBufferInt (10));
  * <I></I>
  *     final ActiveScrollbar scrollBar =
  *       new ActiveScrollbar (null, scrollEvent.out (),

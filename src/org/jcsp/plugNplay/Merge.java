@@ -86,11 +86,11 @@ import org.jcsp.lang.*;
  * <I></I>
  *   public static void main (String[] argv) {
  * <I></I>
- *     final One2OneChannel[] a = Channel.createOne2One (4);
- *     final One2OneChannel[] b = Channel.createOne2One (3,
+ *     final One2OneChannel[] a = Channel.one2oneArray (4);
+ *     final One2OneChannel[] b = Channel.one2oneArray (3,
  *                                  new InfiniteBuffer ());
- *     final One2OneChannel c = Channel.createOne2One ();
- *     final One2OneChannel d = Channel.createOne2One ();
+ *     final One2OneChannel c = Channel.one2one ();
+ *     final One2OneChannel d = Channel.one2one ();
  * <I></I>
  *     new Parallel (
  *       new CSProcess[] {
@@ -194,7 +194,7 @@ public final class Merge implements CSProcess
             new Merge2(in[0], in[1], out).run();
             break;
          case 3:
-            final One2OneChannel c = Channel.createOne2One();
+            final One2OneChannel c = Channel.one2one();
             new Parallel(new CSProcess[] 
                         {
                            new Merge2(in[0], in[1], c.out()),
@@ -209,7 +209,7 @@ public final class Merge implements CSProcess
                bottom[i] = in[i];
             for (int i = n2; i < n; i++)
                top[i - n2] = in[i];
-            final One2OneChannel[] d = Channel.createOne2One(2);
+            final One2OneChannel[] d = Channel.one2oneArray(2);
             new Parallel(new CSProcess[] 
                         {
                            new Merge(bottom, d[0].out()),

@@ -278,19 +278,19 @@ class ClassManager implements CSProcess
    /**
     * Used to pass requests to the main process thread from calls to the <code>getClass</code> method.
     */
-   private Any2OneChannel classReqs = Channel.createAny2One();
+   private Any2OneChannel classReqs = Channel.any2one();
    
    /**
     * Used to pass requests to the main process thread from calls to the <code>registerClass</code>
     * method.
     */
-   private Any2OneChannel classRegChan = Channel.createAny2One();
+   private Any2OneChannel classRegChan = Channel.any2one();
    
    /**
     * Used to pass replies from the main process thread to callers of the <code>registerClass</code>
     * method.
     */
-   private One2OneChannel classRegReplyChan = Channel.createOne2One();
+   private One2OneChannel classRegReplyChan = Channel.one2one();
    
    /**
     * A local reference to the system class loader. This is held as an attribute so that it would be

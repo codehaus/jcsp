@@ -246,7 +246,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myMouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   activeApplet.addMouseEventChannel (myMouseEvent);
  * </PRE>
@@ -357,8 +357,8 @@ import org.jcsp.lang.*;
  * <I></I>
  *   public void run () {
  * <I></I>
- *     final One2OneChannel mouseEvent = Channel.createOne2One ();
- *     final One2OneChannel appletConfigure = Channel.createOne2One ();
+ *     final One2OneChannel mouseEvent = Channel.one2one ();
+ *     final One2OneChannel appletConfigure = Channel.one2one ();
  * <I></I>
  *     activeApplet.addMouseEventChannel (mouseEvent.out ());
  *     activeApplet.setConfigureChannel (appletConfigure.in ());

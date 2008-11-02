@@ -454,8 +454,8 @@ public abstract class Link implements CSProcess
     * This is some example code for what concrete implementations of <CODE>Link</CODE> need to do:
     * </p>
     * <PRE>
-    *    One2OneChannel fromTestProcess = Channel.createOne2One();
-    *    One2OneChannel toTestProcess = Channel.createOne2One();
+    *    One2OneChannel fromTestProcess = Channel.one2one();
+    *    One2OneChannel toTestProcess = Channel.one2one();
     *    boolean[] readSequence = super.getReadSequence(client);
     *    super.runTests(toTestProcess.in(), fromTestProcess.out(), client);
     *    try {
@@ -702,7 +702,7 @@ public abstract class Link implements CSProcess
          if (securityAuthority != null)
          {
             final boolean okay[] = new boolean[2];
-            final One2OneChannelInt sync = ChannelInt.createOne2One();
+            final One2OneChannelInt sync = Channel.one2oneInt();
             Parallel par = 
                     new Parallel
                      (new CSProcess[] 
@@ -866,8 +866,8 @@ public abstract class Link implements CSProcess
       }
       
       // Run the tests
-      One2OneChannel fromTestProcess = Channel.createOne2One();
-      One2OneChannel toTestProcess = Channel.createOne2One();
+      One2OneChannel fromTestProcess = Channel.one2one();
+      One2OneChannel toTestProcess = Channel.one2one();
       boolean[] readSequence = getReadSequence(client);
       runTestProcess(toTestProcess.in(), fromTestProcess.out(), client);
       boolean testStatus = true, recvNull = false;
@@ -1072,7 +1072,7 @@ public abstract class Link implements CSProcess
    
    private Profile profile = null;
    
-   private One2OneChannel pingReplyChan = Channel.createOne2One();
+   private One2OneChannel pingReplyChan = Channel.one2one();
    
    private SecurityAuthority securityAuthority = null;
    

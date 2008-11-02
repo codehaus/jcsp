@@ -83,11 +83,11 @@ import org.jcsp.lang.*;
  * <I></I>
  *   public static void main (String[] argv) {
  * <I></I>
- *     final One2OneChannelInt[] a = ChannelInt.createOne2One (4);
- *     final One2OneChannelInt[] b = ChannelInt.createOne2One (3,
+ *     final One2OneChannelInt[] a = Channel.one2oneIntArray (4);
+ *     final One2OneChannelInt[] b = Channel.one2oneIntArray (3,
  *                                     new InfiniteBufferInt ());
- *     final One2OneChannelInt c = ChannelInt.createOne2One ();
- *     final One2OneChannelInt d = ChannelInt.createOne2One ();
+ *     final One2OneChannelInt c = Channel.one2oneInt ();
+ *     final One2OneChannelInt d = Channel.one2oneInt ();
  * <I></I>
  *     new Parallel (
  *       new CSProcess[] {
@@ -120,7 +120,7 @@ import org.jcsp.lang.*;
  *         new Merge2Int (in[0], in[1], out).run ();
  *       break;
  *       case 3:
- *         final One2OneChannelInt c = ChannelInt.createOne2One ();
+ *         final One2OneChannelInt c = Channel.one2oneInt ();
  *         new Parallel (
  *           new CSProcess[] {
  *             new Merge2Int (in[0], in[1], c.out ()),
@@ -138,7 +138,7 @@ import org.jcsp.lang.*;
  *         for (int i = n2; i < n; i++) {
  *           top[i - n2] = in[i];
  *         }
- *         final One2OneChannelInt[] d = ChannelInt.createOne2One (2);
+ *         final One2OneChannelInt[] d = Channel.one2oneIntArray (2);
  *         new Parallel (
  *           new CSProcess[] {
  *             new MergeInt (bottom, d[0].out ()),
@@ -191,7 +191,7 @@ public final class MergeInt implements CSProcess
             new Merge2Int(in[0], in[1], out).run();
             break;
          case 3:
-            final One2OneChannelInt c = ChannelInt.createOne2One();
+            final One2OneChannelInt c = Channel.one2oneInt();
             new Parallel(new CSProcess[]
                         {
                            new Merge2Int(in[0], in[1], c.out()),
@@ -206,7 +206,7 @@ public final class MergeInt implements CSProcess
                bottom[i] = in[i];
             for (int i = n2; i < n; i++)
                top[i - n2] = in[i];
-            final One2OneChannelInt[] d = ChannelInt.createOne2One(2);
+            final One2OneChannelInt[] d = Channel.one2oneIntArray(2);
             new Parallel(new CSProcess[] 
                         {
                            new MergeInt(bottom, d[0].out()),

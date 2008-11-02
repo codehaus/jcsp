@@ -82,10 +82,10 @@ import org.jcsp.lang.*;
  * <I></I>
  *   public static void main (String[] argv) {
  * <I></I>
- *     final One2OneChannelInt a = ChannelInt.createOne2One ();
- *     final One2OneChannelInt b = ChannelInt.createOne2One ();
- *     final One2OneChannelInt c = ChannelInt.createOne2One ();
- *     final One2OneChannelInt d = ChannelInt.createOne2One ();
+ *     final One2OneChannelInt a = Channel.one2oneInt ();
+ *     final One2OneChannelInt b = Channel.one2oneInt ();
+ *     final One2OneChannelInt c = Channel.one2oneInt ();
+ *     final One2OneChannelInt d = Channel.one2oneInt ();
  * <I></I>
  *     new Parallel (
  *       new CSProcess[] {

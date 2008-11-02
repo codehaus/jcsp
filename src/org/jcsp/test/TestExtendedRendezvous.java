@@ -99,22 +99,22 @@ public class TestExtendedRendezvous extends TestCase {
   }
   
   public void testNormalOne2OneChannel() {
-	  One2OneChannel chan = Channel.createOne2One();
+	  One2OneChannel chan = Channel.one2one();
 	  helper_testChannelOneWriter(chan.in(), chan.out());  
   }
   
   public void testNormalAny2OneChannel() {
-	  Any2OneChannel chan = Channel.createAny2One();
+	  Any2OneChannel chan = Channel.any2one();
 	  helper_testChannelOneWriter(chan.in(), chan.out());  
   }
   
   public void testNormalOne2AnyChannel() {
-	  One2AnyChannel chan = Channel.createOne2Any();
+	  One2AnyChannel chan = Channel.one2any();
 	  helper_testChannelOneWriter(chan.in(), chan.out());  
   }
   
   public void testNormalAny2AnyChannel() {
-	  Any2AnyChannel chan = Channel.createAny2Any();
+	  Any2AnyChannel chan = Channel.any2any();
 	  helper_testChannelOneWriter(chan.in(), chan.out());
   }
   
@@ -166,22 +166,22 @@ public class TestExtendedRendezvous extends TestCase {
 	  }
 	  
 	  public void testNormalOne2OneChannelInt() {
-		  One2OneChannelInt chan = ChannelInt.createOne2One();
+		  One2OneChannelInt chan = Channel.one2oneInt();
 		  helper_testIntChannelOneWriter(chan.in(), chan.out());  
 	  }
 	  
 	  public void testNormalAny2OneChannelInt() {
-		  Any2OneChannelInt chan = ChannelInt.createAny2One();
+		  Any2OneChannelInt chan = ChannelInt.any2one();
 		  helper_testIntChannelOneWriter(chan.in(), chan.out());  
 	  }
 	  
 	  public void testNormalOne2AnyChannelInt() {
-		  One2AnyChannelInt chan = ChannelInt.createOne2Any();
+		  One2AnyChannelInt chan = ChannelInt.one2any();
 		  helper_testIntChannelOneWriter(chan.in(), chan.out());  
 	  }
 	  
 	  public void testNormalAny2AnyChannelInt() {
-		  Any2AnyChannelInt chan = ChannelInt.createAny2Any();
+		  Any2AnyChannelInt chan = ChannelInt.any2any();
 		  helper_testIntChannelOneWriter(chan.in(), chan.out());
 	  }
   
@@ -221,34 +221,34 @@ public class TestExtendedRendezvous extends TestCase {
   }
   
   public void testFIFO_One2OneChannel() {  
-    One2OneChannel chan4 = Channel.createOne2One(new Buffer(4));
+    One2OneChannel chan4 = Channel.one2one(new Buffer(4));
     helper_testFIFOChannelOneWriter(chan4.in(), chan4.out());
     
-    One2OneChannel chan1 = Channel.createOne2One(new Buffer(1));
+    One2OneChannel chan1 = Channel.one2one(new Buffer(1));
     helper_testFIFOChannelOneWriter(chan1.in(), chan1.out());
   }
 
   public void testFIFO_Any2OneChannel() {  
-	    Any2OneChannel chan4 = Channel.createAny2One(new Buffer(4));
+	    Any2OneChannel chan4 = Channel.any2one(new Buffer(4));
 	    helper_testFIFOChannelOneWriter(chan4.in(), chan4.out());
 	    
-	    Any2OneChannel chan1 = Channel.createAny2One(new Buffer(1));
+	    Any2OneChannel chan1 = Channel.any2one(new Buffer(1));
 	    helper_testFIFOChannelOneWriter(chan1.in(), chan1.out());
 	  }
   
   public void testFIFO_One2AnyChannel() {  
-	    One2AnyChannel chan4 = Channel.createOne2Any(new Buffer(4));
+	    One2AnyChannel chan4 = Channel.one2any(new Buffer(4));
 	    helper_testFIFOChannelOneWriter(chan4.in(), chan4.out());
 	    
-	    One2AnyChannel chan1 = Channel.createOne2Any(new Buffer(1));
+	    One2AnyChannel chan1 = Channel.one2any(new Buffer(1));
 	    helper_testFIFOChannelOneWriter(chan1.in(), chan1.out());
 	  }
   
   public void testFIFO_Any2AnyChannel() {  
-	    Any2AnyChannel chan4 = Channel.createAny2Any(new Buffer(4));
+	    Any2AnyChannel chan4 = Channel.any2any(new Buffer(4));
 	    helper_testFIFOChannelOneWriter(chan4.in(), chan4.out());
 	    
-	    Any2AnyChannel chan1 = Channel.createAny2Any(new Buffer(1));
+	    Any2AnyChannel chan1 = Channel.any2any(new Buffer(1));
 	    helper_testFIFOChannelOneWriter(chan1.in(), chan1.out());
 	  }
   
@@ -282,34 +282,34 @@ public class TestExtendedRendezvous extends TestCase {
 	  }
 	  
 	  public void testFIFO_One2OneChannelInt() {  
-	    One2OneChannelInt chan4 = ChannelInt.createOne2One(new BufferInt(4));
+	    One2OneChannelInt chan4 = Channel.one2oneInt(new BufferInt(4));
 	    helper_testFIFOChannelOneWriterInt(chan4.in(), chan4.out());
 	    
-	    One2OneChannelInt chan1 = ChannelInt.createOne2One(new BufferInt(1));
+	    One2OneChannelInt chan1 = Channel.one2oneInt(new BufferInt(1));
 	    helper_testFIFOChannelOneWriterInt(chan1.in(), chan1.out());
 	  }
 
 	  public void testFIFO_Any2OneChannelInt() {  
-		    Any2OneChannelInt chan4 = ChannelInt.createAny2One(new BufferInt(4));
+		    Any2OneChannelInt chan4 = Channel.any2oneInt(new BufferInt(4));
 		    helper_testFIFOChannelOneWriterInt(chan4.in(), chan4.out());
 		    
-		    Any2OneChannelInt chan1 = ChannelInt.createAny2One(new BufferInt(1));
+		    Any2OneChannelInt chan1 = Channel.any2oneInt(new BufferInt(1));
 		    helper_testFIFOChannelOneWriterInt(chan1.in(), chan1.out());
 		  }
 	  
 	  public void testFIFO_One2AnyChannelInt() {  
-		    One2AnyChannelInt chan4 = ChannelInt.createOne2Any(new BufferInt(4));
+		    One2AnyChannelInt chan4 = Channel.one2anyInt(new BufferInt(4));
 		    helper_testFIFOChannelOneWriterInt(chan4.in(), chan4.out());
 		    
-		    One2AnyChannelInt chan1 = ChannelInt.createOne2Any(new BufferInt(1));
+		    One2AnyChannelInt chan1 = Channel.one2anyInt(new BufferInt(1));
 		    helper_testFIFOChannelOneWriterInt(chan1.in(), chan1.out());
 		  }
 	  
 	  public void testFIFO_Any2AnyChannelInt() {  
-		    Any2AnyChannelInt chan4 = ChannelInt.createAny2Any(new BufferInt(4));
+		    Any2AnyChannelInt chan4 = Channel.any2anyInt(new BufferInt(4));
 		    helper_testFIFOChannelOneWriterInt(chan4.in(), chan4.out());
 		    
-		    Any2AnyChannelInt chan1 = ChannelInt.createAny2Any(new BufferInt(1));
+		    Any2AnyChannelInt chan1 = ChannelInt.any2anyInt(new BufferInt(1));
 		    helper_testFIFOChannelOneWriterInt(chan1.in(), chan1.out());
 		  }
   
@@ -324,7 +324,7 @@ public class TestExtendedRendezvous extends TestCase {
      * Repeat until 100 items have been sent (80 received)
      */
     
-    One2OneChannel chan = Channel.createOne2One(new OverFlowingBuffer(4));
+    One2OneChannel chan = Channel.one2one(new OverFlowingBuffer(4));
     
     AltingBarrier[] syncEvent = AltingBarrier.create(2);
     

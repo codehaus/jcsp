@@ -51,7 +51,7 @@ public class SpawnerService implements CSProcess
    private final NodeKey nodeKey;
    
    /** Termination channel. */
-   private final One2OneChannel terminate = Channel.createOne2One();
+   private final One2OneChannel terminate = Channel.one2one();
    
    /**
     * Constructs a new service.

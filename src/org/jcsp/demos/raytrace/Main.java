@@ -98,22 +98,22 @@ public class Main {
 		final NetChannelOutput[] toWorkers = new NetChannelOutput [] { NetChannelEnd.createOne2Net (ncl) };
 		
 		// Widget control channels
-		final One2OneChannel frameControl = Channel.createOne2One ();
+		final One2OneChannel frameControl = Channel.one2one ();
 							  
 		// Widget event channels
-		final One2OneChannel frameEvent = Channel.createOne2One (new OverWritingBuffer (10)),
-						      canvasEvent = Channel.createOne2One (new OverWritingBuffer (10)),
-						      mouseEvent = Channel.createOne2One (new OverWritingBuffer (1)),
-						      keyEvent = Channel.createOne2One (new OverWritingBuffer (10));
+		final One2OneChannel frameEvent = Channel.one2one (new OverWritingBuffer (10)),
+						      canvasEvent = Channel.one2one (new OverWritingBuffer (10)),
+						      mouseEvent = Channel.one2one (new OverWritingBuffer (1)),
+						      keyEvent = Channel.one2one (new OverWritingBuffer (10));
 		
 		// Graphics channels
-        final Any2OneChannel toGraphics = Channel.createAny2One();
-        final One2OneChannel fromGraphics = Channel.createOne2One();
+        final Any2OneChannel toGraphics = Channel.any2one();
+        final One2OneChannel fromGraphics = Channel.one2one();
         
         // FWH network
-        final One2OneChannel farmer2harvester = Channel.createOne2One (),
-        					  frameDemux[] = Channel.createOne2One (new InfiniteBuffer (), BUFFERING),
-        					  ui2farmer = Channel.createOne2One ();
+        final One2OneChannel farmer2harvester = Channel.one2one (),
+        					  frameDemux[] = Channel.one2oneArray (BUFFERING, new InfiniteBuffer ()),
+        					  ui2farmer = Channel.one2one ();
 
         // Set up the canvas
         final ActiveCanvas activeCanvas = new ActiveCanvas ();

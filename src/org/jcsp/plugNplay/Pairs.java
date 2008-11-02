@@ -99,9 +99,9 @@ public class Pairs implements CSProcess
    public void run()
    {
       
-      final One2OneChannel a = Channel.createOne2One();
-      final One2OneChannel b = Channel.createOne2One();
-      final One2OneChannel c = Channel.createOne2One();
+      final One2OneChannel a = Channel.one2one();
+      final One2OneChannel b = Channel.one2one();
+      final One2OneChannel c = Channel.one2one();
       
       new Parallel(new CSProcess[] 
                   {

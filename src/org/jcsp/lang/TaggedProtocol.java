@@ -187,7 +187,7 @@ package org.jcsp.lang;
  * Here is the (JCSP) <B>Java</B> version.  The network is defined
  * (and started) by:
  * <PRE>
- * final One2OneChannel c = Channel.createOne2One ();
+ * final One2OneChannel c = Channel.one2one ();
  * <I></I>
  * new Parallel (
  *   new CSProcess[] {

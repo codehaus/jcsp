@@ -42,12 +42,12 @@ public class AltingBarrierGadget1Demo1 {
     
     final One2OneChannel[][] click = new One2OneChannel[depth][];
     for (int i = 0; i < depth; i++) {
-      click[i] = Channel.createOne2One (new OverWriteOldestBuffer (1), width);
+      click[i] = Channel.one2oneArray (width, new OverWriteOldestBuffer (1));
     }
     
     final One2OneChannel[][] configure = new One2OneChannel[depth][];
     for (int i = 0; i < depth; i++) {
-      configure[i] = Channel.createOne2One (width);
+      configure[i] = Channel.one2oneArray (width);
     }
 
     final FramedButtonGrid buttons =
@@ -74,7 +74,7 @@ public class AltingBarrierGadget1Demo1 {
 
     // make the track and the gadgets
 
-    One2OneChannel[] track = Channel.createOne2One (nUnits);
+    One2OneChannel[] track = Channel.one2oneArray (nUnits);
 
     AltingBarrierGadget1[] gadgets = new AltingBarrierGadget1[nUnits];
     for (int i = 0; i < nUnits; i++) {

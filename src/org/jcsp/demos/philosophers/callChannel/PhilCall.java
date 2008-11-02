@@ -56,8 +56,8 @@ public class PhilCall {
 
     PhilChannel philChannel = new PhilChannel ();
     ForkChannel forkChannel = new ForkChannel ();
-    One2OneChannelInt securityChannel = ChannelInt.createOne2One ();
-    One2OneChannelInt clockChannel = ChannelInt.createOne2One ();
+    One2OneChannelInt securityChannel = Channel.one2oneInt ();
+    One2OneChannelInt clockChannel = Channel.one2oneInt ();
 
     new Parallel (
       new CSProcess[] {

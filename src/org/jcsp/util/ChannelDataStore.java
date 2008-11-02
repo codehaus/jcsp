@@ -32,28 +32,33 @@ package org.jcsp.util;
  * This is the interface for object channel plug-ins that define their buffering
  * characteristics.
  * <H2>Description</H2>
- * <TT>ChannelDataStore</TT> defines the interface to the logic used by
+ * <TT>ChannelDataStore</TT> defines the interface to optional logic used by
  * channels defined in the <TT>org.jcsp.lang</TT> package to manage the data
  * being communicated.
+ * Implementations are provided yielding a range of buffering properties
+ * (e.g. {@link Buffer <i>fixed sized (block when full)</i>},
+ * {@link OverWriteOldestBuffer <i>fixed size (overwrit oldest data when full)</i>
+ * {@link OverFlowingBuffer <i>fixed size (accept but discard new data when full)</i>
+ * {@link InfiniteBuffer <i>infinitely expandable</i>}).
  * <P>
- * This enables that logic to be varied by creating channels specifying
- * a particular implementation of this interface.  This reduces the number of
- * classes that would otherwise need to be defined.  The default channel
- * constructor (with no parameters) uses the <TT>ZeroBuffer</TT> implementation,
- * which gives the standard CSP semantics -- no buffering and full synchronisation
- * between reading and writing processes.
- * See the static
- * {@link org.jcsp.lang.Channel#createOne2One(org.jcsp.util.ChannelDataStore) <TT>create</TT>}
- * methods of {@link org.jcsp.lang.Channel} etc.
+ * Channels are constructed using the static construction methods of {@link org.jcsp.lang.Channel}.
+ * By default, channels will be constructed with standard CSP semantics &ndash;
+ * no buffering and full synchronisation between reading and writing processes
+ * (e.g. {@link org.jcsp.lang.Channel#one2one()}).
+ * To construct buffered channels, plug in the appropriate <TT>ChannelDataStore</TT>
+ * (e.g. {@link org.jcsp.lang.Channel#one2one(org.jcsp.util.ChannelDataStore)}).
  * <P>
- * <I>Note: instances of </I><TT>ChannelDataStore</TT><I> implementations are
- * used by the various channel classes within </I><TT>org.org.jcsp.lang</TT><I>
- * in a thread-safe way.  They are not intended for any other purpose.
- * Developers of new </I><TT>ChannelDataStore</TT><I> implementations,
- * therefore, do not need to worry about thread safety (e.g. by making its
- * methods </I><TT>synchronized</TT><I>).  Also, developers can assume that
- * the documented pre-conditions for invoking the </I><TT>get</TT><I>
- * and </I><TT>put</TT><I> methods will be met.</I>
+ * <I>Note: JCSP users should not normally need to define their own implementations
+ * of this interface.
+ * However, implementors may assume that </I><TT>ChannelDataStore</TT><I> methods
+ * are always invoked (by the various channel classes within </I><TT>org.org.jcsp.lang</TT><I>)
+ * in a thread-safe way ndash; i.e. that there will be no race hazards between invocations
+ * of {@link #get() <tt>get</tt>} and {@link #put(java.lang.Object) <tt>put</tt>).
+ * They may also assume that the documented pre-conditions for invoking the </I><TT>get</TT><I>
+ * and </I><TT>put</TT><I> methods will be met.
+ * <TT>ChannelDataStore</TT> is only intended for defining the behaviour of buffers &ndash;
+ * it is not intended for any other purpose (e.g. for data-processing or filtering channels).
+ * </I>
  *
  * @see org.jcsp.util.ZeroBuffer
  * @see org.jcsp.util.Buffer

@@ -63,7 +63,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myChoiceEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myChoiceEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveChoice myChoice =
  *     new ActiveChoice (null, myChoiceEvent.out ());
@@ -167,7 +167,7 @@ import org.jcsp.lang.*;
  * <I></I>
  *     final Frame root = new Frame ("ActiveChoice Example");
  * <I></I>
- *     final One2OneChannel close = Channel.createOne2One (new OverWriteOldestBuffer (1));
+ *     final One2OneChannel close = Channel.one2one (new OverWriteOldestBuffer (1));
  * <I></I>
  *     final ActiveChoice choice = new ActiveChoice (null, close.out ());
  * <I></I>

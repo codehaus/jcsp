@@ -66,8 +66,8 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myFileDialogConfigure = Channel.createOne2One ();
- *   final One2OneChannel myFileDialogEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myFileDialogConfigure = Channel.one2one ();
+ *   final One2OneChannel myFileDialogEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveFileDialog myFileDialog =
  *     new ActiveFileDialog (myFileDialogConfigure.in (), myFileDialogEvent.out ());
@@ -170,9 +170,9 @@ import org.jcsp.lang.*;
  * <I></I>
  *     final Frame root = new Frame ();
  * <I></I>
- *     final One2OneChannel configure = Channel.createOne2One ();
+ *     final One2OneChannel configure = Channel.one2one ();
  * <I></I>
- *     final One2OneChannel event = Channel.createOne2One (new OverWriteOldestBuffer (10));
+ *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveFileDialog fileDialog =
  *       new ActiveFileDialog (configure.in (), event.out (), root, "ActiveFileDialog Example");

@@ -63,7 +63,7 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myMouseEvent = Channel.createOne2One (new OverWriteOldestBuffer (n));
+ *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  * <I></I>
  *   final ActiveWindow myWindow = new ActiveWindow ();
  *   myWindow.addMouseEventChannel (myMouseEvent.out ());
@@ -155,7 +155,7 @@ import org.jcsp.lang.*;
  * <I></I>
  *     final Frame root = new Frame ("ActiveWindow Example");
  * <I></I>
- *     final One2OneChannel event = Channel.createOne2One (new OverWriteOldestBuffer (10));
+ *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final ActiveWindow window = new ActiveWindow (null, event.out (), root);
  * <I></I>

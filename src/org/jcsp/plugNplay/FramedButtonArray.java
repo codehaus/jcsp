@@ -78,7 +78,7 @@ import org.jcsp.awt.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myButtonEvent =
- *     One2OneChannel.create (new OverWriteOldestBuffer (n));
+ *     Channel.one2one (new OverWriteOldestBuffer (n));
  * </PRE>
  * <I>This will ensure that the Java Event Thread will never be blocked.
  * Slow or inattentive readers may miss rapidly generated events, but 
@@ -109,7 +109,7 @@ import org.jcsp.awt.*;
  * 
  *     // row or column?
  * 
- *     final boolean horizontal = false;
+ *     final boolean horizontal = true;
  *   
  *     // initial pixel sizes for the frame for the button array
  *     
@@ -119,7 +119,7 @@ import org.jcsp.awt.*;
  *     // all button events are wired (for this example) to the same channel ...
  * 
  *     final Any2OneChannel allEvents =
- *       Any2OneChannel.create (new OverWriteOldestBuffer (10));
+ *       Channel.any2one (new OverWriteOldestBuffer (10));
  * 
  *     final Any2OneChannel[] event = new Any2OneChannel[nButtons];
  *     
@@ -129,17 +129,15 @@ import org.jcsp.awt.*;
  * 
  *     // each button is given its own configuration channel ...
  * 
- *     final One2OneChannel[] configure = One2OneChannel.create (nButtons);
+ *     final One2OneChannel[] configure = Channel.one2oneArray (nButtons);
  * 
  *     // make the array of buttons ...
- * 
- *     FramedButtonArray f = null;
  * 
  *     final FramedButtonArray buttons =
  *       new FramedButtonArray (
  *         "FramedButtonArray Demo", nButtons,
  *         pixDown, pixAcross, horizontal,
- *         configure, event
+ *         Channel.getInputArray (configure), Channel.getOutputArray (event)
  *       );
  * 
  *     // testrig ...
@@ -155,12 +153,12 @@ import org.jcsp.awt.*;
  *           public void run () {
  *     
  *             for (int i = 0; i < nButtons; i++) {
- *               configure[i].write (label[i]);
+ *               configure[i].out ().write (label[i]);
  *             }
  *             
  *             boolean running = true;
  *             while (running) {
- *               final String s = (String) allEvents.read ();
+ *               final String s = (String) allEvents.in ().read ();
  *               System.out.println ("Button `" + s + "' pressed ...");
  *               running = (s != label[nButtons - 1]);
  *             }

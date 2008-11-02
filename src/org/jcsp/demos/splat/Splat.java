@@ -54,18 +54,18 @@ class Splat implements CSProcess {
     System.out.println ("Splat creating channels ...");
     
     final One2OneChannel[] event =
-      Channel.createOne2One (new OverWriteOldestBuffer (1), SplatterControl.NUMBER);
+      Channel.one2oneArray (SplatterControl.NUMBER, new OverWriteOldestBuffer (1));
     final One2OneChannel[] configure =
-      Channel.createOne2One (SplatterControl.NUMBER);
+      Channel.one2oneArray (SplatterControl.NUMBER);
     
     final One2OneChannel rearrangeEvent =
-      Channel.createOne2One (new OverWriteOldestBuffer (1));
-    final One2OneChannel rearrangeConfigure = Channel.createOne2One ();
+      Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel rearrangeConfigure = Channel.one2one ();
 
-    final One2OneChannel report = Channel.createOne2One ();
+    final One2OneChannel report = Channel.one2one ();
 
-    final One2OneChannel toGraphics = Channel.createOne2One ();
-    final One2OneChannel fromGraphics = Channel.createOne2One ();
+    final One2OneChannel toGraphics = Channel.one2one ();
+    final One2OneChannel fromGraphics = Channel.one2one ();
 
     System.out.println ("Splat created channels");
     System.out.println ("Splat creating ActiveButtons ...");

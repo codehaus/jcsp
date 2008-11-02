@@ -38,8 +38,8 @@ import java.io.Serializable;
  * a <I>FIFO</I> buffered semantics for a channel.  When empty, the channel blocks readers.
  * When full, a writer will overwrite the <I>oldest</I> item left unread in the channel.
  * See the static
- * {@link org.jcsp.lang.ChannelInt#createOne2One(org.jcsp.util.ints.ChannelDataStoreInt)
- * <TT>create</TT>} methods of {@link org.jcsp.lang.ChannelInt} etc.
+ * {@link org.jcsp.lang.Channel#one2oneInt(org.jcsp.util.ints.ChannelDataStoreInt)
+ * construction} methods of {@link org.jcsp.lang.Channel}.
  * <P>
  * The <TT>getState</TT> method returns <TT>EMPTY</TT> or <TT>NONEMPTYFULL</TT>, but
  * never <TT>FULL</TT>.

@@ -75,33 +75,27 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.*;
- *
+ * import org.jcsp.plugNplay.*;
+ * 
  * public class AndExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     One2OneChannel a = Channel.createOne2One ();
- *     One2OneChannel b = Channel.createOne2One ();
- *     One2OneChannel c = Channel.createOne2One ();
- * <I></I>
+ * 
+ *     final One2OneChannel a = Channel.one2one ();
+ *     final One2OneChannel b = Channel.one2one ();
+ *     final One2OneChannel c = Channel.one2one ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a.out ()),
+ *         new Generate (b.out (), Integer.MAX_VALUE - 1),
  *         new And (a.in (), b.in (), c.out ()),
- *         new Printer (c.in ()),
- *         new CSProcess () {
- *           public void run () {
- *             Integer andVal = new Integer (Integer.MAX_VALUE - 1);
- *             while (true) {
- *               b.out ().write (andVal);
- *             }
- *           }
- *         }
+ *         new Printer (c.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

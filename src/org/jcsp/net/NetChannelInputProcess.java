@@ -224,7 +224,7 @@ class NetChannelInputProcess implements CSProcess
     */
    private RejectableChannel out;
    
-   private Any2OneChannel stopChannel = Channel.createAny2One();
+   private Any2OneChannel stopChannel = Channel.any2one();
    
    private Alternative alt;
    

@@ -173,9 +173,9 @@ package org.jcsp.lang;
  *
  *     <i>// make the buttons</i>
  * 
- *     final One2OneChannel[] event = One2OneChannel.create (nUnits);
+ *     final One2OneChannel[] event = Channel.one2oneArray (nUnits);
  *     
- *     final One2OneChannel[] configure = One2OneChannel.create (nUnits);
+ *     final One2OneChannel[] configure = Channel.one2oneArray (nUnits);
  * 
  *     final boolean horizontal = true;
  * 
@@ -450,9 +450,9 @@ package org.jcsp.lang;
  *     <i>// make the buttons</i>
  * 
  *     final One2OneChannel[] click =
- *       One2OneChannel.create (nUnits, new OverWriteOldestBuffer (1));
+ *       Channel.one2oneArray (nUnits, new OverWriteOldestBuffer (1));
  * 
- *     final One2OneChannel[] configure = One2OneChannel.create (nUnits);
+ *     final One2OneChannel[] configure = Channel.one2oneArray (nUnits);
  * 
  *     final boolean horizontal = true;
  * 
@@ -480,7 +480,7 @@ package org.jcsp.lang;
  * 
  *     <i>// make the track and the gadgets</i>
  * 
- *     One2OneChannel[] track = One2OneChannel.create (nUnits);
+ *     One2OneChannel[] track = Channel.one2oneArray (nUnits);
  * 
  *     AltingBarrierGadget1[] gadgets = new AltingBarrierGadget1[nUnits];
  *     for (int i = 0; i < nUnits; i++) {
@@ -536,12 +536,12 @@ package org.jcsp.lang;
  *     
  *     final One2OneChannel[][] click = new One2OneChannel[depth][];
  *     for (int i = 0; i < depth; i++) {
- *       click[i] = One2OneChannel.create (width, new OverWriteOldestBuffer (1));
+ *       click[i] = Channel.one2oneArray (width, new OverWriteOldestBuffer (1));
  *     }
  *     
  *     final One2OneChannel[][] configure = new One2OneChannel[depth][];
  *     for (int i = 0; i < depth; i++) {
- *       configure[i] = One2OneChannel.create (width);
+ *       configure[i] = Channel.one2oneArray (width);
  *     }
  * 
  *     final FramedButtonGrid buttons =
