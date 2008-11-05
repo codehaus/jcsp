@@ -110,7 +110,7 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.*;
  * <I></I>
- * class ParaplexIntTest {
+ * class ParaplexIntExample {
  * <I></I>
  *   public static void main (String[] args) {
  * <I></I>

@@ -36,9 +36,11 @@ import org.jcsp.lang.*;
  * <H2>Process Diagram</H2>
  * <p><img src="doc-files/Prefix1.gif"></p>
  * <H2>Description</H2>
- * The Prefix class is a process which outputs an initial Object and then
- * has an infinite loop that waits a Object of any type to be sent down the
- * in Channel. The process then passes it on to the out Channel.
+ * This is a process which first outputs a given Object and then
+ * copies its input stream of Objects to its output stream.
+ * <P>
+ * One output is gererated before any input but,
+ * thereafter, one output is produced for each input.
  * <P>
  * <H2>Channel Protocols</H2>
  * <TABLE BORDER="2">
@@ -64,8 +66,17 @@ import org.jcsp.lang.*;
  *     </TD>
  *   </TR>
  * </TABLE>
+ * <P>
+ * <H2>Implementation Note</H2>
+ * The implementation uses an {@link Identity} process for the copy loop:
+ * <PRE>
+ *   public void run () {
+ *     out.write (o);                     // prefix the given object to the stream
+ *     new Identity (in, out).run ();     // copy the stream
+ *   }
+ * </PRE>
  *
- * @author P.D.Austin
+ * @author P.H.Welch
  */
 public final class Prefix implements CSProcess
 {

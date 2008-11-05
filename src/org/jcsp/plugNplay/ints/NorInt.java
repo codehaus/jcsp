@@ -70,10 +70,10 @@ import org.jcsp.lang.*;
  * </TABLE>
  * <P>
  * <H2>Example</H2>
- * The following example shows how to use the And process in a small program.
- * The program also uses some of the other building block processes. The
- * program generates a sequence of numbers and calculates the negative value
- * and prints this on the screen.
+ * The following example shows the use of this process in a small program.
+ * The program also uses some of the other building block processes.
+ * It generates a sequence of numbers and calculates the negative values
+ * and prints them on the screen.
  *
  * <PRE>
  * import org.jcsp.lang.*;

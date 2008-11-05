@@ -42,10 +42,10 @@ import org.jcsp.lang.*;
  *   -->--|_____|
  * </PRE>
  * <H2>Description</H2>
- * The Xor class is a process which has an infinite loop that waits
- * a Object of type Number to be sent down each of the in1 and in2 Channels.
- * The process then calculates the bitwise XOR on the intValue() of the
- * two Numbers then write the result as a new Integer down the out Channel.
+ * This is a process with an infinite loop that waits for
+ * a Object of type Number to be sent down each of its input channels.
+ * The loop body then calculates the bitwise XOR on the values of the
+ * two Numbers and writes the result as a new Integer to its output channel.
  * <P>
  * <H2>Channel Protocols</H2>
  * <TABLE BORDER="2">
@@ -74,10 +74,11 @@ import org.jcsp.lang.*;
  * </TABLE>
  * <H2>Example</H2>
  * The following example shows how to use the Xor process in a small program.
- * The program also uses some of the other building block processes. The
- * program generates a sequence of numbers and XORs them from
- * Integer.MAX_VALUE to give a decending sequence of numbers and prints
- * this on the screen.
+ * The program also uses some of the other building block processes.
+ * It generates a sequence of numbers, XORs them with
+ * <tt>Integer.MAX_VALUE</tt> to give a decending sequence of numbers
+ * (starting from <tt>Integer.MIN_VALUE</tt>, wrapping round to <tt>Integer.MAX_VALUE</tt>,
+ * then descending) and prints this on the screen.
  *
  * <PRE>
  * import org.jcsp.lang.*;

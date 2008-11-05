@@ -31,16 +31,15 @@ package org.jcsp.plugNplay;
 import org.jcsp.lang.*;
 
 /**
- * This copies its input stream to its output stream, adding a one-place buffer
- * to the stream.
+ * This copies its input stream to its output stream unchanged.
  * <H2>Process Diagram</H2>
  * <p><img src="doc-files/identity1.gif"></p>
  * <H2>Description</H2>
- * <TT>Identity</TT> is a process stream whose output stream is the same
- * as its input stream.  The difference between a bare wire and a wire
+ * This is a process that simply copies its input stream
+ * to its output stream.  The difference between a channel and a channel
  * into which an <TT>Identity</TT> process has been spliced is that the
- * latter provides a buffering capacity of <I>one more</I> than the bare wires
- * (which is zero for the default semantics of channels).
+ * latter has a buffering capacity of <I>one more</I> than the channel
+ * (which is zero, unless explicitly constructed with a buffer).
  * <P>
  * <H2>Channel Protocols</H2>
  * <TABLE BORDER="2">

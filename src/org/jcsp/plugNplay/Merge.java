@@ -75,7 +75,7 @@ import org.jcsp.lang.*;
  * The following example shows how to use <TT>Merge</TT> in a small program.
  * The program also uses some of the other <TT>plugNplay</TT> processes. The
  * program prints, in ascending order (up to Integer.MAX_VALUE), all integers
- * whose prime factors consist only of 2, 3 and 5.  Curious readers may like
+ * whose prime factors consist only of 2, 3, 5  and 7.  Curious readers may like
  * to reason why the <I>infinitely buffered</I> channels are needed.
  *
  * <PRE>
@@ -123,11 +123,11 @@ import org.jcsp.lang.*;
  *         new Merge2 (in[0], in[1], out).run ();
  *       break;
  *       case 3:
- *         final One2OneChannelImpl c = new One2OneChannelImpl ();
+ *         final One2OneChannel c = Channel.one2one();
  *         new Parallel (
  *           new CSProcess[] {
- *             new Merge2 (in[0], in[1], c),
- *             new Merge2 (c, in[2], out)
+ *             new Merge2 (in[0], in[1], c.out ()),
+ *             new Merge2 (c.in (), in[2], out)
  *           }
  *         ).run ();
  *       break;
@@ -141,12 +141,12 @@ import org.jcsp.lang.*;
  *         for (int i = n2; i < n; i++) {
  *           top[i - n2] = in[i];
  *         }
- *         final One2OneChannelImpl[] d = One2OneChannelImpl.create (2);
+ *         final One2OneChannel[] d = Channel.one2oneArray(2);
  *         new Parallel (
  *           new CSProcess[] {
- *             new Merge (bottom, d[0]),
- *             new Merge (top, d[1]),
- *             new Merge2 (d[0], d[1], out)
+ *             new Merge (bottom, d[0].out ()),
+ *             new Merge (top, d[1].out ()),
+ *             new Merge2 (d[0].in (), d[1].in (), out)
  *           }
  *         ).run ();
  *       break;
@@ -196,10 +196,10 @@ public final class Merge implements CSProcess
          case 3:
             final One2OneChannel c = Channel.one2one();
             new Parallel(new CSProcess[] 
-                        {
-                           new Merge2(in[0], in[1], c.out()),
-                           new Merge2(c.in(), in[2], out)
-                        }).run();
+               {
+                  new Merge2(in[0], in[1], c.out()),
+                  new Merge2(c.in(), in[2], out)
+               }).run();
             break;
          default:  // deduce: n >= 4
             final int n2 = n/2;
@@ -211,11 +211,11 @@ public final class Merge implements CSProcess
                top[i - n2] = in[i];
             final One2OneChannel[] d = Channel.one2oneArray(2);
             new Parallel(new CSProcess[] 
-                        {
-                           new Merge(bottom, d[0].out()),
-                           new Merge(top, d[1].out()),
-                           new Merge2(d[0].in(), d[1].in(), out)
-                        }).run();
+               {
+                  new Merge(bottom, d[0].out()),
+                  new Merge(top, d[1].out()),
+                  new Merge2(d[0].in(), d[1].in(), out)
+               }).run();
             break;
       }
    }

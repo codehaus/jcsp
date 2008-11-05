@@ -68,11 +68,12 @@ import org.jcsp.lang.*;
  *   </TR>
  * </TABLE>
  * <H2>Example</H2>
- * The following example shows how to use the XorInt process in a small program.
- * The program also uses some of the other building block processes. The
- * program generates a sequence of numbers, XORs them with
- * Integer.MAX_VALUE to give a decending sequence of numbers and prints
- * this on the screen.
+ * The following example shows how to use this process in a small program.
+ * The program also uses some of the other building block processes.
+ * It generates a sequence of numbers, XORs them with
+ * <tt>Integer.MAX_VALUE</tt> to give a decending sequence of numbers
+ * (starting from <tt>Integer.MIN_VALUE</tt>, wrapping round to <tt>Integer.MAX_VALUE</tt>,
+ * then descending) and prints this on the screen.
  *
  * <PRE>
  * import org.jcsp.lang.*;

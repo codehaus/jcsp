@@ -42,10 +42,10 @@ import org.jcsp.lang.*;
  *   -->--|_____|
  * </PRE>
  * <H2>Description</H2>
- * The Nor class is a process which has an infinite loop that waits
- * a Object of type Number to be sent down each of the in1 and in2 Channels.
- * The process then calculates the bitwise NOR on the intValue() of the
- * two Numbers then write the result as a new Integer down the out Channel.
+ * This is a process with an infinite loop that waits for
+ * a Object of type Number to be sent down each of its input channels.
+ * The loop body then calculates the bitwise NOR on the values of the
+ * two Numbers and writes the result as a new Integer to its output channel.
  * <P>
  * <H2>Channel Protocols</H2>
  * <TABLE BORDER="2">
@@ -74,9 +74,9 @@ import org.jcsp.lang.*;
  * </TABLE>
  * <P>
  * <H2>Example</H2>
- * The following example shows how to use the Nor process in a small program.
- * The program also uses some of the other building block processes. The
- * program generates a sequence of numbers and calculates the negative value
+ * The following example shows the use of this process in a small program.
+ * The program also uses some of the other building block processes.
+ * It generates a sequence of numbers and calculates the negative value
  * and prints this on the screen.
  *
  * <PRE>

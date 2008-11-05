@@ -42,10 +42,10 @@ import org.jcsp.lang.*;
  *   -->--|______|
  * </PRE>
  * <H2>Description</H2>
- * The Plus class is a process which has an infinite loop that waits for
- * a Object of type Number to be sent down each of the in1 and in2 Channels.
- * The process then calculates the Plus operation on the intValue() of the
- * two Numbers then write the result as a new Integer down the out Channel.
+ * This is a process with an infinite loop that waits for
+ * a Object of type Number to be sent down each of its input channels.
+ * The loop body adds them together and writes the result as a new Integer
+ * to its output channel.
  * <P>
  * <H2>Channel Protocols</H2>
  * <TABLE BORDER="2">
@@ -74,10 +74,10 @@ import org.jcsp.lang.*;
  * </TABLE>
  * <P>
  * <H2>Example</H2>
- * The following example shows how to use the Plus process in a small program.
- * The program also uses some of the other building block processes. The
- * program generates a sequence of numbers and doubles them and prints
- * this on the screen.
+ * The following example shows how the use of this process in a small program.
+ * The program also uses some of the other building block processes.
+ * It generates two sequences of numbers, adds them together and
+ * prints them to the screen.
  *
  * <PRE>
  * import org.org.jcsp.lang.*;

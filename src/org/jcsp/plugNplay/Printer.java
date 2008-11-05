@@ -32,7 +32,7 @@ import org.jcsp.lang.*;
 import java.io.*;
 
 /**
- * Prints each <TT>int</TT> from its input channel to a <TT>PrintStream</TT>.
+ * Prints each <TT>Object</TT> from its input channel to a <TT>PrintStream</TT>.
  * <H2>Process Diagram</H2>
  * <p><img src="doc-files/Printer1.gif"></p>
  * <H2>Description</H2>

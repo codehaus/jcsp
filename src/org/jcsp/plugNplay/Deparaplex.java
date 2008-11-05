@@ -78,7 +78,7 @@ import org.jcsp.lang.*;
  * import org.org.jcsp.lang.*;
  * import org.jcsp.plugNplay.*;
  * <I></I>
- * class DeparaplexTest {
+ * class DeparaplexExample {
  * <I></I>
  *   public static void main (String[] args) {
  * <I></I>

@@ -35,7 +35,8 @@ import org.jcsp.lang.*;
  * <H2>Process Diagram</H2>
  * <p><img src="doc-files/Tail1.gif"></p>
  * <H2>Description</H2>
- * The output stream from <TT>Prefix</TT> is the tail of its input stream.
+ * The first Object (i.e. <i>head</i>) of its input stream is not forwarded.
+ * The rest (i.e. <i>tail</i>) is copied through unchanged.
  * <P>
  * Two inputs are needed before any output
  * is produced but, thereafter, one output is produced for each input.
@@ -64,6 +65,15 @@ import org.jcsp.lang.*;
  *     </TD>
  *   </TR>
  * </TABLE>
+ * <P>
+ * <H2>Implementation Note</H2>
+ * The implementation uses an {@link Identity} process for the copy loop:
+ * <PRE>
+ *   public void run () {
+ *     in.read ();                        // accept, but discard, the first item
+ *     new Identity (in, out).run ();     // copy the rest of the stream
+ *   }
+ * </PRE>
  *
  * @author P.D.Austin
  */

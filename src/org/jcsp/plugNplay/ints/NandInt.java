@@ -69,10 +69,11 @@ import org.jcsp.lang.*;
  * </TABLE>
  * <P>
  * <H2>Example</H2>
- * The following example shows how to use the NandInt process in a small program.
- * The program also uses some of the other building block processes. The
- * program generates the sequence of natural numbers, calculates their negative
- * values and prints this on the screen.
+ * The following example shows how the use of this process in a small program.
+ * The program also uses some of the other building block processes.
+ * It generates a sequence of numbers, rounds each odd number down to
+ * the nearest even number, negates them and prints them to the screen.
+ *
  *
  * <PRE>
  * import org.jcsp.lang.*;

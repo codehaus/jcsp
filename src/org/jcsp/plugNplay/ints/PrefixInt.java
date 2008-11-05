@@ -36,10 +36,10 @@ import org.jcsp.lang.*;
  * <H2>Process Diagram</H2>
  * <p><IMG SRC="doc-files/PrefixInt1.gif"></p>
  * <H2>Description</H2>
- * The output stream from <TT>PrefixInt</TT> is its input stream prefixed
- * by the integer, <TT>n</TT>, with which it is configured.
+ * This is a process which first outputs a given integer and then
+ * copies its input stream of integers to its output stream.
  * <P>
- * One output is gererated before any input but that,
+ * One output is gererated before any input but,
  * thereafter, one output is produced for each input.
  * <H2>Channel Protocols</H2>
  * <TABLE BORDER="2">
@@ -64,6 +64,15 @@ import org.jcsp.lang.*;
  *     </TD>
  *   </TR>
  * </TABLE>
+ * <P>
+ * <H2>Implementation Note</H2>
+ * The implementation uses an {@link IdentityInt} process for the copy loop:
+ * <PRE>
+ *   public void run () {
+ *     out.write (n);                        // prefix the given integer to the stream
+ *     new IdentityInt (in, out).run ();     // copy the stream
+ *   }
+ * </PRE>
  *
  * @author P.D.Austin
  */

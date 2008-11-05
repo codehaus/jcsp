@@ -69,6 +69,8 @@ import org.jcsp.lang.*;
  *     </TD>
  *   </TR>
  * </TABLE>
+ * <P>
+ * <H2>Example</H2>
  * The following example shows how to use <TT>MultiplexInt</TT> in a small program.
  * <PRE>
  * import org.jcsp.lang.*;

@@ -115,7 +115,7 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.*;
  * <I></I>
- * class ParaplexTest {
+ * class ParaplexExample {
  * <I></I>
  *   public static void main (String[] args) {
  * <I></I>

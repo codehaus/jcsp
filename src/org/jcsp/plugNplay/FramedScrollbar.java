@@ -99,7 +99,7 @@ import org.jcsp.awt.*;
  * import org.jcsp.util.ints.*;
  * import org.jcsp.plugNplay.*;
  * 
- * public class FramedScrollbarTest {
+ * public class FramedScrollbarExample {
  * 
  *   public static void main (String argv[]) {
  *   

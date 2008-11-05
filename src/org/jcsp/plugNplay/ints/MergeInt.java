@@ -72,7 +72,7 @@ import org.jcsp.lang.*;
  * The following example shows how to use <TT>MergeInt</TT> in a small program.
  * The program also uses some of the other <TT>plugNplay</TT> processes. The
  * program prints, in ascending order (up to Integer.MAX_VALUE), all integers
- * whose prime factors consist only of 2, 3 and 5.  Curious readers may like
+ * whose prime factors consist only of 2, 3, 5 and 7.  Curious readers may like
  * to reason why the <I>infinitely buffered</I> channels are needed.
  *
  * <PRE>

@@ -36,7 +36,8 @@ import org.jcsp.lang.*;
  * <p><IMG SRC="doc-files/TailInt1.gif"></p>
  * The output stream is the tail of its input stream.
  * <H2>Description</H2>
- * The output stream from <TT>PrefixInt</TT> is the tail of its input stream.
+ * The first integer (i.e. <i>head</i>) of its input stream is not forwarded.
+ * The rest (i.e. <i>tail</i>) is copied through unchanged.
  * <P>
  * Two inputs are needed before any output
  * is produced but, thereafter, one output is produced for each input.
@@ -63,6 +64,15 @@ import org.jcsp.lang.*;
  *     </TD>
  *   </TR>
  * </TABLE>
+ * <P>
+ * <H2>Implementation Note</H2>
+ * The implementation uses an {@link IdentityInt} process for the copy loop:
+ * <PRE>
+ *   public void run () {
+ *     in.read ();                           // accept, but discard, the first item
+ *     new IdentityInt (in, out).run ();     // copy the rest of the stream
+ *   }
+ * </PRE>
  *
  * @author P.D.Austin
  */

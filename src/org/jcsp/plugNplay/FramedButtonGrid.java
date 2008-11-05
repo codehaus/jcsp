@@ -96,7 +96,7 @@ import org.jcsp.awt.*;
  * import org.jcsp.util.*;
  * import org.jcsp.plugNplay.*;
  * 
- * public class FramedButtonGridTest {
+ * public class FramedButtonGridExample {
  * 
  *   public static void main (String argv[]) {
  *   
