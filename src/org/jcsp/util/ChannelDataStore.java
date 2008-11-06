@@ -37,8 +37,8 @@ package org.jcsp.util;
  * being communicated.
  * Implementations are provided yielding a range of buffering properties
  * (e.g. {@link Buffer <i>fixed sized (block when full)</i>},
- * {@link OverWriteOldestBuffer <i>fixed size (overwrit oldest data when full)</i>
- * {@link OverFlowingBuffer <i>fixed size (accept but discard new data when full)</i>
+ * {@link OverWriteOldestBuffer <i>fixed size (overwrite oldest data when full)</i>},
+ * {@link OverFlowingBuffer <i>fixed size (accept but discard new data when full)</i>},
  * {@link InfiniteBuffer <i>infinitely expandable</i>}).
  * <P>
  * Channels are constructed using the static construction methods of {@link org.jcsp.lang.Channel}.
@@ -52,8 +52,8 @@ package org.jcsp.util;
  * of this interface.
  * However, implementors may assume that </I><TT>ChannelDataStore</TT><I> methods
  * are always invoked (by the various channel classes within </I><TT>org.org.jcsp.lang</TT><I>)
- * in a thread-safe way ndash; i.e. that there will be no race hazards between invocations
- * of {@link #get() <tt>get</tt>} and {@link #put(java.lang.Object) <tt>put</tt>).
+ * in a thread-safe way &ndash; i.e. that there will be no race hazards between invocations
+ * of {@link #get() <tt>get</tt>} and {@link #put(java.lang.Object) <tt>put</tt>}).
  * They may also assume that the documented pre-conditions for invoking the </I><TT>get</TT><I>
  * and </I><TT>put</TT><I> methods will be met.
  * <TT>ChannelDataStore</TT> is only intended for defining the behaviour of buffers &ndash;
@@ -70,8 +70,6 @@ package org.jcsp.util;
  *
  * @author P.D.Austin
  */
-
-//}}}
 
 public interface ChannelDataStore extends Cloneable
 {

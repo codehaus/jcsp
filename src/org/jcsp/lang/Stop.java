@@ -32,7 +32,7 @@ package org.jcsp.lang;
  * <H2>Description</H2>
  * <TT>Stop</TT> is a process that starts, engages in no events, performs no
  * computation but refuses to terminate.
- * It can also be used as a {@link Guard} in an {@link Alternative}that is
+ * It can also be used as a {@link Guard} in an {@link Alternative} that is
  * never ready.
  * <P>
  * <I>Note: it is included here for completeness -- it is one of the fundamental

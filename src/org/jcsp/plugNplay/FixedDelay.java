@@ -31,13 +31,17 @@ package org.jcsp.plugNplay;
 import org.jcsp.lang.*;
 
 /**
- * This holds on to data from its input channel for a fixed delay before passing
- * it on to its output channel.
+ * This process copies input to output, imposing a fixed time delay
+ * between these events.
  * <H2>Process Diagram</H2>
  * <p><img src="doc-files/FixedDelay1.gif"></p>
  * <H2>Description</H2>
- * <TT>FixedDelay</TT> is a process that delays passing on input to its output
- * by a constant delay.
+ * This process copies input to output, imposing a fixed time delay
+ * between these events.
+ * Note that this does not imply that the rate of output will be regular,
+ * since that depends on the rate of input and the rate at which output
+ * taken.
+ * To impose a regular rate of output, see {@link Regulate}.
  * <P>
  * <H2>Channel Protocols</H2>
  * <TABLE BORDER="2">
@@ -64,6 +68,9 @@ import org.jcsp.lang.*;
  *   </TR>
  * </TABLE>
  *
+ * @see org.jcsp.plugNplay.Regulate
+ * @see org.jcsp.plugNplay.Regular
+ *
  * @author P.D.Austin
  */
 
@@ -82,12 +89,12 @@ public final class FixedDelay implements CSProcess
    private long delayTime;
    
    /**
-    * Construct a new FixedDelay process with the input Channel in and the
-    * output Channel out.
+    * This process copies input to output, imposing a fixed time delay
+    * between these events.
     *
     * @param delayTime the time the process is to wait in milliseconds
-    *   between receiving a message and then sending it (a negative
-    *   <TT>delayTime</TT> implies no waiting).
+    *   between receiving a message and then sending it &ndash;
+    *   a zero or negative value implies no waiting.
     * @param in the input Channel
     * @param out the output Channel
     */

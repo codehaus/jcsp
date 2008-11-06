@@ -154,37 +154,38 @@ package org.jcsp.lang;
  * The <code>select</code> mechanism should only be used when starvation is not an issue.
  * 
  * <H3><A NAME="FairMuxTime">A Fair Multiplexor with a Timeout</H3>
- * This examples demonstrates a process that <I>fairly</I> multiplexes traffic
+ * This example demonstrates a process that <I>fairly</I> multiplexes traffic
  * from its input channels to its single output channel, but which timeouts
  * after a user-settable time.  Whilst running, no input channel
  * will be starved, regardless of the eagerness of its competitors.
+ * The process also illustrates the poisoning of channels, following the timeout.
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class FairPlexTime implements CSProcess {
- * <I></I>
+ * 
  *   private final AltingChannelInput[] in;
  *   private final ChannelOutput out;
  *   private final long timeout;
- * <I></I>
+ * 
  *   public FairPlexTime (final AltingChannelInput[] in, final ChannelOutput out,
  *                        final long timeout) {
  *     this.in = in;
  *     this.out = out;
  *     this.timeout = timeout;
  *   }
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final Guard[] guards = new Guard[in.length + 1];
  *     System.arraycopy (in, 0, guards, 0, in.length);
- * <I></I>
+ * 
  *     final CSTimer tim = new CSTimer ();
  *     final int timerIndex = in.length;
  *     guards[timerIndex] = tim;
- * <I></I>
+ * 
  *     final Alternative alt = new Alternative (guards);
- * <I></I>
+ * 
  *     boolean running = true;
  *     tim.setAlarm (tim.read () + timeout);
  *     while (running) {
@@ -195,9 +196,14 @@ package org.jcsp.lang;
  *         out.write (in[index].read ());
  *       }
  *     }
- * <I></I>
+ *     System.out.println ("\n\r\tFairPlexTime: timed out ... poisoning all channels ...");
+ *     for (int i = 0; i < in.length; i++) {
+ *       in[i].poison (42);                       // assume: channel immunity &lt; 42
+ *     }
+ *     out.poison (42);                           // assume: channel immunity &lt; 42
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * Note that if <code>priSelect</code> were used above, higher-indexed guards would be
@@ -205,81 +211,74 @@ package org.jcsp.lang;
  * the timeout would never be noticed.
  * If <code>select</code> were used, no starvation analysis is possible.
  * <P>
+ * Sometimes we need to use <code>priSelect</code> to impose a <I>specific</I>
+ * (as opposed to <I>fair</I>) choice that overcomes the external scheduling of events.
+ * For example, if we were concerned that the timeout above should
+ * be responded to <I>immediately</I> and unconcerned about the fair servicing of its
+ * channels, we should put its <code>CSTimer</code> as the first element of its <code>Guard</code>
+ * array and use <code>priSelect</code>.
+ * <P>
  * To demonstrate <code>FairPlexTime</code>, consider:
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.plugNplay.Printer;
- * <I></I>
+ * import org.jcsp.plugNplay.*;
+ * 
  * class FairPlexTimeTest {
- * <I></I>
+ * 
  *   public static void main (String[] args) {
- * <I></I>
- *     final One2OneChannel[] a = Channel.one2OneArray (5);
- *     final One2OneChannel b = Channel.one2One ();
- * <I></I>
+ * 
+ *     final One2OneChannel[] a = Channel.one2OneArray (5, 0);     // poisonable channels (zero immunity)
+ *     final One2OneChannel b = Channel.one2One (0);               // poisonable channels (zero immunity)
+ *
+ *     final long timeout = 5000;                                  // 5 seconds
+ * 
  *     new Parallel (
  *       new CSProcess[] {
- *         new Regular (a[0].out (), 0, 5),
- *         new Regular (a[1].out (), 1, 5),
- *         new Regular (a[2].out (), 2, 5),
- *         new Regular (a[3].out (), 3, 5),
- *         new Regular (a[4].out (), 4, 5),
- *         new FairPlexTime (Channel.getInputArray (a), b.out (), 10000),
+ *         new Generate (a[0].out (), 0),
+ *         new Generate (a[1].out (), 1),
+ *         new Generate (a[2].out (), 2),
+ *         new Generate (a[3].out (), 3),
+ *         new Generate (a[4].out (), 4),
+ *         new FairPlexTime (Channel.getInputArray (a), b.out (), timeout),
  *         new Printer (b.in (), "FairPlexTimeTest ==> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
- * where <code>Regular</code> (documented as an example in the {@link CSTimer}
- * class) attempts to output an <code>Integer</code> (defined by its second parameter) to
- * the channel (defined by its first parameter) at a regular interval (defined by its
- * third parameter in msecs).  If you are using a relatively slow <I>JVM</I> (such as
- * <code>JDK1.1.x</code>), the input channels to <code>FairPlexTime</code> will always be
- * ready.  Faster <I>JVM</I>s (such as <code>JDK1.2</code>) are able to clear all input
- * channels leaving the timeout guard selectable.  Either way, all channels are
- * fairly serviced and the eventual timeout (after 10 seconds) is processed.
- * <P>
- * If <code>FairPlexTime</code> had used <code>alt.priSelect</code> instead of
- * <code>alt.fairSelect</code> and a slow <I>JVM</I> is used, the higher indexed channels
- * would not get serviced and neither would the timeout.  Try it and see!  Notice
- * the different behaviour if you freeze screen output (with <I>ctl-s</I>) and, then,
- * resume it (with <I>ctl-q</I>).  The moral is that <code>fairSelect</code> frees
- * us from worries such as the speed of our <I>JVM</I> and its scheduling behaviour.
- * <P>
- * Sometimes, of course, we need to use <code>priSelect</code> to impose a <I>specific</I>
- * (as opposed to <I>fair</I>) choice that overcomes the external scheduling of events.
- * For example, if we were concerned that the timeout in <code>FairPlexTime</code> should
- * be responded to <I>immediately</I> and unconcerned about the fair servicing of its
- * channels, we could put its <code>CSTimer</code> as the first element of its <code>Guard</code>
- * array and use a <code>priSelect</code>.
+ * where {@link org.jcsp.plugNplay.Generate} sends its given <tt>Integer</tt> down its output channel
+ * as often as it can.
+ * This results in continuous demands on <tt>FairPlexTime</tt> by all its clients
+ * and demonstrates its fair servicing of those demands..
  *
  * <H3><A NAME="STFR">A Simple Traffic Flow Regulator</H3>
- * The <code>Regulate</code> process controls the flow of traffic from its <code>in</code> to
- * <code>out</code> channels.  It produces a constant rate of output flow, regardless of
+ * The <code>Regulate</code> process controls the rate of flow of traffic from its input
+ * to output channels.  It produces a constant rate of output flow, regardless of
  * the rate of its input.  At the end of each timeslice defined by the required output
  * rate, it outputs the last object input during that timeslice.  If nothing has come
  * in during a timeslice, the previous output will be repeated (note: this will be a
  * <code>null</code> if nothing has ever arrived).  If the input flow is greater than
  * the required output flow, data will be discarded.
  * <P>
- * The interval (in msecs) defining the output flow rate is given by a constructor
- * argument; but it can be reset at any time by sending a new interval (as a <code>Long</code>)
+ * The interval (in msecs) defining the output flow rate is given by a constructor argument.
+ * This can be changed at any time by sending a new interval (as a <code>Long</code>)
  * down the <code>reset</code> channel.
  * <P>
  * <I> Note: this example shows how simple it is to program time-regulated functionality
  * like that performed by </I><code>java.awt.Component.repaint</code><I>.</I>
  * <PRE>
+ * package org.jcsp.plugNplay;
+ *
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class Regulate implements CSProcess {
- * <I></I>
+ * 
  *   private final AltingChannelInput in, reset;
  *   private final ChannelOutput out;
  *   private final long initialInterval;
- * <I></I>
+ * 
  *   public Regulate (final AltingChannelInput in, final AltingChannelInput reset,
  *                    final ChannelOutput out, final long initialInterval) {
  *     this.in = in;
@@ -287,25 +286,25 @@ package org.jcsp.lang;
  *     this.out = out;
  *     this.initialInterval = initialInterval;
  *   }
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final CSTimer tim = new CSTimer ();
- * <I></I>
+ * 
  *     final Guard[] guards = {reset, tim, in};              // prioritised order
  *     final int RESET = 0;                                  // index into guards
  *     final int TIM = 1;                                    // index into guards
  *     final int IN = 2;                                     // index into guards
- * <I></I>
+ * 
  *     final Alternative alt = new Alternative (guards);
- * <I></I>
+ * 
  *     Object x = null;                                      // holding object
- * <I></I>
+ * 
  *     long interval = initialInterval;
- * <I></I>
+ * 
  *     long timeout = tim.read () + interval;
  *     tim.setAlarm (timeout);
- * <I></I>
+ * 
  *     while (true) {
  *       switch (alt.priSelect ()) {
  *         case RESET:
@@ -321,32 +320,29 @@ package org.jcsp.lang;
  *         break;
  *       }
  *     }
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * <P>
  * To demonstrate <code>Regulate</code>, consider:
  * <PRE>
  * class RegulateTest {
- * <I></I>
+ * 
  *   public static void main (String[] args) {
- * <I></I>
+ * 
  *     final One2OneChannel a = Channel.one2One ();
  *     final One2OneChannel b = Channel.one2One ();
  *     final One2OneChannel c = Channel.one2One ();
- * <I></I>
+ * 
  *     final One2OneChannel reset = Channel.one2one (new OverWriteOldestBuffer (1));
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
- *         new Numbers (a.out ()),
- *         // generate numbers
- *         new FixedDelay (250, a.in (), b.out ()),
- *         // let them through every quarter second
- *         new Regulate (b.in (), reset.in (), c.out (), 1000),
- *         // initially sample every second
+ *         new Numbers (a.out ()),                               // generate numbers
+ *         new FixedDelay (250, a.in (), b.out ()),              // let them through every quarter second
+ *         new Regulate (b.in (), reset.in (), c.out (), 1000),  // initially sample every second
  *         new CSProcess () {
  *           public void run () {
  *             Long[] sample = {new Long (1000), new Long (250), new Long (100)};
@@ -354,8 +350,7 @@ package org.jcsp.lang;
  *             while (true) {
  *               for (int cycle = 0; cycle < sample.length; cycle++) {
  *                 reset.write (sample[cycle]);
- *                 System.out.println ("\nSampling every " + sample[cycle] +
- *                                     " ms ...\n");
+ *                 System.out.println ("\nSampling every " + sample[cycle] + " ms ...\n");
  *                 for (int i = 0; i < count[cycle]; i++) {
  *                   Integer n = (Integer) c.read ();
  *                   System.out.println ("\t==> " + n);
@@ -367,7 +362,7 @@ package org.jcsp.lang;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * The reader may like to consider the danger of deadlock in the above system if
@@ -380,14 +375,14 @@ package org.jcsp.lang;
  * the channels we wish to poll against a <code>SKIP</code> guard:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class Polling implements CSProcess {
- * <I></I>
+ * 
  *   private final AltingChannelInput in0;
  *   private final AltingChannelInput in1;
  *   private final AltingChannelInput in2;
  *   private final ChannelOutput out;
- * <I></I>
+ * 
  *   public Polling (final AltingChannelInput in0, final AltingChannelInput in1,
  *                   final AltingChannelInput in2, final ChannelOutput out) {
  *     this.in0 = in0;
@@ -395,13 +390,13 @@ package org.jcsp.lang;
  *     this.in2 = in2;
  *     this.out = out;
  *   }
- * <I></I>
+ * 
  *   public void run() {
- * <I></I>
+ * 
  *     final Skip skip = new Skip ();
  *     final Guard[] guards = {in0, in1, in2, skip};
  *     final Alternative alt = new Alternative (guards);
- * <I></I>
+ * 
  *     while (true) {
  *       switch (alt.priSelect ()) {
  *         case 0:
@@ -420,9 +415,9 @@ package org.jcsp.lang;
  *         break;
  *       }
  *     }
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * The above technique lets us poll <I>any</I> {@link Guard} events, including
@@ -448,13 +443,13 @@ package org.jcsp.lang;
  * if it has no chickens.
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class Canteen implements CSProcess {
- * <I></I>
+ * 
  *   private final AltingChannelInput supply;    // from the cook
  *   private final AltingChannelInput request;   // from a philosopher
  *   private final ChannelOutput deliver;        // to a philosopher
- * <I></I>
+ * 
  *   public Canteen (final AltingChannelInput supply,
  *                   final AltingChannelInput request,
  *                   final ChannelOutput deliver) {
@@ -462,26 +457,26 @@ package org.jcsp.lang;
  *     this.request = request;
  *     this.deliver = deliver;
  *   }
- * <I></I>
+ * 
  *   public void run() {
- * <I></I>
+ * 
  *     final Guard[] guard = {supply, request};
  *     final boolean[] preCondition = new boolean[guard.length];
  *     final int SUPPLY = 0;
  *     final int REQUEST = 1;
- * <I></I>
+ * 
  *     final Alternative alt = new Alternative (guard);
- * <I></I>
+ * 
  *     final int maxChickens = 20;
  *     final int maxSupply = 4;
  *     final int limitChickens = maxChickens - maxSupply;
- * <I></I>
+ * 
  *     final Integer oneChicken = new Integer (1);
  *     // ready to go!
- * <I></I>
+ * 
  *     int nChickens = 0;
  *     // invariant : 0 <= nChickens <= maxChickens
- * <I></I>
+ * 
  *     while (true) {
  *       preCondition[SUPPLY] = (nChickens <= limitChickens);
  *       preCondition[REQUEST] = (nChickens > 0);
@@ -498,9 +493,9 @@ package org.jcsp.lang;
  *         break;
  *       }
  *     }
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * <P>

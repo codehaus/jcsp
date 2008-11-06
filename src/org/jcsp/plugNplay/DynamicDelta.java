@@ -101,7 +101,7 @@ public final class DynamicDelta implements CSProcess
     * the configuration channel <TT>configure</TT>.
     *
     * @param in the input Channel
-    * @param configure the configuration Channel
+    * @param config the configuration Channel
     */
    public DynamicDelta(AltingChannelInput in, AltingChannelInput config)
    {
@@ -115,7 +115,7 @@ public final class DynamicDelta implements CSProcess
     * no difference to the functionality of this process.
     *
     * @param in the input channel
-    * @param configure the configuration channel
+    * @param config the configuration channel
     * @param out the output channels
     */
    public DynamicDelta(AltingChannelInput in, AltingChannelInput config, ChannelOutput[] out)

@@ -63,6 +63,9 @@ import org.jcsp.lang.*;
  *   </TR>
  * </TABLE>
  *
+ * @see org.jcsp.plugNplay.ints.RegulateInt
+ * @see org.jcsp.plugNplay.ints.RegularInt
+ * 
  * @author P.D.Austin
  */
 
