@@ -93,7 +93,7 @@ public class CrewCollege {
 
     final Crew crewBlackboard = new Crew (blackboard);
 
-    final Any2OneChannelInt display = ChannelInt.createAny2One ();
+    final Any2OneChannelInt display = Channel.any2oneInt ();
     final One2OneChannelInt displayInfo = Channel.one2oneInt ();
 
     final CrewPhilosopher[] phil = new CrewPhilosopher[n_philosophers];

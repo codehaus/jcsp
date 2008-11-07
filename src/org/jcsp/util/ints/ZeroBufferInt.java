@@ -37,9 +37,8 @@ import java.io.Serializable;
  * the standard <I><B>CSP</B></I> semantics for a channel -- that is zero buffered with
  * direct synchronisation between reader and writer.  Unless specified otherwise,
  * this is the default behaviour for channels.
- * See the static
- * {@link org.jcsp.lang.Channel#one2oneInt(org.jcsp.util.ints.ChannelDataStoreInt)
- * construction} methods of {@link org.jcsp.lang.Channel}.
+ * See the <tt>static</tt> construction methods of {@link org.jcsp.lang.Channel}
+ * ({@link org.jcsp.lang.Channel#one2oneInt(org.jcsp.util.ints.ChannelDataStoreInt)} etc.).
  * <P>
  * The <TT>getState</TT> method will return <TT>FULL</TT> if there is an output
  * waiting on the channel and <TT>EMPTY</TT> if there is not.

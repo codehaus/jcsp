@@ -55,7 +55,7 @@ public class BallsNetwork2 implements CSProcess {
     final Barrier barrier = new Barrier ();
     final Barrier dead = new Barrier (nBalls);
 
-    final Any2OneChannelInt fromBalls = ChannelInt.createAny2One ();
+    final Any2OneChannelInt fromBalls = Channel.any2oneInt ();
     final One2OneChannel[] toBalls = Channel.one2oneArray (nBalls);
 
     final One2OneChannel toGraphics = Channel.one2one ();

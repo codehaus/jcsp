@@ -35,9 +35,8 @@ import java.io.Serializable;
  * <H2>Description</H2>
  * <TT>Buffer</TT> is an implementation of <TT>ChannelDataStore</TT> that yields
  * a blocking <I>FIFO</I> buffered semantics for a channel.
- * See the static
- * {@link org.jcsp.lang.Channel#createOne2One(org.jcsp.util.ChannelDataStore) <TT>create</TT>}
- * methods of {@link org.jcsp.lang.One2OneChannel} etc.
+ * See the <tt>static</tt> construction methods of {@link org.jcsp.lang.Channel}
+ * ({@link org.jcsp.lang.Channel#one2one(org.jcsp.util.ChannelDataStore)} etc.).
  * <P>
  * The <TT>getState</TT> method returns <TT>EMPTY</TT>, <TT>NONEMPTYFULL</TT> or
  * <TT>FULL</TT> according to the state of the buffer.

@@ -60,8 +60,8 @@ class DiningPhilosophersCollege implements CSProcess {
     final One2OneChannelInt[] left = Channel.one2oneIntArray (nPhilosophers);
     final One2OneChannelInt[] right = Channel.one2oneIntArray (nPhilosophers);
 
-    final Any2OneChannelInt down = ChannelInt.createAny2One ();
-    final Any2OneChannelInt up = ChannelInt.createAny2One ();
+    final Any2OneChannelInt down = Channel.any2oneInt ();
+    final Any2OneChannelInt up = Channel.any2oneInt ();
 
     final Fork[] fork = new Fork[nPhilosophers];
     for (int i = 0; i < nPhilosophers; i++) {

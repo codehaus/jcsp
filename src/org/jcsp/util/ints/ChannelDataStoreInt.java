@@ -45,9 +45,8 @@ import org.jcsp.util.OverWritingBuffer;
  * constructor (with no parameters) uses the <TT>ZeroBuffer</TT> implementation,
  * which gives the standard CSP semantics -- no buffering and full synchronisation
  * between reading and writing processes.
- * See the static 
- * {@link org.jcsp.lang.One2OneChannelInt#create(org.jcsp.util.ints.ChannelDataStoreInt)
- * <TT>create</TT>} methods of {@link org.jcsp.lang.One2OneChannelInt} etc.
+ * See the <tt>static</tt> construction methods of {@link org.jcsp.lang.Channel}
+ * ({@link org.jcsp.lang.Channel#one2oneInt(org.jcsp.util.ints.ChannelDataStoreInt)} etc.).
  * <P>
  * <I>Note: instances of </I><TT>ChannelDataStoreInt</TT><I> implementations are
  * used by the various channel classes within </I><TT>org.jcsp.lang</TT><I>

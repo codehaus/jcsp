@@ -46,7 +46,7 @@ package org.jcsp.lang;
  * zero-buffered and fully synchronised.  The reading process must wait
  * for a matching writer and vice-versa.
  * <P>
- * A factory pattern is used to create channel instances. The <tt>create</tt> methods of {@link Channel}
+ * The <tt>static</tt> methods of {@link Channel}
  * allow creation of channels, arrays of channels and channels with varying semantics such as
  * buffering with a user-defined capacity or overwriting with various policies.
  * Standard examples are given in the <TT>org.jcsp.util</TT> package, but

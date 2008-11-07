@@ -39,9 +39,8 @@ import java.io.Serializable;
  * However, its capacity is <I>infinite</I> (expanding to whatever is needed so far as
  * the underlying memory system will permit).  So, it <I>never</I> gets full and blocks
  * a writer.
- * See the static
- * {@link org.jcsp.lang.Channel#one2one(org.jcsp.util.ChannelDataStore)
- * construction} methods of {@link org.jcsp.lang.Channel}.
+ * See the <tt>static</tt> construction methods of {@link org.jcsp.lang.Channel}
+ * ({@link org.jcsp.lang.Channel#one2one(org.jcsp.util.ChannelDataStore)} etc.).
  * <P>
  * The <TT>getState</TT> method returns <TT>EMPTY</TT> or <TT>NONEMPTYFULL</TT>, but
  * never <TT>FULL</TT>.

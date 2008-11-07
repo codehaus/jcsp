@@ -173,7 +173,7 @@ import java.awt.event.*;
  *     final ActiveClosureFrame frame =
  *       new ActiveClosureFrame ("ActiveTextEnterField Example");
  * <I></I>
- *     final Any2OneChannel event = Channe.createAny2One (new OverWriteOldestBuffer (10));
+ *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
  * <I></I>
  *     final String[] string =
  *       {"Entia Non Sunt Multiplicanda Praeter Necessitatem",

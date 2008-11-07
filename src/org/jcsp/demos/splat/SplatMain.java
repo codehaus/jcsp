@@ -68,7 +68,7 @@ public class SplatMain extends ActiveApplet {
 
     if (detach) {
 
-      // final One2OneChannelInt stopStart = One2OneChannelInt.create (new OverWriteOldestBufferInt (1));
+      // final One2OneChannelInt stopStart = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
       // setStopStartChannel (stopStart);
       final One2OneChannelInt destroy = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
       final One2OneChannelInt destroyAck = Channel.one2oneInt ();

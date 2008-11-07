@@ -40,9 +40,8 @@ import org.jcsp.util.OverWriteOldestBuffer;
  * <TT>OverWritingBufferInt</TT> is an implementation of <TT>ChannelDataStoreInt</TT> that yields
  * a <I>FIFO</I> buffered semantics for a channel.  When empty, the channel blocks readers.
  * When full, a writer will overwrite the <I>latest</I> item written to the channel.
- * See the static
- * {@link org.jcsp.lang.Channel#one2oneInt(org.jcsp.util.ints.ChannelDataStoreInt)
- * construction} methods of {@link org.jcsp.lang.Channel}.
+ * See the <tt>static</tt> construction methods of {@link org.jcsp.lang.Channel}
+ * ({@link org.jcsp.lang.Channel#one2oneInt(org.jcsp.util.ints.ChannelDataStoreInt)} etc.).
  * <P>
  * The <TT>getState</TT> method returns <TT>EMPTY</TT> or <TT>NONEMPTYFULL</TT>, but
  * never <TT>FULL</TT>.
