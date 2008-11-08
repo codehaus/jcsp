@@ -70,25 +70,25 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.ints.*;
- * <I></I>
- * public final class MultIntExample {
- * <I></I>
+ * import org.jcsp.plugNplay.ints.*;
+ * 
+ * public class MultIntExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     final One2OneChannel a = Channel.one2oneInt ();
- *     final One2OneChannel b = Channel.one2oneInt ();
- * <I></I>
+ * 
+ *     final One2OneChannelInt a = Channel.one2oneInt ();
+ *     final One2OneChannelInt b = Channel.one2oneInt ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new NumbersInt (a.out ()),
  *         new MultInt (42, a.in (), b.out ()),
- *         new PrinterInt (b.in ())
+ *         new PrinterInt (b.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

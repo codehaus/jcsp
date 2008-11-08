@@ -68,15 +68,15 @@ import org.jcsp.lang.*;
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.*;
- * <I></I>
- * public final class PlexExample {
- * <I></I>
+ * 
+ * public class PlexExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannel[] a = Channel.one2oneArray (3);
  *     final One2OneChannel[] b = Channel.one2oneArray (3);
  *     final One2OneChannel c = Channel.one2one ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a[0].out ()),
@@ -85,13 +85,13 @@ import org.jcsp.lang.*;
  *         new Sign ("Numbers ", a[0].in (), b[0].out ()),
  *         new Sign ("            Fibonacci ", a[1].in (), b[1].out ()),
  *         new Sign ("                          Squares ", a[2].in (), b[2].out ()),
- *         new Plex (b.in (), c.out ()),
+ *         new Plex (Channel.getInputArray (b), c.out ()),
  *         new Printer (c.in (), "", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * <P>

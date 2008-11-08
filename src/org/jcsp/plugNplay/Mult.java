@@ -71,25 +71,25 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.*;
- * <I></I>
- * public final class MultExample {
- * <I></I>
+ * import org.jcsp.plugNplay.*;
+ * 
+ * public class MultExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannel a = Channel.one2one ();
  *     final One2OneChannel b = Channel.one2one ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a.out ()),
  *         new Mult (42, a.in (), b.out ()),
- *         new Printer (b.in ())
+ *         new Printer (b.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

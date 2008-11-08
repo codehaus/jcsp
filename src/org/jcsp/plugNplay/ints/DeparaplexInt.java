@@ -76,25 +76,25 @@ import org.jcsp.lang.*;
  * <H2>Example</H2>
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.plugNplay.*;
- * <I></I>
- * class DeparaplexIntExample {
- * <I></I>
+ * import org.jcsp.plugNplay.ints.*;
+ * 
+ * public class DeparaplexIntExample {
+ * 
  *   public static void main (String[] args) {
- * <I></I>
+ * 
  *     final One2OneChannelInt[] a = Channel.one2oneIntArray (3);
  *     final One2OneChannel b = Channel.one2one ();
  *     final One2OneChannelInt[] c = Channel.one2oneIntArray (3);
  *     final One2OneChannel d = Channel.one2one ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new NumbersInt (a[0].out ()),
  *         new SquaresInt (a[1].out ()),
  *         new FibonacciInt (a[2].out ()),
- *         new ParaplexInt (ChannelInt.getInputArray (a), b.out ()),
- *         new DeparaplexInt (b.in (), ChannelInt.getOutputArray (c)),
- *         new ParaplexInt (ChannelInt.getInputArray (c), d.out ()),
+ *         new ParaplexInt (Channel.getInputArray (a), b.out ()),
+ *         new DeparaplexInt (b.in (), Channel.getOutputArray (c)),
+ *         new ParaplexInt (Channel.getInputArray (c), d.out ()),
  *         new CSProcess () {
  *           public void run () {
  *             System.out.println ("\n\t\tNumbers\t\tSquares\t\tFibonacci\n");
@@ -110,7 +110,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

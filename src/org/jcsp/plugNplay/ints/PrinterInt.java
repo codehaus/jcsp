@@ -58,7 +58,7 @@ import java.io.*;
  * </TABLE>
  *
  * <H2>Example</H2>
- * <I>See the example in {@link MergeInt}.</I>
+ * See the example in {@link MergeInt}.
  *
  * @see org.jcsp.lang.Parallel
  *

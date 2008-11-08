@@ -58,7 +58,7 @@ import org.jcsp.lang.*;
  * @author P.D.Austin
  */
 
-public class BlackHole implements CSProcess
+public final class BlackHole implements CSProcess
 {
    /** The input Channel */
    private ChannelInput in;

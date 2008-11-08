@@ -38,7 +38,7 @@ import org.jcsp.lang.*;
  * <H2>Description</H2>
  * <TT>Multiplex</TT> is a process to convert multiple streams of
  * objects to a single stream in such a way that it can be
- * {@link Demultiplex de-multiplexed} later.
+ * {@link Demultiplex <i>de-multiplexed</i>} later.
  * The <I>protocol</I> on the outgoing multiplexed stream consists of
  * an <TT>Integer</TT>, that represents the channel identity of the
  * multiplexed data, followed by the multiplexed data.
@@ -75,14 +75,14 @@ import org.jcsp.lang.*;
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.*;
- * <I></I>
- * public final class MultiplexExample {
- * <I></I>
+ * 
+ * public class MultiplexExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannel[] a = Channel.one2oneArray (3);
  *     final One2OneChannel b = Channel.one2one ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a[0].out ()),
@@ -104,9 +104,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

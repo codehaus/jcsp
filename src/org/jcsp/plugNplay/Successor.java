@@ -70,25 +70,25 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.*;
- * <I></I>
+ * import org.jcsp.plugNplay.*;
+ * 
  * public class SuccessorExample {
- * <I></I>
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     One2OneChannel a = Channel.one2one ();
- *     One2OneChannel b = Channel.one2one ();
- * <I></I>
+ * 
+ *     final One2OneChannel a = Channel.one2one ();
+ *     final One2OneChannel b = Channel.one2one ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a.out ()),
  *         new Successor (a.in (), b.out ()),
- *         new Printer (b.in ())
+ *         new Printer (b.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

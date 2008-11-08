@@ -75,18 +75,18 @@ import org.jcsp.lang.*;
  *
  * <H2>Example</H2>
  * <PRE>
- * import org.org.jcsp.lang.*;
+ * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.*;
- * <I></I>
- * class DeparaplexExample {
- * <I></I>
+ * 
+ * public class DeparaplexExample {
+ * 
  *   public static void main (String[] args) {
- * <I></I>
+ * 
  *     final One2OneChannel[] a = Channel.one2oneArray (3);
  *     final One2OneChannel b = Channel.one2one ();
  *     final One2OneChannel[] c = Channel.one2oneArray (3);
  *     final One2OneChannel d = Channel.one2one ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a[0].out ()),
@@ -110,7 +110,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

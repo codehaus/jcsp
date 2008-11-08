@@ -77,38 +77,31 @@ import org.jcsp.lang.*;
  * The program also uses some of the other building block processes.
  * It generates a sequence of numbers, XORs them with
  * <tt>Integer.MAX_VALUE</tt> to give a decending sequence of numbers
- * (starting from <tt>Integer.MIN_VALUE</tt>, wrapping round to <tt>Integer.MAX_VALUE</tt>,
- * then descending) and prints this on the screen.
+ * (from <tt>Integer.MAX_VALUE</tt>) and prints this on the screen.
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.*;
- *
- * public final class XorExample {
+ * import org.jcsp.plugNplay.*;
+ * 
+ * public class XorExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     final One2OneChannel a = Channel.one2one ();
- *     final One2OneChannel b = Channel.one2one ();
- *     final One2OneChannel c = Channel.one2one ();
- * <I></I>
+ * 
+ *     One2OneChannel a = Channel.one2one ();
+ *     One2OneChannel b = Channel.one2one ();
+ *     One2OneChannel c = Channel.one2one ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a.out ()),
+ *         new Generate (b.out (), Integer.MAX_VALUE),
  *         new Xor (a.in (), b.in (), c.out ()),
- *         new CSProcess () {
- *           public void run () {
- *             Integer xorVal = new Integer (Integer.MAX_VALUE);
- *             while (true) {
- *               b.out ().write (xorVal);
- *             }
- *           }
- *         }
- *         new Printer (c.in ()),
+ *         new Printer (c.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

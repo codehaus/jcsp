@@ -81,19 +81,19 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.ints.*;
- * <I></I>
- * public final class Merge2Example {
- * <I></I>
+ * import org.jcsp.util.*;
+ * import org.jcsp.plugNplay.*;
+ * 
+ * public class Merge2Example {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannel[] a = Channel.one2oneArray (4);
- *     final One2OneChannel[] b = Channel.one2oneArray (3,
- *                                  new InfiniteBuffer ());
+ *     final One2OneChannel[] b = Channel.one2oneArray (3, new InfiniteBuffer ());
  *     final One2OneChannel c = Channel.one2one ();
  *     final One2OneChannel d = Channel.one2one ();
  *     final One2OneChannel e = Channel.one2one ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Mult (2, a[0].in (), b[0].out ()),
@@ -106,9 +106,9 @@ import org.jcsp.lang.*;
  *         new Printer (a[3].in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

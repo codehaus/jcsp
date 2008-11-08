@@ -78,31 +78,32 @@ import org.jcsp.lang.*;
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.util.ints.*;
- * <I></I>
- * public final class MergeIntExample {
- * <I></I>
+ * import org.jcsp.plugNplay.ints.*;
+ * 
+ * public class MergeIntExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     final One2OneChannelInt[] a = Channel.one2oneIntArray (4);
- *     final One2OneChannelInt[] b = Channel.one2oneIntArray (3,
- *                                     new InfiniteBufferInt ());
+ * 
+ *     final One2OneChannelInt[] a = Channel.one2oneIntArray (5);
+ *     final One2OneChannelInt[] b = Channel.one2oneIntArray (4, new InfiniteBufferInt ());
  *     final One2OneChannelInt c = Channel.one2oneInt ();
  *     final One2OneChannelInt d = Channel.one2oneInt ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new MultInt (2, a[0].in (), b[0].out ()),
  *         new MultInt (3, a[1].in (), b[1].out ()),
  *         new MultInt (5, a[2].in (), b[2].out ()),
- *         new MergeInt (ChannelInt.getInputArray (b), c.out ()),
+ *         new MultInt (7, a[3].in (), b[3].out ()),
+ *         new MergeInt (Channel.getInputArray (b), c.out ()),
  *         new PrefixInt (1, c.in (), d.out ()),
- *         new DeltaInt (d.in (), ChannelInt.getOutputArray (a)),
- *         new PrinterInt (a[3].in (), "--> ", "\n")
+ *         new DeltaInt (d.in (), Channel.getOutputArray (a)),
+ *         new PrinterInt (a[4].in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * <P>
@@ -170,11 +171,14 @@ public final class MergeInt implements CSProcess
     * The ordering of the input channels makes no difference
     * to the behaviour of this process.
     *
-    * @param in the input channels
+    * @param in the input channels (there must be at least 2)
     * @param out the output channel
     */
    public MergeInt(ChannelInputInt[] in, ChannelOutputInt out)
    {
+      if (in.length < 2) {
+        throw new IllegalArgumentException ("Merge must have at least 2 input channels");
+      }
       this.in = in;
       this.out = out;
    }

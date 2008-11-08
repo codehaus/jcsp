@@ -75,37 +75,38 @@ import org.jcsp.lang.*;
  * The following example shows how to use <TT>Merge</TT> in a small program.
  * The program also uses some of the other <TT>plugNplay</TT> processes. The
  * program prints, in ascending order (up to Integer.MAX_VALUE), all integers
- * whose prime factors consist only of 2, 3, 5  and 7.  Curious readers may like
+ * whose prime factors consist only of 2, 3, 5 and 7.  Curious readers may like
  * to reason why the <I>infinitely buffered</I> channels are needed.
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.ints.*;
- * <I></I>
- * public final class MergeExample {
- * <I></I>
+ * import org.jcsp.util.*;
+ * import org.jcsp.plugNplay.*;
+ * 
+ * public class MergeExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     final One2OneChannel[] a = Channel.one2oneArray (4);
- *     final One2OneChannel[] b = Channel.one2oneArray (3,
- *                                  new InfiniteBuffer ());
+ * 
+ *     final One2OneChannel[] a = Channel.one2oneArray (5);
+ *     final One2OneChannel[] b = Channel.one2oneArray (4, new InfiniteBuffer ());
  *     final One2OneChannel c = Channel.one2one ();
  *     final One2OneChannel d = Channel.one2one ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Mult (2, a[0].in (), b[0].out ()),
  *         new Mult (3, a[1].in (), b[1].out ()),
  *         new Mult (5, a[2].in (), b[2].out ()),
+ *         new Mult (7, a[3].in (), b[3].out ()),
  *         new Merge (Channel.getInputArray (b), c.out ()),
  *         new Prefix (1, c.in (), d.out ()),
  *         new Delta (d.in (), Channel.getOutputArray (a)),
- *         new Printer (a[3].in (), "--> ", "\n")
+ *         new Printer (a[4].in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * <P>
@@ -173,11 +174,14 @@ public final class Merge implements CSProcess
     * The ordering of the input channels makes no difference
     * to the behaviour of this process.
     *
-    * @param in the input channels
+    * @param in the input channels (there must be at least 2)
     * @param out the output channel
     */
    public Merge(ChannelInput[] in, ChannelOutput out)
    {
+      if (in.length < 2) {
+        throw new IllegalArgumentException ("Merge must have at least 2 input channels");
+      }
       this.in = in;
       this.out = out;
    }

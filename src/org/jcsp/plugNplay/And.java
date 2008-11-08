@@ -36,10 +36,11 @@ import org.jcsp.lang.*;
  * <H2>Process Diagram</H2>
  * <p><img src="doc-files/And1.gif"></p>
  * <H2>Description</H2>
- * The And class is a process which has an infinite loop that waits
- * a Object of type Number to be sent down each of the in0 and in1 Channels.
- * The process then calculates the bitwise AND on the intValue() of the
- * two Numbers then write the result as a new Integer down the out Channel.
+ * This is a process with an infinite loop that waits for a <tt>Object</tt> of
+ * type <tt>Number</tt> to be sent down each of its input channels.
+ * The loop body then calculates the bitwise AND on the values of the two
+ * <tt>Number</tt>s and writes the result as a new <tt>Integer</tt> to its
+ * output channel.
  * <P>
  * <H2>Channel Protocols</H2>
  * <TABLE BORDER="2">

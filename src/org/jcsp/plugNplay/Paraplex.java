@@ -114,14 +114,14 @@ import org.jcsp.lang.*;
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.*;
- * <I></I>
+ * 
  * class ParaplexExample {
- * <I></I>
+ * 
  *   public static void main (String[] args) {
- * <I></I>
+ * 
  *     final One2OneChannel[] a = Channel.one2oneArray (3);
  *     final One2OneChannel b = Channel.one2one ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a[0].out ()),
@@ -130,9 +130,10 @@ import org.jcsp.lang.*;
  *         new Paraplex (Channel.getInputArray (a), b.out ()),
  *         new CSProcess () {
  *           public void run () {
+ *             ChannelInput in = b.in ();
  *             System.out.println ("\n\t\tNumbers\t\tSquares\t\tFibonacci\n");
  *             while (true) {
- *               Object[] data = (Object[]) b.in ().read ();
+ *               Object[] data = (Object[]) in.read ();
  *               for (int i = 0; i < data.length; i++) {
  *                 System.out.print ("\t\t" + data[i]);
  *               }
@@ -143,7 +144,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

@@ -81,34 +81,30 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.*;
- * <I></I>
+ * import org.jcsp.plugNplay.*;
+ * 
  * public class OrExample {
- * <I></I>
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     One2OneChannel a = Channel.one2one ();
- *     One2OneChannel b = Channel.one2one ();
- *     One2OneChannel c = Channel.one2one ();
- * <I></I>
+ * 
+ *     final One2OneChannel a = Channel.one2one ();
+ *     final One2OneChannel b = Channel.one2one ();
+ *     final One2OneChannel c = Channel.one2one ();
+ *     final One2OneChannel d = Channel.one2one ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a.out ()),
+ *         new Generate (b.out (), 1),
  *         new Or (a.in (), b.in (), c.out ()),
- *         new Printer (c.in ()),
- *         new CSProcess () {
- *           public void run () {
- *             Integer orVal = new Integer (1);
- *             while  (true) {
- *               b.out ().write (orVal);
- *             }
- *           }
- *         }
+ *         new Successor (c.in (), d.out ()),
+ *         new Printer (d.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
+ * }
  * </PRE>
  *
  * @author P.D.Austin

@@ -108,21 +108,21 @@ import org.jcsp.lang.*;
  * <H2>Example</H2>
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.plugNplay.*;
- * <I></I>
+ * import org.jcsp.plugNplay.ints.*;
+ * 
  * class ParaplexIntExample {
- * <I></I>
+ * 
  *   public static void main (String[] args) {
- * <I></I>
+ * 
  *     final One2OneChannelInt[] a = Channel.one2oneIntArray (3);
- *     final One2OneChannel b = Channel.one2oneInt ();
- * <I></I>
+ *     final One2OneChannel b = Channel.one2one ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new NumbersInt (a[0].out ()),
  *         new SquaresInt (a[1].out ()),
  *         new FibonacciInt (a[2].out ()),
- *         new ParaplexInt (ChannelInt.getInputArray (a), b.out ()),
+ *         new ParaplexInt (Channel.getInputArray (a), b.out ()),
  *         new CSProcess () {
  *           public void run () {
  *             System.out.println ("\n\t\tNumbers\t\tSquares\t\tFibonacci\n");
@@ -138,7 +138,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

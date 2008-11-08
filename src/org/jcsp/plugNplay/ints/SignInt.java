@@ -69,15 +69,15 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.ints.*;
  * import org.jcsp.plugNplay.*;
- * <I></I>
- * public final class SignIntExample {
- * <I></I>
+ * 
+ * public class SignIntExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannelInt[] a = Channel.one2oneIntArray (3);
  *     final One2OneChannel[] b = Channel.one2oneArray (3);
- *     final One2OneChannel c = Channel.one2oneInt ();
- * <I></I>
+ *     final One2OneChannel c = Channel.one2one ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new NumbersInt (a[0].out ()),
@@ -86,17 +86,15 @@ import org.jcsp.lang.*;
  *         new SignInt ("Numbers ", a[0].in (), b[0].out ()),
  *         new SignInt ("            Fibonacci ", a[1].in (), b[1].out ()),
  *         new SignInt ("                          Squares ", a[2].in (), b[2].out ()),
- *         new Plex (ChannelInt.getInputArray (b), c.out ()),
+ *         new Plex (Channel.getInputArray (b), c.out ()),
  *         new Printer (c.in (), "", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
- * <P>
- * <P>
  *
  * @see org.jcsp.plugNplay.Sign
  *

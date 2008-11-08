@@ -77,27 +77,27 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.ints.*;
- * <I></I>
- * public final class OrIntExample {
- * <I></I>
+ * import org.jcsp.plugNplay.ints.*;
+ * 
+ * public class OrIntExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannelInt a = Channel.one2oneInt ();
  *     final One2OneChannelInt b = Channel.one2oneInt ();
  *     final One2OneChannelInt c = Channel.one2oneInt ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new NumbersInt (a.out ()),
  *         new GenerateInt (b.out (), 1),
  *         new OrInt (a.in (), b.in (), c.out ()),
- *         new PrinterInt (c.in ())
+ *         new PrinterInt (c.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

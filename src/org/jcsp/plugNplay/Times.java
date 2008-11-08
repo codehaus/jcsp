@@ -78,27 +78,27 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.*;
- *
+ * import org.jcsp.plugNplay.*;
+ * 
  * public class TimesExample {
- * <I></I>
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     One2OneChannel a = Channel.one2one ();
- *     One2OneChannel b = Channel.one2one ();
- *     One2OneChannel c = Channel.one2one ();
- * <I></I>
- *     new Prallel (
+ * 
+ *     final One2OneChannel a = Channel.one2one ();
+ *     final One2OneChannel b = Channel.one2one ();
+ *     final One2OneChannel c = Channel.one2one ();
+ * 
+ *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a.out ()),
  *         new Numbers (b.out ()),
  *         new Times (a.in (), b.in (), c.out ()),
- *         new Printer (c.in ())
+ *         new Printer (c.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

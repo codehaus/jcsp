@@ -74,17 +74,17 @@ import org.jcsp.lang.*;
  * The program also uses some of the other <TT>plugNplay</TT> processes.
  *
  * <PRE>
- * import org.org.jcsp.lang.*;
- * import org.org.jcsp.plugNplay.ints.*;
- * <I></I>
- * public final class Plex2IntExample {
- * <I></I>
+ * import org.jcsp.lang.*;
+ * import org.jcsp.plugNplay.ints.*;
+ * 
+ * public class Plex2IntExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannelInt a = Channel.one2oneInt ();
  *     final One2OneChannelInt b = Channel.one2oneInt ();
  *     final One2OneChannelInt c = Channel.one2oneInt ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new FibonacciInt (a.out ()),
@@ -93,9 +93,9 @@ import org.jcsp.lang.*;
  *         new PrinterInt (c.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * Note: this example does not produce easily understandable output, since
@@ -113,7 +113,7 @@ import org.jcsp.lang.*;
  *     AltingChannelInputInt[] input = {in0, in1};      // in0 and in1 are the input channels
  *     Alternative alt = new Alternative (input);
  *     while (true) {
- *       out.write (input[alt.fairSelect ()].in ().read ());  // out is the output channel
+ *       out.write (input[alt.fairSelect ()].read ());  // out is the output channel
  *     }
  *   }
  * </PRE>

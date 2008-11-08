@@ -68,26 +68,26 @@ import org.jcsp.lang.*;
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.ints.*;
- * <I></I>
- * public final class PlexIntExample {
- * <I></I>
+ * 
+ * public class PlexIntExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannelInt[] a = Channel.one2oneIntArray (3);
  *     final One2OneChannelInt b = Channel.one2oneInt ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new NumbersInt (a[0].out ()),
  *         new FibonacciInt (a[1].out ()),
  *         new SquaresInt (a[2].out ()),
- *         new PlexInt (ChannelInt.getInputArray (a), b.out ()),
+ *         new PlexInt (Channel.getInputArray (a), b.out ()),
  *         new PrinterInt (b.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * Note: this example does not produce easily understandable output, since
@@ -104,7 +104,7 @@ import org.jcsp.lang.*;
  *   public void run () {
  *     Alternative alt = new Alternative (in);       // in is the input channel array
  *     while (true) {
- *       out.write (in[alt.fairSelect ()].in ().read ());  // out is the output channel
+ *       out.write (in[alt.fairSelect ()].read ());  // out is the output channel
  *     }
  *   }
  * </PRE>

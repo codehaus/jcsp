@@ -37,9 +37,9 @@ import org.jcsp.lang.*;
  * <p><img src="doc-files/Demultiplex1.gif"></p>
  * <H2>Description</H2>
  * <TT>Demultiplex</TT> is a process to convert the single stream of
- * (Integer, Object) messages sent from a <TT>Multiplex</TT> process on the other
+ * (Integer, Object) messages sent from a {@link Multiplex} process on the other
  * end of its <TT>in</TT> channel back into separate streams (its <TT>out</TT>
- * channels).  It assumes that <TT>Multiplex</TT> operates on the same
+ * channels).  It assumes that {@link Multiplex} operates on the same
  * size array of channels as its <TT>out</TT> array.
  * <P>
  * The <I>protocol</I> on the incoming multiplexed stream consists of

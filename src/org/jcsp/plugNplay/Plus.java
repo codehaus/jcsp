@@ -80,28 +80,28 @@ import org.jcsp.lang.*;
  * prints them to the screen.
  *
  * <PRE>
- * import org.org.jcsp.lang.*;
- * import org.jcsp.util.*;
- * <I></I>
+ * import org.jcsp.lang.*;
+ * import org.jcsp.plugNplay.*;
+ * 
  * public class PlusExample {
- * <I></I>
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     One2OneChannel a = Channel.one2one ();
- *     One2OneChannel b = Channel.one2one ();
- *     One2OneChannel c = Channel.one2one ();
- * <I></I>
+ * 
+ *     final One2OneChannel a = Channel.one2one ();
+ *     final One2OneChannel b = Channel.one2one ();
+ *     final One2OneChannel c = Channel.one2one ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a.out ()),
  *         new Numbers (b.out ()),
  *         new Plus (a.in (), b.in (), c.out ()),
- *         new Printer (c.in ())
+ *         new Printer (c.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

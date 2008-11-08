@@ -74,20 +74,20 @@ import org.jcsp.lang.*;
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.ints.*;
- * <I></I>
- * public final class MultiplexIntExample {
- * <I></I>
+ * 
+ * public class MultiplexIntExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
+ * 
  *     final One2OneChannelInt[] a = Channel.one2oneIntArray (3);
  *     final One2OneChannelInt b = Channel.one2oneInt ();
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new NumbersInt (a[0].out ()),
  *         new FibonacciInt (a[1].out ()),
  *         new SquaresInt (a[2].out ()),
- *         new MultiplexInt (a.in (), b.out ()),
+ *         new MultiplexInt (Channel.getInputArray (a), b.out ()),
  *         new CSProcess () {
  *           public void run () {
  *             String[] key = {"Numbers ",
@@ -101,9 +101,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

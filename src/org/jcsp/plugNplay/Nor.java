@@ -81,35 +81,29 @@ import org.jcsp.lang.*;
  *
  * <PRE>
  * import org.jcsp.lang.*;
- * import org.jcsp.util.*;
- *
+ * import org.jcsp.plugNplay.*;
+ * 
  * public class NorExample {
+ * 
  *   public static void main (String[] argv) {
- * <I></I>
- *     One2OneChannel a = Channel.one2one ();
- *     One2OneChannel b = Channel.one2one ();
- *     One2OneChannel c = Channel.one2one ();
- *     One2OneChannel d = Channel.one2one ();
- * <I></I>
+ * 
+ *     fonal One2OneChannel a = Channel.one2one ();
+ *     fonal One2OneChannel b = Channel.one2one ();
+ *     fonal One2OneChannel c = Channel.one2one ();
+ *     fonal One2OneChannel d = Channel.one2one ();
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Numbers (a.out ()),
+ *         new Generate (b.out (), 0),
  *         new Nor (a.in (), b.in (), c.out ()),
  *         new Successor (c.in (), d.out ()),
- *         new Printer (d.in ()),
- *         new CSProcess () {
- *           public void run () {
- *             Integer norVal = new Integer (0);
- *             while (true) {
- *               b.out ().write (norVal);
- *             }
- *           }
- *         }
+ *         new Printer (d.in (), "--> ", "\n")
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

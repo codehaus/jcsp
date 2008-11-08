@@ -200,7 +200,7 @@ import org.jcsp.awt.*;
  */
 //}}}
 
-public class FramedButtonGrid implements CSProcess {
+public final class FramedButtonGrid implements CSProcess {
 
   /** The frame for the buttons */
   private final ActiveClosingFrame activeClosingFrame;
