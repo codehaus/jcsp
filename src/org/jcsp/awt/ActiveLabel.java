@@ -61,7 +61,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveLabel myLabel = new ActiveLabel ("Look at Me");
  *   myContainer.addMouseEventChannel (myMouseEvent.out ());
  * </PRE>
@@ -137,29 +137,29 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveLabelExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ("ActiveLabel Example");
- * <I></I>
+ * 
  *     final int nLabels = 8;
  *     final int countdown = 10;
- * <I></I>
+ * 
  *     final One2OneChannel[] configureLabel = Channel.one2oneArray (nLabels);
- * <I></I>
+ * 
  *     final ActiveLabel[] label = new ActiveLabel[nLabels];
  *     for (int i = 0; i < label.length; i++) {
  *       label[i] = new ActiveLabel (configureLabel[i].in (), "==>  " + countdown + "  <==");
  *       label[i].setAlignment (Label.CENTER);
  *     }
- * <I></I>
+ * 
  *     final One2OneChannel configureButton = Channel.one2one ();
  *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActiveButton button = new ActiveButton (configureButton.in (), event.out (), "Start");
- * <I></I>
+ * 
  *     root.setSize (300, 200);
  *     root.setLayout (new GridLayout (3, 3));
  *     for (int i = 0; i < nLabels + 1; i++) {
@@ -172,7 +172,7 @@ import org.jcsp.lang.*;
  *       }
  *     }
  *     root.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Parallel (label),
@@ -210,9 +210,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

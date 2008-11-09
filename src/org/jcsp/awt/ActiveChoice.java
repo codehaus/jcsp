@@ -64,7 +64,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myChoiceEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveChoice myChoice =
  *     new ActiveChoice (null, myChoiceEvent.out ());
  * </PRE>
@@ -160,28 +160,28 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveChoiceExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ("ActiveChoice Example");
- * <I></I>
+ * 
  *     final One2OneChannel close = Channel.one2one (new OverWriteOldestBuffer (1));
- * <I></I>
+ * 
  *     final ActiveChoice choice = new ActiveChoice (null, close.out ());
- * <I></I>
+ * 
  *     final String[] menu = {"Hello World", "Rocket Science", "CSP",
  *                            "Monitors", "Ignore Me", "Goodbye World"};
- * <I></I>
+ * 
  *     for (int i = 0; i < menu.length; i++) {
  *       choice.add (menu[i]);
  *     }
- * <I></I>
+ * 
  *     root.setSize (200, 100);
  *     root.add (choice);
  *     root.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         choice,
@@ -200,9 +200,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

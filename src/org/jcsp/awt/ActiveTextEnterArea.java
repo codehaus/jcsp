@@ -75,7 +75,7 @@ import java.awt.event.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myTextAreaEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveTextEnterArea myTextEnterArea =
  *     new ActiveTextEnterArea (null, myTextAreaEvent.out (), "Edit Me", 5, 20);
  * </PRE>
@@ -165,42 +165,42 @@ import java.awt.event.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
  * import java.awt.*;
- * <I></I>
+ * 
  * public class ActiveTextEnterAreaExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
- *     final ActiveClosureFrame frame =
- *       new ActiveClosureFrame ("ActiveTextEnterArea Example");
- * <I></I>
+ * 
+ *     final ActiveClosingFrame frame =
+ *       new ActiveClosingFrame ("ActiveTextEnterArea Example");
+ * 
  *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final String[] string =
  *       {"Entia Non Sunt Multiplicanda Praeter Necessitatem",
  *        "Everything we do, we do it to you",
  *        "Race Hazards - What Rice Hozzers?",
  *        "Cogito Ergo Occam"};
- * <I></I>
+ * 
  *     final String goodbye = "Goodbye World";
- * <I></I>
+ * 
  *     final ActiveTextEnterArea[] activeText =
  *       new ActiveTextEnterArea[string.length];
- * <I></I>
+ * 
  *     for (int i = 0; i < string.length; i++) {
- *       activeText[i] = new ActiveTextEnterArea (null, event.out (), string[i], 5, 20);
+ *       activeText[i] = new ActiveTextEnterArea (null, event.out (), string[i], 5, 40);
  *     }
- * <I></I>
+ * 
  *     Panel panel = new Panel (new GridLayout (string.length/2, 2));
  *     for (int i = 0; i < string.length; i++) {
  *       panel.add (activeText[i].getActiveTextArea ());
  *     }
- * <I></I>
+ * 
  *     final Frame realFrame = frame.getActiveFrame ();
  *     realFrame.setBackground (Color.green);
  *     realFrame.add (panel);
  *     realFrame.pack ();
  *     realFrame.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         frame,
@@ -220,7 +220,7 @@ import java.awt.event.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
@@ -435,49 +435,49 @@ public class ActiveTextEnterArea implements CSProcess
    {
       area.addKeyEventChannel(keyEvent.out());
       new Parallel(new CSProcess[] 
+      {
+         new Plex2(configure, configureA.in(), configureB.out()),
+         area,
+         new CSProcess()
+         {
+            public void run()
+            {
+               CSTimer tim = new CSTimer();
+               Guard[] guard = {keyEvent.in(), textEvent.in()};
+               Alternative alt = new Alternative(guard);
+               String text = s;
+               ChannelInput keyEventIn = keyEvent.in();
+               ChannelInput textEventIn = textEvent.in();
+               ChannelOutput configureAOut = configureA.out();
+               while (true)
+               {
+                  switch (alt.priSelect())
                   {
-                     new Plex2(configure, configureA.in(), configureB.out()),
-                     area,
-                     new CSProcess()
-                     {
-                        public void run()
+                     case 0:
+                        final KeyEvent key = (KeyEvent) keyEventIn.read();
+                        switch (key.getKeyCode())
                         {
-                           CSTimer tim = new CSTimer();
-                           Guard[] guard = {keyEvent.in(), textEvent.in()};
-                           Alternative alt = new Alternative(guard);
-                           String text = s;
-                           ChannelInput keyEventIn = keyEvent.in();
-                           ChannelInput textEventIn = textEvent.in();
-                           ChannelOutput configureAOut = configureA.out();
-                           while (true)
-                           {
-                              switch (alt.priSelect())
+                           case KeyEvent.VK_ESCAPE:
+                              switch (key.getID())
                               {
-                              case 0:
-                                 final KeyEvent key = (KeyEvent) keyEventIn.read();
-                                 switch (key.getKeyCode())
-                                 {
-                                 case KeyEvent.VK_ESCAPE:
-                                    switch (key.getID())
-                                    {
-                                    case KeyEvent.KEY_PRESSED:
-                                       if (event != null) 
-                                          event.write(text);
-                                       configureAOut.write(Boolean.FALSE);
-                                       tim.after(tim.read() + disableTime);
-                                       configureAOut.write(Boolean.TRUE);
-                                       break;
-                                    }
-                                    break;
-                                 }
-                                 break;
-                              case 1:
-                                 text = (String) textEventIn.read();
+                                 case KeyEvent.KEY_PRESSED:
+                                    if (event != null) 
+                                       event.write(text);
+                                    configureAOut.write(Boolean.FALSE);
+                                    tim.after(tim.read() + disableTime);
+                                    configureAOut.write(Boolean.TRUE);
                                  break;
                               }
-                           }
+                           break;
                         }
-                     }
-                  }).run();
+                     break;
+                     case 1:
+                        text = (String) textEventIn.read();
+                     break;
+                  }
+               }
+            }
+         }
+      }).run();
    }
 }

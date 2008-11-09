@@ -64,7 +64,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myCheckboxEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveCheckbox myCheckbox =
  *     new ActiveCheckbox (null, myCheckboxEvent);
  * </PRE>
@@ -152,30 +152,30 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveCheckboxExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ("ActiveCheckbox Example");
- * <I></I>
+ * 
  *     final String[] box = {"Hello World", "Rocket Science", "CSP",
  *                           "Monitors", "Ignore Me", "Goodbye World"};
- * <I></I>
+ * 
  *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActiveCheckbox[] check = new ActiveCheckbox[box.length];
  *     for (int i = 0; i < box.length; i++) {
  *       check[i] = new ActiveCheckbox (null, event.out (), box[i]);
  *     }
- * <I></I>
- *     root.setSize (300, 100);
+ * 
+ *     root.setSize (300, 200);
  *     root.setLayout (new GridLayout (box.length, 1));
  *     for (int i = 0; i < box.length; i++) {
  *      root.add (check[i]);
  *     }
  *     root.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Parallel (check),
@@ -198,9 +198,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

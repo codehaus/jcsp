@@ -62,7 +62,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myMenuItemEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveMenuItem myMenuItem =
  *     new ActiveMenuItem (null, myMenuItemEvent.out (), "Choose Me");
  * </PRE>
@@ -117,47 +117,47 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveMenuItemExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final ActiveClosingFrame activeClosingFrame =
  *       new ActiveClosingFrame ("ActiveMenuItem Example");
- * <I></I>
+ * 
  *     final ActiveFrame frame = activeClosingFrame.getActiveFrame ();
- * <I></I>
+ * 
  *     final MenuBar menuBar = new MenuBar ();
  *     frame.setMenuBar (menuBar);
- * <I></I>
+ * 
  *     final Menu fileMenu = new Menu ("File");
  *     final Menu langMenu = new Menu ("Language");
  *     menuBar.add (fileMenu);
  *     menuBar.add (langMenu);
- * <I></I>
+ * 
  *     final String[] fileOptions = {"Hello World", "Rocket Science", "CSP",
  *                                   "Monitors", "Ignore Me", "Goodbye World"};
- *     final String[] langOptions = {"occam", "Java", "Smalltalk", "Algol-60",
+ *     final String[] langOptions = {"occam-pi", "Java", "Smalltalk", "Algol-60",
  *                                   "Pascal", "Haskell", "SML", "Lisp"};
- * <I></I>
+ * 
  *     final Any2OneChannel event[] = Channel.any2oneArray (2, new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActiveMenuItem[] fileMenuItem = new ActiveMenuItem[fileOptions.length];
  *     for (int i = 0; i < fileOptions.length; i++) {
  *       fileMenuItem[i] = new ActiveMenuItem (null, event[0].out (), fileOptions[i]);
  *       fileMenu.add (fileMenuItem[i]);
  *     }
- * <I></I>
+ * 
  *     final ActiveMenuItem[] langMenuItem = new ActiveMenuItem[langOptions.length];
  *     for (int i = 0; i < langOptions.length; i++) {
  *       langMenuItem[i] = new ActiveMenuItem (null, event[1].out (), langOptions[i]);
  *       langMenu.add (langMenuItem[i]);
  *     }
- * <I></I>
+ * 
  *     frame.setSize (300, 200);
  *     frame.setBackground (Color.green);
  *     frame.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         activeClosingFrame,
@@ -185,9 +185,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

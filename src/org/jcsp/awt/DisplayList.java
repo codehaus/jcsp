@@ -81,7 +81,7 @@ import java.awt.*;
  * a </I><TT>change</TT><I> -- i.e. concurrent processes doing these things will need
  * to be informed before they do them again!  However, if the list really needs concurrent
  * setting without such an arrangement, this can be done within
- * a </I><TT>synchronized</TT><I> block on the </I><TT>DisplayList</TT><I></I>.
+ * a </I><TT>synchronized</TT><I> block on the </I><TT>DisplayList</TT>.
  * <P>
  * User applications will not normally be implementing new processes that are at the receiving
  * end of a <TT>DisplayList</TT>.  Users will only be responsible for connecting a <TT>DisplayList</TT>

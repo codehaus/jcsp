@@ -75,7 +75,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveCanvas myCanvas = new ActiveCanvas ();
  *   myCanvas.addMouseEventChannel (myMouseEvent.out ());
  * </PRE>
@@ -148,50 +148,50 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveCanvasExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final ActiveClosingFrame activeClosingFrame =
  *       new ActiveClosingFrame ("ActiveCanvas Example");
  *     final Frame frame = activeClosingFrame.getActiveFrame ();
- * <I></I>
+ * 
  *     final One2OneChannel mouseEvent = Channel.one2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final DisplayList displayList = new DisplayList ();
- * <I></I>
+ * 
  *     final ActiveCanvas canvas = new ActiveCanvas ();
  *     canvas.addMouseEventChannel (mouseEvent.out ());
  *     canvas.setPaintable (displayList);
  *     canvas.setSize (600, 400);
- * <I></I>
+ * 
  *     frame.add (canvas);
  *     frame.pack ();
  *     frame.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         activeClosingFrame,
  *         canvas,
  *         new CSProcess () {
  *           public void run () {
- *             final String clickMessage = "C L I C K   T H E   M O U S E   T O   E X I T";
- *             final String clickPlea = "P L E A S E   M O V E   T H E   M O U S E   B A C K";
+ *             final String clickMessage = "D O U B L E - C L I C K   T H E   M O U S E   T O   E X I T";
+ *             final String clickPlea = "       P L E A S E   M O V E   T H E   M O U S E   B A C K    ";
  *             final GraphicsCommand[] mouseEntered =
  *               {new GraphicsCommand.SetColor (Color.cyan),
  *                new GraphicsCommand.FillRect (0, 0, 600, 400),
  *                new GraphicsCommand.SetColor (Color.black),
- *                new GraphicsCommand.DrawString (clickMessage, 145, 200)};
+ *                new GraphicsCommand.DrawString (clickMessage, 140, 200)};
  *             final GraphicsCommand[] mouseExited =
  *               {new GraphicsCommand.SetColor (Color.pink),
  *                new GraphicsCommand.FillRect (0, 0, 600, 400),
  *                new GraphicsCommand.SetColor (Color.black),
- *                new GraphicsCommand.DrawString (clickPlea, 160, 200)};
+ *                new GraphicsCommand.DrawString (clickPlea, 140, 200)};
  *             final GraphicsCommand mousePressed =
- *               new GraphicsCommand.DrawString (clickMessage, 165, 220);
+ *               new GraphicsCommand.DrawString (clickMessage, 160, 220);
  *             final GraphicsCommand mouseReleased =
- *               new GraphicsCommand.DrawString (clickMessage, 145, 200);
+ *               new GraphicsCommand.DrawString (clickMessage, 140, 200);
  *             displayList.set (mouseExited);
  *             boolean running = true;
  *             while (running) {
@@ -228,7 +228,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
@@ -285,12 +285,12 @@ public class ActiveCanvas extends Canvas implements CSProcess
     * to this <TT>ActiveCanvas</TT>.  For example:
     * <PRE>
     *   final ActiveCanvas myActiveCanvas = new ActiveCanvas ();
-    *   <I></I>
+    *   
     *   final DisplayList draw = new DisplayList ();
     *   myActiveCanvas.setPaintable (draw);
-    *   <I></I>
+    *   
     *   ...  connect other channels (toGraphics, fromGraphics, mouseEvent, etc.)
-    *   <I></I>
+    *   
     *   // myActiveCanvas is now ready to run
     * </PRE>
     * <P>

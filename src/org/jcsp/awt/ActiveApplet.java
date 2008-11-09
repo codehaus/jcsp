@@ -70,13 +70,13 @@ import org.jcsp.lang.*;
  * For example:
  * <PRE>
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class Flasher extends ActiveApplet {
- * <I></I>
+ * 
  *   public void init () {
  *     setProcess (new FlasherNetwork (500, this));
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * In the above, <TT>FlasherNetwork</TT> is the <TT>CSProcess</TT> that will be run
@@ -246,8 +246,9 @@ import org.jcsp.lang.*;
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
- *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ *   final One2OneChannel myMouseEvent =
+ *     Channel.one2one (new OverWriteOldestBuffer (n));
+ * 
  *   activeApplet.addMouseEventChannel (myMouseEvent);
  * </PRE>
  * <I>This will ensure that the Java Event Thread will never be blocked.
@@ -343,35 +344,35 @@ import org.jcsp.lang.*;
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class FlasherNetwork implements CSProcess {
- * <I></I>
+ * 
  *   final private long period;
  *   final private ActiveApplet activeApplet;
- * <I></I>
+ * 
  *   public FlasherNetwork (final long period,
  *                          final ActiveApplet activeApplet) {
  *     this.period = period;
  *     this.activeApplet = activeApplet;
  *   }
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final One2OneChannel mouseEvent = Channel.one2one ();
  *     final One2OneChannel appletConfigure = Channel.one2one ();
- * <I></I>
+ * 
  *     activeApplet.addMouseEventChannel (mouseEvent.out ());
  *     activeApplet.setConfigureChannel (appletConfigure.in ());
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         activeApplet,
  *         new FlasherControl (period, mouseEvent.in (), appletConfigure.out ())
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * <TT>FlasherControl</TT> demonstrates three basic JCSP techniques:
@@ -395,13 +396,13 @@ import org.jcsp.lang.*;
  * import java.awt.*;
  * import java.awt.event.*;
  * import java.util.*;
- * <I></I>
+ * 
  * public class FlasherControl implements CSProcess {
- * <I></I>
+ * 
  *   final private long period;
  *   final private AltingChannelInput mouseEvent;
  *   final private ChannelOutput appletConfigure;
- * <I></I>
+ * 
  *   public FlasherControl (final long period,
  *                          final AltingChannelInput mouseEvent,
  *                          final ChannelOutput appletConfigure) {
@@ -409,7 +410,7 @@ import org.jcsp.lang.*;
  *     this.mouseEvent = mouseEvent;
  *     this.appletConfigure = appletConfigure;
  *   }
- * <I></I>
+ * 
  *   private class AppletColour implements ActiveApplet.Configure {
  *     private Color colour = Color.lightGray;
  *     public void setColour (Color colour) {
@@ -419,35 +420,35 @@ import org.jcsp.lang.*;
  *       applet.setBackground (colour);
  *     }
  *   }
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final Random random = new Random ();
  *     final CSTimer tim = new CSTimer ();
- * <I></I>
+ * 
  *     final Alternative alt = new Alternative (new Guard[] {mouseEvent, tim});
  *     final boolean[] preCondition = {true, false};
  *     final int MOUSE = 0;
  *     final int TIMER = 1;
- * <I></I>
+ * 
  *     final AppletColour[] appletColour = {new AppletColour (), new AppletColour ()};
  *     final AppletColour panelBlack = new AppletColour ();
  *     panelBlack.setColour (Color.black);
- * <I></I>
+ * 
  *     appletConfigure.write (panelBlack);
- * <I></I>
+ * 
  *     int index = 0;
  *     AppletColour appletCol = appletColour[index];
  *     appletCol.setColour (new Color (random.nextInt ()));
- * <I></I>
+ * 
  *     long timeout = tim.read ();
  *     boolean mousePresent = false;
  *     boolean running = true;
- * <I></I>
+ * 
  *     while (running) {
- * <I></I>
+ * 
  *       switch (alt.priSelect (preCondition)) {
- * <I></I>
+ * 
  *         case MOUSE:
  *           switch (((MouseEvent) mouseEvent.read ()).getID ()) {
  *             case MouseEvent.MOUSE_ENTERED:
@@ -468,7 +469,7 @@ import org.jcsp.lang.*;
  *             break;
  *           }
  *         break;
- * <I></I>
+ * 
  *         case TIMER:
  *           timeout += period;
  *           tim.setAlarm (timeout);
@@ -477,13 +478,13 @@ import org.jcsp.lang.*;
  *           appletCol.setColour (new Color (random.nextInt ()));
  *           appletConfigure.write (appletCol);
  *         break;
- * <I></I>
+ * 
  *       }
- * <I></I>
+ * 
  *     }
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
@@ -508,22 +509,22 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.awt.*;
  * import java.awt.*;
- * <I></I>
+ * 
  * public class Flasher extends ActiveApplet {
- * <I></I>
+ * 
  *   public static final int minPeriod = 300;       // milliseconds
  *   public static final int maxPeriod = 1000;      // milliseconds
  *   public static final int defaultPeriod = 500;   // milliseconds
- * <I></I>
+ * 
  *   public void init () {
- * <I></I>
+ * 
  *     final int period =
  *       getAppletInt ("period", minPeriod, maxPeriod, defaultPeriod);
- * <I></I>
+ * 
  *     setProcess (new FlasherNetwork (period, this));
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * Now, if no applet parameter <TT>"period"</TT> is present, the <TT>defaultPeriod</TT>
@@ -1287,20 +1288,20 @@ public class ActiveApplet extends Applet implements CSProcess
     * For example, to set the foreground/background colours, first define:
     * <PRE>
     *   private class AppletColours implements ActiveApplet.Configure {
-    * <I></I>
+    * 
     *     private Color foreground = Color.white;
     *     private Color background = Color.black;
-    * <I></I>
+    * 
     *     public void setColour (Color foreground, Color background) {
     *       this.foreground = foreground;
     *       this.background = background;
     *     }
-    * <I></I>
+    * 
     *     public void configure (java.applet.Applet applet) {
     *       applet.setForeground (foreground);
     *       applet.setBackground (background);
     *     }
-    * <I></I>
+    * 
     *   }
     * </PRE>
     * Then, construct an instance of <TT>AppletColours</TT>, set its foreground/background

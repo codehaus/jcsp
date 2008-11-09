@@ -65,7 +65,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myTextFieldEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveTextField myTextField =
  *     new ActiveTextField (null, myTextFieldEvent.out (), "Edit Me");
  * </PRE>
@@ -150,43 +150,43 @@ import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
  * import java.awt.*;
- * <I></I>
+ * 
  * public class ActiveTextFieldExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final ActiveClosingFrame frame =
  *       new ActiveClosingFrame ("ActiveTextFieldExample Example");
- * <I></I>
+ * 
  *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final String[] string =
  *       {"Entia Non Sunt Multiplicanda Praeter Necessitatem",
  *        "Less is More ... More or Less",
  *        "Everything we do, we do it to you",
  *        "Race Hazards - What Rice Hozzers?",
  *        "Cogito Ergo Occam"};
- * <I></I>
+ * 
  *     final String goodbye = "Goodbye World";
- * <I></I>
+ * 
  *     final ActiveTextField[] activeText =
  *       new ActiveTextField[string.length];
- * <I></I>
+ * 
  *     for (int i = 0; i < string.length; i++) {
  *       activeText[i] = new ActiveTextField (null, event.out (), string[i]);
  *     }
- * <I></I>
+ * 
  *     Panel panel = new Panel (new GridLayout (string.length, 1));
  *     for (int i = 0; i < string.length; i++) {
  *       panel.add (activeText[i]);
  *     }
- * <I></I>
+ * 
  *     final Frame realFrame = frame.getActiveFrame ();
  *     realFrame.setBackground (Color.green);
  *     realFrame.add (panel);
  *     realFrame.pack ();
  *     realFrame.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         frame,
@@ -206,7 +206,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

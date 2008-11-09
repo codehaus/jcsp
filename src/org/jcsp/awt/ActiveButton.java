@@ -65,7 +65,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myButtonEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveButton myButton =
  *     new ActiveButton (null, myButtonEvent.out (), "Press Me");
  * </PRE>
@@ -146,30 +146,31 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveButtonExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ("ActiveButton Example");
- * <I></I>
+ * 
  *     final String[] label = {"Hello World", "Rocket Science", "CSP",
  *                             "Monitors", "Ignore Me", "Goodbye World"};
- * <I></I>
+ * 
  *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActiveButton[] button = new ActiveButton[label.length];
  *     for (int i = 0; i < label.length; i++) {
  *       button[i] = new ActiveButton (null, event.out (), label[i]);
+ *       button[i].setBackground (Color.green);
  *     }
- * <I></I>
+ * 
  *     root.setSize (300, 200);
  *     root.setLayout (new GridLayout (label.length/2, 2));
  *     for (int i = 0; i < label.length; i++) {
  *       root.add (button[i]);
  *     }
  *     root.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Parallel (button),
@@ -188,7 +189,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
@@ -452,13 +453,13 @@ public class ActiveButton extends Button implements CSProcess
             else if (message instanceof Boolean)
             {
                if (message == Boolean.TRUE)
-	       {
+               {
                   setEnabled(true);
-	       }
+               }
                else if (message == Boolean.FALSE)
-	       {
+               {
                   setEnabled(false);
-	       }
+               }
             }
             else if (message instanceof Color)
             {

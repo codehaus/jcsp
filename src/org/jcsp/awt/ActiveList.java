@@ -65,7 +65,7 @@ import org.jcsp.lang.*;
  * <PRE>
  *   final One2OneChannel myListEvent = Channel.one2one (new OverWriteOldestBuffer (n));
  *   final One2OneChannel myListItemEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveList myList = new ActiveList (null, myListEvent.out ());
  *   myList.addItemEventChannel (myListItemEvent.out ());
  * </PRE>
@@ -168,32 +168,32 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveListExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ("ActiveList Example");
- * <I></I>
+ * 
  *     final One2OneChannel configure = Channel.one2one ();
- * <I></I>
+ * 
  *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
  *     final One2OneChannel itemEvent = Channel.one2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActiveList list = new ActiveList (configure.in (), event.out (), 0, true);
  *     list.addItemEventChannel (itemEvent.out ());
- * <I></I>
+ * 
  *     final String[] menu = {"Hello World", "Rocket Science", "CSP",
  *                           "Monitors", "Ignore Me", "Goodbye World"};
- * <I></I>
+ * 
  *     for (int i = 0; i < menu.length; i++) {
  *       list.add (menu[i]);
  *     }
- * <I></I>
+ * 
  *     root.setSize (300, 105);
  *     root.add (list);
  *     root.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {           // respond to the event channel
  *         list,
@@ -231,7 +231,7 @@ import org.jcsp.lang.*;
  *               tim.after (timeout);
  *               System.out.println ("*** Removing last three items ...");
  *               for (int i = 3; i < menu.length; i++) {
- *                 configure.write ("-" + menu[i]);
+ *                 configure.out ().write ("-" + menu[i]);
  *               }
  *               timeout += 10000;
  *               tim.after (timeout);
@@ -244,9 +244,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

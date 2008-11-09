@@ -117,13 +117,13 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveButtonControlExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ("ActiveButtonControl Example");
- * <I></I>
+ * 
  *     final String[][] labels = {
  *       new String[] {"Hello World", "JCSP", "Restart"},
  *       new String[] {"Rocket Science", "JCSP", "occam"},
@@ -135,42 +135,42 @@ import org.jcsp.lang.*;
  *       new String[] {"Monitors", "JCSP", "occam"},
  *       new String[] {"Alchemy", "JCSP", "Smile"}
  *     };
- * <I></I>
+ * 
  *     final int nButtons = labels.length;
- * <I></I>
+ * 
  *     final One2OneChannel[] fromButton = Channel.one2oneArray (nButtons, new OverWriteOldestBuffer (1));
  *     final Any2OneChannel[] toButton = Channel.any2oneArray (nButtons);
- * <I></I>
+ * 
  *     final One2OneChannel report = Channel.one2one ();
- * <I></I>
+ * 
  *     final ActiveButton[] button = new ActiveButton[nButtons];
  *     for (int i = 0; i < nButtons; i++) {
  *       button[i] = new ActiveButton (toButton[i].in (), fromButton[i].out (), "XXXXXXXXX");
+ *       button[i].setBackground (Color.green);
  *     }
- * <I></I>
+ * 
  *     root.setSize (450, 200);
  *     root.setLayout (new GridLayout (nButtons/3, 3));
  *     for (int i = 0; i < nButtons; i++) {
- *       button[i].setBackground (Color.orange);
  *       root.add (button[i]);
  *     }
  *     root.setVisible (true);
- * <I></I>
+ * 
  *     final int initial   = 0;                    // state names
  *     final int diagonal  = 1;
  *     final int opposite  = 2;
  *     final int centre    = 3;
  *     final int full      = 4;
  *     final int terminal  = 5;
- * <I></I>
+ * 
  *     final String[] stateName = {
  *       "initial", "diagonal", "opposite", "centre", "full", "terminal"
  *     };
- * <I></I>
+ * 
  *     final ActiveButtonState[] state = new ActiveButtonState[stateName.length];
- * <I></I>
+ * 
  *     try {
- * <I></I>
+ * 
  *       state[initial] =
  *         new ActiveButtonState (
  *           new int[] {
@@ -232,14 +232,14 @@ import org.jcsp.lang.*;
  *             terminal, terminal, terminal
  *           }
  *         );
- * <I></I>
+ * 
  *     } catch (ActiveButtonState.BadArguments e) {
- * <I></I>
+ * 
  *      System.out.println (e);
  *      System.exit (0);
- * <I></I>
+ * 
  *     };
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Parallel (button),
@@ -289,9 +289,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * The countdown to exit sequence is just for fun.  In its terminal state,

@@ -64,7 +64,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveWindow myWindow = new ActiveWindow ();
  *   myWindow.addMouseEventChannel (myMouseEvent.out ());
  * </PRE>
@@ -148,21 +148,21 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveWindowExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ("ActiveWindow Example");
- * <I></I>
+ * 
  *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActiveWindow window = new ActiveWindow (null, event.out (), root);
- * <I></I>
+ * 
  *     root.setSize (400, 400);
  *     root.setVisible (true);
  *     window.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         window,
@@ -177,7 +177,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

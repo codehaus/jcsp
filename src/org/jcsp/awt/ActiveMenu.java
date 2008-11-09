@@ -62,7 +62,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myMenuEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveMenu myMenu =
  *     new ActiveMenu (null, myMenuEvent.out (), "Look at this");
  * </PRE>
@@ -124,55 +124,55 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveMenuExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final ActiveClosingFrame activeClosingFrame =
  *       new ActiveClosingFrame ("ActiveCheckboxMenuItem Example");
- * <I></I>
+ * 
  *     final ActiveFrame frame = activeClosingFrame.getActiveFrame ();
- * <I></I>
+ * 
  *     final MenuBar menuBar = new MenuBar ();
  *     frame.setMenuBar (menuBar);
- * <I></I>
+ * 
  *     final Menu fileMenu = new Menu ("File");
  *     menuBar.add (fileMenu);
- * <I></I>
+ * 
  *     final String[] fileOptions = {"Hello World", "Rocket Science", "CSP",
  *                                   "Monitors", "Ignore Me", "Goodbye World"};
- * <I></I>
+ * 
  *     final Any2OneChannel event[] = Channel.any2oneArray (2, new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActiveMenuItem[] fileMenuItem =
  *       new ActiveMenuItem[fileOptions.length];
  *     for (int i = 0; i < fileOptions.length; i++) {
  *       fileMenuItem[i] = new ActiveMenuItem (null, event[0].out (), fileOptions[i]);
  *       fileMenu.add (fileMenuItem[i]);
  *     }
- * <I></I>
+ * 
  *     fileMenu.addSeparator ();
- * <I></I>
+ * 
  *     final Any2OneChannel langConfigure = Channel.any2one ();
  *     final ActiveMenu langMenu = new ActiveMenu (langConfigure.in (), null, "Language");
  *     fileMenu.add (langMenu);  // set up the active langMenu as a sub-menu
- * <I></I>
- *     final String[] langOptions = {"occam", "Java", "Smalltalk", "Algol-60",
+ * 
+ *     final String[] langOptions = {"occam-pi", "Java", "Smalltalk", "Algol-60",
  *                                   "Pascal", "Haskell", "SML", "Lisp"};
- * <I></I>
+ * 
  *     final ActiveCheckboxMenuItem[] langCheckboxMenuItem =
  *       new ActiveCheckboxMenuItem[langOptions.length];
  *     for (int i = 0; i < langOptions.length; i++) {
  *       langCheckboxMenuItem[i] =
- *         new ActiveCheckboxMenuItem (null, event[1], langOptions[i]);
+ *         new ActiveCheckboxMenuItem (null, event[1].out (), langOptions[i]);
  *       langMenu.add (langCheckboxMenuItem[i]);
  *     }
- * <I></I>
+ * 
  *     frame.setSize (700, 350);
  *     frame.setBackground (Color.green);
  *     frame.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {     // don't forget to include all active processes
  *         langMenu,
@@ -215,9 +215,9 @@ import org.jcsp.lang.*;
  *         }
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

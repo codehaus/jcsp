@@ -68,7 +68,7 @@ import org.jcsp.lang.*;
  * <PRE>
  *   final One2OneChannel myFileDialogConfigure = Channel.one2one ();
  *   final One2OneChannel myFileDialogEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveFileDialog myFileDialog =
  *     new ActiveFileDialog (myFileDialogConfigure.in (), myFileDialogEvent.out ());
  * </PRE>
@@ -163,26 +163,26 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveFileDialogExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ();
- * <I></I>
+ * 
  *     final One2OneChannel configure = Channel.one2one ();
- * <I></I>
+ * 
  *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActiveFileDialog fileDialog =
  *       new ActiveFileDialog (configure.in (), event.out (), root, "ActiveFileDialog Example");
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         fileDialog,
  *         new CSProcess () {
  *           public void run () {
- *             String dir = "C:\\";  // start directory for the file dialogue
+ *             String dir = ".";           // start directory for the file dialogue
  *             String file = "";
  *             while (file != null) {
  *               configure.out ().write (dir);
@@ -198,7 +198,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

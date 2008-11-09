@@ -61,7 +61,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActivePanel myPanel = new ActivePanel ();
  *   myPanel.addMouseEventChannel (myMouseEvent.out ());
  * </PRE>
@@ -128,22 +128,22 @@ import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActivePanelExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final Frame root = new Frame ("ActivePanel Example");
- * <I></I>
+ * 
  *     final One2OneChannel mouseEvent = Channel.one2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final ActivePanel panel = new ActivePanel ();
  *     panel.addMouseEventChannel (mouseEvent.out ());
- * <I></I>
+ * 
  *     root.add (panel);
  *     root.setSize (400, 400);
  *     root.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         panel,
@@ -151,7 +151,8 @@ import org.jcsp.lang.*;
  *           public void run () {
  *             boolean running = true;
  *             while (running) {
- *               switch (((MouseEvent) mouseEvent.in ().read ()).getID ()) {
+ *               final MouseEvent event = (MouseEvent) mouseEvent.in ().read ();
+ *               switch (event.getID ()) {
  *                 case MouseEvent.MOUSE_ENTERED:
  *                   System.out.println ("MOUSE_ENTERED");
  *                 break;
@@ -165,8 +166,12 @@ import org.jcsp.lang.*;
  *                   System.out.println ("MOUSE_RELEASED");
  *                 break;
  *                 case MouseEvent.MOUSE_CLICKED:
- *                   System.out.println ("MOUSE_CLICKED ... goodbye!");
- *                   running = false;
+ *                   if (event.getClickCount() > 1) {
+ *                     System.out.println ("MOUSE_DOUBLE_CLICKED ... goodbye!");
+ *                     running = false;
+ *                   } else {
+ *                     System.out.println ("MOUSE_CLICKED ... *double* click to quit!");
+ *                   }
  *                 break;
  *               }
  *             }
@@ -177,7 +182,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

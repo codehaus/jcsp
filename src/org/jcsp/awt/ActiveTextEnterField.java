@@ -75,7 +75,7 @@ import java.awt.event.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myTextFieldEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveTextEnterField myTextEnterField =
  *     new ActiveTextEnterField (null, myTextFieldEvent.out (), "Edit Me");
  * </PRE>
@@ -165,43 +165,43 @@ import java.awt.event.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
  * import java.awt.*;
- * <I></I>
+ * 
  * public class ActiveTextEnterFieldExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
- *     final ActiveClosureFrame frame =
- *       new ActiveClosureFrame ("ActiveTextEnterField Example");
- * <I></I>
+ * 
+ *     final ActiveClosingFrame frame =
+ *       new ActiveClosingFrame ("ActiveTextEnterField Example");
+ * 
  *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final String[] string =
  *       {"Entia Non Sunt Multiplicanda Praeter Necessitatem",
  *        "Less is More ... More or Less",
  *        "Everything we do, we do it to you",
  *        "Race Hazards - What Rice Hozzers?",
  *        "Cogito Ergo Occam"};
- * <I></I>
+ * 
  *     final String goodbye = "Goodbye World";
- * <I></I>
+ * 
  *     final ActiveTextEnterField[] activeText =
  *       new ActiveTextEnterField[string.length];
- * <I></I>
+ * 
  *     for (int i = 0; i < string.length; i++) {
  *       activeText[i] = new ActiveTextEnterField (null, event.out (), string[i]);
  *     }
- * <I></I>
+ * 
  *     Panel panel = new Panel (new GridLayout (string.length, 1));
  *     for (int i = 0; i < string.length; i++) {
  *       panel.add (activeText[i].getActiveTextField ());
  *     }
- * <I></I>
+ * 
  *     final Frame realFrame = frame.getActiveFrame ();
  *     realFrame.setBackground (Color.green);
  *     realFrame.add (panel);
  *     realFrame.pack ();
  *     realFrame.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         frame,
@@ -221,7 +221,7 @@ import java.awt.event.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *

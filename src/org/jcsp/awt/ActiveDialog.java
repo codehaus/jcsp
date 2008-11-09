@@ -55,16 +55,16 @@ import org.jcsp.lang.*;
  * <P>
  * All channels are managed by independent internal handler processes.  It is, therefore,
  * safe for a serial application process both to service an event channel and configure
- * the component -- no deadlock can occur.
+ * the component &ndash; no deadlock can occur.
  * <P>
  * <I>IMPORTANT: it is essential that event channels from this process are
- * always serviced -- otherwise the Java Event Thread will be blocked and the GUI
+ * always serviced &ndash; otherwise the Java Event Thread will be blocked and the GUI
  * will stop responding.  A simple way to guarantee this is to use channels
  * configured with overwriting buffers.
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myMouseEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveDialog myDialog = new ActiveDialog ();
  *   myDialog.addMouseEventChannel (myMouseEvent.out ());
  * </PRE>
@@ -148,21 +148,20 @@ import org.jcsp.lang.*;
  * import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
- * <I></I>
+ * 
  * public class ActiveDialogExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
- *     final Frame root = new Frame ("ActiveDialog Example");
- * <I></I>
+ * 
+ *     final Frame root = new Frame ();
+ * 
  *     final One2OneChannel event = Channel.one2one (new OverWriteOldestBuffer (10));
- * <I></I>
- *     final ActiveDialog dialog = new ActiveDialog (null, event.out (), root);
- * <I></I>
- *     root.setSize (400, 400);
- *     root.setVisible (true);
+ * 
+ *     final ActiveDialog dialog = new ActiveDialog (null, event.out (), root, "ActiveDialog Example");
+ * 
+ *     dialog.setSize (300, 200);
  *     dialog.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         dialog,
@@ -177,7 +176,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
@@ -256,9 +255,9 @@ public class ActiveDialog extends Dialog implements CSProcess
     * Constructs a new <I>non-modal</I> <TT>ActiveDialog</TT> with a blank title.
     *
     * @param configure the channel for configuration events
-    * -- can be null if no configuration is required.
+    * (can be null if no configuration is required).
     * @param event the WindowEvent will be output whenever it occurs
-    * -- can be null if no notification is required.
+    * (can be null if no notification is required).
     * @param parent the parent frame for the dialog.
     */
    public ActiveDialog(ChannelInput configure, ChannelOutput event, Frame parent)
@@ -270,9 +269,9 @@ public class ActiveDialog extends Dialog implements CSProcess
     * Constructs a new <TT>ActiveDialog</TT> with a blank title.
     *
     * @param configure the channel for configuration events
-    * -- can be null if no configuration is required.
+    * (can be null if no configuration is required).
     * @param event the WindowEvent will be output whenever it occurs
-    * -- can be null if no notification is required.
+    * (can be null if no notification is required).
     * @param parent the parent frame for the dialog.
     * @param modal if true, dialog blocks input to the parent window when shown.
     */
@@ -285,9 +284,9 @@ public class ActiveDialog extends Dialog implements CSProcess
     * Constructs a new <I>non-modal</I> <TT>ActiveDialog</TT>.
     *
     * @param configure the channel for configuration events
-    * -- can be null if no configuration is required.
+    * (can be null if no configuration is required).
     * @param event the WindowEvent will be output whenever it occurs
-    * -- can be null if no notification is required.
+    * (can be null if no notification is required).
     * @param parent the parent frame for the dialog.
     * @param title the title of the dialog.
     */
@@ -300,9 +299,9 @@ public class ActiveDialog extends Dialog implements CSProcess
     * Constructs a new <TT>ActiveDialog</TT>.
     *
     * @param configure the channel for configuration events
-    * -- can be null if no configuration is required.
+    * (can be null if no configuration is required).
     * @param event the WindowEvent will be output whenever it occurs
-    * -- can be null if no notification is required.
+    * (can be null if no notification is required).
     * @param parent the parent frame for the dialog.
     * @param title the title of the dialog.
     * @param modal if true, dialog blocks input to the parent window when shown.
@@ -324,7 +323,7 @@ public class ActiveDialog extends Dialog implements CSProcess
     * This method overwrites any configuration channel set in the constructor.
     *
     * @param configure the channel for configuration events
-    * -- can be null if no configuration is required.
+    * (can be null if no configuration is required).
     */
    public void setConfigureChannel(ChannelInput configure)
    {

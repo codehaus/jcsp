@@ -65,7 +65,7 @@ import org.jcsp.lang.*;
  * For example:</I>
  * <PRE>
  *   final One2OneChannel myTextAreaEvent = Channel.one2one (new OverWriteOldestBuffer (n));
- * <I></I>
+ * 
  *   final ActiveTextArea myTextArea =
  *     new ActiveTextArea (null, myTextAreaEvent.out (), "Edit Me", 5, 20);
  * </PRE>
@@ -150,42 +150,42 @@ import org.jcsp.lang.*;
  * import org.jcsp.util.*;
  * import org.jcsp.awt.*;
  * import java.awt.*;
- * <I></I>
+ * 
  * public class ActiveTextAreaExample {
- * <I></I>
+ * 
  *   public static void main (String argv[]) {
- * <I></I>
+ * 
  *     final ActiveClosingFrame frame =
  *       new ActiveClosingFrame ("ActiveTextAreaExample Example");
- * <I></I>
+ * 
  *     final Any2OneChannel event = Channel.any2one (new OverWriteOldestBuffer (10));
- * <I></I>
+ * 
  *     final String[] string =
  *       {"Entia Non Sunt Multiplicanda Praeter Necessitatem",
  *        "Everything we do, we do it to you",
  *        "Race Hazards - What Rice Hozzers?",
  *        "Cogito Ergo Occam"};
- * <I></I>
+ * 
  *     final String goodbye = "Goodbye World";
- * <I></I>
+ * 
  *     final ActiveTextArea[] activeText =
  *       new ActiveTextArea[string.length];
- * <I></I>
+ * 
  *     for (int i = 0; i < string.length; i++) {
- *       activeText[i] = new ActiveTextArea (null, event.out (), string[i], 5, 20);
+ *       activeText[i] = new ActiveTextArea (null, event.out (), string[i], 5, 40);
  *     }
- * <I></I>
+ * 
  *     Panel panel = new Panel (new GridLayout (string.length/2, 2));
  *     for (int i = 0; i < string.length; i++) {
  *       panel.add (activeText[i]);
  *     }
- * <I></I>
+ * 
  *     final Frame realFrame = frame.getActiveFrame ();
  *     realFrame.setBackground (Color.green);
  *     realFrame.add (panel);
  *     realFrame.pack ();
  *     realFrame.setVisible (true);
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         frame,
@@ -205,7 +205,7 @@ import org.jcsp.lang.*;
  *       }
  *     ).run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
