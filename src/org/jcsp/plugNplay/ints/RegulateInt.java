@@ -19,7 +19,7 @@
   *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,  *
   *  USA.                                                                  *
   *                                                                        *
-  *  Author contact: P.H.Welch@ukc.ac.uk                                   *
+  *  Author contact: P.H.Welch@kent.ac.uk                                   *
   *                                                                        *
   *************************************************************************/
 
@@ -86,7 +86,7 @@ import org.jcsp.lang.*;
  * @see org.jcsp.plugNplay.ints.FixedDelayInt
  * @see org.jcsp.plugNplay.ints.RegularInt
  *
- * @author P.H.Welch
+ * @author P.H. Welch
  */
 
 public class RegulateInt implements CSProcess {

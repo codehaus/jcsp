@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -21,7 +21,7 @@
     //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
-    //  Author contact: P.H.Welch@ukc.ac.uk                             //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -38,9 +38,9 @@ import org.jcsp.demos.util.Ask;
  * <A HREF="http://rsb.info.nih.gov/plasma/">Sam's Java Plasma Applet</A>
  * by <A HREF="mailto:t-sammar@microsoft.com">Sam Marshall</A>.  It was modified to use
  * 8-bit images by <A HREF="mailto:M.vanGangelen@element.nl">Menno van Gangelen</A>.
- * This JCSP demonstration is by <A HREF="mailto:P.H.Welch@ukc.ac.uk">Peter Welch</A>.
+ * This JCSP demonstration is by <A HREF="mailto:P.H.Welch@kent.ac.uk">Peter Welch</A>.
  *
- * @author P.H.Welch
+ * @author P.H. Welch
  */
 
 public class PlasmaMain extends ActiveApplet {

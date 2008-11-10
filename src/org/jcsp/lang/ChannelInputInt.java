@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -21,7 +21,7 @@
     //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
-    //  Author contact: P.H.Welch@ukc.ac.uk                             //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ package org.jcsp.lang;
  *
  * @see org.jcsp.lang.AltingChannelInputInt
  * @see org.jcsp.lang.ChannelOutputInt
- * @author P.D.Austin and P.H.Welch and N.C.C.Brown
+ * @author P.D. Austin and P.H. Welch and N.C.C.Brown
  */
 
 public interface ChannelInputInt extends Poisonable

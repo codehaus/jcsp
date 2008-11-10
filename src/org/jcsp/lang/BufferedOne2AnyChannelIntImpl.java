@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -21,7 +21,7 @@
     //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
-    //  Author contact: P.H.Welch@ukc.ac.uk                             //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -76,8 +76,8 @@ import org.jcsp.util.ints.*;
  * @see org.jcsp.lang.BufferedAny2AnyChannelIntImpl
  * @see org.jcsp.util.ints.ChannelDataStoreInt
  *
- * @author P.D.Austin
- * @author P.H.Welch
+ * @author P.D. Austin
+ * @author P.H. Welch
  */
 
 class BufferedOne2AnyChannelIntImpl extends One2AnyIntImpl 

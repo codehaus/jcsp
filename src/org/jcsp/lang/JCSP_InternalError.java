@@ -2,7 +2,7 @@
   /*************************************************************************
   *                                                                        *
   *  JCSP ("CSP for Java") libraries                                       *
-  *  Copyright (C) 1996-2006 Peter Welch and Paul Austin.                  *
+  *  Copyright (C) 1996-2008 Peter Welch and Paul Austin.                  *
   *                                                                        *
   *  This library is free software; you can redistribute it and/or         *
   *  modify it under the terms of the GNU Lesser General Public            *
@@ -19,7 +19,7 @@
   *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,  *
   *  USA.                                                                  *
   *                                                                        *
-  *  Author contact: P.H.Welch@ukc.ac.uk                                   *
+  *  Author contact: P.H.Welch@kent.ac.uk                                   *
   *                                                                        *
   *************************************************************************/
 
@@ -32,7 +32,7 @@ package org.jcsp.lang;
  * <H2>Description</H2>
  * Please report the circumstances to jcsp-team@kent.ac.uk - thanks!
  *
- * @author P.H.Welch
+ * @author P.H. Welch
  */
 //}}}
 

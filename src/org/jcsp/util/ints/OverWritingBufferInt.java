@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -21,7 +21,7 @@
     //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
-    //  Author contact: P.H.Welch@ukc.ac.uk                             //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@ import org.jcsp.util.OverWriteOldestBuffer;
  * @see org.jcsp.util.ints.InfiniteBufferInt
  * @see org.jcsp.lang.ChannelInt
  *
- * @author P.D.Austin
+ * @author P.D. Austin
  */
 //}}}
 
@@ -117,7 +117,7 @@ public class OverWritingBufferInt implements ChannelDataStoreInt, Serializable
      * value is removed.
      * 
      * If the buffer is of size 1, the semantics are identical to those of an {@link OverWriteOldestBuffer}.
-     * For a complete description, refer to the documentation for the {@link OverWriteOldestBuffer.startGet()} method.
+     * For a complete description, refer to the documentation for the {@link OverWriteOldestBuffer#startGet()} method.
      * 
      * @return The oldest value in the buffer at this time
      */
@@ -128,9 +128,7 @@ public class OverWritingBufferInt implements ChannelDataStoreInt, Serializable
     }
     
     /**
-     * See {@link startGet()} for a description of the semantics of this method.
-     * 
-     * @see startGet()
+     * See {@link #startGet()} for a description of the semantics of this method.
      */
     public void endGet()
     {

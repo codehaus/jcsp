@@ -52,7 +52,7 @@ import java.util.*;
  * and then writes to the screen the time taken in total and per loop then
  * exits.
  *
- * @author P.D.Austin
+ * @author P.D. Austin
  */
 
 public class BenchMark implements CSProcess {

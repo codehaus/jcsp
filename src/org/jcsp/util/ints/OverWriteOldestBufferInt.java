@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -21,7 +21,7 @@
     //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
-    //  Author contact: P.H.Welch@ukc.ac.uk                             //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ import java.io.Serializable;
  * @see org.jcsp.util.ints.InfiniteBufferInt
  * @see org.jcsp.lang.ChannelInt
  *
- * @author P.D.Austin
+ * @author P.D. Austin
  */
 //}}}
 
@@ -108,7 +108,7 @@ public class OverWriteOldestBufferInt implements ChannelDataStoreInt, Serializab
      * complicated, but hopefully intuitive.
      * 
      * When a reader begins an extended rendezvous, the oldest value is returned from the buffer
-     * (as it would be for a call to {@link get()}).  While an extended rendezvous is ongoing, the
+     * (as it would be for a call to {@link #get()}).  While an extended rendezvous is ongoing, the
      * writer may (repeatedly) write to the buffer, without ever blocking.  
      * 
      * When the reader finishes an extended rendezvous, the following options are possible:
@@ -133,9 +133,7 @@ public class OverWriteOldestBufferInt implements ChannelDataStoreInt, Serializab
     }
     
     /**
-     * See {@link startGet()} for a description of the semantics of this method.
-     * 
-     * @see startGet()
+     * See {@link #startGet()} for a description of the semantics of this method.
      */
     public void endGet()
     {

@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -21,7 +21,7 @@
     //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
-    //  Author contact: P.H.Welch@ukc.ac.uk                             //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ import org.jcsp.util.OverWritingBuffer;
  * @see org.jcsp.util.ints.InfiniteBufferInt
  * @see org.jcsp.lang.ChannelInt
  *
- * @author P.D.Austin
+ * @author P.D. Austin
  */
 
 //}}}
@@ -121,7 +121,7 @@ public interface ChannelDataStoreInt extends Cloneable {
    * 
    * The exact behaviour of this method depends on your buffer.  When a process performs an
    * extended rendezvous on a buffered channel, it will first call this method, then the
-   * {@link endGet} method.  
+   * {@link #endGet} method.  
    * 
    * A FIFO buffer would implement this method as returning the value from the front of the buffer
    * and the next call would remove the value.  An overflowing buffer would do the same.
@@ -131,6 +131,8 @@ public interface ChannelDataStoreInt extends Cloneable {
    * for details  
    * 
    * @return The int to be read from the channel at the beginning of the extended rendezvous 
+   *
+   * @see #endGet
    */
   public abstract int startGet();
   
@@ -138,10 +140,10 @@ public interface ChannelDataStoreInt extends Cloneable {
    * Ends an extended read on the buffer.
    * 
    * The channels guarantee that this method will be called exactly once after each beginExtRead call.
-   * During the period between startGet and endGet, it is possible that {@link put} will be called,
-   * but not {@link get}. 
+   * During the period between startGet and endGet, it is possible that {@link #put} will be called,
+   * but not {@link #get}. 
    *
-   * @see endGet
+   * @see #startGet
    */
   public abstract void endGet();
 

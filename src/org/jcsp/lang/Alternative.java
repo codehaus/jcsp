@@ -1,7 +1,7 @@
     //////////////////////////////////////////////////////////////////////
     //                                                                  //
     //  JCSP ("CSP for Java") Libraries                                 //
-    //  Copyright (C) 1996-2006 Peter Welch and Paul Austin.            //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
     //                2001-2004 Quickstone Technologies Limited.        //
     //                                                                  //
     //  This library is free software; you can redistribute it and/or   //
@@ -21,7 +21,7 @@
     //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
     //  Boston, MA 02111-1307, USA.                                     //
     //                                                                  //
-    //  Author contact: P.H.Welch@ukc.ac.uk                             //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
@@ -536,7 +536,7 @@ package org.jcsp.lang;
  * of channel <code>read</code> and <code>write</code>, along with the correctness of
  * <I>2-way</I> channel input <code>Alternative</code>s.
  * Details and references are listed under
- * <A HREF="http://www.cs.ukc.ac.uk/projects/ofa/jcsp/index.html#Model"><I>`A CSP Model
+ * <A HREF="http://www.cs.kent.ac.uk/projects/ofa/jcsp/index.html#Model"><I>`A CSP Model
  * for Java Threads'</I> on the JCSP web-site</A>.
  * [The proof uses the <A HREF="http://www.formal.demon.co.uk/FDR2.html">FDR</A>
  * model checker.  Model checkers do not easily allow verification of results containing
@@ -560,7 +560,7 @@ package org.jcsp.lang;
  * @see org.jcsp.lang.CSTimer
  * @see org.jcsp.lang.Skip
  * 
- * @author P.H.Welch and P.D.Austin
+ * @author P.H. Welch and P.D. Austin
  */
 //}}}
 

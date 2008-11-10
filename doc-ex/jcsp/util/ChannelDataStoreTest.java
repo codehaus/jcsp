@@ -31,7 +31,7 @@ import org.jcsp.plugNplay.Printer;
  * @see org.jcsp.util.InifiniteBuffer
  * @see org.jcsp.util.BlackHole
  * @see org.jcsp.util.CSTimer
- * @author P.D.Austin
+ * @author P.D. Austin
  */
 
 public class ChannelDataStoreTest implements CSProcess {

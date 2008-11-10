@@ -59,7 +59,7 @@ import org.jcsp.plugNplay.*;
  * the process will write the index of the Channel and the data value down
  * the g Channel.
  *
- * @author P.D.Austin
+ * @author P.D. Austin
  */
 
 public class AltTest implements CSProcess {

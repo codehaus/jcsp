@@ -42,7 +42,7 @@ import org.jcsp.util.ints.*;
  * <P>
  * <H2><A HREF="SquaresIntTest.java.doc">Sourcecode</A></H2>
  *
- * @author P.D.Austin and P.H.Welch
+ * @author P.D. Austin and P.H.Welch
  */
 
 public class SquaresIntTest implements CSProcess {
