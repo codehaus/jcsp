@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.philosophers.channel;
 
 import org.jcsp.lang.*;
 import org.jcsp.demos.util.*;

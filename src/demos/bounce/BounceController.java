@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.bounce;
 
 import org.jcsp.lang.*;
 import java.awt.event.*;

@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.philosophers.channel;
 
 /**
  * @author P.H. Welch

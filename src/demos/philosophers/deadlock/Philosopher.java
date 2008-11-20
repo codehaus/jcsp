@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.philosophers.deadlock;
 
 import java.util.Random;
 import org.jcsp.lang.*;

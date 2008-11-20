@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.missionControl;
 
 import org.jcsp.lang.*;
 import java.awt.*;

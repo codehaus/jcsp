@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.philosophers.deadlock;
 
 /**
  * @author P.H. Welch

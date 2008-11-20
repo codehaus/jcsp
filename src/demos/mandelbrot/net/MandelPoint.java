@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.mandelbrot.net;
 
 import org.jcsp.demos.util.ComplexDouble;
 

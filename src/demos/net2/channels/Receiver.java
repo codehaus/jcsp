@@ -1,4 +1,3 @@
-package org.jcsp.demos.net2.channels;
 
 import org.jcsp.net2.NetChannel;
 import org.jcsp.net2.NetChannelInput;

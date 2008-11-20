@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.wotNoChickens.channel;
 
 import org.jcsp.lang.*;
 

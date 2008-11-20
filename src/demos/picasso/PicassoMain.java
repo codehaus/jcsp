@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.picasso;
 
 import org.jcsp.lang.*;
 import org.jcsp.awt.*;

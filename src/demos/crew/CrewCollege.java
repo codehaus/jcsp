@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.crew;
 
 //|
 //|                       The Scribbling Philosophers

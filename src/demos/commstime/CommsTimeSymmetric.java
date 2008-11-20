@@ -1,4 +1,3 @@
-package org.jcsp.demos.commstime;
 
 import org.jcsp.lang.*;
 import org.jcsp.plugNplay.ints.*;

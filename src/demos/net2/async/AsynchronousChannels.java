@@ -1,4 +1,3 @@
-package org.jcsp.demos.net2.async;
 
 import org.jcsp.net2.JCSPNetworkException;
 import org.jcsp.net2.NetAltingChannelInput;

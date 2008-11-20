@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.mandelbrot.net;
 
 import org.jcsp.lang.*;
 import org.jcsp.util.*;

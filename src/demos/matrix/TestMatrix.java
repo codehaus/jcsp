@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.matrix;
 
 import java.util.Random;
 import org.jcsp.demos.util.Ask;

@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.splat;
 
 import org.jcsp.lang.*;
 import org.jcsp.awt.*;

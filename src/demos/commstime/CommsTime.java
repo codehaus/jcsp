@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.commstime;
 
 import org.jcsp.lang.*;
 import org.jcsp.plugNplay.ints.*;
@@ -46,7 +45,10 @@ public class CommsTime {
   	"the time taken to generate each 10000. This time is then divided to calculate the time per iteration, " +
   	"the time per communication (one integer over a one-one channel) and the time for a context switch. " +
   	"There are four communications per iteration and two context switches per communication. This test " +
-  	"forms a benchmark for the efficiency of a threading scheme.";
+  	"forms a benchmark for the for the overheads involved.\n" +
+  	"\n" +
+	"This version uses a PARallel delta2 component, so includes the starting and finishing of one extra" +
+	"process per loop.";
 
   public static void  main (String argv []) {
 

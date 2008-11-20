@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.wotNoChickens.starve;
 
 //|
 //| This program shows a use of the ALT mechanism.  It is a re-implementation

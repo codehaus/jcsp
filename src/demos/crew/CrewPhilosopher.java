@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.crew;
 
 //|
 //| Each philosopher reads/writes a shared blackboard through a Crew-lock.

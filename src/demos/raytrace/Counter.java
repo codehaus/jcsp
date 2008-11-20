@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.raytrace;
 
 /**
  * @author Quickstone Technologies Limited

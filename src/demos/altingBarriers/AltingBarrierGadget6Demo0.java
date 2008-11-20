@@ -1,4 +1,3 @@
-package org.jcsp.demos.altingBarriers;
 
 import org.jcsp.demos.util.*;
 import org.jcsp.lang.*;

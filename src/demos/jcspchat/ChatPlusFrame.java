@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.jcspchat;
 
 import javax.swing.*;
 import java.awt.event.*;

@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.eratosthenes;
 
 import org.jcsp.lang.*;
 import org.jcsp.plugNplay.ints.*;

@@ -1,4 +1,3 @@
-package org.jcsp.demos.outputGuards;
 
 import org.jcsp.lang.*;
 import java.util.Random;

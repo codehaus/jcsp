@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.hamming;
 
 import org.jcsp.lang.*;
 import org.jcsp.demos.util.*;
@@ -38,14 +37,18 @@ public final class Hamming2 {
 
   public static final String TITLE = "Hamming Codes";
   public static final String DESCR =
-  	"Uses a pipeline of processes to generate integers with given prime factors. Demonstrates the ability " +
-  	"of a system to cope with large numbers of processes running.";
+    "Uses an interesting network of processes to generate all positive integers with given sets of prime factors.";
+
+  public static final long SECONDS = 1000;
+  public static final long PAUSE = 5*SECONDS;
 
   public static void main (String[] args) {
 
-  	Ask.app (TITLE, DESCR);
-  	Ask.show ();
-  	Ask.blank ();
+    Ask.app (TITLE, DESCR);
+    Ask.show ();
+    Ask.blank ();
+
+    CSTimer tim = new CSTimer ();
 
     final One2OneChannelInt trap = Channel.one2oneInt ();
 
@@ -64,6 +67,9 @@ public final class Hamming2 {
           System.out.print (primes[j]);
         }
         System.out.println ("\n");
+        System.out.println ("Pausing 5 seconds ...");
+        tim.sleep (PAUSE);
+        System.out.println ();
 
         final ProcessManager manager =
           new ProcessManager (new PrimeMultiples2 (primes, i, trap.out ()));

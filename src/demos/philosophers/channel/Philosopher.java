@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.philosophers.channel;
 
 import java.util.Random;
 import org.jcsp.lang.*;

@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.fireworks;
 
 import org.jcsp.lang.*;
 import org.jcsp.util.*;

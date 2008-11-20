@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.balls.balls1;
 
 import org.jcsp.lang.*;
 import org.jcsp.awt.*;

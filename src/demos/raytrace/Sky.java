@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.raytrace;
 
 import org.jcsp.lang.*;
 import java.awt.*;

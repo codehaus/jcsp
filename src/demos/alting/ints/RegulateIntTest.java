@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.alting.ints;
 
 import org.jcsp.lang.*;
 import org.jcsp.plugNplay.ints.PrinterInt;

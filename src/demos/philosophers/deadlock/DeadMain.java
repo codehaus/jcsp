@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.philosophers.deadlock;
 
 import org.jcsp.lang.*;
 import org.jcsp.demos.util.*;

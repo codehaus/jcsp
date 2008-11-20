@@ -1,4 +1,3 @@
-package org.jcsp.demos.net2.barriers;
 
 import java.util.Random;
 

@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.jcspchat;
 import org.jcsp.lang.*;
 import java.io.*;
 

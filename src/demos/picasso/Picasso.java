@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.picasso;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -26,7 +26,6 @@
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
-package org.jcsp.demos.plasma;
 
 import org.jcsp.lang.*;
 import org.jcsp.awt.*;
