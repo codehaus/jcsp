@@ -57,7 +57,7 @@ public class College {
 
     int n_philosophers = 5;
 
-    final Any2OneChannelInt service = ChannelInt.createAny2One ();
+    final Any2OneChannelInt service = Channel.any2oneInt ();
     final One2OneChannelInt deliver = Channel.one2oneInt ();
     final One2OneChannelInt supply = Channel.one2oneInt ();
 

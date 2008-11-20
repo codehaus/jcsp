@@ -232,9 +232,9 @@ public class Ask
         });
         boolean valid = false;
         do {
-            frame.show();
+            frame.setVisible(true);
             par.run();
-            frame.hide();
+            frame.setVisible(false);
             valid = true;
             if (prompts != null) {
                 for (Enumeration e = prompts.elements(); e.hasMoreElements(); ) {

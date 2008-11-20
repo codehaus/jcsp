@@ -61,7 +61,7 @@ public class FairPlexTimeIntTest {
         new RegularInt (a[2].out(), 2, 5),
         new RegularInt (a[3].out(), 3, 5),
         new RegularInt (a[4].out(), 4, 5),
-        new FairPlexTimeInt (ChannelInt.getInputArray(a), b.out(), 10000),
+        new FairPlexTimeInt (Channel.getInputArray(a), b.out(), 10000),
         new PrinterInt (b.in(), "FairPlexTimeTest ==> ", "\n")
       }
     ).run ();

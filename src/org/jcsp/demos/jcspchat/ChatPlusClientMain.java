@@ -106,7 +106,7 @@ public class ChatPlusClientMain {
 
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     cpf.setSize(d.width, d.height / 2);
-    cpf.show();
+    cpf.setVisible(true);
 
     cpf.initComponents();
     cpf.validate();

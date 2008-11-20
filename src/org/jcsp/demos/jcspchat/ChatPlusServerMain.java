@@ -118,7 +118,7 @@ public class ChatPlusServerMain {
       (d.height - td.height) / 2,
       td.width,
       td.height);
-    serverFrame.show();
+    serverFrame.setVisible(true);
     
     String connectChannelName = chatChanName + connectChannelNameExt;
 

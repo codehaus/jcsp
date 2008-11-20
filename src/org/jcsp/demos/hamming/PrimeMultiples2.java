@@ -74,12 +74,13 @@ public final class PrimeMultiples2 implements CSProcess {
     new Parallel (
       new CSProcess[] {
         new Parallel (Multipliers),
-        new MergeInt (ChannelInt.getInputArray (b), c.out ()),
+        new MergeInt (Channel.getInputArray (b), c.out ()),
         new PrefixInt (1, c.in (), d.out ()),
-        new DeltaInt (d.in (), ChannelInt.getOutputArray (a)),
+        new DeltaInt (d.in (), Channel.getOutputArray (a)),
         new TrapNegative (a[howMany].in (), e.out (), trap),
         new PrinterInt (e.in (), "", " ")
       }
     ).run ();
   }
+
 }

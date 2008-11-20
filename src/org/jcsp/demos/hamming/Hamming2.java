@@ -68,11 +68,11 @@ public final class Hamming2 {
         final ProcessManager manager =
           new ProcessManager (new PrimeMultiples2 (primes, i, trap.out ()));
 
-        manager.start ();                // start up the managed process
+        manager.start ();                       // start up the managed process
 
-        final int count = trap.in().read ();  // wait for hamming numbers to overflow
+        final int count = trap.in ().read ();   // wait for hamming numbers to overflow
 
-        manager.stop ();                 // stop the managed process
+        manager.interrupt ();                   // crude kill of the managed process
 
         System.out.println ("\n\nThere were " + count + " of them ...");
 

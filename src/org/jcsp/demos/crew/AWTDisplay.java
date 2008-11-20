@@ -84,7 +84,7 @@ class AWTDisplay implements CSProcess {
   	Frame f = new ActiveFrame ("Scribbling Philosophers");
   	canvas = new FixedSizeCanvas ();
   	f.add (canvas);
-  	f.show ();
+  	f.setVisible (true);
   	graphics = canvas.getGraphics ();
   	graphics.setFont (new Font ("monospaced", Font.PLAIN, 16));
   	FontMetrics fm = graphics.getFontMetrics ();

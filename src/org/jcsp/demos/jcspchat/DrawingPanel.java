@@ -70,9 +70,11 @@ public class DrawingPanel extends JPanel {
     bg.fillRect(0,0,buffer.getWidth(),buffer.getHeight());
     bg.setFont(TEXTFONT);
   }
-  public boolean isFocusTraversable() {
+
+  public boolean isFocusable() {   // used to override: isFocusTraversable()
     return true;
   }
+
   public Rectangle clearOldShape (Rectangle rect, Rectangle newRect) {
     this.getGraphics().drawImage(buffer.getSubimage(rect.x,rect.y,rect.width,rect.height),rect.x,rect.y,this);
     return (Rectangle)newRect.createIntersection(new Rectangle(0,0,whiteboardWidth,whiteboardHeight));

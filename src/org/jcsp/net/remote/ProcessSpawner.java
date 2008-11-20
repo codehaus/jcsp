@@ -142,7 +142,7 @@ class ProcessSpawner implements CSProcess
          Node.info.log(this, "Child process " + f.getAbsolutePath() + " started");
  
          // A semaphore for synchronising access to the caller
-         final Any2OneChannelInt semaphore = ChannelInt.createAny2One(new BufferInt(1));
+         final Any2OneChannelInt semaphore = Channel.any2oneInt(new BufferInt(1));
          
          // Trap the STDOUT and STDERR
          Parallel par = new Parallel(new CSProcess[] 

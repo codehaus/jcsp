@@ -75,7 +75,7 @@ public class ConnectDialog extends JDialog {
          cnsName = cnsTextField.getText();
          username = usernameTextField.getText();
          channelName = channelTextField.getText();
-         ConnectDialog.this.hide();
+         ConnectDialog.this.setVisible(false);
       }
     });
 
@@ -83,7 +83,7 @@ public class ConnectDialog extends JDialog {
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     Dimension td = this.getSize();
     this.setBounds((d.width - td.width)/2,(d.height - td.height)/2,td.width,td.height);
-    this.show();
+    this.setVisible(true);
   }
   protected void processWindowEvent(WindowEvent e) {
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {

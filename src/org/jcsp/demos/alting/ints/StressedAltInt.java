@@ -57,7 +57,7 @@ public class StressedAltInt {
     final int nChannels = 8;
     final int nWritersPerChannel = 8;
 
-    Any2OneChannelInt[] c = ChannelInt.any2oneArray(nChannels);
+    Any2OneChannelInt[] c = Channel.any2oneIntArray(nChannels);
 
     StressedWriterInt[] writers = new StressedWriterInt[nChannels*nWritersPerChannel];
 
@@ -71,7 +71,7 @@ public class StressedAltInt {
     new Parallel (
       new CSProcess[] {
         new Parallel (writers),
-        new StressedReaderInt (ChannelInt.getInputArray(c), nWritersPerChannel)
+        new StressedReaderInt (Channel.getInputArray(c), nWritersPerChannel)
       }
     ).run ();
 

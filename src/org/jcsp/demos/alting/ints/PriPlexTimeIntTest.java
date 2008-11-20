@@ -60,7 +60,7 @@ public class PriPlexTimeIntTest {
         new RegularInt (a[2].out(), 2, 5),
         new RegularInt (a[3].out(), 3, 5),
         new RegularInt (a[4].out(), 4, 5),
-        new PriPlexTimeInt (ChannelInt.getInputArray(a), b.out(), 10000),
+        new PriPlexTimeInt (Channel.getInputArray(a), b.out(), 10000),
         new PrinterInt (b.in(), "PriPlexTimeTest ==> ", "\n")
       }
     ).run ();

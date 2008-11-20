@@ -735,7 +735,7 @@ public class ActiveApplet extends Applet implements CSProcess
             stopStart.write(STOP);
          else
          {
-            manager.stop();
+            manager.interrupt();    // used to call stop() ...
             started = false;
          }
       }

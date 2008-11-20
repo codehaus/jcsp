@@ -60,7 +60,7 @@ public class ServerSetupDialog extends JDialog{
       public void actionPerformed(ActionEvent e) {
         channelName = channelTextField.getText();
         if (channelName != "") {
-          ServerSetupDialog.this.hide();
+          ServerSetupDialog.this.setVisible(false);
         }
       }
     });
@@ -69,7 +69,7 @@ public class ServerSetupDialog extends JDialog{
     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     Dimension td = this.getSize();
     this.setBounds((d.width - td.width)/2,(d.height - td.height)/2,td.width,td.height);
-    this.show();
+    this.setVisible(true);
   }
   protected void processWindowEvent(WindowEvent e) {
     if (e.getID() == WindowEvent.WINDOW_CLOSING) {
