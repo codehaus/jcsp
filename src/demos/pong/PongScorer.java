@@ -1,4 +1,4 @@
-import jcsp.lang.*;
+import org.jcsp.lang.*;
 
 public class PongScorer implements CSProcess {
 

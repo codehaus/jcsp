@@ -1,5 +1,5 @@
-import jcsp.lang.*;
-import jcsp.awt.*;
+import org.jcsp.lang.*;
+import org.jcsp.awt.*;
 
 public class FlasherNetworkSSD implements CSProcess {
 
@@ -14,26 +14,26 @@ public class FlasherNetworkSSD implements CSProcess {
     
   public void run () {
 
-    final One2OneChannel mouseEvent = new One2OneChannel ();
-    final One2OneChannel appletConfigure = new One2OneChannel ();
-    final One2OneChannelInt stopStart = new One2OneChannelInt ();
-    final One2OneChannelInt destroy = new One2OneChannelInt ();
-    final One2OneChannelInt destroyAck = new One2OneChannelInt ();
+    final One2OneChannel mouseEvent = Channel.one2one ();
+    final One2OneChannel appletConfigure = Channel.one2one ();
+    final One2OneChannelInt stopStart = Channel.one2oneInt ();
+    final One2OneChannelInt destroy = Channel.one2oneInt ();
+    final One2OneChannelInt destroyAck = Channel.one2oneInt ();
 
-    activeApplet.addMouseEventChannel (mouseEvent);
-    activeApplet.setConfigureChannel (appletConfigure);
-    activeApplet.setStopStartChannel (stopStart);
-    activeApplet.setDestroyChannels (destroy, destroyAck);
+    activeApplet.addMouseEventChannel (mouseEvent.out());
+    activeApplet.setConfigureChannel (appletConfigure.in());
+    activeApplet.setStopStartChannel (stopStart.out());
+    activeApplet.setDestroyChannels (destroy.out(), destroyAck.in());
     // activeApplet.setDestroyChannels (destroy, destroyAck, -1);
 
     new Parallel (
       new CSProcess[] {
         activeApplet,
-        new FlasherControl (period, mouseEvent, appletConfigure),
+        new FlasherControl (period, mouseEvent.in(), appletConfigure.out()),
         new CSProcess () {
           public void run () {
             while (true) {
-              switch (stopStart.read ()) {
+		switch (stopStart.in().read ()) {
                 case ActiveApplet.STOP:
                   System.out.println ("FlasherNetworkSSD: ActiveApplet.STOP received");
                 break;
@@ -50,10 +50,10 @@ public class FlasherNetworkSSD implements CSProcess {
         new CSProcess () {
           public void run () {
             while (true) {
-              switch (destroy.read ()) {
+		switch (destroy.in().read ()) {
                 case ActiveApplet.DESTROY:
                   System.out.println ("FlasherNetworkSSD: ActiveApplet.DESTROY received");
-                  destroyAck.write (0);
+                  destroyAck.out().write (0);
                 break;
                 default:
                   System.out.println ("FlasherNetworkSSD: ActiveApplet.<not DESTROY> received");

@@ -1,4 +1,4 @@
-import jcsp.awt.*;
+import org.jcsp.awt.*;
 
 public class Flasher extends ActiveApplet {
 

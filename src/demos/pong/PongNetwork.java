@@ -1,6 +1,6 @@
-import jcsp.lang.*;
-import jcsp.util.*;
-import jcsp.awt.*;
+import org.jcsp.lang.*;
+import org.jcsp.util.*;
+import org.jcsp.awt.*;
 
 import java.awt.*;
 
@@ -41,36 +41,36 @@ public class PongNetwork implements CSProcess {
     // channels
 
     final One2OneChannel mouseChannel =
-      One2OneChannel.create (new OverWriteOldestBuffer (10));
+      Channel.one2one (new OverWriteOldestBuffer (10));
     final One2OneChannel mouseMotionChannel =
-      One2OneChannel.create (new OverWriteOldestBuffer (1));
+      Channel.one2one (new OverWriteOldestBuffer (1));
     final One2OneChannel focusChannel =
-      One2OneChannel.create (new OverWriteOldestBuffer (10));
+      Channel.one2one (new OverWriteOldestBuffer (10));
     final One2OneChannel keyChannel =
-      One2OneChannel.create (new OverWriteOldestBuffer (10));
+      Channel.one2one (new OverWriteOldestBuffer (10));
     
-    final One2OneChannel[] toBalls = One2OneChannel.create (nBalls);
-    final Any2OneChannel fromBalls = new Any2OneChannel ();
+    final One2OneChannel[] toBalls = Channel.one2oneArray (nBalls);
+    final Any2OneChannel fromBalls = Channel.any2one ();
     
-    final One2OneChannel control2Flasher = new One2OneChannel ();
-    final One2OneChannelInt mouse2Flasher = new One2OneChannelInt ();
+    final One2OneChannel control2Flasher = Channel.one2one ();
+    final One2OneChannelInt mouse2Flasher = Channel.one2oneInt ();
     
-    final One2OneChannel control2LeftPaddle = new One2OneChannel ();
-    final One2OneChannel control2RightPaddle = new One2OneChannel ();
+    final One2OneChannel control2LeftPaddle = Channel.one2one ();
+    final One2OneChannel control2RightPaddle = Channel.one2one ();
     
-    final One2OneChannelInt leftMove = new One2OneChannelInt ();
-    final One2OneChannelInt rightMove = new One2OneChannelInt ();
+    final One2OneChannelInt leftMove = Channel.one2oneInt ();
+    final One2OneChannelInt rightMove = Channel.one2oneInt ();
 
-    final Any2OneChannel toGraphics = new Any2OneChannel ();
-    final One2OneChannel fromGraphics = new One2OneChannel ();
+    final Any2OneChannel toGraphics = Channel.any2one ();
+    final One2OneChannel fromGraphics = Channel.one2one ();
 
-    final Any2OneChannel balls2LeftPaddle = new Any2OneChannel ();
-    final One2OneChannelInt leftPaddle2Balls = new One2OneChannelInt ();
+    final Any2OneChannel balls2LeftPaddle = Channel.any2one ();
+    final One2OneChannelInt leftPaddle2Balls = Channel.one2oneInt ();
 
-    final Any2OneChannel balls2RightPaddle = new Any2OneChannel ();
-    final One2OneChannelInt rightPaddle2Balls = new One2OneChannelInt ();
+    final Any2OneChannel balls2RightPaddle = Channel.any2one ();
+    final One2OneChannelInt rightPaddle2Balls = Channel.one2oneInt ();
     
-    final One2OneChannelInt[] toScorer = One2OneChannelInt.create (2);
+    final One2OneChannelInt[] toScorer = Channel.one2oneIntArray (2);
 
     final Barrier dead = new Barrier (nBalls);
 
@@ -78,11 +78,11 @@ public class PongNetwork implements CSProcess {
 
     activeCanvas = new ActiveCanvas ();
     // activeCanvas.addFocusEventChannel (focusChannel);
-    activeCanvas.addKeyEventChannel (keyChannel);
-    activeCanvas.addMouseEventChannel (mouseChannel);
+    activeCanvas.addKeyEventChannel (keyChannel.out());
+    activeCanvas.addMouseEventChannel (mouseChannel.out());
     activeCanvas.setBackground (Color.black);
     activeCanvas.setPaintable (displayList);
-    activeCanvas.setGraphicsChannels (toGraphics, fromGraphics);
+    activeCanvas.setGraphicsChannels (toGraphics.in(), fromGraphics.out());
     activeCanvas.setSize (parent.getSize ());
 
     // If the parent is an applet, the above setSize has no effect and the activeCanvas
@@ -100,9 +100,9 @@ public class PongNetwork implements CSProcess {
     south.setBackground (Color.green);
 
     final One2OneChannel startChannel =
-      One2OneChannel.create (new OverWriteOldestBuffer (1));
-    final One2OneChannel startConfigure = new One2OneChannel ();
-    startButton = new ActiveButton (startConfigure, startChannel, "XXXXXXXXXXXXXXXXXXXXXX");
+      Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel startConfigure = Channel.one2one ();
+    startButton = new ActiveButton (startConfigure.in(), startChannel.out(), "XXXXXXXXXXXXXXXXXXXXXX");
     startButton.setBackground (Color.white);
     startButton.setEnabled (false);
     south.add (startButton);
@@ -110,9 +110,9 @@ public class PongNetwork implements CSProcess {
     south.add (new Label ("                      ", Label.CENTER));    // padding
 
     final One2OneChannel freezeChannel =
-      One2OneChannel.create (new OverWriteOldestBuffer (1));
-    final One2OneChannel freezeConfigure = new One2OneChannel ();
-    freezeButton = new ActiveButton (freezeConfigure, freezeChannel, "XXXXXXXXXXXXXXXXXXXXXX");
+      Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel freezeConfigure = Channel.one2one ();
+    freezeButton = new ActiveButton (freezeConfigure.in(), freezeChannel.out(), "XXXXXXXXXXXXXXXXXXXXXX");
     freezeButton.setBackground (Color.white);
     freezeButton.setEnabled (true);
     south.add (freezeButton);
@@ -127,10 +127,10 @@ public class PongNetwork implements CSProcess {
     final String[] infoTitle = {"Left", "Right"};
     final String[] infoWidth = {"XXXXXXXXXXXXXXXXXXXXXX",
                                 "XXXXXXXXXXXXXXXXXXXXXX"};
-    final One2OneChannel[] infoConfigure = One2OneChannel.create (infoTitle.length);
+    final One2OneChannel[] infoConfigure = Channel.one2oneArray (infoTitle.length);
     infoLabel = new ActiveLabel[infoTitle.length];
     for (int i = 0; i < infoTitle.length; i++) {
-      infoLabel[i] = new ActiveLabel (infoConfigure[i], infoWidth[i]);
+	infoLabel[i] = new ActiveLabel (infoConfigure[i].in(), infoWidth[i]);
       infoLabel[i].setAlignment (Label.CENTER);
       infoLabel[i].setBackground (Color.white);
       north.add (new Label (infoTitle[i], Label.CENTER));
@@ -142,34 +142,34 @@ public class PongNetwork implements CSProcess {
     balls = new PongBall[nBalls];
     for (int i = 0; i < nBalls; i++) {
       balls[i] = new PongBall (i, ballSpeed, life, dead,
-                               balls2LeftPaddle, leftPaddle2Balls,
-                               balls2RightPaddle, rightPaddle2Balls,
-                               toBalls[i], fromBalls, displayList);
+                               balls2LeftPaddle.out(), leftPaddle2Balls.in(),
+                               balls2RightPaddle.out(), rightPaddle2Balls.in(),
+                               toBalls[i].in(), fromBalls.out(), displayList);
     }
     
-    keyControl= new PongKeyControl (keyChannel, leftMove, rightMove);
+    keyControl= new PongKeyControl (keyChannel.in(), leftMove.out(), rightMove.out());
 
-    leftPaddle = new PongPaddle (true, paddleSpeed, leftMove,
-                                 balls2LeftPaddle, leftPaddle2Balls,
-                                 toScorer[0], control2LeftPaddle, displayList);
-    rightPaddle = new PongPaddle (false, paddleSpeed, rightMove,
-                                  balls2RightPaddle, rightPaddle2Balls,
-                                  toScorer[1], control2RightPaddle, displayList);
+    leftPaddle = new PongPaddle (true, paddleSpeed, leftMove.in(),
+                                 balls2LeftPaddle.in(), leftPaddle2Balls.out(),
+                                 toScorer[0].out(), control2LeftPaddle.in(), displayList);
+    rightPaddle = new PongPaddle (false, paddleSpeed, rightMove.in(),
+                                  balls2RightPaddle.in(), rightPaddle2Balls.out(),
+                                  toScorer[1].out(), control2RightPaddle.in(), displayList);
 
     // focusControl = new FocusControl (focusChannel, toGraphics, fromGraphics);
     // focusControl2 = new FocusControl2 (startChannel, toGraphics, fromGraphics);
 
-    scorer = new PongScorer (toScorer, infoConfigure);
+    scorer = new PongScorer (Channel.getInputArray(toScorer), Channel.getOutputArray(infoConfigure));
 
-    flasher = new PongFlasher (control2Flasher, mouse2Flasher, displayList);
+    flasher = new PongFlasher (control2Flasher.in(), mouse2Flasher.in(), displayList);
 
-    mouseControl = new PongMouseControl (mouse2Flasher, toGraphics, fromGraphics, mouseChannel);
+    mouseControl = new PongMouseControl (mouse2Flasher.out(), toGraphics.out(), fromGraphics.in(), mouseChannel.in());
 
-    control = new PongControl (toBalls, fromBalls,
-                               control2Flasher, control2LeftPaddle, control2RightPaddle,
-                               freezeConfigure, freezeChannel,
-                               startConfigure, startChannel,
-                               toGraphics, fromGraphics);
+    control = new PongControl (Channel.getOutputArray(toBalls), fromBalls.in(),
+                               control2Flasher.out(), control2LeftPaddle.out(), control2RightPaddle.out(),
+                               freezeConfigure.out(), freezeChannel.in(),
+                               startConfigure.out(), startChannel.in(),
+                               toGraphics.out(), fromGraphics.in());
 
   }
 

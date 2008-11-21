@@ -1,4 +1,4 @@
-import jcsp.lang.*;
+import org.jcsp.lang.*;
 import java.awt.event.*;
 
 public class PongKeyControl implements CSProcess {

@@ -1,8 +1,8 @@
-import jcsp.lang.*;
-import jcsp.awt.*;
+import org.jcsp.lang.*;
+import org.jcsp.awt.*;
 import java.awt.*;
 
-import phw.util.Ask;
+import org.jcsp.demos.util.Ask;
 
 public class PongMain extends ActiveApplet {
 

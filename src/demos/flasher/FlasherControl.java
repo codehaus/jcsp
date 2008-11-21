@@ -1,5 +1,5 @@
-import jcsp.lang.*;
-import jcsp.awt.*;
+import org.jcsp.lang.*;
+import org.jcsp.awt.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;

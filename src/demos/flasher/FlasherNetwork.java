@@ -1,5 +1,5 @@
-import jcsp.lang.*;
-import jcsp.awt.*;
+import org.jcsp.lang.*;
+import org.jcsp.awt.*;
 
 public class FlasherNetwork implements CSProcess {
 
@@ -14,16 +14,16 @@ public class FlasherNetwork implements CSProcess {
     
   public void run () {
 
-    final One2OneChannel mouseEvent = new One2OneChannel ();
-    final One2OneChannel appletConfigure = new One2OneChannel ();
+    final One2OneChannel mouseEvent = Channel.one2one ();
+    final One2OneChannel appletConfigure = Channel.one2one ();
 
-    activeApplet.addMouseEventChannel (mouseEvent);
-    activeApplet.setConfigureChannel (appletConfigure);
+    activeApplet.addMouseEventChannel (mouseEvent.out());
+    activeApplet.setConfigureChannel (appletConfigure.in());
 
     new Parallel (
       new CSProcess[] {
         activeApplet,
-        new FlasherControl (period, mouseEvent, appletConfigure)
+        new FlasherControl (period, mouseEvent.in(), appletConfigure.out())
       }
     ).run ();
 
