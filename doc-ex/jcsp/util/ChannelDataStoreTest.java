@@ -67,7 +67,7 @@ public class ChannelDataStoreTest implements CSProcess {
         void testZeroBuffer() {
           a2o.out ().write("Starting Test (ZeroBuffer)");
           for (int i = 0; i < 5; i++) {
-            b.out ().write(i);
+            b.out ().write(new Integer (i));
           }
           a2o.out ().write("Finished outputing (ZeroBuffer)");
           prompt.out ().write(Boolean.TRUE);
@@ -77,10 +77,10 @@ public class ChannelDataStoreTest implements CSProcess {
           next.in ().read();
           a2o.out ().write("Starting Test (Buffer)");
           for (int i = 0; i < 4; i++) {
-            b.out ().write(i);
+            b.out ().write(new Integer (i));
           }
           prompt.out ().write(Boolean.TRUE);
-          b.out ().write(4);
+          b.out ().write(new Integer (4));
           a2o.out ().write("Finished outputing (Buffer)");
           prompt.out ().write(Boolean.TRUE);
         }
@@ -89,7 +89,7 @@ public class ChannelDataStoreTest implements CSProcess {
           next.in ().read();
           a2o.out ().write("Starting Test (OverWritingBuffer)");
           for (int i = 0; i < 6; i++) {
-            owb.out ().write(i);
+            owb.out ().write(new Integer (i));
           }
           a2o.out ().write("Finished outputing (OverWritingBuffer)");
           prompt.out ().write(Boolean.TRUE);
@@ -99,7 +99,7 @@ public class ChannelDataStoreTest implements CSProcess {
           next.in ().read();
           a2o.out ().write("Starting Test (OverWriteOldestBuffer)");
           for (int i = 0; i < 10; i++) {
-            owob.out ().write(i);
+            owob.out ().write(new Integer (i));
           }
           a2o.out ().write("Finished outputing (OverWriteOldestBuffer)");
           prompt.out ().write(Boolean.TRUE);
@@ -109,7 +109,7 @@ public class ChannelDataStoreTest implements CSProcess {
           next.in ().read();
           a2o.out ().write("Starting Test (OverFlowingBuffer)");
           for (int i = 0; i < 10; i++) {
-            oflb.out ().write(i);
+            oflb.out ().write(new Integer (i));
           }
           a2o.out ().write("Finished outputing (OverFlowingBuffer)");
           prompt.out ().write(Boolean.TRUE);
@@ -119,11 +119,11 @@ public class ChannelDataStoreTest implements CSProcess {
           next.in ().read();
           a2o.out ().write("Starting Test (InfiniteBuffer)");
           for (int i = 0; i < 5; i++) {
-            ib.out ().write(i);
+            ib.out ().write(new Integer (i));
           }
           prompt.out ().write(Boolean.TRUE);
           for (int i = 0; i < 5; i++) {
-            ib.out ().write(i + 5);
+            ib.out ().write(new Integer (i + 5));
           }
           a2o.out ().write("Finished outputing (InfiniteBuffer)");
           prompt.out ().write(Boolean.TRUE);
@@ -133,7 +133,7 @@ public class ChannelDataStoreTest implements CSProcess {
           next.in ().read();
           a2o.out ().write("Starting Test (BlackHole)");
           for (int i = 0; i < 5; i++) {
-            bh.write(i);
+            bh.write(new Integer (i));
           }
           a2o.out ().write("Finished outputing (BlackHole)");
           prompt.out ().write(Boolean.TRUE);
@@ -166,7 +166,7 @@ public class ChannelDataStoreTest implements CSProcess {
           while (!finished) {
             Integer i = (Integer) b.in ().read();
             a2o.out ().write(i);
-            finished = i == 4;
+            finished = (i.intValue() == 4);
           }
           prompt.in ().read();
           a2o.out ().write("Finished Test (ZeroBuffer)");
@@ -179,7 +179,7 @@ public class ChannelDataStoreTest implements CSProcess {
           while (!finished) {
             Integer i = (Integer) b.in ().read();
             a2o.out ().write(i);
-            finished = i == 4;
+            finished = (i.intValue() == 4);
           }
           prompt.in ().read();
           a2o.out ().write("Finished Test (Buffer)");
@@ -192,7 +192,7 @@ public class ChannelDataStoreTest implements CSProcess {
           while (!finished) {
             Integer i = (Integer) owb.in ().read();
             a2o.out ().write(i);
-            finished = i == 5;
+            finished = (i.intValue() == 5);
           }
           a2o.out ().write("Finished Test (OverWritingBuffer)");
         }
@@ -204,7 +204,7 @@ public class ChannelDataStoreTest implements CSProcess {
           while (!finished) {
             Integer i = (Integer) owob.in ().read();
             a2o.out ().write(i);
-            finished = i == 9;
+            finished = (i.intValue() == 9);
           }
           a2o.out ().write("Finished Test (OverWriteOldestBuffer)");
         }
@@ -226,10 +226,10 @@ public class ChannelDataStoreTest implements CSProcess {
           while (!finished) {
             Integer i = (Integer) ib.in ().read();
             a2o.out ().write(i);
-            if (i == 4) {
+            if (i.intValue() == 4) {
               prompt.in ().read();
             }
-            finished = i == 9;
+            finished = (i.intValue() == 9);
           }
           a2o.out ().write("Finished Test (InfiniteBuffer)");
         }
