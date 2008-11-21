@@ -5,6 +5,9 @@
 <property name="jcsp-version" value="1.1-rc4"/>
 <property name="dist"  location="dist/jcsp-${jcsp-version}"/>
 <property name="copyright" value="Copyright 1997-2008 P.D.Austin and P.H.Welch - All Rights Reserved"/>
+<!-- Use ant-contrib: -->
+<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
 	
 <selector id="jcsp-net-lang-files">
 	<!--lang is the tricky package:-->
@@ -37,9 +40,10 @@
 	</or>
 </selector>
 	
-<selector id="jcsp-demos-fileset">
-	<filename name="org/jcsp/demos/**/*"/>
-</selector>
+<dirset dir="${src}" id="jcsp-demos-dirset">
+	<include name="demos/**/*"/>
+	<exclude name="demos/net2/**"/>
+</dirset>
 	
 <selector id="jcsp-demos-util-fileset">
 	<filename name="org/jcsp/demos/util/*"/>
@@ -68,7 +72,7 @@
 	
 <target name="jcsp-build">
 	<mkdir dir="${build}"/>
-	<javac srcdir="${src}" destdir="${build}" source="1.3" target="1.3" excludes="org/jcsp/test/**" deprecation="on">
+	<javac srcdir="${src}" destdir="${build}" source="1.3" target="1.3" excludes="org/jcsp/test/**,demos/**" deprecation="on">
 	</javac>
 	<copy todir="${build}">
 		<fileset dir="${src}"/>
@@ -111,24 +115,24 @@
 	</jar>
 </target>
 	
-<target name="jcsp-demos-jar" depends="jcsp-build">
-	<mkdir dir="${dist}"/>
-	<jar destfile="${dist}/jcsp-demos.jar" basedir="${build}">
-		<and>
-			<selector refid="jcsp-demos-fileset"/>
-			<selector refid="jar-files-only"/>
-		</and>
-	</jar>
+<target name="jcsp-demos-test" depends="jcsp-all-jar,jcsp-demos-util-jar">
+	<foreach target="build-demo-then-clean" param="dir">
+		<path>
+			<dirset refid="jcsp-demos-dirset"/>
+		</path>
+	</foreach>
 </target>
-	
-<target name="demo-batch-files">
-	<mkdir dir="${dist}"/>
-	<javac sourcepath="" srcdir="." destdir="${build}">
-		<include name="GenerateBatchFiles.java"/>
+
+<path id="jcsp-jar-cp">
+  <fileset dir="${dist}" includes="*.jar"/>
+</path>
+
+<target name="build-demo-then-clean">
+	<javac srcdir="${dir}" destdir="${dir}" includes="*.java" deprecation="on" classpathref="jcsp-jar-cp">
 	</javac>
-	<java classpath="${build}" classname="GenerateBatchFiles" fork="true" dir="${dist}">
-		<arg value="../../demos-list.txt"/>
-	</java>
+	<delete>
+		<fileset dir="${dir}" includes="*.class"/>
+	</delete>
 </target>
 	
 <target name="jcsp-demos-src-jar">
@@ -141,7 +145,7 @@
 	</jar>
 </target>
 	
-<target name="jcsp-demos-util-jar" depends="jcsp-build">
+<target name="jcsp-demos-util-jar" depends="jcsp-build,jcsp-core-jar">
 	<mkdir dir="${dist}"/>
 	<jar destfile="${dist}/jcsp-demos-util.jar" basedir="${build}">
 		<and>
@@ -251,7 +255,7 @@
 		</copy>		
 	</target>	
 	
-	<target name="release-jar" depends="all-jars,all-javadoc,demo-batch-files">
+	<target name="release-jar" depends="all-jars,all-javadoc">
 		<copy tofile="${dist}/LICENCE-JCSP-${jcsp-version}.txt" file="LICENCE.txt"/>
 		<copy tofile="${dist}/README-JCSP-${jcsp-version}.txt" file="README.txt"/>
 		<!-- Note that this is meant to be two unescaped "dist"s below: -->
@@ -259,9 +263,9 @@
 	</target>
 	
 	<target name="build-all" depends="jcsp-build"/>
-	<target name="all-jars" depends="jcsp-core-jar,jcsp-all-jar,jcsp-demos-jar,jcsp-demos-util-jar,jcsp-demos-src-jar"/>
+	<target name="all-jars" depends="jcsp-core-jar,jcsp-all-jar"/>
 	<target name="all-javadoc" depends="jcsp-core-javadoc,jcsp-all-javadoc"/>
-	<target name="all" depends="all-jars,all-javadoc,demo-batch-files,release-jar"/>
+	<target name="all" depends="all-jars,all-javadoc,release-jar,jcsp-demos-test"/>
 
 	<target name="clean" >
 		<delete dir="${build}" />
