@@ -1,0 +1,160 @@
+import jcsp.lang.*;
+import jcsp.awt.*;
+
+import java.util.*;
+import java.awt.*;
+
+public class Paddle implements CSProcess {
+
+  public final static int WIDTH = 10;
+  public final static int HIT = 0;
+  public final static int MISS = 1;
+  
+  private final static int HEIGHT_FACTOR = 3;
+  private final static int DELTA_Y = 10;
+
+  private final boolean leftPaddle;
+  private final int speed;
+  private final AltingChannelInput move;
+  private final AltingChannelInputInt fromBalls;
+  private final ChannelOutputInt toBalls;
+  private final ChannelOutputInt toScorer;
+  private final ChannelInput fromControl;
+  private final DisplayList displayList;
+
+  private Random random;
+
+  public Paddle (boolean leftPaddle, int speed, AltingChannelInput move,
+                 AltingChannelInputInt fromBalls, ChannelOutputInt toBalls,
+                 ChannelOutputInt toScorer, ChannelInput fromControl,
+                 DisplayList displayList) {
+    this.leftPaddle = leftPaddle;
+    this.speed = speed;
+    this.move = move;
+    this.fromBalls = fromBalls;
+    this.toBalls = toBalls;
+    this.toScorer = toScorer;
+    this.fromControl = fromControl;
+    this.displayList = displayList;
+  }
+
+  private final static class Graphic implements GraphicsCommand.Graphic {
+    public Color colour, background;
+    public int x, y, width, height, backgroundHeight;
+    public void doGraphic (java.awt.Graphics g, java.awt.Component c) {
+      g.setColor (background);
+      g.fillRect (x, 0, width, backgroundHeight);
+      g.setColor (colour);
+      g.fillRect (x, y, width, height);
+    }
+  }
+
+  public void run () {
+
+    System.out.println ("Paddle " + leftPaddle + " running ...");
+    
+    final CSTimer tim = new CSTimer ();
+    final long second = 1000;  // JCSP Timer units are milliseconds
+    long interval = (long) (((float) second)/((float) speed) + 0.5);
+
+    final Alternative event = new Alternative (new Guard[] {move, fromBalls, tim});
+    final boolean[] preCondition = {true, true, false};
+    final int MOVE = 0;
+    final int BALLS = 1;
+    final int TIMEOUT = 1;
+
+    final Dimension graphicsDim = (Dimension) fromControl.read ();
+    System.out.println ("Paddle " + leftPaddle + ": " + graphicsDim);
+
+    final int displaySlot = displayList.extend (GraphicsCommand.NULL);
+    System.out.println ("Paddle " + leftPaddle + ": displaySlot = " + displaySlot);
+
+    fromControl.read ();    // let control continue
+
+    Graphic oldGraphic = new Graphic ();
+    Graphic newGraphic = new Graphic ();
+
+    GraphicsCommand oldCommand = new GraphicsCommand.General (oldGraphic);
+    GraphicsCommand newCommand = new GraphicsCommand.General (newGraphic);
+
+    final Thread me = Thread.currentThread ();
+    System.out.println ("Ball " + leftPaddle + ": priority = " + me.getPriority ());
+    me.setPriority (Thread.MAX_PRIORITY);
+    System.out.println ("Paddle " + leftPaddle + ": priority = " + me.getPriority ());
+
+    while (true) {
+
+      // initialise data for new paddle ...
+
+      newGraphic.colour = Color.red;
+      newGraphic.width = WIDTH;
+      newGraphic.height = graphicsDim.height/HEIGHT_FACTOR;
+      newGraphic.background = Color.white;
+      newGraphic.backgroundHeight = graphicsDim.height;
+      newGraphic.x = leftPaddle ? 0 : graphicsDim.width - WIDTH;
+      newGraphic.y = (graphicsDim.height - newGraphic.height)/2;
+
+      oldGraphic.colour = newGraphic.colour;
+      oldGraphic.width = newGraphic.width;
+      oldGraphic.height = newGraphic.height;
+      oldGraphic.background = newGraphic.background;
+      oldGraphic.backgroundHeight = newGraphic.backgroundHeight;
+      oldGraphic.x = newGraphic.x;
+
+      final int max_y = graphicsDim.height - newGraphic.height;
+
+      System.out.println ("Paddle " + leftPaddle + ": initialX,Y = " + newGraphic.x + ", " + newGraphic.y);
+      System.out.println ("Paddle " + leftPaddle + ": initialW,H = " + newGraphic.width + ", " + newGraphic.height);
+
+      boolean playing = true;
+
+      while (playing) {
+
+        displayList.change (newCommand, displaySlot);
+
+        final Graphic tmpA = oldGraphic;
+        oldGraphic = newGraphic;
+        newGraphic = tmpA;
+
+        final GraphicsCommand tmpB = oldCommand;
+        oldCommand = newCommand;
+        newCommand = tmpB;
+
+        switch (event.fairSelect (preCondition)) {
+          case MOVE:
+            final Boolean up = (Boolean) move.read ();
+            if (up == Boolean.TRUE) {
+              newGraphic.y = oldGraphic.y - DELTA_Y;
+              if (newGraphic.y < 0) newGraphic.y = 0;
+            } else {
+              newGraphic.y = oldGraphic.y + DELTA_Y;
+              if (newGraphic.y > max_y) newGraphic.y = max_y;
+            }
+            newGraphic.colour = Color.red;
+            System.out.println ("Paddle " + leftPaddle + ": " + up + " " + newGraphic.y);
+          break;
+          case BALLS:
+            final int ball_y = fromBalls.read ();
+            System.out.println ("Paddle " + leftPaddle + " from ball: " + ball_y);
+            if ((oldGraphic.y <= ball_y) && (ball_y < oldGraphic.y + oldGraphic.height)) {
+              toBalls.write (HIT);
+              newGraphic.colour = (oldGraphic.colour == Color.red) ? Color.blue : Color.red;
+            } else {
+              toBalls.write (MISS);
+              toScorer.write (1);
+            }
+            newGraphic.y = oldGraphic.y;
+          break;
+        }
+
+      }
+
+      System.out.println ("Paddle " + leftPaddle + ": dead");
+
+      displayList.change (GraphicsCommand.NULL, displaySlot);
+
+    }
+
+  }
+
+}
