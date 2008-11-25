@@ -1,3 +1,32 @@
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //  JCSP ("CSP for Java") Libraries                                 //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
+    //                2001-2004 Quickstone Technologies Limited.        //
+    //                                                                  //
+    //  This library is free software; you can redistribute it and/or   //
+    //  modify it under the terms of the GNU Lesser General Public      //
+    //  License as published by the Free Software Foundation; either    //
+    //  version 2.1 of the License, or (at your option) any later       //
+    //  version.                                                        //
+    //                                                                  //
+    //  This library is distributed in the hope that it will be         //
+    //  useful, but WITHOUT ANY WARRANTY; without even the implied      //
+    //  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR         //
+    //  PURPOSE. See the GNU Lesser General Public License for more     //
+    //  details.                                                        //
+    //                                                                  //
+    //  You should have received a copy of the GNU Lesser General       //
+    //  Public License along with this library; if not, write to the    //
+    //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
+    //  Boston, MA 02111-1307, USA.                                     //
+    //                                                                  //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+
 import org.jcsp.lang.*;
 import org.jcsp.util.*;
 import org.jcsp.awt.*;
@@ -40,14 +69,10 @@ public class PongNetwork implements CSProcess {
 
     // channels
 
-    final One2OneChannel mouseChannel =
-      Channel.one2one (new OverWriteOldestBuffer (10));
-    final One2OneChannel mouseMotionChannel =
-      Channel.one2one (new OverWriteOldestBuffer (1));
-    final One2OneChannel focusChannel =
-      Channel.one2one (new OverWriteOldestBuffer (10));
-    final One2OneChannel keyChannel =
-      Channel.one2one (new OverWriteOldestBuffer (10));
+    final One2OneChannel mouseChannel = Channel.one2one (new OverWriteOldestBuffer (10));
+    final One2OneChannel mouseMotionChannel = Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel focusChannel = Channel.one2one (new OverWriteOldestBuffer (10));
+    final One2OneChannel keyChannel = Channel.one2one (new OverWriteOldestBuffer (10));
     
     final One2OneChannel[] toBalls = Channel.one2oneArray (nBalls);
     final Any2OneChannel fromBalls = Channel.any2one ();
@@ -99,8 +124,7 @@ public class PongNetwork implements CSProcess {
     final Panel south = new Panel ();
     south.setBackground (Color.green);
 
-    final One2OneChannel startChannel =
-      Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel startChannel = Channel.one2one (new OverWriteOldestBuffer (1));
     final One2OneChannel startConfigure = Channel.one2one ();
     startButton = new ActiveButton (startConfigure.in(), startChannel.out(), "XXXXXXXXXXXXXXXXXXXXXX");
     startButton.setBackground (Color.white);
@@ -109,8 +133,7 @@ public class PongNetwork implements CSProcess {
 
     south.add (new Label ("                      ", Label.CENTER));    // padding
 
-    final One2OneChannel freezeChannel =
-      Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel freezeChannel = Channel.one2one (new OverWriteOldestBuffer (1));
     final One2OneChannel freezeConfigure = Channel.one2one ();
     freezeButton = new ActiveButton (freezeConfigure.in(), freezeChannel.out(), "XXXXXXXXXXXXXXXXXXXXXX");
     freezeButton.setBackground (Color.white);
@@ -125,12 +148,11 @@ public class PongNetwork implements CSProcess {
     north.setBackground (Color.green);
 
     final String[] infoTitle = {"Left", "Right"};
-    final String[] infoWidth = {"XXXXXXXXXXXXXXXXXXXXXX",
-                                "XXXXXXXXXXXXXXXXXXXXXX"};
+    final String[] infoWidth = {"XXXXXXXXXXXXXXXXXXXXXX", "XXXXXXXXXXXXXXXXXXXXXX"};
     final One2OneChannel[] infoConfigure = Channel.one2oneArray (infoTitle.length);
     infoLabel = new ActiveLabel[infoTitle.length];
     for (int i = 0; i < infoTitle.length; i++) {
-	infoLabel[i] = new ActiveLabel (infoConfigure[i].in(), infoWidth[i]);
+      infoLabel[i] = new ActiveLabel (infoConfigure[i].in(), infoWidth[i]);
       infoLabel[i].setAlignment (Label.CENTER);
       infoLabel[i].setBackground (Color.white);
       north.add (new Label (infoTitle[i], Label.CENTER));
@@ -139,37 +161,58 @@ public class PongNetwork implements CSProcess {
 
     parent.add ("North", north);
 
+    // balls
+
     balls = new PongBall[nBalls];
     for (int i = 0; i < nBalls; i++) {
-      balls[i] = new PongBall (i, ballSpeed, life, dead,
-                               balls2LeftPaddle.out(), leftPaddle2Balls.in(),
-                               balls2RightPaddle.out(), rightPaddle2Balls.in(),
-                               toBalls[i].in(), fromBalls.out(), displayList);
+      balls[i] = new PongBall (
+        i, ballSpeed, life, dead,
+        balls2LeftPaddle.out(), leftPaddle2Balls.in(),
+        balls2RightPaddle.out(), rightPaddle2Balls.in(),
+        toBalls[i].in(), fromBalls.out(), displayList
+      );
     }
+
+    // keystrokes manager
     
     keyControl= new PongKeyControl (keyChannel.in(), leftMove.out(), rightMove.out());
 
-    leftPaddle = new PongPaddle (true, paddleSpeed, leftMove.in(),
-                                 balls2LeftPaddle.in(), leftPaddle2Balls.out(),
-                                 toScorer[0].out(), control2LeftPaddle.in(), displayList);
-    rightPaddle = new PongPaddle (false, paddleSpeed, rightMove.in(),
-                                  balls2RightPaddle.in(), rightPaddle2Balls.out(),
-                                  toScorer[1].out(), control2RightPaddle.in(), displayList);
+    // paddles
+
+    leftPaddle = new PongPaddle (
+      true, paddleSpeed, leftMove.in(),
+      balls2LeftPaddle.in(), leftPaddle2Balls.out(),
+      toScorer[0].out(), control2LeftPaddle.in(), displayList
+    );
+
+    rightPaddle = new PongPaddle (
+      false, paddleSpeed, rightMove.in(),
+      balls2RightPaddle.in(), rightPaddle2Balls.out(),
+      toScorer[1].out(), control2RightPaddle.in(), displayList
+    );
 
     // focusControl = new FocusControl (focusChannel, toGraphics, fromGraphics);
     // focusControl2 = new FocusControl2 (startChannel, toGraphics, fromGraphics);
+    
+    // scorer
 
-    scorer = new PongScorer (Channel.getInputArray(toScorer), Channel.getOutputArray(infoConfigure));
+    scorer = new PongScorer (Channel.getInputArray (toScorer), Channel.getOutputArray (infoConfigure));
+
+    // background flasher and its (mouse) controller
 
     flasher = new PongFlasher (control2Flasher.in(), mouse2Flasher.in(), displayList);
 
     mouseControl = new PongMouseControl (mouse2Flasher.out(), toGraphics.out(), fromGraphics.in(), mouseChannel.in());
 
-    control = new PongControl (Channel.getOutputArray(toBalls), fromBalls.in(),
-                               control2Flasher.out(), control2LeftPaddle.out(), control2RightPaddle.out(),
-                               freezeConfigure.out(), freezeChannel.in(),
-                               startConfigure.out(), startChannel.in(),
-                               toGraphics.out(), fromGraphics.in());
+    // main game controller
+
+    control = new PongControl (
+      Channel.getOutputArray (toBalls), fromBalls.in(),
+      control2Flasher.out(), control2LeftPaddle.out(), control2RightPaddle.out(),
+      freezeConfigure.out(), freezeChannel.in(),
+      startConfigure.out(), startChannel.in(),
+      toGraphics.out(), fromGraphics.in()
+    );
 
   }
 
@@ -197,4 +240,3 @@ public class PongNetwork implements CSProcess {
   }
 
 }
-

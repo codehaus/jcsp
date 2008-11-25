@@ -27,44 +27,22 @@
     //////////////////////////////////////////////////////////////////////
 
 
-import org.jcsp.lang.*;
-import java.awt.event.*;
+import org.jcsp.awt.*;
 
-public class PongKeyControl implements CSProcess {
+public class FlasherApplet extends ActiveApplet {
 
-  private final ChannelInput keyboard;
-  private final ChannelOutputInt leftMove;
-  private final ChannelOutputInt rightMove;
+  public static final int minPeriod = 300;       // milliseconds
+  public static final int maxPeriod = 1000;      // milliseconds
+  public static final int defaultPeriod = 500;   // milliseconds
 
-  public PongKeyControl (final ChannelInput keyboard,
-                         final ChannelOutputInt leftMove,
-                         final ChannelOutputInt rightMove) {
-    this.keyboard = keyboard;
-    this.leftMove = leftMove;
-    this.rightMove = rightMove;
-  }
+  public void init () {
 
-  public void run () {
-System.out.println ("PongKeyControl starting ...");
-    while (true) {
-      final KeyEvent keyEvent = (KeyEvent) keyboard.read ();
-      if (keyEvent.getID () == KeyEvent.KEY_PRESSED) {
-        switch (keyEvent.getKeyCode ()) {
-          case KeyEvent.VK_A:
-            leftMove.write (PongPaddle.UP);
-          break;
-          case KeyEvent.VK_Z:
-            leftMove.write (PongPaddle.DOWN);
-          break;
-          case KeyEvent.VK_K:
-            rightMove.write (PongPaddle.UP);
-          break;
-          case KeyEvent.VK_M:
-            rightMove.write (PongPaddle.DOWN);
-          break;
-        }
-      }
-    }
+    final int period =
+      getAppletInt ("period", minPeriod, maxPeriod, defaultPeriod);
+
+    setProcess (new FlasherNetwork (period, this));
+    // setProcess (new FlasherNetworkSSD (period, this));
+
   }
 
 }

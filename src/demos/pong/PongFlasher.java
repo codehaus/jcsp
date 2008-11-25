@@ -1,3 +1,32 @@
+
+    //////////////////////////////////////////////////////////////////////
+    //                                                                  //
+    //  JCSP ("CSP for Java") Libraries                                 //
+    //  Copyright (C) 1996-2008 Peter Welch and Paul Austin.            //
+    //                2001-2004 Quickstone Technologies Limited.        //
+    //                                                                  //
+    //  This library is free software; you can redistribute it and/or   //
+    //  modify it under the terms of the GNU Lesser General Public      //
+    //  License as published by the Free Software Foundation; either    //
+    //  version 2.1 of the License, or (at your option) any later       //
+    //  version.                                                        //
+    //                                                                  //
+    //  This library is distributed in the hope that it will be         //
+    //  useful, but WITHOUT ANY WARRANTY; without even the implied      //
+    //  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR         //
+    //  PURPOSE. See the GNU Lesser General Public License for more     //
+    //  details.                                                        //
+    //                                                                  //
+    //  You should have received a copy of the GNU Lesser General       //
+    //  Public License along with this library; if not, write to the    //
+    //  Free Software Foundation, Inc., 59 Temple Place, Suite 330,     //
+    //  Boston, MA 02111-1307, USA.                                     //
+    //                                                                  //
+    //  Author contact: P.H.Welch@kent.ac.uk                             //
+    //                                                                  //
+    //////////////////////////////////////////////////////////////////////
+
+
 import org.jcsp.lang.*;
 import org.jcsp.awt.*;
 
@@ -19,11 +48,11 @@ public class PongFlasher implements CSProcess {
   }
 
   private final static class Graphic implements GraphicsCommand.Graphic {
-    public Color colour;
-    public int x, y, width, height;
+    public Color colour= Color.black;
     public void doGraphic (java.awt.Graphics g, java.awt.Component c) {
-      c.setBackground (colour);
-      g.clearRect (x, y, width, height);
+      Dimension dim = c.getSize();
+      g.setColor (colour);
+      g.fillRect (0, 0, dim.width, dim.height);
     }
   }
 
@@ -34,30 +63,14 @@ public class PongFlasher implements CSProcess {
 
     GraphicsCommand oldCommand = new GraphicsCommand.General (oldGraphic);
     GraphicsCommand newCommand = new GraphicsCommand.General (newGraphic);
+
+    displayList.set (newCommand);
     
     final Random random = new Random ();
   
     System.out.println ("Flasher running ...");
 
-    final Dimension graphicsDim = (Dimension) fromControl.read ();
-    System.out.println ("Flasher : " + graphicsDim);
-
-    // initialise data for background colour ...
-
-    newGraphic.colour = Color.black;
-    newGraphic.width = graphicsDim.width;
-    newGraphic.height = graphicsDim.height;
-    newGraphic.x = 0;
-    newGraphic.y = 0;
-
-    oldGraphic.width = newGraphic.width;
-    oldGraphic.height = newGraphic.height;
-    oldGraphic.x = 0;
-    oldGraphic.y = 0;
-
-    displayList.set (newCommand);
-
-    fromControl.read ();    // let control continue
+    fromControl.read ();    // let control process continue (and let the balls pick displaylist slots)
 
     final CSTimer tim = new CSTimer ();
 

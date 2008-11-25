@@ -23,7 +23,6 @@
     //                                                                  //
     //  Author contact: P.H.Welch@kent.ac.uk                             //
     //                                                                  //
-    //                                                                  //
     //////////////////////////////////////////////////////////////////////
 
 
@@ -58,7 +57,7 @@ class BallsControl0 implements CSProcess {
   private final static class Graphic implements GraphicsCommand.Graphic {
     public Color colour;
     public void doGraphic (java.awt.Graphics g, java.awt.Component c) {
-   	  Dimension dim = c.getSize();
+      Dimension dim = c.getSize();
       g.setColor (colour);
       g.fillRect (0, 0, dim.width, dim.height);
     }
