@@ -1,0 +1,89 @@
+<html>
+<head>
+   <meta name="Author" content="Peter Welch">
+   <title>JCSP Plasma</title>
+</head>
+<body>
+
+<CENTER>
+<H1>
+Plasma</H1></CENTER>
+
+<CENTER>
+
+<!--"CONVERTED_APPLET"-->
+<!-- CONVERTER VERSION 1.1 -->
+<SCRIPT LANGUAGE="JavaScript"><!--
+    var _info = navigator.userAgent; var _ns = false;
+    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
+//--></SCRIPT>
+<COMMENT><SCRIPT LANGUAGE="JavaScript1.1"><!--
+    var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0 && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0)));
+//--></SCRIPT></COMMENT>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+    if (_ie == true) document.writeln('<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" WIDTH = "800" HEIGHT = "518"  codebase="http://java.sun.com/products/plugin/1.1.3/jinstall-113-win32.cab#Version=1,1,3,0"><NOEMBED><XMP>');
+    else if (_ns == true) document.writeln('<EMBED type="application/x-java-applet;version=1.1.2" java_CODE = "PlasmaMain.class" WIDTH = "800" HEIGHT = "518"  complex = "false" detach = "false"  pluginspage="http://java.sun.com/products/plugin/1.1.3/index-1.1.3.html"><NOEMBED><XMP>');
+//--></SCRIPT>
+<APPLET CODE = "PlasmaMain.class" WIDTH = "800" HEIGHT = "518" ></XMP>
+<PARAM NAME = CODE VALUE = "PlasmaMain.class" >
+
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.1.2">
+<PARAM NAME = "complex" VALUE  ="false">
+<PARAM NAME = "detach" VALUE  ="false">
+
+</APPLET>
+
+</NOEMBED></EMBED></OBJECT>
+
+
+<!--
+<APPLET  CODE = "PlasmaMain.class" WIDTH = "800" HEIGHT = "518" >
+<PARAM NAME = "complex" VALUE  ="false">
+<PARAM NAME = "detach" VALUE  ="false">
+
+
+</APPLET>
+-->
+<!--"END_CONVERTED_APPLET"-->
+
+
+</CENTER>
+
+<p>The <i>Colours</i> choice box offers four colour tables.
+The <i>Scale</i> choice box offers five scales of computation.
+In <i>1:8</i> scale, only one point in each 8 x 8 box in the plasma
+is computed and that colour is rendered for the whole of that box.
+The <i>Freeze</i> button freezes the animation.
+
+<p>The <i>Genetic Code</i> sequence shows 8 integer parameters
+whose values effect various properties of the plasma being animated.
+Each position in the sequence controls a different property.
+These vales may be altered by editing the text entry window.
+However, each edit must atomically leave 8 integers.  The line
+is parsed after each edit and, if illegal (e.g. 9 integers or
+some non-integer character), it is set back to its previous sequence.
+Negative integers are allowed.
+
+<p>Interesting sequences (which you can cut and paste into the above
+<i>Genetic Code</i> box) are:
+
+<PRE>
+  2   5   1  4     16   23   13   10       <I>(try scale 1:2 and colour Green/Blue)</I>
+  32  5  31 44     16   23   13   10
+  32  5  31 44    206  203   13   10
+  32  5  31 44    206  203  103   10
+  32  5  31 44    206  203  103  100
+</PRE>
+
+<p>The <i>Frames/Second</i> label at the top shows the number of
+plasma frames <i>computed</i> per second.  For the higher scale
+values, this will be more than the number of frames actually being
+<i>rendered</i> per second - the rendering keeps up as best it can.
+
+<p>With acknowledgements to
+<A HREF="http://rsb.info.nih.gov/plasma/">Sam's Java Plasma Applet</A>
+... have fun!
+
+</body>
+</html>

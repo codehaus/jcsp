@@ -1,0 +1,102 @@
+<html>
+<head>
+   <meta name="Author" content="Peter Welch">
+   <title>JCSP Mandelbrot</title>
+</head>
+<body>
+
+<CENTER>
+<H1>
+The Mandelbrot Set</H1></CENTER>
+
+<CENTER>
+
+<!--"CONVERTED_APPLET"-->
+<!-- CONVERTER VERSION 1.1 -->
+<SCRIPT LANGUAGE="JavaScript"><!--
+    var _info = navigator.userAgent; var _ns = false;
+    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
+//--></SCRIPT>
+<COMMENT><SCRIPT LANGUAGE="JavaScript1.1"><!--
+    var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0 && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0)));
+//--></SCRIPT></COMMENT>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+    if (_ie == true) document.writeln('<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" WIDTH = "800" HEIGHT = "518"  codebase="http://java.sun.com/products/plugin/1.1.3/jinstall-113-win32.cab#Version=1,1,3,0"><NOEMBED><XMP>');
+    else if (_ns == true) document.writeln('<EMBED type="application/x-java-applet;version=1.1.2" java_CODE = "MandelbrotMain.class" WIDTH = "800" HEIGHT = "518"  complex = "false" detach = "false"  pluginspage="http://java.sun.com/products/plugin/1.1.3/index-1.1.3.html"><NOEMBED><XMP>');
+//--></SCRIPT>
+<APPLET CODE = "MandelbrotMain.class" WIDTH = "800" HEIGHT = "518" ></XMP>
+<PARAM NAME = CODE VALUE = "MandelbrotMain.class" >
+
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.1.2">
+<PARAM NAME = "complex" VALUE  ="false">
+<PARAM NAME = "detach" VALUE  ="false">
+
+</APPLET>
+
+</NOEMBED></EMBED></OBJECT>
+
+
+<!--
+<APPLET  CODE = "MandelbrotMain.class" WIDTH = "800" HEIGHT = "518" >
+<PARAM NAME = "complex" VALUE  ="false">
+<PARAM NAME = "detach" VALUE  ="false">
+
+
+</APPLET>
+-->
+<!--"END_CONVERTED_APPLET"-->
+
+
+</CENTER>
+
+<p>[LEFT-MOUSE-CLICK] on the drawing canvas to get a target box that moves with
+the mouse pointer.  The size of this box can be altered by the [UP-ARROW] and
+[DOWN-ARROW] keys.  Its colour can be changed (just black or white) by the
+<i>Target</i> choice box.  The box can be erased by a [RIGHT-MOUSE-CLICK].
+
+<p>Having obtained a target box, move and resize it so that it is over an area
+of interest.  [LEFT-MOUSE-CLICK] again (or press the [CARRIAGE-RETURN] key) to
+enlarge the area within the box to the full size of the applet canvas.
+
+<p>Whilst the new image is being computed, a <i>progress bar</i> scrolls down
+the canvas to give an indication of how fast things are going.  The relative position
+of the bar in the canvas corresponds to the relative area of computation currently being
+performed within the box.  This progress bar can be eliminated by selecting
+the <i>None</i> option in the <i>Scrolling</i> choice box.  Other options are
+<i>Up</i> and <i>Down</i>, which cause the new image to be displayed as it is
+being computed - however, this usually slows everything down as the image rendering
+(usually) dominates the computation cost.  The <i>Silent</i> option is the default,
+which yields the progress bar.
+
+<p>The <i>Iterations</i> choice box lets us set the maximum number of iterations
+for the Mandelbrot calculation.  There are very interesting regions where this
+needs to be set to 32K - find them!
+
+<p>The images can be rendered with two colour maps - <i>Step</i> and <i>Fade</i>
+selectable from the <i>Colours</i> choice box.  Some areas look better with
+one and some with the other.
+
+<p>Previous images are remembered and may be recovered by clicking the <i>Backward</i>
+button.  Having gone back, we can go <i>Forward</i> again.  Two clicks are needed
+for this: the first shows a target box over the area we have just come from (or are
+about to go to) and the second allows us to <i>Confirm</i> or <i>Cancel</i> the move.
+
+<p>The coordinates of the <i>top-left</i> point in the image are displayed in the
+<i>Top</i> and <i>Left</i> labels (above the canvas).  The resolution between points
+is shown in the <i>Scale</i> label.
+
+<p>The Mandelbrot computation is performed by a classical <i>worker process farm</i>.
+Areas of the image are farmed out to idle workers a few lines at a time.  On a (SMP)
+multiprocessor, real speedup will be obtained as all processors will be used
+(assuming our JVM runs with native threads).  A running computation can be cancelled
+by clicking the <i>Cancel</i> button (that is only enabled during such a run).
+
+<p><i>Minor detail:</i> the default size of the target box can be increased only to
+around 70% of the size of the applet canvas (and has the same aspect ratio).
+To target an image of the same resolution, but shifted slightly horizontally or
+vertically, a target box the same size as the canvas is required.  This is allowed
+by using [SHIFT-LEFT-MOUSE-CLICK] to create the box (instead of LEFT-MOUSE-CLICK]).
+
+</body>
+</html>

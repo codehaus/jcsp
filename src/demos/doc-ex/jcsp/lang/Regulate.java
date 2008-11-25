@@ -23,7 +23,13 @@
   *                                                                        *
   *************************************************************************/
 
-package org.jcsp.plugNplay;
+// package org.jcsp.plugNplay;
+//
+// This class *is* in the above package.  It is reproduced here because
+// this source is quoted in the documentation of org.jcsp.lang.Alternative.
+// The above package declaration is commented out since, otherwise,
+// compiling the *java files in this directory would fail (because of
+// an attempt to duplicate Regulate in org.jcsp.plugNplay).
 
 //{{{  javadoc
 /**

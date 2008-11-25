@@ -1,0 +1,71 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Peter Welch">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (WinNT; I) [Netscape]">
+   <title>JCSP Fireworks</title>
+</head>
+<body>
+
+<center>
+<h1>
+Fireworks</h1></center>
+
+<center>
+
+<applet CODE = "FireworksMain.class" WIDTH = "800" HEIGHT = "500" >
+  <param NAME = "maxParticles" VALUE  ="10000">
+  <param NAME = "stillCount" VALUE  ="100">
+  <param NAME = "dragCount" VALUE  ="100">
+  <param NAME = "speed" VALUE  ="35">
+  <param NAME = "accY" VALUE  ="256">
+  <param NAME = "maxDeltaY" VALUE  ="4800">
+  <param NAME = "launchDeltaX" VALUE  ="1200">
+  <param NAME = "launchDeltaY" VALUE  ="1200">
+  <param NAME = "scale" VALUE  ="6">
+</applet>
+</center>
+
+<P>Point at the applet and [LEFT-MOUSE-CLICK] for a quick burst of sparks.
+Hold the [LEFT-MOUSE-BUTTON] down for a burst that continues whilst holding -
+drag the mouse and the fireworks will follow.  [RIGHT-MOUSE-CLICK] to keep
+the show going without holding the button down - [RIGHT-MOUSE-CLICK] again
+to cancel.  Whilst in the [RIGHT-MOUSE-CLICK] mode, [LEFT-MOUSE-BUTTON] and
+drag repositions the show.  Note: you can drag the firework launch point off
+the applet panel in any direction.  Freeze the action with [MIDDLE-MOUSE-CLICK]
+- unfreeze the same way.
+
+<P>Keyboard controls (use whilst in continuous show mode to see the effects):
+<UL>
+  <LI>
+    'C'/'c' - narrows/broadens (respectively) the launch cone of the firework.
+    Pushing 'C' to its maximum produces a <i>Roman Candle</i>.  Pushing 'c' to its
+    minimum yields a <i>sparkler</i> (sparks flying in all directions with equal
+    probability);
+  <LI>
+    'L'/'l' - increases/decreases (respectively) the spark launch velocity.
+    Warning: there is no maximum imposed!  Very large velocities produce a <i>laser</i>
+    show.
+  <LI>
+    'P'/'p' - increases/decreases (respectively) the number of particles launched per second.
+    Warning: there is no maximum imposed!  However, an applet parameter restricts
+    the total number of particles being animated (the default maximum is 15000).
+    If more than that number become visible, the oldest ones are discarded.
+  <LI>
+    'S'/'s' - increases/decreases (respectively) the scale of the display.  Pushing 's'
+    to its minimum enables <i>sky writing</i> by dragging with the [LEFT-MOUSE-BUTTON].
+    Try doing this with the 'c'one control pushed to minimum and increase the 'L'aunch
+    velocity increased to around 30,000 ...
+</UL>
+<P>
+<P>[<i>Note:</i> all keyboard control values are updated on the Java Console.]
+
+<P>With acknowledgements to
+<A HREF="http://www.comp.lancs.ac.uk/computing/users/rgg/miscellaneous/Programming.html">
+Jeff's Geoapplet</A>
+... have fun!
+
+
+</BODY>
+</HTML>

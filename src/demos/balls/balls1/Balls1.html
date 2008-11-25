@@ -1,0 +1,74 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Peter Welch">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (WinNT; I) [Netscape]">
+   <title>JCSP Balls 1</title>
+</head>
+<body>
+
+<center>
+<h1>
+Balls</h1></center>
+
+<center><table BORDER >
+<tr>
+<td>
+<!--"CONVERTED_APPLET"-->
+<!-- CONVERTER VERSION 1.1 -->
+<SCRIPT LANGUAGE="JavaScript"><!--
+    var _info = navigator.userAgent; var _ns = false;
+    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
+//--></SCRIPT>
+<COMMENT><SCRIPT LANGUAGE="JavaScript1.1"><!--
+    var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0 && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0)));
+//--></SCRIPT></COMMENT>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+    if (_ie == true) document.writeln('<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" WIDTH = "600" HEIGHT = "250"  codebase="http://java.sun.com/products/plugin/1.1.3/jinstall-113-win32.cab#Version=1,1,3,0"><NOEMBED><XMP>');
+    else if (_ns == true) document.writeln('<EMBED type="application/x-java-applet;version=1.1.2" java_CODE = "BallsMain1.class" WIDTH = "600" HEIGHT = "250"  balls = "25" speed = "35"  pluginspage="http://java.sun.com/products/plugin/1.1.3/index-1.1.3.html"><NOEMBED><XMP>');
+//--></SCRIPT>
+<APPLET CODE = "BallsMain1.class" WIDTH = "600" HEIGHT = "250" ></XMP>
+<PARAM NAME = CODE VALUE = "BallsMain1.class" >
+
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.1.2">
+<PARAM NAME = "balls" VALUE   ="25">
+<PARAM NAME = "speed" VALUE   ="35">
+
+</APPLET>
+
+</NOEMBED></EMBED></OBJECT>
+
+
+<!--
+<APPLET  CODE = "BallsMain1.class" WIDTH = "600" HEIGHT = "250" >
+<PARAM NAME = "balls" VALUE   ="25">
+<PARAM NAME = "speed" VALUE   ="35">
+
+
+</APPLET>
+-->
+<!--"END_CONVERTED_APPLET"-->
+
+</td>
+</tr>
+</table></center>
+
+<p>This applet demonstrates some simple concurrent animation.&nbsp; Each
+ball is a process writing to its own slot of a shared <i>display channel</i>
+(<tt>jcsp.awt.DisplayList)</tt>, whose other end is serviced by a <tt>jcsp.awt.ActiveCanvas</tt>.&nbsp;
+There are no GUI controls, but the number of balls in the display is specified
+by the applet <i>balls</i> parameter and their speed (movements per second)
+by <i>speed</i>.&nbsp; Each ball has its own (random) colour, starting
+position, size and initial direction vector.
+<p>Useful extensions to this applet would be: GUI controls for adjusting
+temperature (i.e. speed) and displaying pressure (i.e. bounces per second
+off the walls), changing the size of the containment canvas, zapping existing
+balls and adding new ones, varying the mass and size of the balls, freezing
+and resuming the animation, collision detection and bouncing, adding resistance
+to motion and gravity, ...
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Peter Welch">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (WinNT; I) [Netscape]">
+   <title>JCSP Balls 2</title>
+</head>
+<body>
+
+<center>
+<h1>
+Balls</h1></center>
+
+<center><table BORDER >
+<tr>
+<td>
+<applet CODE = "BallsMain2.class" WIDTH = "600" HEIGHT = "250" >
+  <param NAME = "balls" VALUE  ="25">
+  <param NAME = "speed" VALUE  ="35">
+</applet>
+</td>
+</tr>
+</table></center>
+
+<p>This applet demonstrates some simple concurrent animation.&nbsp; Each
+ball is a process writing to its own slot of a shared <i>display channel</i>
+(<tt>jcsp.awt.DisplayList)</tt>, whose other end is serviced by a <tt>jcsp.awt.ActiveCanvas</tt>.&nbsp;
+There are no GUI controls, but the number of balls in the display is specified
+by the applet <i>balls</i> parameter and their speed (movements per second)
+by <i>speed</i>.&nbsp; Each ball has its own (random) colour, starting
+position, size and initial direction vector.
+<p>Useful extensions to this applet would be: GUI controls for adjusting
+temperature (i.e. speed) and displaying pressure (i.e. bounces per second
+off the walls), changing the size of the containment canvas, zapping existing
+balls and adding new ones, varying the mass and size of the balls, freezing
+and resuming the animation, collision detection and bouncing, adding resistance
+to motion and gravity, ...
+<br>&nbsp;
+<br>&nbsp;
+</body>
+</html>

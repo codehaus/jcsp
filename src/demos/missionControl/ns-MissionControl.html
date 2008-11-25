@@ -1,0 +1,49 @@
+<html>
+<head>
+   <meta name="Author" content="Peter Welch">
+   <title>JCSP Mission Control</title>
+</head>
+<body>
+
+<CENTER>
+<H1>
+Mission Control</H1></CENTER>
+
+<CENTER>
+<TABLE BORDER="1">
+<TR>
+<TD>
+
+<APPLET  CODE = "MissionControl.class" WIDTH = "800" HEIGHT = "400" >
+<PARAM NAME = "start" VALUE  ="30">
+</APPLET>
+
+
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<P>Point and click the applet to start the countdown.  Further clicks
+toggle between <i>holding</i> and <i>countdown</i> modes.
+When the countdown reaches zero, the status changes to <i>fired</i>
+and the <i>abort</i> button is disabled.
+After 10 seconds, the countdown restarts from its initial value with
+the <i>abort</i> button re-enabled.
+
+<P>In countdown and holding modes, the <i>abort</i> button may be pressed.
+This cancels the countdown and puts the system into <i>aborted</i> mode.
+After 10 seconds, the countdown restarts from its initial value with
+the <i>abort</i> button re-enabled.
+
+<P>When in the 10 second <i>fired</i> or <i>aborted</i> modes, mouse clicks
+toggle between that mode and <i>holding</i>.
+
+<P><i>IMPORTANT</i>: if the abort button is pressed at the same time as the countdown
+reaches zero and control tries to fire the rocket, it's important the system resolves
+this command clash cleanly.  In particular, the system must not deadlock nor
+get into a corrupt state!  <i>Exercise</i>: prove this system is free from these hazards.
+<i>Hint</i>: use CSP.
+
+</BODY>
+</HTML>

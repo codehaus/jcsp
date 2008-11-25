@@ -1,0 +1,96 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Peter Welch">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (WinNT; I) [Netscape]">
+   <title>JCSP Infect</title>
+</head>
+<body>
+
+<center>
+<h1>
+Infect</h1></center>
+
+<center><applet CODE = "InfectMain.class" WIDTH = "600" HEIGHT = "450" ><param NAME = "rate" VALUE ="35"><param NAME = "detach" VALUE ="false"></applet></center>
+
+<p>The central canvas shows a growth medium in which an infectious organism
+can grow. It represnts a two-dimensional space of cells mapped on to a
+<i>toroidal</i> world - i.e. the left and right edges are adjacent, likewise
+the top and bottom edges.&nbsp; Each cell (pixel) in the canvas can be
+in one of three states:
+<ul>
+<li>
+<b><i><font color="#000000">healthy</font></i></b> (<font color="#000000">green</font>)</li>
+
+<li>
+<b><i>infected</i></b> (red - how many is reported in the top left info
+label)</li>
+
+<li>
+<b><i>immune</i></b> (blue - how many is reported in the top right info
+label)</li>
+</ul>
+The medium evolves in cycles.&nbsp; In each cycle:
+<ul>
+<li>
+if a healthy cell is nect to an infected one, there is a <i>rate%</i> chance
+that it will become infected.&nbsp; The value of <i>rate</i> is controlled
+by the slider on the left (and reported in the bottom left info label)..</li>
+
+<li>
+an infected cell may cease being infectious and become immune - it's still
+sick but it won't infect anyone.&nbsp; The chance (%) of its remaining
+infectious is governed by the top right slider (and reported in the bottom
+middle info label).</li>
+
+<li>
+an immune cell may recover and become healthy again.&nbsp; The chance (%)
+of an immune cell retaining its immunity is controlled by the bottom right
+slider (and reported in the bottom right info label).&nbsp; There is a
+<i>very small</i> chance that an immune cell may spontaenously become infectious
+again - this is not under user control.</li>
+</ul>
+Initially, the model is active and all cells are healthy (green).&nbsp;
+Other user controls are as follows:
+<ul>
+<li>
+[LEFT MOUSE CLICK] introduces infection.</li>
+
+<li>
+[RIGHT MOUSE CLICK] immunises <i>healthy</i> cells (but does not change
+<i>infected</i> ones).</li>
+
+<li>
+[MIDDLE MOUSE CLICK] makes <i>immune</i> cells <i>healthy </i>(but does
+not change <i>infected</i> ones).</li>
+</ul>
+DRAGGING with the mouse button is PRESSED repeats the above CLICK operations
+over the cells it passes.
+<p>Pressing [SHIFT] at the same time as a mouse CLICK <i>sprays</i> the
+action over a much wider area - the spray pattern is random and changes
+each time.&nbsp; It is not necessary to keep the [SHIFT] key depressed
+whilst DRAGGING.
+<p>Pressing [CTRL] at the same time as a mouse CLICK locks (logically)
+the mouse button down.&nbsp; The mouse button can now be released and the
+system will respond to mouse movements as though it was being DRAGGED (i.e.
+as though the button was held down).&nbsp; The next mouse click (on <i>any</i>
+button) release this lock.&nbsp; [<b><i>Note:</i></b> this only applies
+to the LEFT and RIGHT buttons.&nbsp; JDK 1.1/1.2/1.3 all report the [CTRL]
+key pressed on the MIDDLE button regardless as to whether it really is
+pressed.]
+<p>Presing [SHIFT] <i>and</i> [CTRL] at the same time as a mouse CLICK
+combines the above effects.
+<p>Finally, there are [FREEZE/IUNFREEZE] and [RESET] buttons.&nbsp; The
+[RESET], which clears the medium back to all <i>healthy</i> cells, is only
+enabled if the system is <i>frozen</i>.
+<p><b><i>Challenge:</i></b> with the initial settings of the slider rates,
+start an infection in the middle and try to eradicate it by spraying.&nbsp;
+Now try it with an infection from a corner region.&nbsp; Reduce the inititial
+<i>immune persistence rate</i> from 99% to 98%.&nbsp; Can you still eradicate
+it?
+<p><b><i>Experiment:</i></b> with different settings of the sliders.&nbsp;
+The original version of this model had the two right-side sliders at zero.
+<p>Enjoy!
+</body>
+</html>
