@@ -1,3 +1,7 @@
+package org.jcsp.lang;
+
+import java.util.*;
+
 // {{{ The ALT class
 public class ALT extends Guard {
 
@@ -20,7 +24,7 @@ public class ALT extends Guard {
 				Guard guard = guards[i];
 				enabled.add(guard);
 				if (guard.enable()) {
-					return guard
+					return guard;
 				}
 			}
 
@@ -36,7 +40,7 @@ public class ALT extends Guard {
 				}
 			}
 		}
-	}
+	};
 	//}}}
 	//}}}
 	//{{{ fields
