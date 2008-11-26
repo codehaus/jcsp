@@ -15,7 +15,8 @@ public class GuardGroup extends Guard {
 	//}}}
 
 	//{{{ private static fields
-	private static HashMap processBarrierList;
+	//hashtable because hashtables are synchronised
+	private static Hashtable processBarrierList;
 	//}}}
 
 	//{{{ private fields
@@ -32,7 +33,7 @@ public class GuardGroup extends Guard {
 
 	//{{{ static block
 	static {
-		processBarrierList = new HashMap();
+		processBarrierList = new Hashtable();
 	}
 	//}}} 
 
@@ -158,17 +159,26 @@ public class GuardGroup extends Guard {
 
 	//{{{ private Object anyReady()
 	private Object anyReady() {
-		Guard g = checkForReadyGuards();
-		if (g != null) {
-			return g;
-		}
+		AltableBarrier ab = null;
+		
+		try { synchronized (Class.forName("AltableBarrierBase")) {
+			Guard g = checkForReadyGuards();
+			if (g != null) {
+				return g;
+			}
 
-		eliminateUnreadyBarriers();
-		AltableBarrier ab = selectBarrier();
-		if (ab == null) {
-			return null; // there were no immediately ready guards
+			eliminateUnreadyBarriers();
+			ab = selectBarrier();
+			if (ab == null) {
+				// there were no immediately ready guards
+				return null;
+			}
+			ab = waitOnBarrier(ab);
+		} }catch (Exception e) {
+			System.out.println("AltableBarrierBase not found, erk");
+			e.printStackTrace();
+			System.exit(0);
 		}
-		ab = waitOnBarrier(ab);
 
 		return ab;
 	}
