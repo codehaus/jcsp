@@ -102,7 +102,7 @@
 </target>
 -->
 	
-<target name="jcsp-all-jar" depends="jcsp-build">
+<target name="jcsp-jar" depends="jcsp-build">
 	<mkdir dir="${dist}"/>
 	<jar destfile="${dist}/jcsp.jar" basedir="${build}" >
 		<and>
@@ -115,7 +115,7 @@
 	</jar>
 </target>
 	
-<target name="jcsp-demos-test" depends="jcsp-all-jar,jcsp-demos-util-jar">
+<target name="jcsp-demos-test" depends="jcsp-jar,jcsp-demos-util-jar">
 	<foreach target="build-demo-then-clean" param="dir">
 		<path>
 			<dirset refid="jcsp-demos-dirset"/>
@@ -222,10 +222,10 @@
 	
 	-->
 
-	<target name="jcsp-all-javadoc">
-		<mkdir dir="${dist}/jcsp-all-doc"/>
+	<target name="jcsp-javadoc">
+		<mkdir dir="${dist}/jcsp-doc"/>
 		<javadoc 
-			destdir="${dist}/jcsp-all-doc" 
+			destdir="${dist}/jcsp-doc" 
 			Splitindex="true"
 			Windowtitle="CSP for Java (JCSP) ${jcsp-version} API Specification (inc. Network)"
 			Doctitle="CSP for Java&lt;sup&gt;&lt;font size=\'-2\'&gt;TM&lt;/font&gt;&lt;/sup&gt; (JCSP) ${jcsp-version} API Specification"
@@ -248,7 +248,7 @@
 				</and>
 			</fileset>
 		</javadoc>
-		<copy todir="${dist}/jcsp-all-doc/">
+		<copy todir="${dist}/jcsp-doc/">
 			<fileset dir="${src}">
 				<selector refid="doc-files"/>
 			</fileset>
@@ -263,8 +263,8 @@
 	</target>
 	
 	<target name="build-all" depends="jcsp-build"/>
-	<target name="all-jars" depends="jcsp-core-jar,jcsp-all-jar"/>
-	<target name="all-javadoc" depends="jcsp-core-javadoc,jcsp-all-javadoc"/>
+	<target name="all-jars" depends="jcsp-core-jar,jcsp-jar"/>
+	<target name="all-javadoc" depends="jcsp-core-javadoc,jcsp-javadoc"/>
 	<target name="all" depends="all-jars,all-javadoc,release-jar,jcsp-demos-test"/>
 
 	<target name="clean" >
