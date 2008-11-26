@@ -43,9 +43,17 @@ public class AltableBarrier {
 	}
 	//}}}
 
+
+	//{{{ public methods
 	//{{{ public void attemptSynchronisation()
 	public void attemptSynchronisation() {
 	}
+	//}}}
+	//{{{ public void setState(int state)
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	//}}}
 	//}}}
 }
 //}}}
