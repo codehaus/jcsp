@@ -48,6 +48,11 @@ public class GuardGroup extends Guard {
 
 	//{{{ private methods
 	//{{{ private void explicitlyEnableBarriers()
+	private void explicitlyEnableBarriers() {
+		for (int i = 0; i < barriers.length; i++) {
+			
+		}
+	}
 	//}}}
 	//{{{ private void endExplicitEnable()
 	//}}}
