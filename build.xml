@@ -41,8 +41,8 @@
 </selector>
 	
 <dirset dir="${src}" id="jcsp-demos-dirset">
-	<include name="demos/**/*"/>
-	<exclude name="demos/net2/**"/>
+	<include name="jcsp-demos/**/*"/>
+	<exclude name="jcsp-demos/net2/**"/>
 </dirset>
 	
 <selector id="jcsp-demos-util-fileset">
@@ -72,7 +72,7 @@
 	
 <target name="jcsp-build">
 	<mkdir dir="${build}"/>
-	<javac srcdir="${src}" destdir="${build}" source="1.3" target="1.3" excludes="org/jcsp/test/**,demos/**" deprecation="on">
+	<javac srcdir="${src}" destdir="${build}" source="1.3" target="1.3" excludes="org/jcsp/test/**,jcsp-demos/**" deprecation="on">
 	</javac>
 	<copy todir="${build}">
 		<fileset dir="${src}"/>
