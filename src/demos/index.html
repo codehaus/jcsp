@@ -1,0 +1,198 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Peter Welch">
+   <meta name="GENERATOR" content="Mozilla/4.61 [en] (WinNT; I) [Netscape]">
+   <title>JCSP Applet Demonstrations</title>
+</head>
+<body>
+
+<blockquote>
+<center>
+<h1>
+JCSP Applet Demonstrations</h1></center>
+</blockquote>
+
+<hr SIZE=4 WIDTH="100%">
+<br>The following table gives links to several demonstration JCSP Applets.&nbsp;
+They illustrate a variety of animation effects and GUI controls.&nbsp;
+All make significant use of JCSP concurrency to support the GUI, the application-specific
+computation and the animation.&nbsp; The first group are slightly simpler
+than the second.&nbsp; All sources are in sub-folders of this (jcsp-demos)
+folder.
+<p>The left column links will run the applets using&nbsp; <a href="http://java.sun.com/products/plugin/1.1.3/index-1.1.3.html">Sun's
+Java PlugIn</a> (but please <i><a href="#warning">read the warning</a></i>
+below).&nbsp; The right column runs the same applets using the native JVM
+supplied by your browser - this needs to be compatible at least with JDK1.1.5
+(e.g. Netscape 4.6, IE 5).
+<p>
+<hr SIZE=4 WIDTH="100%">
+<br>&nbsp;
+<center><table BORDER COLS=2 WIDTH="60%" BGCOLOR="#FFFF99" >
+<tr>
+<td>
+<center><font size=+1>Sun's Java Plug-In</font></center>
+</td>
+
+<td>
+<center><font size=+1>Browser's Native JVM</font></center>
+</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<center><table BORDER COLS=2 WIDTH="60%" BGCOLOR="#CCFFFF" >
+<tr>
+<td>
+<center><font size=+1><a href="flasher/Flasher.html">Flasher</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="flasher/ns-Flasher.html">Flasher</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1>&nbsp;<a href="balls/balls0/Balls0.html">Balls</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="balls/balls0/ns-Balls0.html">Balls</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1>&nbsp;<a href="picasso/Picasso.html">Picasso</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="picasso/ns-Picasso.html">Picasso</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1>&nbsp;<a href="missionControl/MissionControl.html">MissionControl</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp; <a href="missionControl/ns-MissionControl.html">MissionControl</a></font></center>
+</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<center><table BORDER COLS=2 WIDTH="60%" BGCOLOR="#CCFFFF" >
+<tr>
+<td>
+<center><font size=+1>&nbsp;<a href="infect/Infect.html">Infect</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="infect/ns-Infect.html">Infect</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1>&nbsp;<a href="mandelbrot/Mandelbrot.html">Mandelbrot</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="mandelbrot/ns-Mandelbrot.html">Mandelbrot</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1>&nbsp;<a href="bounce/Bounce.html">Bounce</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="bounce/ns-Bounce.html">Bounce</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1><a href="plasma/Plasma.html">Plasma</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="plasma/ns-Plasma.html">Plasma</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1><a href="fireworks/Fireworks.html">Fireworks</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="fireworks/ns-Fireworks.html">Fireworks</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1>&nbsp;<a href="pong/Pong.html">MultiPong</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="pong/ns-Pong.html">MultiPong</a></font></center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><font size=+1>&nbsp;<a href="splat/Splat.html">Splat</a></font></center>
+</td>
+
+<td>
+<center><font size=+1>&nbsp;<a href="splat/ns-Splat.html">Splat</a></font></center>
+</td>
+</tr>
+</table></center>
+
+<p>
+<hr SIZE=4 WIDTH="100%">
+<p>All these applets may be run as applications - change to the <b><tt>xxx</tt></b>
+source folder, where <b><tt>xxx</tt></b> is one of the above applet names,
+and run the command: <b><tt>java</tt> <tt>xxxMain</tt></b>.&nbsp; For some
+reason, applications sometimes run more smoothly than their equivalent
+applets.&nbsp; Also, for some reason, all the animations (i.e. Balls, Infect,
+Mandelbrot, Bounce, Plasma and Splat) run much faster and more responsively
+under JDK1.1.x (where x &gt;= 5) than under JDK1.2 (or JDK1.3/4) - see below.
+<h3>
+<a NAME="warning"></a>Warning - Don't Use the Plug-In Configured to Use
+the JDK1.2 (or 1.3/4) Runtime Environment!</h3>
+Most of these applets make moderate to heavy use of animation.&nbsp; Currently,
+animations do not seem to be one of the strong features of JDK1.2 (nor JDK1.3/4) - they
+seem very slow compared with JDK1.1.
+<p>Our current recommendation is to download the <a href="http://java.sun.com/products/plugin/1.1.3/index-1.1.3.html">PlugIn
+version 1.1.3</a>, which installs the JRE1.1.8.&nbsp; If you already have
+the PlugIn version 1.2 (or above), it is recommended to configure it to
+use a JDK1.1.x run-time environment (where x &gt;= 5).&nbsp; This can be done
+by firing up the "Java PlugIn Control Panel", clicking on the "Advanced"
+tab, selecting a 1.1 "Java Run Time Environment" (which must have been
+previously installed - e.g. by downoloading and installing the <a href="http://java.sun.com/products/plugin/1.1.3/index-1.1.3.html">PlugIn
+version 1.1.3</a>) and clicking the "Apply" button.
+<p><b><i>Note:</i></b> the native JVMs provided by Netscape 4.6 and IE
+5.0 support a JRE1.1 sufficiently high to run these applet demonstrations.
+<p><b><i>Note:</i></b> sometimes, IE 5.0 throws an application error when
+trying to start an applet configured to use Sun's PlugIn .
+<p><b><i>Note:</i></b> Sun's PlugIn 1.3 throws a <tt>java.security.AccessControlException</tt>
+when the applet thread tries to construct a new thread.&nbsp; Investigating
+...
+
+version 1.1.3</a>, (left column) or the native browser JVM (right column
+above).
+<p><i><b>Note:</b> </i>we should provide JCSP support for Swing and this is in hand
+(though in a slightly different way to the JCSP support for AWT).
+<p>
+<hr SIZE=4 WIDTH="100%">
+</body>
+</html>
