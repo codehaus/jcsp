@@ -44,7 +44,7 @@ package org.jcsp.lang;
  * zero-buffered and fully synchronised.  The reading process must wait
  * for a matching writer and vice-versa.
  * <P>
- * However, the static <TT>create</TT> method allows the user to create
+ * However, the static methods of {@link Channel} allow the construction of
  * a channel with a <I>plug-in</I> driver conforming to the
  * {@link org.jcsp.util.ChannelDataStore <TT>ChannelDataStore</TT>}
  * interface.  This allows a variety of different channel semantics to be
@@ -53,9 +53,6 @@ package org.jcsp.lang;
  * policies) etc..
  * Standard examples are given in the <TT>org.jcsp.util</TT> package, but
  * <I>careful users</I> may write their own.
- * <P>
- * Other static <TT>create</TT> methods allows the user to create fully
- * initialised arrays of channels, including plug-ins if required.
  *
  * @see org.jcsp.lang.Alternative
  * @see org.jcsp.lang.Any2OneChannelImpl

@@ -29,9 +29,9 @@
 package org.jcsp.lang;
 
 /**
- * An interface that should be implemented by ChannelInput
- * objects which can be read by multiple processes
- * concurrently.
+ * This is the same as {@link ChannelInput} except that it is guaranteed
+ * safe to pass on to more than one internal process for parallel reading.
+ * It will always be the end of an <i>one-any</i> or <i>any-any</i> channel.
  *
  * @author Quickstone Technologies Limited
  */

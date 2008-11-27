@@ -29,33 +29,48 @@
 package org.jcsp.lang;
 
 /**
- * This implements a one-to-any integer channel,
+ * This defines the interface for a <i>one-to-any</i> integer channel,
  * safe for use by one writer and many readers.
+ * <P>
+ * The only methods provided are to obtain the <i>ends</i> of the channel,
+ * through which all reading and writing operations are done.
+ * Only an appropriate <i>channel-end</i> should be plugged into a process
+ * &ndash; not the <i>whole</i> channel.
+ * A process may use its external channels in one direction only
+ * &ndash; either for <i>writing</i> or <i>reading</i>.
+ * </P>
  * <H2>Description</H2>
- * <TT>One2AnyChannelInt</TT> is an implementation of a channel which is safe
+ * <TT>One2AnyChannelInt</TT> is an interface for a channel which is safe
  * for use by many reading processes but only one writer.  Reading processes
  * compete with each other to use the channel.  Only one reader and the writer will
- * actually be using the channel at any one time.  This is taken care of by
- * <TT>One2AnyChannelInt</TT> -- user processes just read from or write to it.
+ * actually be using the channel at any one time.  This is managed by the
+ * channel &ndash; user processes just read from or write to it.
  * <P>
  * <I>Please note that this is a safely shared channel and not
  * a broadcaster.  Currently, broadcasting has to be managed by
- * writing active processes (see {@link org.jcsp.plugNplay.DynamicDelta}
+ * writing an active process (see {@link org.jcsp.plugNplay.DynamicDelta}
  * for an example).</I>
+ * </P>
  * <P>
  * All reading processes and the writing process commit to the channel
  * (i.e. may not back off).  This means that the reading processes
  * <I>may not</I> {@link Alternative <TT>ALT</TT>} on this channel.
+ * </P>
  * <P>
- * The default semantics of the channel is that of CSP -- i.e. it is
+ * The default semantics of the channel is that of CSP &ndash; i.e. it is
  * zero-buffered and fully synchronised.  A reading process must wait
  * for the matching writer and vice-versa.
+ * </P>
  * <P>
- * A factory pattern is used to create channel instances. The <tt>create</tt> methods of {@link Channel}
- * allow creation of channels, arrays of channels and channels with varying semantics such as
- * buffering with a user-defined capacity or overwriting with various policies.
- * Standard examples are given in the <TT>org.jcsp.util</TT> package, but
+ * The <tt>static</tt> methods of {@link Channel} construct channels with
+ * either the default semantics or with buffering to user-specified capacity
+ * and a range of blocking/overwriting policies.
+ * Various buffering plugins are given in the <TT>org.jcsp.util</TT> package, but
  * <I>careful users</I> may write their own.
+ * </P>
+ * <P>
+ * The {@link Channel} methods also provide for the construction of
+ * {@link Poisonable} channels and for arrays of channels.
  *
  * <H3><A NAME="Caution">Implementation Note and Caution</H3>
  * <I>Fair</I> servicing of readers to this channel depends on the <I>fair</I>
@@ -68,9 +83,9 @@ package org.jcsp.lang;
  * relying on good behaviour from <TT>synchronized</TT>, not just for these
  * <I>1-any</I> channels.
  *
- * @see org.jcsp.lang.One2OneChannelIntImpl
- * @see org.jcsp.lang.Any2OneChannelIntImpl
- * @see org.jcsp.lang.Any2AnyChannelIntImpl
+ * @see org.jcsp.lang.One2OneChannelInt
+ * @see org.jcsp.lang.Any2OneChannelInt
+ * @see org.jcsp.lang.Any2AnyChannelInt
  * @see org.jcsp.util.ints.ChannelDataStoreInt
  *
  * @author P.D. Austin and P.H. Welch

@@ -28,10 +28,51 @@
 
 package org.jcsp.lang;
 
+/**
+ * This defines the interface for a symmetric <i>one-to-one</i> Object channel.
+ * The <i>symmetry</i> relates to the use of its channel ends as {@link Guard <i>guards</i>}
+ * in an {@link Alternative}: both ends may be so used.
+ * <P>
+ * The only methods provided are to obtain the <i>ends</i> of the channel,
+ * through which all reading and writing operations are done.
+ * Only an appropriate <i>channel-end</i> should be plugged into a process
+ * &ndash; not the <i>whole</i> channel.
+ * A process may use its external channels in one direction only
+ * &ndash; either for <i>writing</i> or <i>reading</i>.
+ * </P>
+ * <H2>Description</H2>
+ * <TT>One2OneChannelImpl</TT> is an interface for a symmetric <i>one-to-one</i> Object channel.
+ * Multiple readers or multiple writers are not allowed.
+ * <P>
+ * Both the reading and writing processes may {@link Alternative <TT>ALT</TT>} on this channel.
+ * </P>
+ * <P>
+ * The semantics of the channel is that of CSP &ndash; i.e. it is
+ * zero-buffered and fully synchronised.  The reading process must wait
+ * for a matching writer and vice-versa.
+ * <P>
+ * </P>
+ * These channels may be constructed by the {@link Channel#one2oneSymmetric()}.
+ * Channel poisoning and buffering are not currently supported for these channels.
+ * </P>
+ *
+ * @see org.jcsp.lang.Alternative
+ * @see org.jcsp.lang.One2OneChannel
+ *
+ * @author P.H. Welch
+ * @author N.C.C. Brown
+ */
+
 public interface One2OneChannelSymmetric {
 
+  /**
+   * Returns the input channel end.
+   */
   public AltingChannelInput in ();
 
+  /**
+   * Returns the output channel end.
+   */
   public AltingChannelOutput out ();
 
 }

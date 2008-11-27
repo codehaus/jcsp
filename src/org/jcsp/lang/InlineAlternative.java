@@ -28,10 +28,14 @@
 
 package org.jcsp.lang;
 
+// (NCCB) what is the reason for this class, over and above using a simple flat Alternative?
+
 /**
+ * <i>This class is experimental (i.e. not properly documented yet).
+ * It is intended to allow {@link Alternative}s to be nested.</i>
+ *
  * @author Quickstone Technologies Limited
  * 
- * TODO (NCCB) what is the reason for this class, over and above using a simple flat Alternative ?
  */
 public class InlineAlternative extends Guard
 {

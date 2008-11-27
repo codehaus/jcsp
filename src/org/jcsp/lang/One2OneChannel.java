@@ -29,34 +29,45 @@
 package org.jcsp.lang;
 
 /**
- * This implements a one-to-one object channel.
+ * This defines the interface for a <i>one-to-one</i> Object channel.
+ * <P>
+ * The only methods provided are to obtain the <i>ends</i> of the channel,
+ * through which all reading and writing operations are done.
+ * Only an appropriate <i>channel-end</i> should be plugged into a process
+ * &ndash; not the <i>whole</i> channel.
+ * A process may use its external channels in one direction only
+ * &ndash; either for <i>writing</i> or <i>reading</i>.
+ * </P>
  * <H2>Description</H2>
- * <TT>One2OneChannelImpl</TT> implements a one-to-one object channel.  Multiple
- * readers or multiple writers are not allowed -- these are catered for
+ * <TT>One2OneChannelImpl</TT> is an interface for a one-to-one object channel.  Multiple
+ * readers or multiple writers are not allowed &ndash; these are catered for
  * by {@link Any2OneChannel},
  * {@link One2AnyChannel} or
  * {@link Any2AnyChannel}.
  * <P>
  * The reading process may {@link Alternative <TT>ALT</TT>} on this channel.
  * The writing process is committed (i.e. it may not back off).
+ * </P>
  * <P>
- * The default semantics of the channel is that of CSP -- i.e. it is
+ * The default semantics of the channel is that of CSP &ndash; i.e. it is
  * zero-buffered and fully synchronised.  The reading process must wait
  * for a matching writer and vice-versa.
  * <P>
- * The <tt>static</tt> methods of {@link Channel}
- * allow creation of channels, arrays of channels and channels with varying semantics such as
- * buffering with a user-defined capacity or overwriting with various policies.
- * Standard examples are given in the <TT>org.jcsp.util</TT> package, but
+ * </P>
+ * The <tt>static</tt> methods of {@link Channel} construct channels with
+ * either the default semantics or with buffering to user-specified capacity
+ * and a range of blocking/overwriting policies.
+ * Various buffering plugins are given in the <TT>org.jcsp.util</TT> package, but
  * <I>careful users</I> may write their own.
  * <P>
- * Other static <TT>create</TT> methods allows the user to create fully
- * initialised arrays of channels, including plug-ins if required.
+ * The {@link Channel} methods also provide for the construction of
+ * {@link Poisonable} channels and for arrays of channels.
+ * </P>
  *
  * @see org.jcsp.lang.Alternative
- * @see org.jcsp.lang.Any2OneChannelImpl
- * @see org.jcsp.lang.One2AnyChannelImpl
- * @see org.jcsp.lang.Any2AnyChannelImpl
+ * @see org.jcsp.lang.Any2OneChannel
+ * @see org.jcsp.lang.One2AnyChannel
+ * @see org.jcsp.lang.Any2AnyChannel
  * @see org.jcsp.util.ChannelDataStore
  *
  * @author P.D. Austin

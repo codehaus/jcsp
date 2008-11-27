@@ -29,9 +29,9 @@
 package org.jcsp.lang;
 
 /**
- * An interface that should be implemented by ChannelOutputInt
- * objects which can be written to by multiple processes
- * concurrently.
+ * This is the same as {@link ChannelOutputInt} except that it is guaranteed
+ * safe to pass on to more than one internal process for parallel writing.
+ * It will always be the end of an <i>any-one</i> or <i>any-any</i> channel.
  *
  * @author Quickstone Technologies Limited
  */
