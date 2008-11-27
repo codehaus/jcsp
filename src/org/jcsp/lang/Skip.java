@@ -33,12 +33,19 @@ package org.jcsp.lang;
  * a {@link Guard} that is always ready.
  * <H2>Description</H2>
  * <TT>Skip</TT> is a process that starts, engages in no events, performs no
- * computation and terminates.  It can also be used as a {@link Guard} in
- * an <A HREF="Alternative.html#Polling"><TT>Alternative</TT></A>
- * that is always ready.
+ * computation and terminates.
+ * <p>
+ * It can also be used as a {@link Guard} in
+ * an {@link Alternative} that is always ready.
+ * This makes it useful for <a href="Alternative.html#Polling"><i>polling</i></a>
+ * a set of guards to test if any are ready:
+ * include it as the last element of the guard array and
+ * {@link Alternative#priSelect() priSelect}.
  * <P>
- * <I>Note: the process form is included for completeness -- it is one of
- * the fundamental primitives of <B>CSP</B>.</I>
+ * <I>Note: the process is also included for completeness &ndash; it is one of
+ * the fundamental primitives of <B>CSP</B>, where it is a unit of sequential
+ * composition and parallel interleaving.
+ * In JCSP, it is a unit of {@link Sequence}, {@link Parallel} and {@link PriParallel} .</I>
  *
  * @see org.jcsp.lang.Stop
  *

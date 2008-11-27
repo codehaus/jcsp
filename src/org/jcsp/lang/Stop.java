@@ -32,11 +32,16 @@ package org.jcsp.lang;
  * <H2>Description</H2>
  * <TT>Stop</TT> is a process that starts, engages in no events, performs no
  * computation but refuses to terminate.
+ * <p>
  * It can also be used as a {@link Guard} in an {@link Alternative} that is
  * never ready.
+ * Of course, this is equivalent to it (and its defended process) not being
+ * there at all!
  * <P>
- * <I>Note: it is included here for completeness -- it is one of the fundamental
- * primitives of <B>CSP</B>, where it represents a broken process.</I>
+ * <I>Note: this process is included for completeness &ndash; it is one of the fundamental
+ * primitives of <B>CSP</B>, where it represents a broken process and is a unit of
+ * external choice.
+ * In JCSP, it is a unit of {@link Alternative}.</I>
  *
  * @see org.jcsp.lang.Skip
  *
