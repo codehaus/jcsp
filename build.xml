@@ -258,6 +258,9 @@
 	<target name="release-jar" depends="all-jars,all-javadoc">
 		<copy tofile="${dist}/LICENCE-JCSP-${jcsp-version}.txt" file="LICENCE.txt"/>
 		<copy tofile="${dist}/README-JCSP-${jcsp-version}.txt" file="README.txt"/>
+		<copy todir="${dist}/jcsp-demos">
+		  <fileset dir="${src}/jcsp-demos"/>
+		</copy>
 		<!-- Note that this is meant to be two unescaped "dist"s below: -->
 		<jar destfile="dist/jcsp-${jcsp-version}.jar" basedir="dist" includes="jcsp-${jcsp-version}/**"/>
 	</target>
