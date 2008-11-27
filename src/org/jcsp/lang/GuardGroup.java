@@ -50,7 +50,7 @@ public class GuardGroup extends Guard {
 	//{{{ private void explicitlyEnableBarriers()
 	private void explicitlyEnableBarriers() {
 		for (int i = 0; i < barriers.length; i++) {
-			
+			barriers[i].setStatus(barriers[i].EXPLICIT_READY);
 		}
 	}
 	//}}}
@@ -166,24 +166,18 @@ public class GuardGroup extends Guard {
 	private Object anyReady() {
 		AltableBarrier ab = null;
 		
-		try { synchronized (Class.forName("AltableBarrierBase")) {
-			Guard g = checkForReadyGuards();
-			if (g != null) {
-				return g;
-			}
-
-			eliminateUnreadyBarriers();
-			ab = selectBarrier();
-			if (ab == null) {
-				// there were no immediately ready guards
-				return null;
-			}
-			ab = waitOnBarrier(ab);
-		} }catch (Exception e) {
-			System.out.println("AltableBarrierBase not found, erk");
-			e.printStackTrace();
-			System.exit(0);
+		Guard g = checkForReadyGuards();
+		if (g != null) {
+			return g;
 		}
+
+		eliminateUnreadyBarriers();
+		ab = selectBarrier();
+		if (ab == null) {
+			// there were no immediately ready guards
+			return null;
+		}
+		ab = waitOnBarrier(ab);
 
 		return ab;
 	}
@@ -193,40 +187,51 @@ public class GuardGroup extends Guard {
 	//{{{ methods inherited by Guard
 	//{{{ boolean enable(Alternative alt)
 	boolean enable(Alternative alt) {
-		// now has parent, assign
-		parent = alt;
+		try { synchronized (Class.forName("AltableBarrierBase")) {
 
-		// expand list of barriers of equal or greater priority barriers
-		expandEqualGreaterList(parent); // unique ID is the parent Alt 
+			// now has parent, assign
+			parent = alt;
+	
+			// expand list of barriers of equal or greater priority barriers
+			expandEqualGreaterList(parent); // unique ID is the parent Alt 
 
-		// check if any Guards are ready
-		Object o = anyReady();
-		if (o == null) {
-			return false;
-		} else {
-			lastReadyGuard = o;
-			return true;
+			// check if any Guards are ready
+			Object o = anyReady();
+			if (o == null) {
+				return false;
+			} else {
+				lastReadyGuard = o;
+				return true;
+			}
+		}} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
 		}
-
 	}
 	//}}}
 	//{{{ boolean disable()
 	boolean disable() {
-		// check if there are any ready guards
-		Object o = anyReady();
+		try { synchronized (Class.forName("AltableBarrierBase")) {
+		
+			// check if there are any ready guards
+			Object o = anyReady();
 
-		// clear the process' list of equal or greater ranked barriers
-		clearEqualGreaterList(parent); //unique ID is the parent Alt
+			// clear the process' list of equal or greater ranked barriers
+			clearEqualGreaterList(parent); //unique ID is the parent Alt
 
-		// parent no longer known
-		parent = null;
+			// parent no longer known
+			parent = null;
 
-		// return block
-		if (o == null) {
-			return false;
-		} else {
-			lastReadyGuard = o;
-			return true;
+			// return block
+			if (o == null) {
+				return false;
+			} else {
+				lastReadyGuard = o;
+				return true;
+			}
+		}} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 	//}}}

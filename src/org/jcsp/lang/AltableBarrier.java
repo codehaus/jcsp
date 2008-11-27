@@ -50,8 +50,18 @@ public class AltableBarrier {
 	}
 	//}}}
 	//{{{ public void setState(int state)
-	public void setStatus(int status) {
-		this.status = status;
+	/*
+	 * get back status of the AltableBarrierBase
+	 */
+	public int setStatus(int status) {
+		if (this.status == EXPLICIT_READY && status == IMPLICIT_NOT_READY) {
+			// do nothing
+		} else if (this.status == EXPLICIT_NOT_READY && status == IMPLICIT_READY){
+			// do nothing
+		} else {
+			this.status = status;
+		}
+		return parent.checkStatus(this);
 	}
 	//}}}
 	//}}}

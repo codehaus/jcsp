@@ -11,17 +11,28 @@ public class AltableBarrierBase {
 	public static final int NOT_SYNCING_NOW = 1;
 	public static final int PROBABLY_READY = 2;
 	public static final int SELECTED = 3;
+	public static final int READY = 4;
 	//}}}
 
 	//{{{ private fields
 	private Vector committedBarriers;
 	private Vector altableBarriers;
+
+	private Vector currentlyCommited;
+	private Vector currentlyAlting;
+
+	private int lastStatus = 0;
 	//}}}
 
 	//{{{ constructors
 	public AltableBarrierBase() {
 		committedBarriers = new Vector();
-		altableBarriers = new Vector();	
+		altableBarriers = new Vector();
+
+		currentlyCommited = new Vector();
+		currentlyAlting = new Vector();	
+
+		lastStatus = getStatus();
 	}
 	//}}}
 
@@ -29,12 +40,17 @@ public class AltableBarrierBase {
 	//{{{ public int getStatus()
 	public int getStatus() {
 		// if any committed barriers are not ready then not ready
+//		if () {
+//		}
 		
 		// if any altable barriers are not syncing now then
 		// status is not syncing now
 
 		// if any altable barriers have selected this barrier then 
 		// status is selected
+
+		// if all of the altable barriers have selected this 
+		// barrier then it is ready
 
 		// otherwise status is probably ready
 		return PROBABLY_READY;
@@ -60,6 +76,42 @@ public class AltableBarrierBase {
 		//if becomes ready notify to be selectable
 	}
 	//}}}	
+
+	//{{{ public void checkStatus(AltableBarrier caller)
+	/*
+	 * check that the status of the barrier as a whole hasn't changed,
+	 * if it has notify interested parties, ignore the one whose current
+	 * thread of control it is. it can't be waiting for anything.
+	 */
+	public int checkStatus(AltableBarrier caller) {
+		int temp = getStatus();
+
+		if (temp != lastStatus) {  // may need to notify people
+			if (
+			 (lastStatus == NOT_READY || lastStatus == NOT_SYNCING_NOW) &&
+			 (temp != NOT_READY && temp != NOT_SYNCING_NOW) 
+			) {
+				// notify waiting processes that this barrier is ready
+			}
+
+			if ((lastStatus == PROBABLY_READY || lastStatus == SELECTED) &&
+			 (temp == NOT_SYNCING_NOW)) {
+				// abort synchronisation attempt
+			}
+
+			if (temp == READY) {
+				// all processes turned up, notify them via channels
+				// except the one which called this method
+			}
+		}
+
+		lastStatus = temp;
+
+		return lastStatus;
+
+		
+	}
+	//}}}
 	//}}}
 
 	//}}}
