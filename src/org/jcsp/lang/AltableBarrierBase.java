@@ -37,6 +37,9 @@ public class AltableBarrierBase {
 	//}}}
 
 	//{{{ public methods
+	public AltableBarrier createChild() {
+		return (new AltableBarrier(this));
+	}
 	//{{{ public int getStatus()
 	public int getStatus() {
 		// if any committed barriers are not ready then not ready

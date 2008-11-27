@@ -55,6 +55,11 @@ public class GuardGroup extends Guard {
 	}
 	//}}}
 	//{{{ private void endExplicitEnable()
+	private void endExplicitEnable() {
+		for (int i = 0; i < barriers.length; i++) {
+			barriers[i].setStatus(barriers[i].IMPLICIT_READY);
+		}
+	}
 	//}}}
 	//{{{ 1 private void expandEqualGreaterList(Object id)
 	private void expandEqualGreaterList(Object id) {
