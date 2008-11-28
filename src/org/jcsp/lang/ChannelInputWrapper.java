@@ -68,7 +68,7 @@ public class ChannelInputWrapper implements ChannelInput
     /**
      * Begins an extended rendezvous
      * 
-     * @see ChannelInput.beginExtRead
+     * @see ChannelInput.startRead
      * @return The object read from the channel
      */
     public Object startRead()
@@ -79,7 +79,7 @@ public class ChannelInputWrapper implements ChannelInput
     /**
      * Ends an extended rendezvous
      * 
-     * @see ChannelInput.endExtRead
+     * @see ChannelInput.endRead
      */
     public void endRead()
     {

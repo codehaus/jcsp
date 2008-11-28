@@ -14,7 +14,11 @@ which outlines and motivates the notion of <I>components</I> as <I>communicating
 and the <I>process oriented design</I> pattern.
 <P>
 Processes interact solely via CSP synchronising primitives, such as
-{@link org.jcsp.lang.One2OneChannel <I>channels</I>},
+{@link org.jcsp.lang.Channel <I>channels</I>}
+<i>(</i>{@link org.jcsp.lang.One2OneChannel <I>one-to-one</I>},
+{@link org.jcsp.lang.Any2OneChannel <I>any-to-one</I>},
+{@link org.jcsp.lang.One2AnyChannel <I>one-to-any</I>},
+{@link org.jcsp.lang.Any2AnyChannel <I>any-to-any</I>}<i>)</i>,
 {@link org.jcsp.lang.One2OneCallChannel <I>CALL channels</I>},
 {@link org.jcsp.lang.CSTimer <I>timers</I>},
 {@link org.jcsp.lang.Crew <I>crews</I>},
@@ -48,7 +52,7 @@ implements a common CSP <I>server</I> idiom
 Further, existing libraries that interact with user software via <I>listener</I>
 registration and callback (such as the standard <I>AWT</I> and <I>Swing</I>) can be
 easily tailored to operate as processes with channel-based interfaces (for
-example, see {@link org.jcsp.awt <I>AWT</I>}).
+example, see {@link org.jcsp.awt <I>org.jcsp.awt</I>}).
 <P>
 Finally, we note that the JCSP library reflects
 the <A HREF="http://occam-pi.org/"><B>occam-pi</B></A>

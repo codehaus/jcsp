@@ -40,6 +40,9 @@ package org.jcsp.lang;
  * A process may use its external channels in one direction only
  * &ndash; either for <i>writing</i> or <i>reading</i>.
  * </P>
+ * <P>Actual channels conforming to this interface are made using the relevant
+ * <tt>static</tt> construction methods from {@link Channel}.
+ * Only fully {@link Channel#one2oneSymmetricInt() <i>synchronising</i>} channels are currently supported.
  * <H2>Description</H2>
  * <TT>One2OneChannelImpl</TT> is an interface for a symmetric <i>one-to-one</i> object channel.
  * Multiple readers or multiple writers are not allowed.

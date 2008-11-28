@@ -29,7 +29,10 @@
 package org.jcsp.lang;
 
 /**
- * This defines the interface for reading from object channels.
+ * This defines the interface for reading from an Object channel.
+ * <p>
+ * A <i>reading-end</i>, conforming to this interface,
+ * is obtained from a channel by invoking its <tt>in()</tt> method.
  * <H2>Description</H2>
  * <TT>ChannelInput</TT> defines the interface for reading from object channels.
  * The interface contains three methods:
@@ -108,6 +111,7 @@ package org.jcsp.lang;
  * </PRE>
  *
  * @see org.jcsp.lang.AltingChannelInput
+ * @see org.jcsp.lang.SharedChannelInput
  * @see org.jcsp.lang.ChannelOutput
  * @author P.D. Austin and P.H. Welch and N.C.C.Brown
  */

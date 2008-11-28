@@ -30,6 +30,9 @@ package org.jcsp.lang;
 
 /**
  * This defines the interface for writing to object channels.
+ * <p>
+ * A <i>writing-end</i>, conforming to this interface,
+ * is obtained from a channel by invoking its <tt>out()</tt> method.
  * <H2>Description</H2>
  * <TT>ChannelOutput</TT> defines the interface for writing to object channels.
  * The interface contains only one method - <TT>write(Object o)</TT>.
@@ -65,6 +68,7 @@ package org.jcsp.lang;
  * }
  * </PRE>
  *
+ * @see org.jcsp.lang.SharedChannelOutput
  * @see org.jcsp.lang.ChannelInput
  * @author P.D. Austin
  */

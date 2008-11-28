@@ -31,6 +31,9 @@ package org.jcsp.lang;
 /**
  * This extends {@link Guard} and {@link ChannelInput}
  * to enable a process to choose between many object input (and other) events.
+ * <p>
+ * A <i>reading-end</i>, obtained from a <i>one-one</i> or <i>any-one</i>
+ * channel by invoking its <tt>in()</tt> method, will extend this abstract class.
  * <H2>Description</H2>
  * <TT>AltingChannelInput</TT> extends {@link Guard} and {@link ChannelInput}
  * to enable a process

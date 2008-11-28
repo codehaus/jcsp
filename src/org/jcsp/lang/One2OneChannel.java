@@ -38,6 +38,15 @@ package org.jcsp.lang;
  * A process may use its external channels in one direction only
  * &ndash; either for <i>writing</i> or <i>reading</i>.
  * </P>
+ * <P>Actual channels conforming to this interface are made using the relevant
+ * <tt>static</tt> construction methods from {@link Channel}.
+ * Channels may be {@link Channel#one2one() <i>synchronising</i>},
+ * {@link Channel#one2one(org.jcsp.util.ChannelDataStore) <i>buffered</i>},
+ * {@link Channel#one2one(int) <i>poisonable</i>}
+ * or {@link Channel#one2one(org.jcsp.util.ChannelDataStore,int) <i>both</i>}
+ * <i>(i.e. buffered and poisonable)</i>.
+ * </P>
+ * </P>
  * <H2>Description</H2>
  * <TT>One2OneChannelImpl</TT> is an interface for a one-to-one object channel.  Multiple
  * readers or multiple writers are not allowed &ndash; these are catered for
@@ -64,6 +73,7 @@ package org.jcsp.lang;
  * {@link Poisonable} channels and for arrays of channels.
  * </P>
  *
+ * @see org.jcsp.lang.Channel
  * @see org.jcsp.lang.Alternative
  * @see org.jcsp.lang.Any2OneChannel
  * @see org.jcsp.lang.One2AnyChannel

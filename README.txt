@@ -1,6 +1,6 @@
 
 =============================================================================
-              CSP for Java : JCSP 1.1 Release Candidate 1 (rc3)
+              CSP for Java : JCSP 1.1 Release Candidate 1 (rc4)
 =============================================================================
 
 
@@ -10,7 +10,7 @@ This file contains:
   o installation notes;
   o incremental change list since JCSP 0.5.
 
-Please read the LICENSE-JCSP-1.1-rc3.txt file.  Retention of these files is
+Please read the GNU-LGPL-2.1.txt file.  Retention of these files is
 assumed to imply acceptance of the terms in that license.
 
 This release is licenced under the Lesser GNU Public Licence, version 2.1
@@ -19,36 +19,49 @@ version at:
 
   http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 
+There are rather a lot of deprecated items now in the library.  Most of
+these will be removed in JCSP 1.2.  This vew version will contain
+a completely re-written networking support (org.jcsp.lang.channel).
+
+Peter Welch and Neil Brown.
+(28th. November, 2008)
+
 
 =============================================================================
-                            JCSP 1.1 (rc3) Manifest
+                            JCSP 1.1 (rc4) Manifest
 =============================================================================
 
 
   jcsp.jar                  (class library containing all features, both net
                              and core - add either this, or jcsp-core.jar,
                              to your CLASSPATH)
+
   jcsp-core.jar             (class library containing just the core features
                              - add either this or jcsp.jar to your CLASSPATH)
 
-  jcsp-demos.jar            (class library containing all the compiled demos)
-  jcsp-demos-src.jar        (class library containing the source of all the demos)
-  jcsp-demos-util.jar       (optional class library - add to your CLASSPATH)  
+Note: jcsp-core excludes the networking mechanisms (and some other things)
+contained within jcsp.jar.  It is a smaller library for applications running
+in a single JVM.  It efficiently exploits multicore processors.
 
-  LICENCE-JCSP-1.1-rc2.txt  (licence agreement)
-  README-JCSP-1.1-rc2.txt   (this file)
+  jcsp-demos/               (directory with sources for lots of demos)
+  jcsp-demos-util.jar       (addtional class library - needed for the demos)  
+
+  jcsp-doc/                 (javadoc HTML tree for jcsp.jar)
+  jcsp-core-doc/            (javadoc HTML tree for jcsp-core.jar)
+
+Note: the jcsp-core-doc folder is included so that jcsp-core users are not
+overloaded with materials they do not use.  For either of the above trees,
+point your browser at the index.html file at their top level.
+
+  GNU-LGPL-2.1              (open source licence agreement)
+  README-JCSP-1.1-rc4.txt   (this file)
   
-  jcsp-core-docs/           (javadoc HTML tree for jcsp-core.jar)
-  jcsp-all-docs/            (javadoc HTML tree for jcsp.jar)
+L-GPL open sources are available from the subversion repository:
 
-  *.bat                     (one file per demo - an easy way to run the demos
-                             that are inside jcsp-demos.jar ... for Windows
-                             platforms, at least)
-
+  svn checkout http://projects.cs.kent.ac.uk/projects/jcsp/svn/jcsp/tags/jcsp-1.1-rc4/
 
 You will need the JDK1.3 libraries (or any later JDK) installed to work
 with the JCSP library.
-
 
 
 =============================================================================
@@ -61,21 +74,39 @@ You do *not* need to unpack these files.
 
 Point your web browser at (and, maybe, bookmark):
 
-  jcsp-all-docs/index.html    or    jcsp-core-docs/index.html
+  jcsp-doc/index.html    or    jcsp-core-doc/index.html
 
 for the documentation to the JCSP library.
 
-The jcsp-demos.jar file contains many JCSP demonstration applications
-and applets.
-
-Peter Welch and Neil Brown.
-(8th. October, 2007)
-
+The jcsp-demos directory contains many JCSP demonstration applications
+and applets.  These are not embedded in any Java packages.  Each demo
+is contained in a single sub-directory.  To run one, change to that
+directory, compile (javac *java) and run the main program (which
+usually has the word "Main" as part of its name).
 
 
 =============================================================================
                                  Change List
 =============================================================================
+
+
+Changes since JCSP 1.1 (rc3) release
+------------------------------------
+
+At last, the documentation has been changed to conform to the API changes
+introduced in version 1.1.  Many minor bugs fixed.  Some new demos added.
+
+The documentation of org.jcsp.lang.Channel (from which all channels should
+be made) and org.jcsp.lang.Poisonable (for simplifying network shut-down)
+has been finished.
+
+There are rather a lot of deprecated items now in the library.  Most of
+these will be removed in JCSP 1.2.  This vew version will contain
+a completely re-written networking support (org.jcsp.lang.channel).
+
+Peter Welch and Neil Brown.
+(28th. November, 2008)
+
 
 Changes since JCSP 1.1 (rc2) release
 ------------------------------------
@@ -86,6 +117,7 @@ public visibility mistakes.
 Neil Brown and Peter Welch.
 (3rd. March, 2008).
 
+
 Changes since JCSP 1.1 (rc1) release
 ------------------------------------
 
@@ -94,6 +126,7 @@ documentation and this README file.
 
 Neil Brown and Peter Welch.
 (9th. October, 2007).
+
 
 Changes since JCSP 1.0 (rc8) release
 ------------------------------------

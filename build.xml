@@ -256,7 +256,7 @@
 	</target>	
 	
 	<target name="release-jar" depends="all-jars,all-javadoc">
-		<copy tofile="${dist}/LICENCE-JCSP-${jcsp-version}.txt" file="LICENCE.txt"/>
+		<copy tofile="${dist}/GNU-LGPL-2.1.txt" file="LICENCE.txt"/>
 		<copy tofile="${dist}/README-JCSP-${jcsp-version}.txt" file="README.txt"/>
 		<copy todir="${dist}/jcsp-demos">
 		  <fileset dir="${src}/jcsp-demos"/>

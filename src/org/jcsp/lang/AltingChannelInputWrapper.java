@@ -110,7 +110,7 @@ public class AltingChannelInputWrapper extends AltingChannelInput
     /**
      * Begins an extended rendezvous
      * 
-     * @see ChannelInput.beginExtRead
+     * @see ChannelInput.startRead
      * @return The object read from the channel
      */
     public Object startRead()
@@ -121,7 +121,7 @@ public class AltingChannelInputWrapper extends AltingChannelInput
     /**
      * Ends an extended rendezvous
      * 
-     * @see ChannelInput.endExtRead
+     * @see ChannelInput.endRead
      */
     public void endRead()
     {

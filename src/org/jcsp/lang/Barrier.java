@@ -72,42 +72,42 @@ import java.io.Serializable;
  * Here is the JCSP code for this network:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class BarrierExample1 {
- * <I></I>
+ * 
  *   public static void main (String[] args) {
- * <I></I>
+ * 
  *     final int nPlayers = 10;
- * <I></I>
+ * 
  *     final Barrier barrier = new Barrier (nPlayers);
- * <I></I>
+ * 
  *     final Player[] players = new Player[nPlayers];
  *     for (int i = 0; i < players.length; i++) {
  *       players[i] = new Player (i, nPlayers, barrier);
  *     }
- * <I></I>
+ * 
  *     new Parallel (players).run ();
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * To synchronise on a barrier, a process just needs to invoke its {@link #sync sync}
  * method.  For example:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class Player implements CSProcess {
- * <I></I>
+ * 
  *   private final int id, nPlayers;
  *   private final Barrier barrier;
- * <I></I>
+ * 
  *   public Player (int id, int nPlayers, Barrier barrier) {
  *     this.id = id;
  *     this.nPlayers = nPlayers;
  *     this.barrier = barrier;
  *   }
- * <I></I>
+ * 
  *   public void run () {
  *     final CSTimer tim = new CSTimer ();
  *     final long second = 1000;          // JCSP timer units are milliseconds
@@ -120,7 +120,7 @@ import java.io.Serializable;
  *       busy = (nPlayers + 1) - busy;    // just to make it more interesting
  *     }
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * The <TT>sleep</TT> period above represents some work carried out by each <TT>Player</TT>.
@@ -158,31 +158,31 @@ import java.io.Serializable;
  * The <TT>barrier</TT> is passed to all <TT>Worker</TT>s as well as to the <TT>TimeKeeper</TT>:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class BarrierExample2 {
- * <I></I>
+ * 
  *   public static void main (String[] args) {
- * <I></I>
+ * 
  *     final int nWorkers = 10;
  *     final int rogue = 5;
- * <I></I>
+ * 
  *     final int second = 1000;
  *     // JCSP timer units are milliseconds
  *     final int tick = 1*second;
  *     final int maxWork = tick;
  *     // raise this to allow workers to overrun
- * <I></I>
+ * 
  *     final long seed = new CSTimer ().read ();
- * <I></I>
+ * 
  *     final Barrier barrier = new Barrier (1);
- * <I></I>
+ * 
  *     final TimeKeeper timeKeeper = new TimeKeeper (tick, barrier);
- * <I></I>
+ * 
  *     final Worker[] workers = new Worker[nWorkers];
  *     for (int i = 0; i < workers.length; i++) {
  *       workers[i] = new Worker (i, i + seed, maxWork, i == rogue, barrier);
  *     }
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         timeKeeper,
@@ -199,15 +199,15 @@ import java.io.Serializable;
  * <PRE>
  * import org.jcsp.lang.*;
  * import java.util.*;
- * <I></I>
+ * 
  * public class Worker implements CSProcess {
- * <I></I>
+ * 
  *   private final int id;
  *   private final long seed;
  *   private final int maxWork;
  *   private final boolean rogue;
  *   private final Barrier barrier;
- * <I></I>
+ * 
  *   public Worker (int id, long seed, int maxWork,
  *                  boolean rogue, Barrier barrier) {
  *     this.id = id;
@@ -216,27 +216,27 @@ import java.io.Serializable;
  *     this.rogue = rogue;
  *     this.barrier = barrier;
  *   }
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final Random random = new Random (seed);
  *     // each process gets a different seed
- * <I></I>
+ * 
  *     final CSTimer tim = new CSTimer ();
  *     final int second = 1000;
  *     // JCSP timer units are milliseconds
- * <I></I>
+ * 
  *     final int minRest = 3*second;
  *     final int maxRest = (id + 10)*second;
  *     final int nWorkUnits = id + 1;
- * <I></I>
+ * 
  *     final String starting = "\tWorker " + id
  *                             + " starting ...";
  *     final String  working = "\t\t\t  ... Worker " + id
  *                             + " working ...";
  *     final String  resting = "\t\t\t\t\t       ... Worker "
  *                             + id + " resting ...";
- * <I></I>
+ * 
  *     while (true) {
  *       barrier.enroll ();
  *       System.out.println (starting);
@@ -253,7 +253,7 @@ import java.io.Serializable;
  *       tim.sleep (minRest + random.nextInt (maxRest));
  *     }
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * Note that the {@link #resign resign} method also performs a (non-blocking) synchronisation
@@ -266,22 +266,22 @@ import java.io.Serializable;
  * It is pre-enrolled with the <TT>Barrier</TT> and remains permanently associated:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class TimeKeeper implements CSProcess {
- * <I></I>
+ * 
  *   private final long interval;
  *   private final Barrier barrier;
- * <I></I>
+ * 
  *   public TimeKeeper (long interval, Barrier barrier) {
  *     this.interval = interval;
  *     this.barrier = barrier;
  *   }
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final CSTimer tim = new CSTimer ();
  *     long timeout = tim.read () + interval;
- * <I></I>
+ * 
  *     while (true) {
  *       tim.after (timeout);
  *       barrier.sync ();
@@ -289,7 +289,7 @@ import java.io.Serializable;
  *       timeout += interval;
  *     }
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  * The print statement from the <TT>TimeKeeper</TT> gives an upper bound on how far each

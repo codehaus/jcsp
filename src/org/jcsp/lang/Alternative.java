@@ -153,7 +153,7 @@ package org.jcsp.lang;
  * If <code>select</code> were used, no starvation analysis is possible.
  * The <code>select</code> mechanism should only be used when starvation is not an issue.
  * 
- * <H3><A NAME="FairMuxTime">A Fair Multiplexor with a Timeout</H3>
+ * <H3><A NAME="FairMuxTime">A Fair Multiplexor with a Timeout and Poisoning</H3>
  * This example demonstrates a process that <I>fairly</I> multiplexes traffic
  * from its input channels to its single output channel, but which timeouts
  * after a user-settable time.  Whilst running, no input channel
@@ -197,7 +197,7 @@ package org.jcsp.lang;
  *       }
  *     }
  *     System.out.println ("\n\r\tFairPlexTime: timed out ... poisoning all channels ...");
- *     for (int i = 0; i < in.length; i++) {
+ *     for (int i = 0; i &lt; in.length; i++) {
  *       in[i].poison (42);                       // assume: channel immunity &lt; 42
  *     }
  *     out.poison (42);                           // assume: channel immunity &lt; 42
@@ -251,7 +251,37 @@ package org.jcsp.lang;
  * where {@link org.jcsp.plugNplay.Generate} sends its given <tt>Integer</tt> down its output channel
  * as often as it can.
  * This results in continuous demands on <tt>FairPlexTime</tt> by all its clients
- * and demonstrates its fair servicing of those demands..
+ * and demonstrates its fair servicing of those demands.
+ * <P>
+ * The {@link org.jcsp.plugNplay.Generate} and {@link org.jcsp.plugNplay.Printer} are
+ * programmed to deal with being poisoned.
+ * Here is the <tt>run()</tt> method for <tt>Generate</tt>:
+ * <PRE>
+ * public void run() {
+ *   try {
+ *     while (true) {
+ *       out.write (N);
+ *     }
+ *   } catch (PoisonException p) {
+ *     // the 'out' channel must have been posioned ... nothing left to do!
+ *   }
+ * }
+ * </PRE>
+ * In general, there will be things to do &ndash; especially if there is more
+ * than one channel.
+ * For example, here is the <tt>catch</tt> block at the end of the <tt>run()</tt>
+ * method for {@link org.jcsp.plugNplay.Delta} (which has a single input channel-end,
+ * <tt>in</tt>, and an array of output channel-ends, <tt>out</tt>):
+ * <PRE>
+ *   } catch (PoisonException p) {
+ *     // don't know which channel was posioned ... so, poison them all!
+ *     int strength = p.getStrength ();   // use same strength of poison
+ *     in.poison (strength);
+ *     for  (int i = 0; i &lt; out.length; i++) {
+ *       out[i].poison (strength);
+ *     }
+ *   }
+ * </PRE>
  *
  * <H3><A NAME="STFR">A Simple Traffic Flow Regulator</H3>
  * The <code>Regulate</code> process controls the rate of flow of traffic from its input

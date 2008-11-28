@@ -30,6 +30,9 @@ package org.jcsp.lang;
  * This extends {@link Guard} and {@link ChannelOutputInt}
  * to enable a process
  * to choose between many integer output (and other) events.
+ * <p>
+ * A <i>writing-end</i>, obtained only from a {@link One2OneChannelSymmetricInt <i>symmetric</i>}
+ * channel by invoking its <tt>out()</tt> method, will implement this interface.
  * <H2>Description</H2>
  * <TT>AltingChannelOutputInt</TT> extends {@link Guard} and {@link ChannelOutputInt}
  * to enable a process
@@ -39,22 +42,22 @@ package org.jcsp.lang;
  * <H2>Example</H2>
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
- * public class AltingIntOutputExample implements CSProcess {
- * <I></I>
+ * 
+ * public class AltingOutputIntExample implements CSProcess {
+ * 
  *   private final AltingChannelOutputInt out0, out1;
- *   <I></I>
- *   public AltingIntOutputExample (final AltingChannelOutputInt out0,
+ *   
+ *   public AltingOutputIntExample (final AltingChannelOutputInt out0,
  *                                  final AltingChannelOutputInt out1) {
  *     this.out0 = out0;
  *     this.out1 = out1;
  *   }
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final Guard[] altChans = {out0, out1};
  *     final Alternative alt = new Alternative (altChans);
- * <I></I>
+ * 
  *     while (true) {
  *       switch (alt.select ()) {
  *         case 0:
@@ -67,15 +70,17 @@ package org.jcsp.lang;
  *         break;
  *       }
  *     }
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
  * @see org.jcsp.lang.Guard
  * @see org.jcsp.lang.Alternative
- * @author P.D. Austin and P.H. Welch
+ * @see org.jcsp.lang.One2OneChannelSymmetricInt
+ * @see org.jcsp.lang.AltingChannelOutput
+ * @author P.H. Welch
  */
 //}}}
 

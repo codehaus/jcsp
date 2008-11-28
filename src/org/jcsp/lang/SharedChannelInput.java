@@ -31,7 +31,9 @@ package org.jcsp.lang;
 /**
  * This is the same as {@link ChannelInput} except that it is guaranteed
  * safe to pass on to more than one internal process for parallel reading.
- * It will always be the end of an <i>one-any</i> or <i>any-any</i> channel.
+ * <p>
+ * A <i>reading-end</i>, obtained from a <i>one-any</i> or <i>any-any</i>
+ * channel by invoking its <tt>in()</tt> method, will implement this interface.
  *
  * @author Quickstone Technologies Limited
  */

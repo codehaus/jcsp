@@ -96,17 +96,27 @@ public final class Delta implements CSProcess
     */
    public void run()
    {
-      ProcessWrite[] procs = new ProcessWrite[out.length];
-      for (int i = 0; i < out.length; i++)
-         procs[i] = new ProcessWrite(out[i]);
-      Parallel par = new Parallel(procs);
-      
-      while (true)
-      {
-         Object value = in.read();
+      try {
+         ProcessWrite[] procs = new ProcessWrite[out.length];
          for (int i = 0; i < out.length; i++)
-            procs[i].value = value;
-         par.run();
+            procs[i] = new ProcessWrite(out[i]);
+         Parallel par = new Parallel(procs);
+      
+         while (true)
+         {
+            Object value = in.read();
+            for (int i = 0; i < out.length; i++)
+               procs[i].value = value;
+            par.run();
+         }
+      } catch (PoisonException p) {
+         // <i>don't know which channel was posioned ... so, poison them all!</i>
+         int strength = p.getStrength ();   // <i>use same strength of poison</i>
+         in.poison (strength);
+         for  (int i = 0; i < out.length; i++) {
+            out[i].poison (strength);
+         }
       }
    }
+
 }

@@ -27,11 +27,14 @@ package org.jcsp.lang;
 
 //{{{  javadoc
 /**
- * This extends {@link Guard} and {@link ChannelOutputInt}
+ * This extends {@link Guard} and {@link ChannelOutput}
  * to enable a process
  * to choose between many integer output (and other) events.
+ * <p>
+ * A <i>writing-end</i>, obtained only from a {@link One2OneChannelSymmetric <i>symmetric</i>}
+ * channel by invoking its <tt>out()</tt> method, will implement this interface.
  * <H2>Description</H2>
- * <TT>AltingChannelOutputInt</TT> extends {@link Guard} and {@link ChannelOutputInt}
+ * <TT>AltingChannelOutput</TT> extends {@link Guard} and {@link ChannelOutput}
  * to enable a process
  * to choose between many integer output (and other) events.  The methods inherited from
  * <TT>Guard</TT> are of no concern to users of this package.
@@ -39,43 +42,45 @@ package org.jcsp.lang;
  * <H2>Example</H2>
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
- * public class AltingIntOutputExample implements CSProcess {
- * <I></I>
- *   private final AltingChannelOutputInt out0, out1;
- *   <I></I>
- *   public AltingIntOutputExample (final AltingChannelOutputInt out0,
- *                                  final AltingChannelOutputInt out1) {
+ * 
+ * public class AltingOutputExample implements CSProcess {
+ * 
+ *   private final AltingChannelOutput out0, out1;
+ *   
+ *   public AltingOutputExample (final AltingChannelOutput out0,
+ *                               final AltingChannelOutput out1) {
  *     this.out0 = out0;
  *     this.out1 = out1;
  *   }
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final Guard[] altChans = {out0, out1};
  *     final Alternative alt = new Alternative (altChans);
- * <I></I>
+ * 
  *     while (true) {
  *       switch (alt.select ()) {
  *         case 0:
- *           out0.write (0);
+ *           out0.write (new Integer (0));
  *           System.out.println ("out0 written");
  *         break;
  *         case 1:
- *           out1.write (1);
+ *           out1.write (new Integer (1));
  *           System.out.println ("out1 written");
  *         break;
  *       }
  *     }
- * <I></I>
+ * 
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
  * @see org.jcsp.lang.Guard
  * @see org.jcsp.lang.Alternative
- * @author P.D. Austin and P.H. Welch
+ * @see org.jcsp.lang.One2OneChannelSymmetric
+ * @see org.jcsp.lang.AltingChannelOutputInt
+ * @author P.H. Welch
  */
 //}}}
 

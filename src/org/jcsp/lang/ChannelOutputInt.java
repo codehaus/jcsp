@@ -30,6 +30,9 @@ package org.jcsp.lang;
 
 /**
  * This defines the interface for writing to integer channels.
+ * <p>
+ * A <i>writing-end</i>, conforming to this interface,
+ * is obtained from a channel by invoking its <tt>out()</tt> method.
  * <H2>Description</H2>
  * <TT>ChannelOutputInt</TT> defines the interface for writing to integer channels.
  * The interface contains only one method - <TT>write(int o)</TT>.
@@ -63,6 +66,7 @@ package org.jcsp.lang;
  * }
  * </PRE>
  *
+ * @see org.jcsp.lang.SharedChannelOutputInt
  * @see org.jcsp.lang.ChannelInputInt
  * @author P.D. Austin
  */

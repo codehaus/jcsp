@@ -49,11 +49,11 @@ import java.io.Serializable;
  * interface as before, we derive:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class Any2AnyFooChannel extends Any2AnyCallChannel implements Foo {
- * <I></I>
+ * 
  *   ...  same body as <A HREF="One2OneCallChannel.html#One2OneFooChannel"><TT>One2OneFooChannel</TT></A>
- * <I></I>
+ * 
  * }
  * </PRE>
  *
@@ -69,44 +69,44 @@ import java.io.Serializable;
  * to be attached:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * class B implements CSProcess, Foo {
- * <I></I>
+ * 
  *   private final ChannelAccept in;
- * <I></I>
+ * 
  *   public B (final One2OneFooChannel in) {         // original constructor
  *     this.in = in;
  *   }
- * <I></I>
+ * 
  *   public B (final Any2AnyFooChannel in) {       // additional constructor
  *     this.in = in;
  *   }
- * <I></I>
+ * 
  *   ...  rest <A HREF="One2OneCallChannel.html#Accept">as before</A>
- * <I></I>
+ * 
  * }
  * </PRE>
  * When wrapping the above to hide its raw method interface, don't forget to include
  * the extra constructor(s):
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * public class B2 implements CSProcess {            // no Foo interface
- * <I></I>
+ * 
  *   private final B b;
- * <I></I>
+ * 
  *   public B2 (final One2OneFooChannel in) {        // original constructor
  *     b = new B (in);
  *   }
- * <I></I>
+ * 
  *   public B2 (final Any2AnyFooChannel in) {      // additional constructor
  *     b = new B (in);
  *   }
- * <I></I>
+ * 
  *   public void run () {
  *     b.run ();
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
@@ -128,17 +128,17 @@ import java.io.Serializable;
  * is implemented by:
  * <PRE>
  *     Any2AnyFooChannel c = new Any2AnyFooChannel ();
- * <I></I>
+ * 
  *     final A[] aClients = new A[n_aClients];
  *     for (int i = 0; i < aClients.length; i++) {
  *       aClients[i] = new A (c);
  *     }
- * <I></I>
+ * 
  *     final B2[] bServers = new B2[n_bClients];
  *     for (int i = 0; i < bServers.length; i++) {
  *       bServers[i] = new B2 (c);
  *     }
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Parallel (aClients),
@@ -215,14 +215,14 @@ import java.io.Serializable;
  * channel class as inner declarations:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * class Student implements CSProcess {
- * <I></I>
+ * 
  *   public static interface Service {
  *     public String hello (String profId,
  *            Canteen.One2OneServiceChannel service);
  *   }
- * <I></I>
+ * 
  *   public static class Any2AnyServiceChannel
  *    extends Any2AnyCallChannel implements Service {
  *     public String hello (String profId,
@@ -251,7 +251,7 @@ import java.io.Serializable;
  *   private final Canteen.Service canteenService;
  *   // act as a client on this line
  *   private final int serviceTime;
- * <I></I>
+ * 
  *   public Student (String id, Any2AnyServiceChannel studentService,
  *                   Canteen.Service canteenService, int serviceTime) {
  *     this.id = id;
@@ -264,15 +264,15 @@ import java.io.Serializable;
  * can be created (anonymously) by this wrapper's run method:
  * <PRE>
  *   private interface inner extends CSProcess, Service, Canteen.Service {};
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     new inner () {
- * <I></I>
+ * 
  *       private AltingChannelAccept service;
  *       // place holder for the private line
  *       private int nServed = 0;
- * <I></I>
+ * 
  *       private final CSTimer tim = new CSTimer ();
  * </PRE>
  * Impementations of the required CALL interfaces (including the one for the channel
@@ -285,7 +285,7 @@ import java.io.Serializable;
  *                             profId + " : hello ... ");
  *         return id;
  *       }
- * <I></I>
+ * 
  *       public int takeChicken (String profId) {
  *         System.out.println ("   Student " + id + " -> Prof +"
  *                             profId + " : that'll be 1-95 please ... ");
@@ -327,15 +327,15 @@ import java.io.Serializable;
  * each needs to keep a private channel up its sleeve:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * class Prof implements CSProcess {
- * <I></I>
+ * 
  *   private final String id;
  *   private final Student.Service studentService;
  *   private final int thinkTime;
  *   private final int eatTime;
  *   private final boolean greedy;
- * <I></I>
+ * 
  *   public Prof (String id, Student.Service studentService,
  *                int thinkTime, int eatTime, boolean greedy) {
  *     this.id = id;
@@ -344,7 +344,7 @@ import java.io.Serializable;
  *     this.eatTime = eatTime;
  *     this.greedy = greedy;
  *   }
- * <I></I>
+ * 
  *   public void run () {
  *     final CSTimer tim = new CSTimer ();
  *     final Canteen.One2OneServiceChannel service =
@@ -372,7 +372,7 @@ import java.io.Serializable;
  *       tim.sleep (eatTime);      // eating
  *     }
  *   }
- * <I></I>
+ * 
  * }
  * </PRE>
  *
@@ -391,44 +391,44 @@ import java.io.Serializable;
  * Here is the code:
  * <PRE>
  * import org.jcsp.lang.*;
- * <I></I>
+ * 
  * class NewCollege implements CSProcess {
- * <I></I>
+ * 
  *   public void run () {
- * <I></I>
+ * 
  *     final String[] profId = {"Bill", "Hilary", "Gennifer",
  *                              "Paula", "Monica"};
  *     final String[] studentId = {"Occam", "Babbage",
  *                                 "Einstein", "Turing"};
- * <I></I>
+ * 
  *     final int thinkTime = 3000;             // 3 seconds
  *     final int eatTime = 100;                // 100 milliseconds
- * <I></I>
+ * 
  *     final int studentServiceTime = 1000;    // 1 second
- * <I></I>
+ * 
  *     final int canteenServiceTime = 0;       // 0 seconds
  *     final int canteenSupplyTime = 3000;     // 3 seconds
  *     final int maxChickens = 50;
- * <I></I>
+ * 
  *     final Student.Any2AnyServiceChannel studentService
  *       = new Student.Any2AnyServiceChannel ();
  *     final Canteen.Any2OneServiceChannel canteenService
  *       = new Canteen.Any2OneServiceChannel ();
  *     final Canteen.Any2OneSupplyChannel supply
  *       = new Canteen.Any2OneSupplyChannel ();
- * <I></I>
+ * 
  *     final Student[] students = new Student[studentId.length];
  *     for (int i = 0; i < students.length; i++) {
  *       students[i] = new Student (studentId[i], studentService,
  *                                  canteenService, studentServiceTime);
  *     }
- * <I></I>
+ * 
  *     final Prof[] profs = new Prof[profId.length];
  *     for (int i = 0; i < profs.length; i++) {
  *       profs[i] = new Prof (profId[i], studentService,
  *                            thinkTime, eatTime, i == 0);
  *     }
- * <I></I>
+ * 
  *     new Parallel (
  *       new CSProcess[] {
  *         new Clock (),
@@ -442,7 +442,7 @@ import java.io.Serializable;
  *         new Chef ("Sid", 100, 150000, supply)
  *       }
  *     ).run ();
- * <I></I>
+ * 
  *   }
  *   public static void main (String argv[]) {
  *     new NewCollege ().run ();
