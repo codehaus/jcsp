@@ -146,15 +146,12 @@ public class Infection implements CSProcess {
     this.fromGraphics = fromGraphics;
   }
 
-  //     colours          :       Cell.GREEN    Cell.INFECTED    Cell.DEAD
-  //     -------                  ----------    -------------    ---------
-  
-  private final byte[] reds   = { (byte)0x00,    (byte)0xff,    (byte)0x00};
-  private final byte[] greens = { (byte)0xff,    (byte)0x00,    (byte)0x00};
-  private final byte[] blues  = { (byte)0x00,    (byte)0x00,    (byte)0xff};
-
-  //     pixel array and key run-time parameters
-  //     ---------------------------------------
+  // //     colours          :       Cell.GREEN    Cell.INFECTED    Cell.DEAD
+  // //     -------                  ----------    -------------    ---------
+  //  
+  // private final byte[] reds   = { (byte)0x00,    (byte)0xff,    (byte)0x00};
+  // private final byte[] greens = { (byte)0xff,    (byte)0x00,    (byte)0x00};
+  // private final byte[] blues  = { (byte)0x00,    (byte)0x00,    (byte)0xff};
 
   private byte[] pixels;                     // pixel array of Cell matrix
 
@@ -188,8 +185,25 @@ public class Infection implements CSProcess {
   //     private methods
   //     -----------------
 
+  /*
   private ColorModel createColorModel () {
     return new IndexColorModel (2, 3, reds, greens, blues);
+  }
+  */
+
+  private ColorModel createColorModel () {
+
+    byte[] red = new byte[256];
+    byte[] green = new byte[256];
+    byte[] blue = new byte[256];
+
+    red[Cell.GREEN] = 0;  green[Cell.GREEN] = (byte) 255; blue[Cell.GREEN] = 0;
+    red[Cell.INFECTED] = (byte) 255;  green[Cell.INFECTED] = 0; blue[Cell.INFECTED] = 0;
+    red[Cell.DEAD] = 0;  green[Cell.DEAD] = 0; blue[Cell.DEAD] = (byte) 255;
+
+    final int nBitsOfColour = 8;
+    return new IndexColorModel (nBitsOfColour, red.length, red, green, blue);
+
   }
 
   private final Rand random = new Rand ();

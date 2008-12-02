@@ -38,4 +38,8 @@ public interface Cell {
   public final static byte INFECTED = 1;
   public final static byte DEAD = 2;
 
+  // public final static byte GREEN = 0;
+  // public final static byte INFECTED = 171;
+  // public final static byte DEAD = 86;
+
 }
