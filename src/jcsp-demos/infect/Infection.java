@@ -29,164 +29,226 @@
 
 import org.jcsp.lang.*;
 import org.jcsp.awt.*;
+
 import java.awt.*;
 import java.awt.image.*;
-import java.util.Random;
+import java.awt.event.*;
 
 /**
  * @author P.H. Welch
  */
 public class Infection implements CSProcess {
 
-  protected int rate;
+  private final int N_EVOLVERS = 8;
 
-  private final AltingChannelInput in;
+  private int renderRate;        // invariant: 0 <= renderRate <= 100
+  private int renderEvery;       // invariant: (renderRate == 0) ? Integer.MAX_VALUE : 100/renderRate
 
-  private final AltingChannelInputInt scrollEvent;
+  private int infectRate;        // invariant: 0 <= infectRate <= 100 (or 127)
+  private int convertRate;       // invariant: 0 <= convertRate <= 100 (or 127)
+  private int recoverRate;       // invariant: 0 <= recoverRate <= 100 (or 127)
+  private int reinfectRate;      // invariant: 0 <= reinfectRate <= 100 (or 127)
 
-  private final ChannelOutput feedBack, scrollConfigure, infoConfigure, rateConfigure;
+  private int sprayRadius;
 
+  private CSTimer tim = new CSTimer ();     // frame-rate calculation fields
+  private long firstFrameTime;
+  private int nFrames = 0;
+  private int fpsUpdate = 1;
+  
+  private final AltingChannelInput fromMouse;
+  private final AltingChannelInput fromMouseMotion;
+
+  private final AltingChannelInput resetEvent;
+  private final ChannelOutput resetConfigure;
+
+  private final AltingChannelInput freezeEvent;
+  private final ChannelOutput freezeConfigure;
+
+  private final AltingChannelInputInt renderRateBarEvent;
+  private final ChannelOutput renderRateBarConfigure;
+
+  private final AltingChannelInputInt infectRateBarEvent;
+  private final ChannelOutput infectRateBarConfigure;
+
+  private final AltingChannelInputInt convertRateBarEvent;
+  private final ChannelOutput convertRateBarConfigure;
+  
+  private final AltingChannelInputInt recoverRateBarEvent;
+  private final ChannelOutput recoverRateBarConfigure;
+  
+  private final ChannelOutput fpsConfigure;
+  private final ChannelOutput infectedConfigure;
+  private final ChannelOutput deadConfigure;
+  
+  private final ChannelOutput renderRateLabelConfigure;
+  private final ChannelOutput infectRateLabelConfigure;
+  private final ChannelOutput convertRateLabelConfigure;
+  private final ChannelOutput recoverRateLabelConfigure;
+  
   private final ChannelOutput toGraphics;
   private final ChannelInput fromGraphics;
 
-  public Infection (final int rate,
-                    final AltingChannelInput in,
-                    final AltingChannelInputInt scrollEvent,
-                    final ChannelOutput scrollConfigure,
-                    final ChannelOutput infoConfigure,
-                    final ChannelOutput rateConfigure,
-                    final ChannelOutput feedBack,
+  public Infection (final int infectRate,
+                    final AltingChannelInput fromMouse,
+                    final AltingChannelInput fromMouseMotion,
+                    final AltingChannelInput resetEvent,
+                    final ChannelOutput resetConfigure,
+                    final AltingChannelInput freezeEvent,
+                    final ChannelOutput freezeConfigure,
+                    final AltingChannelInputInt renderRateBarEvent,
+                    final ChannelOutput renderRateBarConfigure,
+                    final AltingChannelInputInt infectRateBarEvent,
+                    final ChannelOutput infectRateBarConfigure,
+                    final AltingChannelInputInt convertRateBarEvent,
+                    final ChannelOutput convertRateBarConfigure,
+                    final AltingChannelInputInt recoverRateBarEvent,
+                    final ChannelOutput recoverRateBarConfigure,
+                    final ChannelOutput fpsConfigure,
+                    final ChannelOutput infectedConfigure,
+                    final ChannelOutput deadConfigure,
+                    final ChannelOutput renderRateLabelConfigure,
+                    final ChannelOutput infectRateLabelConfigure,
+                    final ChannelOutput convertRateLabelConfigure,
+                    final ChannelOutput recoverRateLabelConfigure,
                     final ChannelOutput toGraphics,
                     final ChannelInput fromGraphics) {
 
-    this.rate = rate;
-    this.scrollEvent = scrollEvent;
-    this.scrollConfigure = scrollConfigure;
-    this.infoConfigure = infoConfigure;
-    this.rateConfigure = rateConfigure;
-    this.in = in;
-    this.feedBack = feedBack;
+    this.renderRate = 100;
+    this.renderEvery = (renderRate == 0) ? Integer.MAX_VALUE : 100/renderRate;
+    this.infectRate = infectRate;
+    this.convertRate = 80;
+    this.recoverRate = 99;
+    this.reinfectRate = 10;
+    this.sprayRadius = 20;
+    this.fromMouse = fromMouse;
+    this.fromMouseMotion = fromMouseMotion;
+    this.resetEvent = resetEvent;
+    this.resetConfigure = resetConfigure;
+    this.freezeEvent = freezeEvent;
+    this.freezeConfigure = freezeConfigure;
+    this.renderRateBarEvent = renderRateBarEvent;
+    this.renderRateBarConfigure = renderRateBarConfigure;
+    this.infectRateBarEvent = infectRateBarEvent;
+    this.infectRateBarConfigure = infectRateBarConfigure;
+    this.convertRateBarEvent = convertRateBarEvent;
+    this.convertRateBarConfigure = convertRateBarConfigure;
+    this.recoverRateBarEvent = recoverRateBarEvent;
+    this.recoverRateBarConfigure = recoverRateBarConfigure;
+    this.fpsConfigure = fpsConfigure;
+    this.infectedConfigure = infectedConfigure;
+    this.deadConfigure = deadConfigure;
+    this.renderRateLabelConfigure = renderRateLabelConfigure;
+    this.infectRateLabelConfigure = infectRateLabelConfigure;
+    this.convertRateLabelConfigure = convertRateLabelConfigure;
+    this.recoverRateLabelConfigure = recoverRateLabelConfigure;
     this.toGraphics = toGraphics;
     this.fromGraphics = fromGraphics;
   }
 
-  //     colours          :   Tree.green    Tree.infected    Tree.dead
-  //     -------              ----------    -------------    ---------
+  //     colours          :       Cell.GREEN    Cell.INFECTED    Cell.DEAD
+  //     -------                  ----------    -------------    ---------
   
-  protected final byte[] reds   = { (byte)0x00,    (byte)0xff,    (byte)0x00};
-  protected final byte[] greens = { (byte)0xff,    (byte)0x00,    (byte)0x00};
-  protected final byte[] blues  = { (byte)0x00,    (byte)0x00,    (byte)0xff};
+  private final byte[] reds   = { (byte)0x00,    (byte)0xff,    (byte)0x00};
+  private final byte[] greens = { (byte)0xff,    (byte)0x00,    (byte)0x00};
+  private final byte[] blues  = { (byte)0x00,    (byte)0x00,    (byte)0xff};
 
   //     pixel array and key run-time parameters
   //     ---------------------------------------
 
-  protected byte[] pixels;                     // pixel array of Tree matrix
+  private byte[] pixels;                     // pixel array of Cell matrix
 
-  protected byte[][] tree, last_tree;          // matrix of Trees (plus spare)
+  private byte[][] cell, last_cell;          // matrix of Cells (plus spare)
 
-  // Note: we will maintain in last_tree the previous state of the trees
-  // in this Forest.
+  // Note: we will maintain in last_cell the previous state of the Cells.
 
-  protected int width, height;
+  private int width, height;
 
-  protected int[] count = new int[Tree.nStates];  // how many in each state
+  private int[] count = new int[Cell.N_STATES];  // how many in each cell state
 
-  //     protected methods
+  private final static int IDLE = 0, RUNNING = 2, FROZEN = 3, RESET = 4;
+
+  //  IDLE     <==>  "reset"  "FREEZE"    all green           not running
+  //  RUNNING  <==>  "reset"  "FREEZE"    some infected/dead  running
+  //  FROZEN   <==>  "RESET"  "UNFREEZE"  some infected/dead  not running
+  //  RESET    <==>  "reset"  "UNFREEZE"  all green           not running
+    
+  private int state = IDLE;
+
+  private final static int RESET_EVENT = 0, FREEZE_EVENT = 1;
+  private final static int RENDER_RATE = 2, INFECT_RATE = 3, CONVERT_RATE = 4, RECOVER_RATE = 5;
+  private final static int MOUSE = 6, MOUSE_MOTION = 7, SKIP = 8;
+
+  private Guard[] guard;
+                           
+  private boolean[] preCondition;
+  
+  private Spray spray;
+
+  //     private methods
   //     -----------------
 
-  protected ColorModel createColorModel () {
+  private ColorModel createColorModel () {
     return new IndexColorModel (2, 3, reds, greens, blues);
   }
 
-  protected final Random random = new Random ();
+  private final Rand random = new Rand ();
 
-  protected final int range (int n) {
-    int i = random.nextInt ();
-    if (i < 0) {
-      if (i == Integer.MIN_VALUE) {      // guard against minint !
-        i = 42;
-      } else {
-        i = -i;
-      }
-    }
-    return i % n;
-  }
-
-  protected void initialisePixels () {
+  private void initialisePixels () {
     for (int ij = 0; ij < pixels.length; ij++) {
-      pixels[ij] = Tree.green;
+      pixels[ij] = Cell.GREEN;
     }
     for (int j = 0; j < height; j++) {
       for (int i = 0; i < width; i++) {
-        tree[j][i] = Tree.green;
+        cell[j][i] = Cell.GREEN;
       }
     }
-    count[Tree.green] = height*width;
-    count[Tree.infected] = 0;
-    count[Tree.dead] = 0;
-    infoConfigure.write ((new Integer (count[Tree.infected] +
-                                       count[Tree.dead])).toString ());
+    count[Cell.GREEN] = height*width;
+    count[Cell.INFECTED] = 0;
+    count[Cell.DEAD] = 0;
+    infectedConfigure.write (String.valueOf (count[Cell.INFECTED]));
+    deadConfigure.write (String.valueOf (count[Cell.DEAD]));
   }
 
-  protected void centrePixel () {
-    int i = width/2;
-    int j = height/2;
-    pixels[(j*width) + i] = Tree.infected;
-    count[tree[j][i]]--;
-    tree[j][i] = Tree.infected;
-    count[Tree.infected]++;
-    infoConfigure.write ((new Integer (count[Tree.infected] +
-                                       count[Tree.dead])).toString ());
-  }
-
-  protected void randomPixel () {
-    int i = range (width);
-    int j = range (height);
-    pixels[(j*width) + i] = Tree.infected;
-    count[tree[j][i]]--;
-    tree[j][i] = Tree.infected;
-    count[Tree.infected]++;
-    infoConfigure.write ((new Integer (count[Tree.infected] +
-                                       count[Tree.dead])).toString ());
-  }
-
-  protected void pixelise () {
+  private void pixelise () {
     int i0 = 0;
-    for (int i = 0; i < tree.length; i++) {
-      System.arraycopy (tree[i], 0, pixels, i0, width);
+    for (int i = 0; i < cell.length; i++) {
+      System.arraycopy (cell[i], 0, pixels, i0, width);
       i0 = i0 + width;
     }
   }
 
-  protected void byteMatrixCopy (byte[][] from, byte[][] to) {
+  private void byteMatrixCopy (final byte[][] from, final byte[][] to) {
     // assume: from and to are equally sized ...
     for (int i = 0; i < from.length; i++) {
       System.arraycopy (from[i], 0, to[i], 0, from[i].length);  // fast copy
     }
   }
 
-  protected void infect (int i, int j) {     // possibly infect Tree[i][j]
-    if ((0 <= i) && (i < height) && (0 <= j) && (j < width)) {
-      if (last_tree[i][j] == Tree.green) {
-        if (range (100) < rate) {
-          count[tree[i][j]]--;
-          tree[i][j] = Tree.infected;
-          count[Tree.infected]++;
-        }
+  private void infect (int i, int j) {     // possibly infect Cell[i][j]
+    i = (i < 0) ? i + height : (i >= height) ? i - height : i;
+    j = (j < 0) ? j + width : (j >= width) ? j - width : j;
+    if (last_cell[i][j] == Cell.GREEN) {
+      if (random.bits7 () < infectRate) {
+        count[cell[i][j]]--;
+        cell[i][j] = Cell.INFECTED;
+        count[Cell.INFECTED]++;
       }
     }
   }
 
-  protected void evolve () {                 // evolves the forest forward
-    byteMatrixCopy (tree, last_tree);        // forward one cycle
+  // the following method has been replaced by the Evolve process
+  // (instances of which are run in parallel)
+
+  private void evolve () {      // evolves the forest forward forward one cycle
     for (int i = 0; i < height; i++) {
-      final byte[] last_row_i = last_tree[i];
-      final byte[] row_i = tree[i];
+      final byte[] last_row_i = last_cell[i];
+      final byte[] row_i = cell[i];
       for (int j = 0; j < width; j++) {
         switch (last_row_i[j]) {
-          case Tree.green:
-            break;
-          case Tree.infected:
+          // case Cell.GREEN:
+          // break;
+          case Cell.INFECTED:
             infect (i + 1, j);
             infect (i - 1, j);
             infect (i, j + 1);
@@ -198,47 +260,123 @@ public class Infection implements CSProcess {
               infect (i - 1, j + 1);
               infect (i + 1, j - 1);
             }
-            row_i[j] = Tree.dead;
-            count[Tree.infected]--;
-            count[Tree.dead]++;
-            break;
-          case Tree.dead:
-            row_i[j] = Tree.green;
-            count[Tree.dead]--;
-            count[Tree.green]++;
+            if (random.bits7 () < convertRate) {
+              row_i[j] = Cell.DEAD;
+              count[Cell.INFECTED]--;
+              count[Cell.DEAD]++;
+            }
+          break;
+          case Cell.DEAD:
+            if (random.bits7 () < recoverRate) {
+              if (random.bits16 () < reinfectRate) {
+                row_i[j] = Cell.INFECTED;
+                count[Cell.DEAD]--;
+                count[Cell.INFECTED]++;
+              } else {
+                row_i[j] = Cell.GREEN;
+                count[Cell.DEAD]--;
+                count[Cell.GREEN]++;
+              }
+            }
+          break;
         }
       }
     }
+    pixelise ();
   }
 
-  // report sets results to the number of green, infected and dead trees
-  // (respectively) in the forest.  It assumes results has a length of 3.
-  //
-  // Not used any more -- since these counts are maintained automatically.
-
-  protected void report (int[] results) {
-    results[Tree.green] = 0;
-    results[Tree.infected] = 0;
-    results[Tree.dead] = 0;
-    for (int i = 0; i < height; i++) {
-      final byte[] row_i = tree[i];
-      for (int j = 0; j < width; j++) {
-        results[row_i[j]]++;
+  private void handle (final Point point, final byte newCellState,
+                       final boolean spraying) {
+    if (spraying) {
+      System.out.println ("Spraying ..." + point);
+      spray.zap (point, newCellState);
+    } else {
+      System.out.print ("Spotting ..." + point + " ... (");
+      int i = point.y;
+      int j = point.x;
+      while (i < 0) i += height;            // mostly won't happen or
+      while (i >= height) i -= height;      // will happen only once.
+      while (j < 0) j += width;             //         ditto.
+      while (j >= width) j -= width;        //         ditto.
+      System.out.println (j + ", " + i + ")");
+      // if ((0 <= i) && (i < height) && (0 <= j) && (j < width)) {
+      byte[] cellRow = cell[i];
+      final byte current = cellRow[j];
+      if (current != Cell.INFECTED){
+        pixels[(i*width) + j] = newCellState;
+        count[current]--;
+        cellRow[j] = newCellState;
+        count[newCellState]++;
       }
+      // }
     }
-  }
-
-  protected String rateString () {
-    if (rate < 10) return "               " + rate;
-    if (rate < 100) return "              " + rate;
-    return "             100";
+    final int notGreen = count[Cell.INFECTED] + count[Cell.DEAD];
+    infectedConfigure.write (String.valueOf (count[Cell.INFECTED]));
+    deadConfigure.write (String.valueOf (count[Cell.DEAD]));
+    switch (state) {
+      case IDLE:
+        if (notGreen > 0) {
+          preCondition[SKIP] = true;
+          nFrames = 0;
+          fpsUpdate = 1;
+          firstFrameTime = tim.read ();
+          state = RUNNING;
+        }
+      break;
+      case RUNNING:
+        if (notGreen == 0) {
+          preCondition[SKIP] = false;
+          state = IDLE;
+        }
+      break;
+      case FROZEN:
+        if (notGreen == 0) {
+          resetConfigure.write (Boolean.FALSE);
+          resetConfigure.write ("reset");
+          preCondition[RESET_EVENT] = false;
+          state = RESET;
+        }
+      break;
+      case RESET:
+        if (notGreen > 0) {
+          while (resetEvent.pending ()) resetEvent.read ();
+          resetConfigure.write (Boolean.TRUE);
+          resetConfigure.write ("RESET");
+          preCondition[RESET_EVENT] = true;
+          state = FROZEN;
+        }
+      break;
+    }
   }
 
   public void run () {
 
-    infoConfigure.write ((new Integer (0)).toString ());
-    rateConfigure.write ((new Integer (rate)).toString ());
-    scrollConfigure.write (Boolean.TRUE);
+    fpsConfigure.write ("0");
+    infectedConfigure.write ("0");
+    deadConfigure.write ("0");
+    
+    renderRateLabelConfigure.write (String.valueOf (renderRate));
+    infectRateLabelConfigure.write (String.valueOf (infectRate));
+    convertRateLabelConfigure.write (String.valueOf (convertRate));
+    recoverRateLabelConfigure.write (String.valueOf (recoverRate));
+    
+    infectRate = ((infectRate*128) + 64)/100;
+    convertRate = ((convertRate*128) + 64)/100;
+    recoverRate = ((recoverRate*128) + 64)/100;
+    
+    convertRate = 128 - convertRate;
+    recoverRate = 128 - recoverRate;
+    
+    resetConfigure.write (Boolean.FALSE);
+    resetConfigure.write ("reset");
+    
+    freezeConfigure.write (Boolean.TRUE);
+    freezeConfigure.write ("FREEZE");
+    
+    renderRateBarConfigure.write (Boolean.TRUE);
+    infectRateBarConfigure.write (Boolean.TRUE);
+    convertRateBarConfigure.write (Boolean.TRUE);
+    recoverRateBarConfigure.write (Boolean.TRUE);
 
     toGraphics.write (GraphicsProtocol.GET_DIMENSION);
     final Dimension graphicsDim = (Dimension) fromGraphics.read ();
@@ -249,12 +387,13 @@ public class Infection implements CSProcess {
 
     pixels = new byte[width*height];
 
-    tree = new byte[height][width];
-    last_tree = new byte[height][width];
+    cell = new byte[height][width];
+    last_cell = new byte[height][width];
 
     final ColorModel model = createColorModel ();
 
-    final MemoryImageSource mis = new MemoryImageSource (width, height, model, pixels, 0, width);
+    final MemoryImageSource mis =
+      new MemoryImageSource (width, height, model, pixels, 0, width);
     mis.setAnimated (true);
     mis.setFullBufferUpdates (true);
 
@@ -273,82 +412,222 @@ public class Infection implements CSProcess {
     me.setPriority (Thread.MIN_PRIORITY);
     System.out.println ("Infection priority = " + me.getPriority ());
 
-    int state = InfectionControl.reset;
-    
-    final int STATS_INTERVAL = 1;
-    int countDown = STATS_INTERVAL;
+    guard = new Guard[] {resetEvent, freezeEvent,
+                         renderRateBarEvent, infectRateBarEvent, convertRateBarEvent,
+                         recoverRateBarEvent, fromMouse, fromMouseMotion, new Skip ()};
+                           
+    preCondition = new boolean[] {false, true, true, true, true, true, true, false, false};
 
-    final Guard[] guard = {in, scrollEvent, new Skip ()};
-    final boolean[] preCondition = {true, true, false};
-    final int NEW_STATE = 0;
-    final int SCROLL = 1;
-    final int RUNNING = 2;
+    boolean spraying = false;
+    boolean controlled = false;
+    boolean mousePressed = false;
+    byte newCellState = Cell.GREEN;
+
+    spray = new Spray (sprayRadius, cell, pixels, count);
 
     final Alternative alt = new Alternative (guard);
 
     initialisePixels ();
     mis.newPixels ();
 
+    int cycle = renderEvery;
+
+    Evolve[] evolvers = new Evolve[N_EVOLVERS];
+    final int nRows = height/N_EVOLVERS;
+    long seed = System.currentTimeMillis ();
+    for (int i = 0; i < evolvers.length; i++) {
+      evolvers[i] = new Evolve (i*nRows, nRows, cell, last_cell, pixels, seed + (i*1000));
+      evolvers[i].infectRate = infectRate;
+      evolvers[i].recoverRate = recoverRate;
+      evolvers[i].reinfectRate = reinfectRate;
+      evolvers[i].convertRate = convertRate;
+    }
+
+    CSProcess parEvolve = new Parallel (evolvers);
+
     while (true) {
-      switch (alt.priSelect (preCondition)) {
-        case NEW_STATE:
-          state = ((Integer) in.read ()).intValue ();
-          switch (state) {
-            case InfectionControl.reset:
-              System.out.println ("Infection: reset");
-              initialisePixels ();
-              mis.newPixels ();
-              preCondition[RUNNING] = false;
-            break;
-            case InfectionControl.random:
-              System.out.println ("Infection: random");
-              randomPixel ();
-              mis.newPixels ();
-              preCondition[RUNNING] = false;
-            break;
-            case InfectionControl.centre:
-              System.out.println ("Infection: centre");
-              centrePixel ();
-              mis.newPixels ();
-              preCondition[RUNNING] = false;
-            break;
-            case InfectionControl.running:
-              System.out.println ("Infection: running");
-              preCondition[RUNNING] = true;
-            break;
-            case InfectionControl.frozen:
-              System.out.println ("Infection: frozen");
-              preCondition[RUNNING] = false;
-            break;
-          }
-        break;
-        case SCROLL:
-          rate = 100 - scrollEvent.read ();
-          rateConfigure.write ((new Integer (rate)).toString ());
-          System.out.println ("Infection: scrolling ... " + rate);
-        break;
-        case RUNNING:
-          evolve ();
-          pixelise ();
+      switch (alt.fairSelect (preCondition)) {
+        case RESET_EVENT:
+          System.out.println ("Infection: reset event ...");
+          resetEvent.read ();
+          // assert : state == FROZEN
+          resetConfigure.write (Boolean.FALSE);
+          resetConfigure.write ("reset");
+          preCondition[RESET_EVENT] = false;
+          state = RESET;
+          System.out.println ("Infection: reset");
+          initialisePixels ();
           mis.newPixels ();
-          if ((count[Tree.infected] + count[Tree.dead]) == 0) {
-            infoConfigure.write ((new Integer (count[Tree.infected] +
-                                               count[Tree.dead])).toString ());
-            // System.out.println ("Infection: all healthy !!!");
-            preCondition[RUNNING] = false;
-            feedBack.write (Boolean.TRUE);
+        break;
+        case FREEZE_EVENT:
+          freezeEvent.read ();
+          switch (state) {
+            case IDLE:
+              System.out.println ("Infection: freeze");
+              freezeConfigure.write ("UNFREEZE");
+              state = RESET;
+            break;
+            case RUNNING:
+              System.out.println ("Infection: freeze");
+              freezeConfigure.write ("UNFREEZE");
+              while (resetEvent.pending ()) resetEvent.read ();
+              resetConfigure.write (Boolean.TRUE);
+              resetConfigure.write ("RESET");
+              preCondition[RESET_EVENT] = true;
+              preCondition[SKIP] = false;
+              state = FROZEN;
+            break;
+            case FROZEN:
+              System.out.println ("Infection: unfreeze");
+              freezeConfigure.write ("FREEZE");
+              resetConfigure.write (Boolean.FALSE);
+              resetConfigure.write ("reset");
+              preCondition[RESET_EVENT] = false;
+              preCondition[SKIP] = true;
+              nFrames = 0;
+              fpsUpdate = 1;
+              firstFrameTime = tim.read ();
+              state = RUNNING;
+            break;
+            case RESET:
+              System.out.println ("Infection: unfreeze");
+              freezeConfigure.write ("FREEZE");
+              state = IDLE;
+            break;
           }
-          if (countDown == 0) {
-            countDown = STATS_INTERVAL;
-            infoConfigure.write ((new Integer (count[Tree.infected] +
-                                               count[Tree.dead])).toString ());
-            // System.out.print ("Infection:");
-            // for (int t = 0; t < Tree.nStates; t++) {
-            //   System.out.print (" " + count[t]);
-            // }
-            // System.out.println ();
-          } else {
-            countDown--;
+        break;
+        case RENDER_RATE:
+          renderRate = 100 - renderRateBarEvent.read ();
+          renderEvery = (renderRate == 0) ? Integer.MAX_VALUE : 100/renderRate;
+          cycle = renderEvery;
+          renderRateLabelConfigure.write (String.valueOf (renderRate));
+        break;
+        case INFECT_RATE:
+          infectRate = 100 - infectRateBarEvent.read ();
+          infectRateLabelConfigure.write (String.valueOf (infectRate));
+          infectRate = ((infectRate*128) + 64)/100;
+          for (int i = 0; i < evolvers.length; i++) {
+            evolvers[i].infectRate = infectRate;
+          }
+        break;
+        case CONVERT_RATE:
+          convertRate = 100 - convertRateBarEvent.read ();
+          convertRateLabelConfigure.write (String.valueOf (convertRate));
+          convertRate = ((convertRate*128) + 64)/100;
+          convertRate = 128 - convertRate;
+          for (int i = 0; i < evolvers.length; i++) {
+            evolvers[i].convertRate = convertRate;
+          }
+        break;
+        case RECOVER_RATE:
+          recoverRate = 100 - recoverRateBarEvent.read ();
+          recoverRateLabelConfigure.write (String.valueOf (recoverRate));
+          recoverRate = ((recoverRate*128) + 64)/100;
+          recoverRate = 128 - recoverRate;
+          for (int i = 0; i < evolvers.length; i++) {
+            evolvers[i].recoverRate = recoverRate;
+          }
+        break;
+        case MOUSE:
+          final MouseEvent event = (MouseEvent) fromMouse.read ();
+          switch (event.getID ()) {
+            case MouseEvent.MOUSE_PRESSED:
+              if (controlled) {
+                controlled = false;
+                preCondition[MOUSE_MOTION] = false;
+                if (spraying) {
+                  spray.setMask ();
+                  spraying = false;
+                }
+              } else {
+                mousePressed = true;
+                while (fromMouseMotion.pending ()) fromMouseMotion.read ();
+                preCondition[MOUSE_MOTION] = true;
+                int modifiers = event.getModifiers ();
+                if ((modifiers & InputEvent.BUTTON1_MASK) != 0) {
+                  newCellState = Cell.INFECTED;
+                } else if ((modifiers & InputEvent.BUTTON2_MASK) != 0) {
+                  newCellState = Cell.GREEN;
+                } else {
+                  newCellState = Cell.DEAD;
+                }
+                // System.out.println ("MOUSE_PRESSED modifiers = " + modifiers);
+                // System.out.println ("SHIFT_MASK = " + InputEvent.SHIFT_MASK);
+                // System.out.println ("CTRL_MASK = " + InputEvent.CTRL_MASK);
+                // System.out.println ("META_MASK = " + InputEvent.META_MASK);
+                // System.out.println ("ALT_MASK = " + InputEvent.ALT_MASK);
+                // System.out.println ("BUTTON1_MASK = " + InputEvent.BUTTON1_MASK);
+                // System.out.println ("BUTTON2_MASK = " + InputEvent.BUTTON2_MASK);
+                // System.out.println ("BUTTON3_MASK = " + InputEvent.BUTTON3_MASK);
+                spraying = ((modifiers & InputEvent.SHIFT_MASK) != 0);
+                if (newCellState != Cell.GREEN) {  // CTRL_MASK doesn't work on BUTTON2 (JDK1.1/2/3)
+                  controlled = ((modifiers & InputEvent.CTRL_MASK) != 0);
+                }
+                handle (event.getPoint (), newCellState, spraying);
+                mis.newPixels ();
+              }
+            break;
+            case MouseEvent.MOUSE_RELEASED:
+              mousePressed = false;
+              if (! controlled) {
+                preCondition[MOUSE_MOTION] = false;
+                if (spraying) {
+                  spray.setMask ();
+                  spraying = false;
+                }
+              }
+            break;
+          }
+        break;
+        case MOUSE_MOTION:
+          final MouseEvent motion = (MouseEvent) fromMouseMotion.read ();
+          switch (motion.getID ()) {
+            case MouseEvent.MOUSE_MOVED:
+              if (controlled) {
+                handle (motion.getPoint (), newCellState, spraying);
+                mis.newPixels ();
+              }
+            case MouseEvent.MOUSE_DRAGGED:
+              if (mousePressed) {
+                handle (motion.getPoint (), newCellState, spraying);
+                mis.newPixels ();
+              }
+            break;
+          }
+        break;
+        case SKIP:
+          // assert : state == RUNNING
+          byteMatrixCopy (cell, last_cell);
+          // evolve ();          // sequential version (instead of next 6 lines)
+          parEvolve.run ();
+          for (int i = 0; i < evolvers.length; i++) {
+            for (int j = 0; j < count.length; j++) {
+              count[j] += evolvers[i].count[j];
+            }
+          }
+          cycle--;
+          if (cycle == 0) {
+            mis.newPixels ();
+            cycle = renderEvery;
+          }
+          nFrames++;
+          if (nFrames == fpsUpdate) {
+	    final long thisFrameTime = tim.read ();
+            final int period = (int) (thisFrameTime - firstFrameTime);
+            int framesPerTenSeconds = (period == 0) ? 0 : (nFrames*10000) / period;
+            fpsConfigure.write (framesPerTenSeconds/10 + "." + framesPerTenSeconds%10);
+            fpsUpdate = framesPerTenSeconds/20;
+            if (fpsUpdate == 0) fpsUpdate = 1;
+	    firstFrameTime = thisFrameTime;
+	    nFrames = 0;
+            infectedConfigure.write (String.valueOf (count[Cell.INFECTED]));
+            deadConfigure.write (String.valueOf (count[Cell.DEAD]));
+          }
+
+          final int notGreen = count[Cell.INFECTED] + count[Cell.DEAD];
+          if (notGreen == 0) {
+            preCondition[SKIP] = false;   // no infection and no dead cells => stop computing!
+            state = IDLE;
           }
         break;
       }  
@@ -357,4 +636,3 @@ public class Infection implements CSProcess {
   }
 
 }
-

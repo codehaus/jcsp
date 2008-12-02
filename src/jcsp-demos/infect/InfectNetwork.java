@@ -31,7 +31,9 @@ import org.jcsp.lang.*;
 import org.jcsp.util.*;
 import org.jcsp.util.ints.*;
 import org.jcsp.awt.*;
+
 import java.awt.*;
+import java.awt.image.*;
 
 /**
  * @author P.H. Welch
@@ -39,12 +41,21 @@ import java.awt.*;
 class InfectNetwork implements CSProcess {
 
   private final ActiveCanvas activeCanvas;
-  private final ActiveScrollbar scrollBar;
-  private final ActiveButton[] button;
-  private final PseudoButton pseudoButton;
-  private final ActiveLabel infoLabel;
-  private final ActiveLabel rateLabel;
-  private final InfectionControl control;
+  private final ActiveScrollbar renderRateBar;
+  private final ActiveScrollbar infectRateBar;
+  private final ActiveScrollbar convertRateBar;
+  private final ActiveScrollbar recoverRateBar;
+  // private final PseudoButton pseudoButton;
+  private final ActiveButton resetButton;
+  private final ActiveButton freezeButton;
+  private final ActiveLabel fpsLabel;
+  private final ActiveLabel infectedLabel;
+  private final ActiveLabel deadLabel;
+  private final ActiveLabel renderRateLabel;
+  private final ActiveLabel infectRateLabel;
+  private final ActiveLabel convertRateLabel;
+  private final ActiveLabel recoverRateLabel;
+  // private final InfectionControl control;
   private final Infection infection;
 
   public InfectNetwork (final int rate, final Container parent) {
@@ -54,68 +65,146 @@ class InfectNetwork implements CSProcess {
 
     System.out.println ("Infect creating channels ...");
     
-    final One2OneChannel[] event = Channel.one2oneArray (InfectionControl.NUMBER + 1, new OverWriteOldestBuffer (1));
-    final One2OneChannel[] configure = Channel.one2oneArray (InfectionControl.NUMBER + 1);
+    // final One2OneChannel[] event =
+    //   Channel.one2oneArray  (InfectionControl.NUMBER + 1, new OverWriteOldestBuffer (1));
+    // final One2OneChannel[] configure =
+    //   Channel.one2oneArray  (InfectionControl.NUMBER + 1);
 
-    final One2OneChannelInt scrollEvent = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
-    final One2OneChannel scrollConfigure = Channel.one2one ();
+    final One2OneChannel resetEvent = Channel.one2one (new OverWriteOldestBuffer (1));
+    final One2OneChannel resetConfigure = Channel.one2one ();
+    
+    final One2OneChannel freezeEvent = Channel.one2one  (new OverWriteOldestBuffer (1));
+    final One2OneChannel freezeConfigure = Channel.one2one ();
 
-    final One2OneChannel report = Channel.one2one ();
+    final One2OneChannelInt renderRateBarEvent = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
+    final One2OneChannel renderRateBarConfigure = Channel.one2one ();
+
+    final One2OneChannelInt infectRateBarEvent = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
+    final One2OneChannel infectRateBarConfigure = Channel.one2one ();
+
+    final One2OneChannelInt convertRateBarEvent = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
+    final One2OneChannel convertRateBarConfigure = Channel.one2one ();
+
+    final One2OneChannelInt recoverRateBarEvent = Channel.one2oneInt (new OverWriteOldestBufferInt (1));
+    final One2OneChannel recoverRateBarConfigure = Channel.one2one ();
+
+    // final One2OneChannel report = Channel.one2one ();
+    // final One2OneChannel generate = Channel.one2one ();
 
     final One2OneChannel toGraphics = Channel.one2one ();
     final One2OneChannel fromGraphics = Channel.one2one ();
 
-    final One2OneChannel feedBack = Channel.one2one ();
+    // final One2OneChannel feedBack = Channel.one2one ();
 
-    final One2OneChannel infoConfigure = Channel.one2one ();
-    final One2OneChannel rateConfigure = Channel.one2one ();
+    final One2OneChannel fpsConfigure = Channel.one2one ();
+    final One2OneChannel infectedConfigure = Channel.one2one ();
+    final One2OneChannel deadConfigure = Channel.one2one ();
+    final One2OneChannel renderRateLabelConfigure = Channel.one2one ();
+    final One2OneChannel infectRateLabelConfigure = Channel.one2one ();
+    final One2OneChannel convertRateLabelConfigure = Channel.one2one ();
+    final One2OneChannel recoverRateLabelConfigure = Channel.one2one ();
+    
+    final One2OneChannel fromMouse = Channel.one2one  (new OverWriteOldestBuffer (9));
+    final One2OneChannel fromMouseMotion = Channel.one2one  (new OverWriteOldestBuffer (9));
 
     System.out.println ("InfectNetwork created channels");
     System.out.println ("InfectNetwork creating ActiveButtons ...");
 
-    button = new ActiveButton[InfectionControl.NUMBER];
-    for (int i = 0; i < InfectionControl.NUMBER; i++) {
-      button[i]
-        = new ActiveButton (configure[i].in (), event[i].out (), "XXXXXXXXXXXXX");
-      button[i].setBackground (Color.white);
-      System.out.println ("  button " + i);
-    }
+    // button = new ActiveButton[InfectionControl.NUMBER];
+    // for (int i = 0; i < InfectionControl.NUMBER; i++) {
+    //   button[i]
+    //     = new ActiveButton (configure[i], event[i], "XXXXXXXXXXXXX");
+    //   button[i].setBackground (Color.white);
+    //   System.out.println ("  button " + i);
+    // }
 
-    infoLabel = new ActiveLabel (infoConfigure.in (), "XXXXXXXXXXXXX");
-    infoLabel.setAlignment (Label.CENTER);
-    infoLabel.setBackground (Color.white);
+    resetButton = new ActiveButton (resetConfigure.in (), resetEvent.out (), "XXXXXXXXXXXXX");
+    resetButton.setBackground (Color.white);
+    
+    freezeButton = new ActiveButton (freezeConfigure.in (), freezeEvent.out (), "XXXXXXXXXXXXX");
+    freezeButton.setBackground (Color.white);
 
-    rateLabel = new ActiveLabel (rateConfigure.in (), "XXXXXXXXXXXXX");
-    rateLabel.setAlignment (Label.CENTER);
-    rateLabel.setBackground (Color.white);
+    fpsLabel = new ActiveLabel (fpsConfigure.in (), "XXXXXXXXXXXXX");
+    fpsLabel.setAlignment (Label.CENTER);
+    fpsLabel.setBackground (Color.white);
+
+    infectedLabel = new ActiveLabel (infectedConfigure.in (), "XXXXXXXXXXXXX");
+    infectedLabel.setAlignment (Label.CENTER);
+    infectedLabel.setBackground (Color.white);
+
+    deadLabel = new ActiveLabel (deadConfigure.in (), "XXXXXXXXXXXXX");
+    deadLabel.setAlignment (Label.CENTER);
+    deadLabel.setBackground (Color.white);
+
+    renderRateLabel = new ActiveLabel (renderRateLabelConfigure.in (), "XXXXXXXXXXXXX");
+    renderRateLabel.setAlignment (Label.CENTER);
+    renderRateLabel.setBackground (Color.white);
+
+    infectRateLabel = new ActiveLabel (infectRateLabelConfigure.in (), "XXXXXXXXXXXXX");
+    infectRateLabel.setAlignment (Label.CENTER);
+    infectRateLabel.setBackground (Color.white);
+
+    convertRateLabel = new ActiveLabel (convertRateLabelConfigure.in (), "XXXXXXXXXXXXX");
+    convertRateLabel.setAlignment (Label.CENTER);
+    convertRateLabel.setBackground (Color.white);
+
+    recoverRateLabel = new ActiveLabel (recoverRateLabelConfigure.in (), "XXXXXXXXXXXXX");
+    recoverRateLabel.setAlignment (Label.CENTER);
+    recoverRateLabel.setBackground (Color.white);
 
     System.out.println ("InfectNetwork created ActiveButtons ... now adding them to the parent ...");
     
     final Panel north = new Panel ();
-    final Panel south = new Panel ();
-
-    north.add (button[InfectionControl.RESET]);
-    north.add (infoLabel);
-    north.add (button[InfectionControl.FREEZE]);
-    south.add (button[InfectionControl.RANDOM]);
-    south.add (rateLabel);
-    south.add (button[InfectionControl.CENTRE]);
-
+    north.add (resetButton);
+    north.add (fpsLabel);
+    north.add (infectedLabel);
+    north.add (deadLabel);
+    north.add (freezeButton);
     parent.add ("North", north);
+
+    final Panel south = new Panel ();
+    south.add (renderRateLabel);
+    south.add (infectRateLabel);
+    south.add (convertRateLabel);
+    south.add (recoverRateLabel);
     parent.add ("South", south);
 
-    System.out.println ("InfectNetwork creating ActiveScrollbar ...");
+    System.out.println ("InfectNetwork creating ActiveScrollbars ...");
 
-    scrollBar = new ActiveScrollbar (scrollConfigure.in (), scrollEvent.out (),
-                                     Scrollbar.VERTICAL, 100 - rate, 25, 0, 125);
-    scrollBar.setBackground (Color.white);
+    renderRateBar = new ActiveScrollbar (renderRateBarConfigure.in (), renderRateBarEvent.out (),
+                                         Scrollbar.VERTICAL, 100 - 100, 25, 0, 125);
+    renderRateBar.setBackground (Color.white);
 
-    System.out.println ("InfectNetwork created ActiveScrollbar ... now adding it to the parent ...");
+    infectRateBar = new ActiveScrollbar (infectRateBarConfigure.in (), infectRateBarEvent.out (),
+                                         Scrollbar.VERTICAL, 100 - rate, 25, 0, 125);
+    infectRateBar.setBackground (Color.white);
 
-    parent.add ("West", scrollBar);
+    convertRateBar = new ActiveScrollbar (convertRateBarConfigure.in (), convertRateBarEvent.out (),
+                                         Scrollbar.VERTICAL, 100 - 80, 25, 0, 125);
+    convertRateBar.setBackground (Color.white);
+
+    recoverRateBar = new ActiveScrollbar (recoverRateBarConfigure.in (), recoverRateBarEvent.out (),
+                                         Scrollbar.VERTICAL, 100 - 99, 25, 0, 125);
+    recoverRateBar.setBackground (Color.white);
+
+    System.out.println ("InfectNetwork created ActiveScrollbars ... now adding it to the parent ...");
+
+    final Panel west = new Panel ();
+    west.setLayout (new GridLayout (2, 1));
+    west.add (renderRateBar);
+    west.add (infectRateBar);
+    parent.add ("West", west);
+
+    final Panel east = new Panel ();
+    east.setLayout (new GridLayout (2, 1));
+    east.add (convertRateBar);
+    east.add (recoverRateBar);
+    parent.add ("East", east);
 
     System.out.println ("InfectNetwork now creating ActiveCanvas ...");
     activeCanvas = new ActiveCanvas ();
+    activeCanvas.addMouseEventChannel (fromMouse.out ());
+    activeCanvas.addMouseMotionEventChannel (fromMouseMotion.out ());
     activeCanvas.setGraphicsChannels (toGraphics.in (), fromGraphics.out ());
     activeCanvas.setSize (parent.getSize ());
 
@@ -128,19 +217,29 @@ class InfectNetwork implements CSProcess {
     System.out.println ("InfectNetwork adding ActiveCanvas to the parent ...");
     parent.add ("Center", activeCanvas);
 
-    System.out.println ("InfectNetwork creating infectionControl ...");
-    control = new InfectionControl (Channel.getInputArray (event), Channel.getOutputArray (configure), report.out ());
+    // System.out.println ("InfectNetwork creating infectionControl ...");
+    // control = new InfectionControl (event.out (), configure, report.out ());
 
     System.out.println ("InfectNetwork now creating infection ...");
-    infection = new Infection (rate, report.in (), scrollEvent.in (), scrollConfigure.out (),
-                               infoConfigure.out (), rateConfigure.out (), feedBack.out (),
+    infection = new Infection (rate, fromMouse.in (), fromMouseMotion.in (),
+                               resetEvent.in (), resetConfigure.out (),
+                               freezeEvent.in (), freezeConfigure.out (),
+                               renderRateBarEvent.in (), renderRateBarConfigure.out (),
+                               infectRateBarEvent.in (), infectRateBarConfigure.out (),
+                               convertRateBarEvent.in (), convertRateBarConfigure.out (),
+                               recoverRateBarEvent.in (), recoverRateBarConfigure.out (),
+                               fpsConfigure.out (), infectedConfigure.out (), deadConfigure.out (),
+                               renderRateLabelConfigure.out (),
+			       infectRateLabelConfigure.out (),
+			       convertRateLabelConfigure.out (),
+                               recoverRateLabelConfigure.out (),
                                toGraphics.out (), fromGraphics.in ());
 
-    System.out.println ("InfectNetwork creating pseudo button ...");
-
-    pseudoButton = new PseudoButton (configure[InfectionControl.NUMBER].in (),
-                                     event[InfectionControl.NUMBER].out (),
-                                     feedBack.in ());
+    // System.out.println ("InfectNetwork creating pseudo button ...");
+    // 
+    // pseudoButton = new PseudoButton (configure[InfectionControl.NUMBER],
+    //                                  event[InfectionControl.NUMBER],
+    //                                  feedBack);
 
   }
 
@@ -151,13 +250,23 @@ class InfectNetwork implements CSProcess {
     new Parallel (
       new CSProcess[] {
         activeCanvas,
-        scrollBar,
-        pseudoButton,
-        infoLabel,
-        rateLabel,
-        control,
-        infection,
-        new Parallel (button)
+        resetButton,
+        freezeButton,
+        renderRateBar,
+        infectRateBar,
+        convertRateBar,
+        recoverRateBar,
+        // pseudoButton,
+        fpsLabel,
+        infectedLabel,
+        deadLabel,
+	renderRateLabel,
+        infectRateLabel,
+        convertRateLabel,
+        recoverRateLabel,
+        // control,
+        infection
+        // new Parallel (button)
       }
     ).run ();
 

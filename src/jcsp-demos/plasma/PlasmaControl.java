@@ -201,9 +201,9 @@ class PlasmaControl implements CSProcess {
     scaledHeight = givenHeight/scale[initialScale];
     waveTable = createWaveTable ((scaledWidth + scaledHeight)*2);
     for (int i = 0; i < nColourModels; i++) {
-      mis[i] = new MemoryImageSource (scaledWidth, scaledHeight,
-        createColorModel (i),
-        pixels, 0, scaledWidth);
+      mis[i] = new MemoryImageSource (
+        scaledWidth, scaledHeight, createColorModel (i), pixels, 0, scaledWidth
+      );
       mis[i].setAnimated (true);
       mis[i].setFullBufferUpdates (true);
       toGraphics.write (new GraphicsProtocol.MakeMISImage (mis[i]));
@@ -311,7 +311,8 @@ class PlasmaControl implements CSProcess {
           while (schoice != scaleMenu[sindex]) sindex++;
           if (sindex == currentScale) break;
           currentScale = sindex;
-          // DROP THROUGH TO RESIZE
+          // fall through to RESIZE_EVENT
+
         case RESIZE_EVENT :
           if (resizeChannel.pending ()) {
             ComponentEvent e = (ComponentEvent)resizeChannel.read ();
@@ -327,9 +328,9 @@ class PlasmaControl implements CSProcess {
           scaledHeight = givenHeight/scale[currentScale];
           waveTable = createWaveTable ((scaledWidth + scaledHeight)*2);
           for (int i = 0; i < nColourModels; i++) {
-            mis[i] = new MemoryImageSource (scaledWidth, scaledHeight,
-              createColorModel (i),
-              pixels, 0, scaledWidth);
+            mis[i] = new MemoryImageSource (
+              scaledWidth, scaledHeight, createColorModel (i), pixels, 0, scaledWidth
+            );
             mis[i].setAnimated (true);
             mis[i].setFullBufferUpdates (true);
             toGraphics.write (new GraphicsProtocol.MakeMISImage (mis[i]));
@@ -355,7 +356,7 @@ class PlasmaControl implements CSProcess {
           fpsUpdate = 1;
           gcImage[0] = draw[currentColourModel];
           displayChange = true;
-          break;
+        break;
 
         case COLOUR_EVENT:
           final ItemEvent ce = (ItemEvent) colourChannel.read ();
@@ -412,13 +413,15 @@ class PlasmaControl implements CSProcess {
           position3 = (position3 + speed3) % currentWaveTableSize;
     
           frames++;
-          if ((frames % fpsUpdate) == 0) {
-            final long period = tim.read () - firstFrameTime;
-            long framesPerSecond = (period == 0) ? 0 : (frames*10000) / period;
-            fpsUpdate = framesPerSecond/10;
-            fpsConfigure.write (fpsUpdate + "." + framesPerSecond%10);
-            fpsUpdate /= 2;
+          if (frames == fpsUpdate) {
+	    final long thisFrameTime = tim.read ();
+            final long period = thisFrameTime - firstFrameTime;
+            long framesPerTenSeconds = (period == 0) ? 0 : (frames*10000) / period;
+            fpsConfigure.write (framesPerTenSeconds/10 + "." + framesPerTenSeconds%10);
+            fpsUpdate = framesPerTenSeconds/20;
             if (fpsUpdate == 0) fpsUpdate = 1;
+	    firstFrameTime = thisFrameTime;
+	    frames = 0;
           }
 
           currentMIS.newPixels ();

@@ -27,61 +27,44 @@
     //////////////////////////////////////////////////////////////////////
 
 
-import org.jcsp.lang.*;
-import org.jcsp.awt.*;
-import java.awt.*;
-
+import java.awt.Point;
 import org.jcsp.demos.util.Ask;
 
 /**
  * @author P.H. Welch
  */
-public class InfectMain extends ActiveApplet {
-
-  public static final int minWidth = 350;
-  public static final int maxWidth = 1024;
-
-  public static final int minHeight = 350;
-  public static final int maxHeight = 768;
-
-  public static final int minRate = 0;
-  public static final int maxRate = 100;
-  public static final int standbyRate = 35;
-
-  public void init () {
-    final int rate = getAppletInt ("rate", minRate, maxRate, standbyRate);
-    setProcess (new InfectNetwork (rate, this));
-  }
+class SprayTest {
 
   public static void main (String[] args) {
 
-    System.out.println ("\nInfect starting ...\n");
+    int radius = 20;
+    byte[][] cell = new byte[50][50];
+    byte[] pixels = new byte[50*50];
+    int[] count = new int[Cell.N_STATES];
 
-    final int width = Ask.Int ("width = ", minWidth, maxWidth);
-    final int height = Ask.Int ("height = ", minHeight, maxHeight);
-    System.out.println ();
+    count[Cell.GREEN] = 50*50;
+    count[Cell.INFECTED] = 0;
+    count[Cell.DEAD] = 0;
+    
+    Spray spray = new Spray (radius, cell, pixels, count);
 
-    final int rate = Ask.Int ("rate = ", minRate, maxRate);
-    System.out.println ();
+    char[] which = {'g', 'i', 'd'};
 
-    final ActiveClosingFrame activeClosingframe = new ActiveClosingFrame ("Infect");
-    final ActiveFrame activeFrame = activeClosingframe.getActiveFrame ();
-    activeFrame.setSize (width, height);
-
-    final InfectNetwork infect = new InfectNetwork (rate, activeFrame);
-
-    activeFrame.pack ();
-    activeFrame.setLocation ((maxWidth - width)/2, (maxHeight - height)/2);
-    activeFrame.setVisible (true);
-    activeFrame.toFront ();
-
-    new Parallel (
-      new CSProcess[] {
-        activeClosingframe,
-        infect
-      }
-    ).run ();
-
+    while (true) {
+      System.out.println ();
+      final int i = Ask.Int ("i = ", 0, 49);
+      final int j = Ask.Int ("j = ", 0, 49);
+      final char ch = Ask.Char ("g/i/d? ", which);
+      final byte state = (ch == 'g') ? Cell.GREEN : (ch == 'i') ? Cell.INFECTED : Cell.DEAD;
+      System.out.println ();
+      spray.zap (new Point (i, j), state);
+      spray.printCells ();
+      System.out.println ();
+      System.out.println ("GREEN = " + count[Cell.GREEN]);
+      System.out.println ("INFECTED = " + count[Cell.INFECTED]);
+      System.out.println ("DEAD = " + count[Cell.DEAD]);
+      spray.setMask ();
+    }
   }
 
 }

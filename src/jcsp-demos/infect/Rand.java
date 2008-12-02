@@ -30,12 +30,95 @@
 /**
  * @author P.H. Welch
  */
-public interface Tree {
+public class Rand {
 
-  public final int nStates = 3;
+  private int bits;
+  
+  private int bitsLeft = 0;
 
-  public final byte green = 0;
-  public final byte infected = 1;
-  public final byte dead = 2;
+  private final static int[] mask = generateMask ();
+
+  private final static int[] generateMask () {
+    final int[] mask = new int[33];
+    int ones = 0xFFFFFFFF;
+    for (int i = mask.length - 1; i >= 0; i--) {
+      mask[i] = ones;
+      ones >>>= 1;
+    }
+    return mask;
+  }
+
+  private long mySeed;
+
+  private final static long multiplier = 0x5DEECE66DL;
+  private final static long addend = 0xBL;
+  private final static long seedMask = (1L << 48) - 1;
+
+  public Rand () {
+    this (System.currentTimeMillis ());
+  }
+
+  public Rand (long seed) {
+    setMySeed (seed);
+  }
+
+  public void setMySeed (long seed) {
+    mySeed = (seed ^ multiplier) & seedMask;
+  }
+
+  private int next (int bits) {
+    mySeed = ((mySeed*multiplier) + addend) & seedMask;
+    return (int) (mySeed >>> (48 - bits));
+  }
+
+  private int next32 () {
+    mySeed = ((mySeed*multiplier) + addend) & seedMask;
+    return (int) (mySeed >>> 16);
+  }
+
+  public final int range (int n) {
+    int i = next32 ();
+    if (i < 0) {
+      if (i == Integer.MIN_VALUE) {      // guard against minint !
+        i = 42;
+      } else {
+        i = -i;
+      }
+    }
+    return i % n;
+  }
+
+  public final int bits (int n) {        // assume : 0 < n <= 32
+    if (n > bitsLeft) {
+      bits = next32 ();
+      bitsLeft = 32;
+    }
+    final int answer = bits & mask[n];
+    bits >>>= n;
+    bitsLeft -= n;
+    return answer;
+  }
+
+  public final int bits7 () {
+    if (7 > bitsLeft) {
+      bits = next32 ();
+      bitsLeft = 32;
+    }
+    final int answer = bits & 127;
+    bits >>>= 7;
+    bitsLeft -= 7;
+    return answer;
+  }
+
+  public final int bits16 () {
+    if (16 > bitsLeft) {
+      bits = next32 ();
+      bitsLeft = 32;
+    }
+    final int answer = bits & 65535;
+    bits >>>= 16;
+    bitsLeft -= 16;
+    return answer;
+  }
 
 }
