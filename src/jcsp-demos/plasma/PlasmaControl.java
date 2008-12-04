@@ -308,7 +308,7 @@ class PlasmaControl implements CSProcess {
           final String schoice = (String) se.getItem ();
           // System.out.println ("SCALE_EVENT: " + schoice);
           int sindex = 0;
-          while (schoice != scaleMenu[sindex]) sindex++;
+          while (!schoice.equals (scaleMenu[sindex])) sindex++;
           if (sindex == currentScale) break;
           currentScale = sindex;
           // fall through to RESIZE_EVENT
@@ -362,7 +362,7 @@ class PlasmaControl implements CSProcess {
           final ItemEvent ce = (ItemEvent) colourChannel.read ();
           final String cchoice = (String) ce.getItem ();
           int cindex = 0;
-          while (cchoice != colourMenu[cindex]) cindex++;
+          while (!cchoice.equals (colourMenu[cindex])) cindex++;
           if (cindex != currentColourModel) {
             currentColourModel = cindex;
             currentMIS = mis[currentColourModel];

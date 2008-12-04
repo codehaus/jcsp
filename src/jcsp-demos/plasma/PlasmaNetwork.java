@@ -138,14 +138,15 @@ class PlasmaNetwork implements CSProcess {
     parent.add ("North", north);
 
     plasmaControl=
-      new PlasmaControl (// mouseChannel, mouseMotionChannel, keyChannel,
-                         codeConfigure.out (), codeChannel.in (),
-                         colourConfigure.out (), colourChannel.in (), colourMenu,
-                         scaleConfigure.out (), scaleChannel.in (), scaleMenu,
-                         freezeConfigure.out (), freezeChannel.in (),
-                         fpsConfigure.out (),
-                         toGraphics.out (), fromGraphics.in (),
-                         canvasResize.in ());
+      new PlasmaControl (
+        codeConfigure.out (), codeChannel.in (),
+        colourConfigure.out (), colourChannel.in (), colourMenu,
+        scaleConfigure.out (), scaleChannel.in (), scaleMenu,
+        freezeConfigure.out (), freezeChannel.in (),
+        fpsConfigure.out (),
+        toGraphics.out (), fromGraphics.in (),
+        canvasResize.in ()
+      );
 
   }
 

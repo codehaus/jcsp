@@ -50,8 +50,8 @@ public class PlasmaMain extends ActiveApplet {
   	"generating the images responds to changes in the parameters from events sent by the user interface " +
   	"controls.";
 
-  public static final int minWidth = 256;
-  public static final int minHeight = 256;
+  public static final int minWidth = 768;
+  public static final int minHeight = 512;
 
   public static final int maxWidth = 1024;
   public static final int maxHeight = 768;
@@ -63,8 +63,8 @@ public class PlasmaMain extends ActiveApplet {
   public static void main (String[] args) {
 
     Ask.app (TITLE, DESCR);
-    Ask.addPrompt ("width", minWidth, maxWidth, 640);
-    Ask.addPrompt ("height", minHeight, maxHeight, 480);
+    Ask.addPrompt ("width", minWidth, maxWidth, minWidth);
+    Ask.addPrompt ("height", minHeight, maxHeight, minHeight);
     Ask.show ();
     final int width = Ask.readInt ("width");
     final int height = Ask.readInt ("height");

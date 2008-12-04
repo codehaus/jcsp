@@ -41,8 +41,12 @@ public class Infection implements CSProcess {
 
   private final int N_EVOLVERS = 8;
 
-  private int renderRate;        // invariant: 0 <= renderRate <= 100
-  private int renderEvery;       // invariant: (renderRate == 0) ? Integer.MAX_VALUE : 100/renderRate
+  // private int renderRate;
+  
+  private int renderEvery;
+  private final String[] renderMenu;
+  private final int[] renderLookup;
+  private int renderChoiceIndex;
 
   private int infectRate;        // invariant: 0 <= infectRate <= 100 (or 127)
   private int convertRate;       // invariant: 0 <= convertRate <= 100 (or 127)
@@ -65,8 +69,11 @@ public class Infection implements CSProcess {
   private final AltingChannelInput freezeEvent;
   private final ChannelOutput freezeConfigure;
 
-  private final AltingChannelInputInt renderRateBarEvent;
-  private final ChannelOutput renderRateBarConfigure;
+  // private final AltingChannelInputInt renderRateBarEvent;
+  // private final ChannelOutput renderRateBarConfigure;
+
+  private final AltingChannelInput renderChoiceEvent;
+  private final ChannelOutput renderChoiceConfigure;
 
   private final AltingChannelInputInt infectRateBarEvent;
   private final ChannelOutput infectRateBarConfigure;
@@ -81,7 +88,7 @@ public class Infection implements CSProcess {
   private final ChannelOutput infectedConfigure;
   private final ChannelOutput deadConfigure;
   
-  private final ChannelOutput renderRateLabelConfigure;
+  // private final ChannelOutput renderRateLabelConfigure;
   private final ChannelOutput infectRateLabelConfigure;
   private final ChannelOutput convertRateLabelConfigure;
   private final ChannelOutput recoverRateLabelConfigure;
@@ -90,14 +97,19 @@ public class Infection implements CSProcess {
   private final ChannelInput fromGraphics;
 
   public Infection (final int infectRate,
+                    final int convertRate,
+                    final int recoverRate,
+                    final int reinfectRate,
+                    final int renderChoiceIndex,
+                    final int sprayRadius,
                     final AltingChannelInput fromMouse,
                     final AltingChannelInput fromMouseMotion,
                     final AltingChannelInput resetEvent,
                     final ChannelOutput resetConfigure,
                     final AltingChannelInput freezeEvent,
                     final ChannelOutput freezeConfigure,
-                    final AltingChannelInputInt renderRateBarEvent,
-                    final ChannelOutput renderRateBarConfigure,
+                    // final AltingChannelInputInt renderRateBarEvent,
+                    // final ChannelOutput renderRateBarConfigure,
                     final AltingChannelInputInt infectRateBarEvent,
                     final ChannelOutput infectRateBarConfigure,
                     final AltingChannelInputInt convertRateBarEvent,
@@ -107,28 +119,32 @@ public class Infection implements CSProcess {
                     final ChannelOutput fpsConfigure,
                     final ChannelOutput infectedConfigure,
                     final ChannelOutput deadConfigure,
-                    final ChannelOutput renderRateLabelConfigure,
+                    final AltingChannelInput renderChoiceEvent,
+                    final ChannelOutput renderChoiceConfigure,
+                    final String[] renderMenu,
+                    final int[] renderLookup,
+                    // final ChannelOutput renderRateLabelConfigure,
                     final ChannelOutput infectRateLabelConfigure,
                     final ChannelOutput convertRateLabelConfigure,
                     final ChannelOutput recoverRateLabelConfigure,
                     final ChannelOutput toGraphics,
                     final ChannelInput fromGraphics) {
 
-    this.renderRate = 100;
-    this.renderEvery = (renderRate == 0) ? Integer.MAX_VALUE : 100/renderRate;
+    // this.renderRate = 100;
     this.infectRate = infectRate;
-    this.convertRate = 80;
-    this.recoverRate = 99;
-    this.reinfectRate = 10;
-    this.sprayRadius = 20;
+    this.convertRate = convertRate; // 80;
+    this.recoverRate = recoverRate; // 99;
+    this.reinfectRate = reinfectRate; // 10;
+    this.renderChoiceIndex = renderChoiceIndex; // 1;
+    this.sprayRadius = sprayRadius; // 20;
     this.fromMouse = fromMouse;
     this.fromMouseMotion = fromMouseMotion;
     this.resetEvent = resetEvent;
     this.resetConfigure = resetConfigure;
     this.freezeEvent = freezeEvent;
     this.freezeConfigure = freezeConfigure;
-    this.renderRateBarEvent = renderRateBarEvent;
-    this.renderRateBarConfigure = renderRateBarConfigure;
+    // this.renderRateBarEvent = renderRateBarEvent;
+    // this.renderRateBarConfigure = renderRateBarConfigure;
     this.infectRateBarEvent = infectRateBarEvent;
     this.infectRateBarConfigure = infectRateBarConfigure;
     this.convertRateBarEvent = convertRateBarEvent;
@@ -138,7 +154,11 @@ public class Infection implements CSProcess {
     this.fpsConfigure = fpsConfigure;
     this.infectedConfigure = infectedConfigure;
     this.deadConfigure = deadConfigure;
-    this.renderRateLabelConfigure = renderRateLabelConfigure;
+    this.renderChoiceEvent = renderChoiceEvent;
+    this.renderChoiceConfigure = renderChoiceConfigure;
+    this.renderMenu = renderMenu;
+    this.renderLookup = renderLookup;
+    // this.renderRateLabelConfigure = renderRateLabelConfigure;
     this.infectRateLabelConfigure = infectRateLabelConfigure;
     this.convertRateLabelConfigure = convertRateLabelConfigure;
     this.recoverRateLabelConfigure = recoverRateLabelConfigure;
@@ -173,7 +193,7 @@ public class Infection implements CSProcess {
   private int state = IDLE;
 
   private final static int RESET_EVENT = 0, FREEZE_EVENT = 1;
-  private final static int RENDER_RATE = 2, INFECT_RATE = 3, CONVERT_RATE = 4, RECOVER_RATE = 5;
+  private final static int RENDER_CHOICE = 2, INFECT_RATE = 3, CONVERT_RATE = 4, RECOVER_RATE = 5;
   private final static int MOUSE = 6, MOUSE_MOTION = 7, SKIP = 8;
 
   private Guard[] guard;
@@ -363,16 +383,49 @@ public class Infection implements CSProcess {
     }
   }
 
+/*
+  private int convertRateToEvery (int rate) {
+    switch (rate/10) {
+      case 0:
+        return Integer.MAX_VALUE;
+      case 1:
+        return  256;
+      case 2:
+        return  128;
+      case 3:
+        return  64;
+      case 4:
+        return  32;
+      case 5:
+        return  16;
+      case 6:
+        return  8;
+      case 7:
+        return  4;
+      case 8:
+        return  2;
+      case 9: case 10:
+        return  1;
+    }
+    return Integer.MAX_VALUE;      // error if we get here!
+  }
+*/
+
   public void run () {
 
-    fpsConfigure.write ("0");
+    fpsConfigure.write ("0.0");
     infectedConfigure.write ("0");
     deadConfigure.write ("0");
     
-    renderRateLabelConfigure.write (String.valueOf (renderRate));
-    infectRateLabelConfigure.write (String.valueOf (infectRate));
-    convertRateLabelConfigure.write (String.valueOf (convertRate));
-    recoverRateLabelConfigure.write (String.valueOf (recoverRate));
+    // renderRateLabelConfigure.write ("1 in " + renderEvery);
+
+    infectRateBarConfigure.write (new Integer (100 - infectRate));
+    convertRateBarConfigure.write (new Integer (100 - convertRate));
+    recoverRateBarConfigure.write (new Integer (100 - recoverRate));
+
+    infectRateLabelConfigure.write (infectRate + " %");
+    convertRateLabelConfigure.write (convertRate + " %");
+    recoverRateLabelConfigure.write (recoverRate + " %");
     
     infectRate = ((infectRate*128) + 64)/100;
     convertRate = ((convertRate*128) + 64)/100;
@@ -387,7 +440,12 @@ public class Infection implements CSProcess {
     freezeConfigure.write (Boolean.TRUE);
     freezeConfigure.write ("FREEZE");
     
-    renderRateBarConfigure.write (Boolean.TRUE);
+    // renderRateBarConfigure.write (Boolean.TRUE);
+    renderChoiceConfigure.write (Boolean.TRUE);
+    renderChoiceConfigure.write (new Integer (renderChoiceIndex));
+    renderEvery = renderLookup[renderChoiceIndex];
+    int cycle = renderEvery;
+
     infectRateBarConfigure.write (Boolean.TRUE);
     convertRateBarConfigure.write (Boolean.TRUE);
     recoverRateBarConfigure.write (Boolean.TRUE);
@@ -426,9 +484,12 @@ public class Infection implements CSProcess {
     me.setPriority (Thread.MIN_PRIORITY);
     System.out.println ("Infection priority = " + me.getPriority ());
 
-    guard = new Guard[] {resetEvent, freezeEvent,
-                         renderRateBarEvent, infectRateBarEvent, convertRateBarEvent,
-                         recoverRateBarEvent, fromMouse, fromMouseMotion, new Skip ()};
+    guard =
+      new Guard[] {
+        resetEvent, freezeEvent,
+        renderChoiceEvent, infectRateBarEvent, convertRateBarEvent,
+        recoverRateBarEvent, fromMouse, fromMouseMotion, new Skip ()
+      };
                            
     preCondition = new boolean[] {false, true, true, true, true, true, true, false, false};
 
@@ -443,8 +504,6 @@ public class Infection implements CSProcess {
 
     initialisePixels ();
     mis.newPixels ();
-
-    int cycle = renderEvery;
 
     Evolve[] evolvers = new Evolve[N_EVOLVERS];
     final int nRows = height/N_EVOLVERS;
@@ -472,6 +531,7 @@ public class Infection implements CSProcess {
           System.out.println ("Infection: reset");
           initialisePixels ();
           mis.newPixels ();
+          fpsConfigure.write ("0.0");
         break;
         case FREEZE_EVENT:
           freezeEvent.read ();
@@ -510,15 +570,30 @@ public class Infection implements CSProcess {
             break;
           }
         break;
-        case RENDER_RATE:
-          renderRate = 100 - renderRateBarEvent.read ();
-          renderEvery = (renderRate == 0) ? Integer.MAX_VALUE : 100/renderRate;
+        case RENDER_CHOICE:
+          final ItemEvent re = (ItemEvent) renderChoiceEvent.read ();
+          final String rchoice = (String) re.getItem ();
+          int rindex = 0;
+          while (!rchoice.equals (renderMenu[rindex])) rindex++;
+          renderEvery = renderLookup[rindex];
+          // System.out.println ("RENDER_CHOICE: " + rchoice + " --> " + renderEvery);
           cycle = renderEvery;
-          renderRateLabelConfigure.write (String.valueOf (renderRate));
+          /*
+          renderRate = 100 - renderRateBarEvent.read ();
+          // renderEvery = (renderRate == 0) ? Integer.MAX_VALUE : 100/renderRate;
+          // cycle = renderEvery;
+          // renderRateLabelConfigure.write (renderRate));
+          renderEvery = convertRateToEvery (renderRate);
+          if (renderEvery == Integer.MAX_VALUE) {
+            renderRateLabelConfigure.write ("0");
+          } else {
+            renderRateLabelConfigure.write ("1 in " + renderEvery);
+          }
+          */
         break;
         case INFECT_RATE:
           infectRate = 100 - infectRateBarEvent.read ();
-          infectRateLabelConfigure.write (String.valueOf (infectRate));
+          infectRateLabelConfigure.write (infectRate + " %");
           infectRate = ((infectRate*128) + 64)/100;
           for (int i = 0; i < evolvers.length; i++) {
             evolvers[i].infectRate = infectRate;
@@ -526,7 +601,7 @@ public class Infection implements CSProcess {
         break;
         case CONVERT_RATE:
           convertRate = 100 - convertRateBarEvent.read ();
-          convertRateLabelConfigure.write (String.valueOf (convertRate));
+          convertRateLabelConfigure.write (convertRate + " %");
           convertRate = ((convertRate*128) + 64)/100;
           convertRate = 128 - convertRate;
           for (int i = 0; i < evolvers.length; i++) {
@@ -535,7 +610,7 @@ public class Infection implements CSProcess {
         break;
         case RECOVER_RATE:
           recoverRate = 100 - recoverRateBarEvent.read ();
-          recoverRateLabelConfigure.write (String.valueOf (recoverRate));
+          recoverRateLabelConfigure.write (recoverRate + " %");
           recoverRate = ((recoverRate*128) + 64)/100;
           recoverRate = 128 - recoverRate;
           for (int i = 0; i < evolvers.length; i++) {
@@ -626,14 +701,14 @@ public class Infection implements CSProcess {
           }
           nFrames++;
           if (nFrames == fpsUpdate) {
-	    final long thisFrameTime = tim.read ();
+            final long thisFrameTime = tim.read ();
             final int period = (int) (thisFrameTime - firstFrameTime);
             int framesPerTenSeconds = (period == 0) ? 0 : (nFrames*10000) / period;
             fpsConfigure.write (framesPerTenSeconds/10 + "." + framesPerTenSeconds%10);
             fpsUpdate = framesPerTenSeconds/20;
             if (fpsUpdate == 0) fpsUpdate = 1;
-	    firstFrameTime = thisFrameTime;
-	    nFrames = 0;
+            firstFrameTime = thisFrameTime;
+            nFrames = 0;
             infectedConfigure.write (String.valueOf (count[Cell.INFECTED]));
             deadConfigure.write (String.valueOf (count[Cell.DEAD]));
           }

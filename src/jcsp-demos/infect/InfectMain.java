@@ -44,13 +44,27 @@ public class InfectMain extends ActiveApplet {
   public static final int minHeight = 350;
   public static final int maxHeight = 768;
 
-  public static final int minRate = 0;
-  public static final int maxRate = 100;
-  public static final int standbyRate = 35;
+  public static final int minInfectRate = 0;
+  public static final int maxInfectRate = 100;
+  public static int initialInfectRate = 25;
+
+  public static final int initialConvertRate  = 80;
+  public static final int initialRecoverRate = 99;
+
+  public static final int reinfectRate = 10;
+
+  public static final int initialRenderChoiceIndex = 0;
+
+  public static final int sprayRadius = 20;
 
   public void init () {
-    final int rate = getAppletInt ("rate", minRate, maxRate, standbyRate);
-    setProcess (new InfectNetwork (rate, this));
+    initialInfectRate = getAppletInt ("rate", minInfectRate, maxInfectRate, initialInfectRate);
+    setProcess (
+      new InfectNetwork (
+        initialInfectRate, initialConvertRate, initialRecoverRate,
+        reinfectRate, initialRenderChoiceIndex, sprayRadius, this
+      )
+    );
   }
 
   public static void main (String[] args) {
@@ -61,14 +75,20 @@ public class InfectMain extends ActiveApplet {
     final int height = Ask.Int ("height = ", minHeight, maxHeight);
     System.out.println ();
 
-    final int rate = Ask.Int ("rate = ", minRate, maxRate);
+    initialInfectRate = Ask.Int ("infection rate = ", minInfectRate, maxInfectRate);
     System.out.println ();
 
     final ActiveClosingFrame activeClosingframe = new ActiveClosingFrame ("Infect");
     final ActiveFrame activeFrame = activeClosingframe.getActiveFrame ();
     activeFrame.setSize (width, height);
 
-    final InfectNetwork infect = new InfectNetwork (rate, activeFrame);
+    System.out.println ("InfectMain: initialRenderChoiceIndex = " + initialRenderChoiceIndex);
+
+    final InfectNetwork infect =
+      new InfectNetwork (
+        initialInfectRate, initialConvertRate, initialRecoverRate,
+        reinfectRate, initialRenderChoiceIndex, sprayRadius, activeFrame
+      );
 
     activeFrame.pack ();
     activeFrame.setLocation ((maxWidth - width)/2, (maxHeight - height)/2);
