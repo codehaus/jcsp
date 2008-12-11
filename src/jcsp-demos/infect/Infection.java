@@ -332,13 +332,28 @@ public class Infection implements CSProcess {
     pixelise ();
   }
 
+  // report sets results to the number of GREEN, INFECTED and DEAD cells
+  // (respectively) in the forest.  It assumes results has a length of 3.
+
+  private void report (final int[] results) {
+    results[Cell.GREEN] = 0;
+    results[Cell.INFECTED] = 0;
+    results[Cell.DEAD] = 0;
+    for (int i = 0; i < height; i++) {
+      final byte[] row_i = cell[i];
+      for (int j = 0; j < width; j++) {
+        results[row_i[j]]++;
+      }
+    }
+  }
+
   private void handle (final Point point, final byte newCellState,
                        final boolean spraying) {
     if (spraying) {
-      System.out.println ("Spraying ..." + point);
+      System.out.println ("Spraying ... " + newCellState + " ... " + point);
       spray.zap (point, newCellState);
     } else {
-      System.out.print ("Spotting ..." + point + " ... (");
+      System.out.print ("Spotting ... " + newCellState + " ... " + point);
       int i = point.y;
       int j = point.x;
       while (i < 0) i += height;            // mostly won't happen or
@@ -713,6 +728,10 @@ public class Infection implements CSProcess {
           genByteMatrixCopy (cell, tmp_cell);
           cell = tmp_cell;
 
+	  report (count);
+          infectedConfigure.write (String.valueOf (count[Cell.INFECTED]));
+          deadConfigure.write (String.valueOf (count[Cell.DEAD]));
+
           last_cell = new byte[height][width];
 
           pixels = new byte[width*height];
@@ -724,6 +743,8 @@ public class Infection implements CSProcess {
             evolvers[i].resize (startRow, nextStartRow, cell, last_cell, pixels);
             startRow = nextStartRow;
           }
+
+	  spray.resize (sprayRadius, cell, pixels, count);
 
           model = createColorModel ();
 

@@ -45,19 +45,23 @@ class Spray {
   private int[] count;        // how many Cells of each state
 
   private boolean[][] mask;
+  
+  private final Rand random = new Rand ();
 
   public Spray (int radius, byte[][] cell, byte[] pixels, int[] count) {
+    resize (radius, cell, pixels, count);
+    setMask ();
+    // printMask ();
+  }
+
+  public void resize (int radius, byte[][] cell, byte[] pixels, int[] count) {
     this.radius = radius;
     this.cell = cell;
     this.height = cell.length;
     this.width = cell[0].length;
     this.pixels = pixels;
     this.count = count;
-    setMask ();
-    // printMask ();
   }
-
-  private final Rand random = new Rand ();
 
   public void setMask () {
     final int BIG = 131072;
