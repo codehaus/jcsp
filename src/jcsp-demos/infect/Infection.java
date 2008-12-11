@@ -96,6 +96,8 @@ public class Infection implements CSProcess {
   private final ChannelOutput toGraphics;
   private final ChannelInput fromGraphics;
 
+  private final AltingChannelInput resizeEvent;
+
   public Infection (final int infectRate,
                     final int convertRate,
                     final int recoverRate,
@@ -128,7 +130,8 @@ public class Infection implements CSProcess {
                     final ChannelOutput convertRateLabelConfigure,
                     final ChannelOutput recoverRateLabelConfigure,
                     final ChannelOutput toGraphics,
-                    final ChannelInput fromGraphics) {
+                    final ChannelInput fromGraphics,
+                    final AltingChannelInput resizeEvent) {
 
     // this.renderRate = 100;
     this.infectRate = infectRate;
@@ -164,6 +167,7 @@ public class Infection implements CSProcess {
     this.recoverRateLabelConfigure = recoverRateLabelConfigure;
     this.toGraphics = toGraphics;
     this.fromGraphics = fromGraphics;
+    this.resizeEvent = resizeEvent;
   }
 
   // //     colours          :       Cell.GREEN    Cell.INFECTED    Cell.DEAD
@@ -194,7 +198,7 @@ public class Infection implements CSProcess {
 
   private final static int RESET_EVENT = 0, FREEZE_EVENT = 1;
   private final static int RENDER_CHOICE = 2, INFECT_RATE = 3, CONVERT_RATE = 4, RECOVER_RATE = 5;
-  private final static int MOUSE = 6, MOUSE_MOTION = 7, SKIP = 8;
+  private final static int MOUSE = 6, MOUSE_MOTION = 7, RESIZE_EVENT = 8, SKIP = 9;
 
   private Guard[] guard;
                            
@@ -253,9 +257,18 @@ public class Infection implements CSProcess {
   }
 
   private void byteMatrixCopy (final byte[][] from, final byte[][] to) {
-    // assume: from and to are equally sized ...
+    // assume: from and to are non-null and equally sized ...
     for (int i = 0; i < from.length; i++) {
       System.arraycopy (from[i], 0, to[i], 0, from[i].length);  // fast copy
+    }
+  }
+
+  private void genByteMatrixCopy (final byte[][] from, final byte[][] to) {
+    // assume: from and to are non-null ...
+    final int rows = (from.length < to.length) ? from.length : to.length;
+    final int cols = (from[0].length < to[0].length) ? from[0].length : to[0].length;
+    for (int i = 0; i < rows; i++) {
+      System.arraycopy (from[i], 0, to[i], 0, cols);  // fast copy
     }
   }
 
@@ -451,7 +464,7 @@ public class Infection implements CSProcess {
     recoverRateBarConfigure.write (Boolean.TRUE);
 
     toGraphics.write (GraphicsProtocol.GET_DIMENSION);
-    final Dimension graphicsDim = (Dimension) fromGraphics.read ();
+    Dimension graphicsDim = (Dimension) fromGraphics.read ();
     System.out.println ("Infection: graphics dimension = " + graphicsDim);
 
     width = graphicsDim.width;
@@ -462,15 +475,14 @@ public class Infection implements CSProcess {
     cell = new byte[height][width];
     last_cell = new byte[height][width];
 
-    final ColorModel model = createColorModel ();
+    ColorModel model = createColorModel ();
 
-    final MemoryImageSource mis =
-      new MemoryImageSource (width, height, model, pixels, 0, width);
+    MemoryImageSource mis = new MemoryImageSource (width, height, model, pixels, 0, width);
     mis.setAnimated (true);
     mis.setFullBufferUpdates (true);
 
     toGraphics.write (new GraphicsProtocol.MakeMISImage (mis));
-    final Image image = (Image) fromGraphics.read ();
+    Image image = (Image) fromGraphics.read ();
 
     final DisplayList display = new DisplayList ();
     toGraphics.write (new GraphicsProtocol.SetPaintable (display));
@@ -488,10 +500,10 @@ public class Infection implements CSProcess {
       new Guard[] {
         resetEvent, freezeEvent,
         renderChoiceEvent, infectRateBarEvent, convertRateBarEvent,
-        recoverRateBarEvent, fromMouse, fromMouseMotion, new Skip ()
+        recoverRateBarEvent, fromMouse, fromMouseMotion, resizeEvent, new Skip ()
       };
                            
-    preCondition = new boolean[] {false, true, true, true, true, true, true, false, false};
+    preCondition = new boolean[] {false, true, true, true, true, true, true, false, true, false};
 
     boolean spraying = false;
     boolean controlled = false;
@@ -506,14 +518,18 @@ public class Infection implements CSProcess {
     mis.newPixels ();
 
     Evolve[] evolvers = new Evolve[N_EVOLVERS];
-    final int nRows = height/N_EVOLVERS;
+    // final int nRows = height/N_EVOLVERS;
+    int startRow = 0;
     long seed = System.currentTimeMillis ();
     for (int i = 0; i < evolvers.length; i++) {
-      evolvers[i] = new Evolve (i*nRows, nRows, cell, last_cell, pixels, seed + (i*1000));
+      int nextStartRow = (height*(i + 1))/N_EVOLVERS;
+      // evolvers[i] = new Evolve (i*nRows, nRows, cell, last_cell, pixels, seed + (i*1000));
+      evolvers[i] = new Evolve (startRow, nextStartRow, cell, last_cell, pixels, seed + (i*1000));
       evolvers[i].infectRate = infectRate;
       evolvers[i].recoverRate = recoverRate;
       evolvers[i].reinfectRate = reinfectRate;
       evolvers[i].convertRate = convertRate;
+      startRow = nextStartRow;
     }
 
     CSProcess parEvolve = new Parallel (evolvers);
@@ -683,6 +699,43 @@ public class Infection implements CSProcess {
               }
             break;
           }
+        break;
+        case RESIZE_EVENT:
+          ComponentEvent e = (ComponentEvent) resizeEvent.read ();
+          if (e.getID () != ComponentEvent.COMPONENT_RESIZED) break;
+          toGraphics.write (GraphicsProtocol.GET_DIMENSION);
+          graphicsDim = (Dimension) fromGraphics.read ();
+          System.out.println ("PlasmaControl: graphics dimension = " + graphicsDim);
+          width = graphicsDim.width;
+          height = graphicsDim.height;
+
+          byte[][] tmp_cell = new byte[height][width];
+          genByteMatrixCopy (cell, tmp_cell);
+          cell = tmp_cell;
+
+          last_cell = new byte[height][width];
+
+          pixels = new byte[width*height];
+          pixelise ();
+
+          startRow = 0;
+          for (int i = 0; i < evolvers.length; i++) {
+            int nextStartRow = (height*(i + 1))/N_EVOLVERS;
+            evolvers[i].resize (startRow, nextStartRow, cell, last_cell, pixels);
+            startRow = nextStartRow;
+          }
+
+          model = createColorModel ();
+
+          mis = new MemoryImageSource (width, height, model, pixels, 0, width);
+          mis.setAnimated (true);
+          mis.setFullBufferUpdates (true);
+
+          toGraphics.write (new GraphicsProtocol.MakeMISImage (mis));
+          image = (Image) fromGraphics.read ();
+
+          drawImage[0] = new GraphicsCommand.DrawImage (image, 0, 0);
+          display.set (drawImage);
         break;
         case SKIP:
           // assert : state == RUNNING

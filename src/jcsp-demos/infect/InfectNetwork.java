@@ -119,6 +119,8 @@ class InfectNetwork implements CSProcess {
     final One2OneChannel toGraphics = Channel.one2one ();
     final One2OneChannel fromGraphics = Channel.one2one ();
 
+    final One2OneChannel canvasResize = Channel.one2one (new OverWritingBuffer (1));
+
     // final One2OneChannel feedBack = Channel.one2one ();
 
     final One2OneChannel fpsConfigure = Channel.one2one ();
@@ -263,6 +265,7 @@ class InfectNetwork implements CSProcess {
     activeCanvas.addMouseEventChannel (fromMouse.out ());
     activeCanvas.addMouseMotionEventChannel (fromMouseMotion.out ());
     activeCanvas.setGraphicsChannels (toGraphics.in (), fromGraphics.out ());
+    activeCanvas.addComponentEventChannel (canvasResize.out ());
     activeCanvas.setSize (parent.getSize ());
 
     // If the parent is an applet, the above setSize has no effect and the activeCanvas
@@ -295,7 +298,8 @@ class InfectNetwork implements CSProcess {
         infectRateLabelConfigure.out (),
         convertRateLabelConfigure.out (),
         recoverRateLabelConfigure.out (),
-        toGraphics.out (), fromGraphics.in ()
+        toGraphics.out (), fromGraphics.in (),
+        canvasResize.in ()
       );
 
     // System.out.println ("InfectNetwork creating pseudo button ...");

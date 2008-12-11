@@ -34,10 +34,11 @@ import org.jcsp.lang.*;
  */
 public class Evolve implements CSProcess {
 
-  private final int firstRow, stopRow;
-  private final byte[][] cell, last_cell;
-  private final int width, height;
-  private final byte[] pixels;
+  // private int firstRow, stopRow;
+  private int startRow, nextStartRow;
+  private byte[][] cell, last_cell;
+  private int width, height;
+  private byte[] pixels;
 
   private final Rand random;
 
@@ -46,15 +47,9 @@ public class Evolve implements CSProcess {
   public int[] count = new int[Cell.N_STATES];                     // consume after each run
 
   public Evolve (
-    int firstRow, int nRows, byte[][] cell, byte[][] last_cell, byte[] pixels, long seed
+    int startRow, int nextStartRow, byte[][] cell, byte[][] last_cell, byte[] pixels, long seed
   ) {
-    this.firstRow = firstRow;
-    this.stopRow = firstRow + nRows;
-    this.cell = cell;
-    this.last_cell = last_cell;
-    this.pixels = pixels;
-    width = cell[0].length;
-    height = cell.length;
+    resize (startRow, nextStartRow, cell, last_cell, pixels);
     random = new Rand (seed);
   }
 
@@ -70,10 +65,22 @@ public class Evolve implements CSProcess {
     }
   }
 
+  public void resize (
+    int startRow, int nextStartRow, byte[][] cell, byte[][] last_cell, byte[] pixels
+  ) {
+    this.startRow = startRow;
+    this.nextStartRow = nextStartRow;
+    this.cell = cell;
+    this.last_cell = last_cell;
+    this.pixels = pixels;
+    width = cell[0].length;
+    height = cell.length;
+  }
+
   public void run () {                    // evolves given part of the forest forward one cycle
     for (int i = 0; i < count.length; i++) count[i] = 0;
-    int pixIndex = firstRow*width;
-    for (int i = firstRow; i < stopRow; i++) {
+    int pixIndex = startRow*width;
+    for (int i = startRow; i < nextStartRow; i++) {
       final byte[] last_row_i = last_cell[i];
       final byte[] row_i = cell[i];
       for (int j = 0; j < width; j++) {
