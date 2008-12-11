@@ -716,46 +716,48 @@ public class Infection implements CSProcess {
           }
         break;
         case RESIZE_EVENT:
+          // get the new canvas dimensions
           ComponentEvent e = (ComponentEvent) resizeEvent.read ();
           if (e.getID () != ComponentEvent.COMPONENT_RESIZED) break;
           toGraphics.write (GraphicsProtocol.GET_DIMENSION);
           graphicsDim = (Dimension) fromGraphics.read ();
-          System.out.println ("PlasmaControl: graphics dimension = " + graphicsDim);
+          System.out.println ("Infection: graphics dimension = " + graphicsDim);
           width = graphicsDim.width;
           height = graphicsDim.height;
-
+          // make new cell matrices
           byte[][] tmp_cell = new byte[height][width];
           genByteMatrixCopy (cell, tmp_cell);
           cell = tmp_cell;
-
-	  report (count);
+          last_cell = new byte[height][width];
+          // correct the counts and show them
+          report (count);
+          // having trouble with the size of these info boxes ... ??!
+          // infectedConfigure.write ("XXXXXXXXX");
+          // deadConfigure.write ("XXXXXXXXX");
+          // fpsConfigure.write ("XXXXXXXXX");
           infectedConfigure.write (String.valueOf (count[Cell.INFECTED]));
           deadConfigure.write (String.valueOf (count[Cell.DEAD]));
-
-          last_cell = new byte[height][width];
-
+          // make new pixel array
           pixels = new byte[width*height];
           pixelise ();
-
+          // inform all the evolvers
           startRow = 0;
           for (int i = 0; i < evolvers.length; i++) {
             int nextStartRow = (height*(i + 1))/N_EVOLVERS;
             evolvers[i].resize (startRow, nextStartRow, cell, last_cell, pixels);
             startRow = nextStartRow;
           }
-
-	  spray.resize (sprayRadius, cell, pixels, count);
-
+          // inform the spray
+          spray.resize (sprayRadius, cell, pixels, count);
+          // make the new colour model and image and set in the display list
           model = createColorModel ();
-
           mis = new MemoryImageSource (width, height, model, pixels, 0, width);
           mis.setAnimated (true);
           mis.setFullBufferUpdates (true);
-
           toGraphics.write (new GraphicsProtocol.MakeMISImage (mis));
           image = (Image) fromGraphics.read ();
-
           drawImage[0] = new GraphicsCommand.DrawImage (image, 0, 0);
+          // redraw
           display.set (drawImage);
         break;
         case SKIP:
@@ -768,11 +770,13 @@ public class Infection implements CSProcess {
               count[j] += evolvers[i].count[j];
             }
           }
+          // render
           cycle--;
           if (cycle == 0) {
             mis.newPixels ();
             cycle = renderEvery;
           }
+          // redisplay counts
           nFrames++;
           if (nFrames == fpsUpdate) {
             final long thisFrameTime = tim.read ();
@@ -786,11 +790,15 @@ public class Infection implements CSProcess {
             infectedConfigure.write (String.valueOf (count[Cell.INFECTED]));
             deadConfigure.write (String.valueOf (count[Cell.DEAD]));
           }
-
+          // anything left to do?
           final int notGreen = count[Cell.INFECTED] + count[Cell.DEAD];
           if (notGreen == 0) {
+            System.out.println ("Infection: all green ...");
             preCondition[SKIP] = false;   // no infection and no dead cells => stop computing!
             state = IDLE;
+            infectedConfigure.write ("0");
+            deadConfigure.write ("0");
+            mis.newPixels ();
           }
         break;
       }  
