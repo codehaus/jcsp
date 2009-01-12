@@ -219,6 +219,7 @@ public class GuardGroup extends Guard {
 			e.printStackTrace();
 			System.exit(0);
 		}
+		return false;
 	}
 	//}}}
 	//{{{ boolean disable()
@@ -265,6 +266,7 @@ public class GuardGroup extends Guard {
 			e.printStackTrace();
 			System.exit(0);
 		}
+		return false;
 	}
 	//}}}
 	//}}}
