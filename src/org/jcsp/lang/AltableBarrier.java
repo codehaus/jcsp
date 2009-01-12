@@ -47,6 +47,13 @@ public class AltableBarrier {
 	//{{{ public methods
 	//{{{ public void attemptSynchronisation()
 	public void attemptSynchronisation() {
+		//FIXME:  danger, this method is invoked as a result of
+		// an Alternative's select method being called.  This means
+		// that the thread running this method cannot have a lock
+		// on the AltableBarrier Class object AND wait on other
+		// parties turning up.  lock on it must be resigned before
+		// one can wait for other parties to turn up, need to think
+		// about that ...
 	}
 	//}}}
 	//{{{ public void setState(int state)
