@@ -47,13 +47,18 @@ public class AltableBarrier {
 	//{{{ public methods
 	//{{{ public void attemptSynchronisation()
 	public void attemptSynchronisation() {
-		//FIXME:  danger, this method is invoked as a result of
-		// an Alternative's select method being called.  This means
-		// that the thread running this method cannot have a lock
-		// on the AltableBarrier Class object AND wait on other
-		// parties turning up.  lock on it must be resigned before
-		// one can wait for other parties to turn up, need to think
-		// about that ...
+		/*
+ 		 * wait() on the AltableBarrier class if not everyone
+ 		 * has turned up yet, otherwise notifyAll waiting
+ 		 * parties of the change.  The altmonitor is not released
+ 		 * but it doesn't need to be because
+ 		 * (a) we're not listening to anything except AltableBarrier
+ 		 * events for the time being.
+ 		 * (b) the write methods of channels only claim the lock on
+ 		 * their rwMonitors (even if they end up notifying the 
+ 		 * the altMonitor).  Thus they aren't even blocked
+ 		 *
+ 		 */
 	}
 	//}}}
 	//{{{ public void setState(int state)
