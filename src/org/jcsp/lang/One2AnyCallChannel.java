@@ -122,7 +122,7 @@ import java.io.Serializable;
  * - plugging in the channels as required and running them in {@link Parallel}.
  * <P>
  * For example, the network consisting of one <I>client</I> and several <I>servers</I>:
- * <p><IMG SRC="doc-files\One2AnyCallChannel1.gif"></p>
+ * <p><IMG SRC="doc-files/One2AnyCallChannel1.gif"></p>
  * where <TT>A</TT> is unchanged from its definition
  * in <A HREF="One2OneCallChannel.html#Call"><TT>One2OneCallChannel</TT></A>,
  * is implemented by:

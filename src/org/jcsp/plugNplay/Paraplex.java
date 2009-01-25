@@ -164,8 +164,9 @@ public final class Paraplex implements CSProcess
    private final ChannelOutput out;
    
    /**
-    * Construct a new Paraplex process with the input Channel in and the output
-    * Channels out.  The ordering of the Channels in the in array make
+    * Construct a new ParaplexInt process from the array of input channels
+    * to the output channel.
+    * The ordering of the channels in the input array makes
     * no difference to the functionality of this process.
     *
     * @param in the input channels

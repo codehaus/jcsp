@@ -126,7 +126,7 @@ import java.io.Serializable;
  * - plugging in the channels as required and running them in {@link Parallel}.
  * <P>
  * For example, the network consisting of one <I>server</I> and several <I>clients</I>:
- * <p><IMG SRC="doc-files\Any2OneCallChannel1.gif"></p>
+ * <p><IMG SRC="doc-files/Any2OneCallChannel1.gif"></p>
  * where <TT>A</TT> is unchanged from its definition
  * in <A HREF="One2OneCallChannel.html#Call"><TT>One2OneCallChannel</TT></A>,
  * is implemented by:
@@ -149,7 +149,7 @@ import java.io.Serializable;
  * <H2><A NAME="Example">Example</H2>
  * This is a CALL channel version of
  * the <A HREF="Alternative.html#Wot-no-Chickens"><I>Wot-no-Chickens</I></A> example:
- * <p><IMG SRC="doc-files\Any2OneCallChannel2.gif"></p>
+ * <p><IMG SRC="doc-files/Any2OneCallChannel2.gif"></p>
  * The <TT>service</TT> CALL channel replaces the <TT>request</TT>/<TT>deliver</TT> channel pair
  * of the earlier example.  Previously, the philosopher had to perform two actions to get a chicken -
  * a <TT>request.write</TT> followed by a <TT>deliver.read</TT>.  Now, its interaction with the
@@ -467,7 +467,7 @@ import java.io.Serializable;
  * <P>
  * For convenience, the college network diagram is reproduced here - this time including
  * the clock and naming some of the characters:
- * <p><IMG SRC="doc-files\Any2OneCallChannel3.gif"></p>
+ * <p><IMG SRC="doc-files/Any2OneCallChannel3.gif"></p>
  * Here is the code:
  * <PRE>
  * import org.jcsp.lang.*;

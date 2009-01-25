@@ -122,7 +122,7 @@ import java.io.Serializable;
  * - plugging in the channels as required and running them in {@link Parallel}.
  * <P>
  * For example, the network consisting of several <I>clients</I> and several <I>servers</I>:
- * <p><IMG SRC="doc-files\Any2AnyCallChannel1.gif"></p>
+ * <p><IMG SRC="doc-files/Any2AnyCallChannel1.gif"></p>
  * where <TT>A</TT> is unchanged from its definition
  * in <A HREF="One2OneCallChannel.html#Call"><TT>One2OneCallChannel</TT></A>,
  * is implemented by:
@@ -199,7 +199,7 @@ import java.io.Serializable;
  * channels for private communication between a philosopher (<TT>Prof</TT>) and
  * a student (<TT>Student</TT>) are dynamically connected, continually changing and,
  * therefore, not shown:
- * <p><IMG SRC="doc-files\Any2AnyCallChannel2.gif"></p>
+ * <p><IMG SRC="doc-files/Any2AnyCallChannel2.gif"></p>
  * For this new system, the <A HREF="Any2OneCallChannel.html#Canteen"><TT>Canteen</TT></A>,
  * <A HREF="Any2OneCallChannel.html#Chef"><TT>Chef</TT></A> and
  * <A HREF="Any2OneCallChannel.html#Clock"><TT>Clock</TT></A> processes are unchanged.
@@ -387,7 +387,7 @@ import java.io.Serializable;
  * <P>
  * For convenience, the college network diagram is reproduced here - naming some more
  * of the characters.  The new college seems to have attracted some good students:
- * <p><IMG SRC="doc-files\Any2AnyCallChannel3.gif"></p>
+ * <p><IMG SRC="doc-files/Any2AnyCallChannel3.gif"></p>
  * Here is the code:
  * <PRE>
  * import org.jcsp.lang.*;

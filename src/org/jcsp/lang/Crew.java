@@ -264,7 +264,7 @@ package org.jcsp.lang;
  * <P>
  * Each <TT>Crew</TT> object spawns off a private and anonymous <TT>CrewServer</TT> process
  * with which it interacts only via channels:
- * <p><IMG SRC="doc-files\Crew1.gif"></p>
+ * <p><IMG SRC="doc-files/Crew1.gif"></p>
  * All accessing processes
  * (i.e. the {@link #startRead <TT>startRead</TT>}/{@link #startWrite <TT>startWrite</TT>}
  * methods) communicate down the <I>any-1</I> <TT>request</TT> channel, identifying

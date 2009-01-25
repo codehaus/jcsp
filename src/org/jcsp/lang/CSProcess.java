@@ -32,7 +32,10 @@ package org.jcsp.lang;
  * This is the JCSP interface for a <I>process</I> - an active component that encapsulates
  * the data structures on which it operates.
  * <H2>Description</H2>
+ * <!--
  * A <A HREF="http://www.comlab.ox.ac.uk/archive/csp.html">CSP</A>
+ * -->
+ * A <A HREF="http://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP</A>
  * <I>process</I> is a component that encapsulates data structures
  * and algorithms for manipulating that data.  Both its data and algorithms
  * are private.  The outside world can neither see that data nor execute those
@@ -41,7 +44,7 @@ package org.jcsp.lang;
  * <I>channels</I>, <I>events</I> or other well-defined modes of access
  * to shared passive objects.
  * <P>
- * In this <A HREF="http://www.hensa.ac.uk/parallel/languages/java/jcsp/">JCSP</A>
+ * In this <A HREF="http://www.cs.kent.ac.uk/projects/ofa/jcsp/">JCSP</A>
  * binding of the CSP model into Java, a process is an instance
  * of a class implementing this <TT>CSProcess</TT> interface.
  * Its actions are defined by the <TT>run</TT> method.
@@ -55,7 +58,7 @@ package org.jcsp.lang;
  * the process via accessor methods, but only after (or in between) runs.
  * <P>
  * For other general information, see the JCSP
- * <A HREF="../../overview-summary.html">overview</A>.
+ * <A HREF="../../../overview-summary.html">overview</A>.
  * <H2>Process Oriented Design</H2>
  * A <I>process-oriented</I> design consists of layered networks of processes.
  * A <I>network</I> is simply a parallel composition of processes connected
@@ -113,7 +116,7 @@ package org.jcsp.lang;
  * <UL>
  *   <LI>
  *      maintain the encapsulation of information (which is something that
- *      is easilly lost in free-wheeling OO-design as object references are
+ *      is easily lost in free-wheeling OO-design as object references are
  *      passed around);
  *   <LI>
  *      enable a <I>precise</I> (CSP) specification of the way a process interacts
@@ -166,7 +169,7 @@ package org.jcsp.lang;
  * sub-sub-processes <I>ad infinitum</I>.  This is the way the world works ...
  * <P>
  * The simplicity of the process design pattern is that each process can be
- * considered individually as an independant <I>serial</I> program, interacting
+ * considered individually as an independent <I>serial</I> program, interacting
  * with external I/O devices (the synchronisation objects -- channels etc.).
  * At the other end of those devices may lie other processes, but that is of
  * no concern to the consideration of this process.  All our past skills and

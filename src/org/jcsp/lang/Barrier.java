@@ -68,7 +68,7 @@ import java.io.Serializable;
  * to the number of processes to be associated with it and share it out amongst those processes.
  * <P>
  * For example, here is a fixed set of 10 processes synchronising on a shared barrier:
- * <p><IMG SRC="doc-files\Barrier1.gif"></p>
+ * <p><IMG SRC="doc-files/Barrier1.gif"></p>
  * Here is the JCSP code for this network:
  * <PRE>
  * import org.jcsp.lang.*;
@@ -135,7 +135,7 @@ import java.io.Serializable;
  * these operations are internal choices of individual processes and because they have an impact on
  * the synchronisation properties of their environment, the resulting system is non-deterministic.
  * <A NAME="Worker-TimeKeeper">
- * <p><IMG SRC="doc-files\Barrier2.gif"></p>
+ * <p><IMG SRC="doc-files/Barrier2.gif"></p>
  * In the above example, <TT>Worker</TT> processes cycle between <I>working</I> and
  * <I>resting</I> states, making their own decisions about when to switch.
  * When <I>working</I>, they enroll in a barrier shared with a <TT>TimeKeeper</TT> process -

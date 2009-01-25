@@ -288,7 +288,7 @@ import java.io.Serializable;
  * - plugging in the channels as required and running them in {@link Parallel}.
  * <P>
  * For example, the simple two process network:
- * <p><IMG SRC="doc-files\One2OneCallChannel1.gif"></p>
+ * <p><IMG SRC="doc-files/One2OneCallChannel1.gif"></p>
  * is implemented by:
  * <PRE>
  *     One2OneFooChannel c = new One2OneFooChannel ();

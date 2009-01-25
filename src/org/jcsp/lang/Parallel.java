@@ -75,13 +75,13 @@ import java.util.*;
  * This <I>high-level</I> example sets up a communicating network
  * of (in this case non-terminating) processes.  Data-flow diagrams are a great help
  * for designing, understanding and maintaining such parallel systems:
- * <p><IMG SRC="doc-files\Parallel1.gif"></p>
+ * <p><IMG SRC="doc-files/Parallel1.gif"></p>
  * Here is the JCSP code:
  * <PRE>
  * import org.jcsp.lang.*;
  * import org.jcsp.plugNplay.*;
  * <I></I>
- * class ParaplexIntTest {
+ * class ParaplexIntExample {
  * <I></I>
  *   public static void main (String[] args) {
  * <I></I>
@@ -93,7 +93,7 @@ import java.util.*;
  *         new NumbersInt (a[0].out ()),
  *         new SquaresInt (a[1].out ()),
  *         new FibonacciInt (a[2].out ()),
- *         new ParaplexInt (ChannelInt.getInputArray (a), b.out ()),
+ *         new ParaplexInt (Channel.getInputArray (a), b.out ()),
  *         new CSProcess () {
  *           public void run () {
  *             System.out.println ("\n\t\tNumbers\t\tSquares\t\tFibonacci\n");

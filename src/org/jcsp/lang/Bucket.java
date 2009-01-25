@@ -56,7 +56,7 @@ import java.io.Serializable;
  * <I>Note:</I> this notion of bucket corresponds to
  * the <A HREF="http://www.hensa.ac.uk/parallel/occam/projects/occam-for-all/hlps/">BUCKET</A>
  * synchronisation primitive added to
- * the <A HREF="http://www.hensa.ac.uk/parallel/occam/projects/occam-for-all/kroc/">KRoC</A>
+ * the <A HREF="http://occam-pi.org/">KRoC</A>
  * <B>occam</B> language system.
  * 
  * <H2>Implementation Note</H2>
@@ -76,7 +76,7 @@ import java.io.Serializable;
  * 
  * <H2>A Simple Example</H2>
  * This consists of 10 workers, one bucket and one flusher:
- * <p><IMG SRC="doc-files\Bucket1.gif"></p>
+ * <p><IMG SRC="doc-files/Bucket1.gif"></p>
  * Here is the code for this network:
  * <PRE>
  * import org.jcsp.lang.*;
@@ -203,7 +203,7 @@ import java.io.Serializable;
  * This consists of <I>many</I> buckets, a <I>single</I> bucket keeper (responsible for
  * flushing the buckets) and flock of <TT>Dingbat</TT>s (who regularly fall into various
  * buckets).  Here is the system diagram:
- * <p><IMG SRC="doc-files\Bucket2.gif"></p>
+ * <p><IMG SRC="doc-files/Bucket2.gif"></p>
  * And here is the network code:
  * <PRE>
  * import org.jcsp.lang.*;
