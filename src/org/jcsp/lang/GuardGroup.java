@@ -63,6 +63,14 @@ public class GuardGroup extends Guard {
 	//}}}
 	//{{{ 1 private void expandEqualGreaterList(Object id)
 	private void expandEqualGreaterList(Object id) {
+		/*
+		 * FIXME currently stores a hash of process (represented by
+		 * Alternative object) and a list of higher priority guards
+		 * Needs let all of the guards so far what its current 
+		 * status is (?face?)
+		 */
+
+
 		Vector v = (Vector) processBarrierList.get(id);
 		if (v == null) {
 			v = new Vector();
