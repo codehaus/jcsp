@@ -26,6 +26,8 @@ public class AltableBarrier {
 
 	public AltingChannelInput in; // the end the alting process uses
 	public ChannelOutput out; // the end the barrier uses.
+
+	public BarrierFace face;
 	//}}}
 
 
@@ -74,6 +76,11 @@ public class AltableBarrier {
 			this.status = status;
 		}
 		return parent.checkStatus(this);
+	}
+	//}}}
+	//{{{ public void setFace(BarrierFace face)
+	public void setFace(BarrierFace face) {
+		this.face = face;
 	}
 	//}}}
 	//}}}

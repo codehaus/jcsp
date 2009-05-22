@@ -70,7 +70,7 @@ public class GuardGroup extends Guard {
 		 * status is (?face?)
 		 */
 
-
+		/*
 		Vector v = (Vector) processBarrierList.get(id);
 		if (v == null) {
 			v = new Vector();
@@ -79,6 +79,20 @@ public class GuardGroup extends Guard {
 
 		for (int i = 0; i < barriers.length; i++) {
 			v.add(barriers[i]);
+		}
+		*/
+
+		// FIXME needs to be undone when barrier list is contracted
+
+		BarrierFace face = (BarrierFace) processBarrierList.get(id);
+		if (face == null) {
+			face = new BarrierFace(); //FIXME needs better constructor
+			processBarrierList.put(id, face);
+		}
+
+		for (int i = 0; i < barriers.length; i++) {
+			barriers[i].setFace(face);
+			face.higherBarriers.add(barriers[i]);
 		}
 	}
 	//}}}
