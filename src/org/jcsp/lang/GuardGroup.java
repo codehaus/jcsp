@@ -61,7 +61,7 @@ public class GuardGroup extends Guard {
 		}
 	}
 	//}}}
-	//{{{ 1 private void expandEqualGreaterList(Object id)
+	//{{{  private void expandEqualGreaterList(Object id)
 	private void expandEqualGreaterList(Object id) {
 		/*
 		 * FIXME currently stores a hash of process (represented by
@@ -86,7 +86,7 @@ public class GuardGroup extends Guard {
 
 		BarrierFace face = (BarrierFace) processBarrierList.get(id);
 		if (face == null) {
-			face = new BarrierFace(); //FIXME needs better constructor
+			face = new BarrierFace(new Vector(), null, id);
 			processBarrierList.put(id, face);
 		}
 
@@ -122,11 +122,17 @@ public class GuardGroup extends Guard {
 	//}}}
 	//{{{ 4 private void eliminateUnreadyBarriers()
 	private void eliminateUnreadyBarriers() {
+		//{{{ record all the barriers you can sync on
+		// update them so that they know that their process
+		// is ready to sync on them
 		readyBarriers = new Vector();
 		for (int i = 0; i < barriers.length; i++) {
 			readyBarriers.add(barriers[i]);
+			barriers[i].status = PROBABLY_READY; //FIXME
 		}
+		//}}}
 
+		//{{{
 		for (int i = 0; i < barriers.length; i++) {
 			if (barriers[i].status == AltableBarrier.NOT_READY) {
 				readyBarriers.remove(barriers[i]);
@@ -134,6 +140,7 @@ public class GuardGroup extends Guard {
 				readyBarriers.remove(barriers[i]);
 			}
 		}
+		//}}}
 	}
 	//}}}
 	//{{{ 5 private AltableBarrier selectBarrier()
@@ -225,13 +232,6 @@ public class GuardGroup extends Guard {
 			// check if any Guards are ready
 			Object o = anyReady();
 			if (o == null) {
-				/*
-				 * FIXME: There was no immediately ready guard
-				 * in this group.  Need to assume that 
-				 * Alternative will enter a waiting state, must
-				 * enable mundane and PICOMS guards so that
-				 * they can wake up a sleeping Alternative.
-				 */
 				return false;
 			} else {
 				lastReadyGuard = o;

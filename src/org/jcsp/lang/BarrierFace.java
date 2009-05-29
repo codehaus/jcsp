@@ -19,8 +19,18 @@ import java.util.*;
 //{{{ public class BarrierFace
 public class BarrierFace {
 
+	//{{{ fields
 	public Vector higherBarriers;
 	public AltableBarrier selectedBarrier;
 	public Object key;
+	//}}}
+
+	//{{{ public BarrierFace(higherBarriers, selectedBarrier, key)
+	public BarrierFace(Vector higherBarriers, AltableBarrier selectedBarrier, Object key) {
+		this.higherBarriers = higherBarriers;
+		this.selectedBarrier = selectedBarrier;
+		this.key = key;
+	}
+	//}}}
 }
 //}}}
