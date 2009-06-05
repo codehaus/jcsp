@@ -50,14 +50,14 @@ public class GuardGroup extends Guard {
 	//{{{ private void explicitlyEnableBarriers()
 	private void explicitlyEnableBarriers() {
 		for (int i = 0; i < barriers.length; i++) {
-			barriers[i].setStatus(barriers[i].EXPLICIT_READY);
+			barriers[i].setStatus(barriers[i].PREPARED);
 		}
 	}
 	//}}}
 	//{{{ private void endExplicitEnable()
 	private void endExplicitEnable() {
 		for (int i = 0; i < barriers.length; i++) {
-			barriers[i].setStatus(barriers[i].IMPLICIT_READY);
+			barriers[i].setStatus(barriers[i].UNPREPARED);
 		}
 	}
 	//}}}
@@ -128,7 +128,7 @@ public class GuardGroup extends Guard {
 		readyBarriers = new Vector();
 		for (int i = 0; i < barriers.length; i++) {
 			readyBarriers.add(barriers[i]);
-			barriers[i].status = PROBABLY_READY; //FIXME
+			barriers[i].status = AltableBarrier.PREPARED; 
 		}
 		//}}}
 

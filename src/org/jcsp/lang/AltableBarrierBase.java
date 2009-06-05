@@ -7,11 +7,21 @@ import java.util.*;
 public class AltableBarrierBase {
 
 	//{{{ constants
+	/*
 	public static final int NOT_READY = 0;
 	public static final int NOT_SYNCING_NOW = 1;
 	public static final int PROBABLY_READY = 2;
 	public static final int SELECTED = 3;
 	public static final int READY = 4;
+	*/
+	public static final int PREPARED = 0;
+	public static final int UNPREPARED = 1;
+	public static final int PICKED = 6;
+
+	public static final int NOT_READY = 2;
+	public static final int NOT_SYNCING_NOW = 3;
+	public static final int PROBABLY_READY = 4;
+	public static final int SELECTED = 5;
 	//}}}
 
 	//{{{ private fields
@@ -42,10 +52,26 @@ public class AltableBarrierBase {
 	}
 	//{{{ public int getStatus()
 	public int getStatus() {
+		for (int i = 0; i < committedBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier)committedBarriers.get(i);
+			if (ab.status == UNPREPARED) {
+				return NOT_READY;
+			}
+		}
+
+		boolean ready = true, selected = false;
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier)altableBarriers.get(i);
+
+			if (ab.status == UNPREPARED) {
+				return NOT_SYNCING_NOW;
+			} else if (ab.status == PICKED) {
+				return SELECTED;
+			}
+		}
+		return PROBABLY_READY;
 		// if any committed barriers are not ready then not ready
-//		if () {
-//		}
-		
+
 		// if any altable barriers are not syncing now then
 		// status is not syncing now
 
@@ -56,7 +82,6 @@ public class AltableBarrierBase {
 		// barrier then it is ready
 
 		// otherwise status is probably ready
-		return PROBABLY_READY;
 	}
 	//}}}
 	//{{{ public void enroll(AltableBarrier child)
@@ -87,6 +112,7 @@ public class AltableBarrierBase {
 	 * thread of control it is. it can't be waiting for anything.
 	 */
 	public int checkStatus(AltableBarrier caller) {
+		/*
 		int temp = getStatus();
 
 		if (temp != lastStatus) {  // may need to notify people
@@ -111,7 +137,8 @@ public class AltableBarrierBase {
 		lastStatus = temp;
 
 		return lastStatus;
-
+		*/
+		return -1;
 		
 	}
 	//}}}
