@@ -22,6 +22,7 @@ public class AltableBarrierBase {
 	public static final int NOT_SYNCING_NOW = 3;
 	public static final int PROBABLY_READY = 4;
 	public static final int SELECTED = 5;
+	public static final int COMPLETE = 7;
 	//}}}
 
 	//{{{ private fields
@@ -59,17 +60,31 @@ public class AltableBarrierBase {
 			}
 		}
 
-		boolean ready = true, selected = false;
+		boolean complete = true, anyPrepared = true;
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier ab = (AltableBarrier)altableBarriers.get(i);
 
 			if (ab.status == UNPREPARED) {
 				return NOT_SYNCING_NOW;
+			} else if (ab.status == PREPARED) {
+				anyPrepared = anyPrepared & true;
+				complete = false;
 			} else if (ab.status == PICKED) {
-				return SELECTED;
+				anyPrepared = anyPrepared & true;
+				complete = complete & true;
+			} else {
+				anyPrepared = false;
+				complete = false;
 			}
 		}
-		return PROBABLY_READY;
+		if (complete) {
+			return COMPLETE;
+		} else if (anyPrepared) {
+			return PROBABLY_READY;
+		} else {
+			return NOT_SYNCING_NOW;
+		}
+
 		// if any committed barriers are not ready then not ready
 
 		// if any altable barriers are not syncing now then
@@ -140,6 +155,52 @@ public class AltableBarrierBase {
 		*/
 		return -1;
 		
+	}
+	//}}}
+	//{{{ public void steal()
+	// for all enrolled processes look at their AltableBarriers face
+	// any which are currently syncing on another process but have
+	// this barrier in their list of higher barriers should be switched
+	// to this one.
+	public void steal() {
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier bar = (AltableBarrier) altableBarriers.get(i);
+
+			BarrierFace face = bar.face;
+			// only switch if barrier has a face, i.e. is in an alt
+			if (face != null) {
+				Vector higher = face.higherBarriers;
+				for (int j = 0; j < higher.size(); j++) {
+					AltableBarrier bar2 = (AltableBarrier) higher.get(j);
+					// switch if this barrier is in the process's list of higher barriers
+					if (bar.equals(bar2)) {
+						switchOver(face.selectedBarrier, bar);
+					}
+				}
+			}
+		}
+	}
+	//}}}
+	//}}}
+	//{{{ private methods
+	//{{{ public void switchOver (AltableBarrier from, to)
+	public void switchOver (AltableBarrier from, AltableBarrier to) {
+		from.setStatus(PREPARED); // i.e. no longer picked
+		from.face.selectedBarrier = to;
+		to.setStatus(PICKED);
+		// remove barriers of lower prioirty than the new
+		// barrier
+		// FIXME this currently will remove all barriers lower
+		// down the list than the new barrier, this is not
+		// strictly correct because some of the removed barriers
+		// may be of equal priority to the new barrier.
+		// need to store the relative priority levels of the barriers
+		// in the list so that barriers of equal priority aren't removed
+
+		int index = face.higherBarriers.indexOf(to);
+		for (int i = higherBarriers.size() i > index; i--) {
+			face.higherBarriers.remove(i);
+		}
 	}
 	//}}}
 	//}}}

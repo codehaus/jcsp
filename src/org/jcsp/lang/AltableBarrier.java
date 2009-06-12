@@ -25,6 +25,7 @@ public class AltableBarrier {
 	public static final int NOT_SYNCING_NOW = 3;
 	public static final int PROBABLY_READY = 4;
 	public static final int SELECTED = 5;
+	public static final int COMPLETE = 7;
 
 	public static final Object SUCCESS = new Object();
 	public static final Object FAILURE = new Object();
@@ -60,6 +61,7 @@ public class AltableBarrier {
 	//{{{ public methods
 	//{{{ public void attemptSynchronisation()
 	public void attemptSynchronisation() {
+		// FIXME Ignore this, read the one after
 		/*
  		 * wait() on the AltableBarrier class if not everyone
  		 * has turned up yet, otherwise notifyAll waiting
@@ -72,6 +74,34 @@ public class AltableBarrier {
  		 * the altMonitor).  Thus they aren't even blocked
  		 *
  		 */
+		/*
+		 * tell the barrier that you have picked it, check if this
+		 * completes the barrier.  If it does hooray otherwise wait
+		 * to be woken up with the news that either the sync did
+		 * complete, the barrier you were on was switched or the 
+		 * timeout elapsed.
+		 */
+
+		//{{{ update status, inc. self, face, etc
+		setStatus(PICKED);
+		face.selectedBarrier = this;
+		//}}}
+		//{{{ attempt to steal processes from other barriers.
+		parent.steal();
+		//}}}
+		//{{{ check if complete (then reset) otherwise wait
+		// Note check the barrier indictated by the face
+		// not the barrier you started syncing on
+		// this is because the barrier you are syncing on
+		// could have changed
+		int parentStatus = face.selectedBarrier.getStatus();
+		if (parentStatus == COMPLETE) {
+			System.out.println("horay we synced");
+			reset();
+		}
+		//}}}
+		//{{{ wait to be woken
+		//}}}
 	}
 	//}}}
 	//{{{ public void setState(int state)
@@ -94,6 +124,22 @@ public class AltableBarrier {
 		this.face = face;
 	}
 	//}}}
+	//}}}
+	
+	//{{{ private method reset() 
+	//this method should be called by the process completing the
+	//syncronisation and should wake all other processes up.
+	//FIXME should call parent, that should wake sleeping processes
+	//up, note that AltableBarriers should have a note of the object
+	//on which they are waiting, this should be the barrier's Alt monitor
+	//if they didn't initially select any barriers or something else
+	//(possibly the Alternative Object itself).  Note it shouldn't be
+	//the AltableBarrierBase class itself (as many unrelated processes
+	//could all be waiting on it, don't want to wake them all up) nor should
+	// it be the the Alternative's altmonitor because any currently enabled
+	// 'mundane' guards which become ready at this point could wake the 
+	// process up (the process is at the moment only interested in what
+	// happens with its barrier sync at this point).
 	//}}}
 }
 //}}}

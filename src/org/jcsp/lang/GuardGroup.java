@@ -134,9 +134,9 @@ public class GuardGroup extends Guard {
 
 		//{{{
 		for (int i = 0; i < barriers.length; i++) {
-			if (barriers[i].status == AltableBarrier.NOT_READY) {
+			if (barriers[i].getStatus() == AltableBarrier.NOT_READY) {
 				readyBarriers.remove(barriers[i]);
-			} else if (barriers[i].status == AltableBarrier.NOT_SYNCING_NOW) {
+			} else if (barriers[i].getStatus() == AltableBarrier.NOT_SYNCING_NOW) {
 				readyBarriers.remove(barriers[i]);
 			}
 		}
