@@ -181,6 +181,11 @@ public class AltableBarrierBase {
 		}
 	}
 	//}}}
+	//{{{ public void reset(AltableBarrier invoker)
+	public void reset (AltableBarrier invoker) {
+		
+	}
+	//}}}
 	//}}}
 	//{{{ private methods
 	//{{{ public void switchOver (AltableBarrier from, to)
@@ -197,8 +202,10 @@ public class AltableBarrierBase {
 		// need to store the relative priority levels of the barriers
 		// in the list so that barriers of equal priority aren't removed
 
+		BarrierFace face = from.face;  // doesn't matter which barrier
+						// its from, is same object
 		int index = face.higherBarriers.indexOf(to);
-		for (int i = higherBarriers.size() i > index; i--) {
+		for (int i = face.higherBarriers.size(); i > index; i--) {
 			face.higherBarriers.remove(i);
 		}
 	}

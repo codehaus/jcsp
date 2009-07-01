@@ -101,6 +101,19 @@ public class AltableBarrier {
 		}
 		//}}}
 		//{{{ wait to be woken
+		// the barrier wasn't ready at the moment, wait.
+		// wait on an object which won't change throughout the
+		// synchronisation attempt, which other processes can see
+		// and which isn't the Alternative's altmonitor
+		try {
+		Object key = face.key;
+		synchronized (key) {
+			key.wait();
+		}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 		//}}}
 	}
 	//}}}
@@ -140,6 +153,9 @@ public class AltableBarrier {
 	// 'mundane' guards which become ready at this point could wake the 
 	// process up (the process is at the moment only interested in what
 	// happens with its barrier sync at this point).
+	private void reset() {
+		parent.reset(this);
+	}
 	//}}}
 }
 //}}}
