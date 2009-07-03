@@ -183,7 +183,38 @@ public class AltableBarrierBase {
 	//}}}
 	//{{{ public void reset(AltableBarrier invoker)
 	public void reset (AltableBarrier invoker) {
-		
+		//{{{ wake up committedBarriers
+		for (int i = 0; i < committedBarriers.size(); i++) {
+			AltableBarrier cb = (AltableBarrier) committedBarriers.get(i);
+			BarrierFace face = cb.face;
+			Object key = face.key;
+			try {
+			synchronized (key) {
+				key.notify();
+			}
+			} catch(Exception e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+		}
+		//}}}
+		//{{{ wake up altableBarriers
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
+			BarrierFace face = ab.face;
+			Object key = face.key;
+			try {
+			synchronized (key) {
+				key.notify();
+			}
+			} catch(Exception e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+		}
+		//}}}
+
+
 	}
 	//}}}
 	//}}}

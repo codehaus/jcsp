@@ -174,6 +174,14 @@ public class GuardGroup extends Guard {
 		boolean running = true;
 		barrier.attemptSynchronisation();
 
+		barrier = barrier.face.selectedBarrier;
+
+		if (barrier != null && barrier.getStatus() == barrier.COMPLETE) {
+			return barrier;
+		}
+
+		//{{{
+		/*
 		while (running) {
 			Object o = barrier.in.read();
 			if (o instanceof AltableBarrier) {
@@ -191,13 +199,18 @@ public class GuardGroup extends Guard {
 				// FIXME set non present guards to not_syncing_now
 			}
 		}
-
-		return barrier;
+		*/
+		//}}}
+		return null;
 	}
 	//}}}
 
 	//{{{ private Object anyReady()
 	private Object anyReady() {
+		if (lastReadyGuard != null) {
+			return lastReadyGuard;
+		}
+
 		AltableBarrier ab = null;
 		
 		Guard g = checkForReadyGuards();
@@ -266,6 +279,7 @@ public class GuardGroup extends Guard {
 	 * hmmmm ... is this a compromise in priority too far or unavoidable?
 	 */
 	boolean disable() {
+
 		try { synchronized (Class.forName("AltableBarrierBase")) {
 		
 			// check if there are any ready guards

@@ -109,6 +109,10 @@ public class AltableBarrier {
 		Object key = face.key;
 		synchronized (key) {
 			key.wait();
+			parentStatus = face.selectedBarrier.getStatus();
+			if (parentStatus == COMPLETE) {
+				System.out.println("horay we synced");
+			}
 		}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -142,7 +146,7 @@ public class AltableBarrier {
 	//{{{ private method reset() 
 	//this method should be called by the process completing the
 	//syncronisation and should wake all other processes up.
-	//FIXME should call parent, that should wake sleeping processes
+	//should call parent, that should wake sleeping processes
 	//up, note that AltableBarriers should have a note of the object
 	//on which they are waiting, this should be the barrier's Alt monitor
 	//if they didn't initially select any barriers or something else
