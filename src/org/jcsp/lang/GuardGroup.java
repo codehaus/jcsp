@@ -234,7 +234,7 @@ public class GuardGroup extends Guard {
 	//{{{ methods inherited by Guard
 	//{{{ boolean enable(Alternative alt)
 	boolean enable(Alternative alt) {
-		try { synchronized (Class.forName("AltableBarrierBase")) {
+		try { synchronized (Class.forName("org.jcsp.lang.AltableBarrierBase")) {
 
 			// now has parent, assign
 			parent = alt;
@@ -280,7 +280,7 @@ public class GuardGroup extends Guard {
 	 */
 	boolean disable() {
 
-		try { synchronized (Class.forName("AltableBarrierBase")) {
+		try { synchronized (Class.forName("org.jcsp.lang.AltableBarrierBase")) {
 		
 			// check if there are any ready guards
 			Object o = anyReady();
