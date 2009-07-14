@@ -236,7 +236,7 @@ public class AltableBarrierBase {
 		BarrierFace face = from.face;  // doesn't matter which barrier
 						// its from, is same object
 		int index = face.higherBarriers.indexOf(to);
-		for (int i = face.higherBarriers.size(); i >= index; i--) {
+		for (int i = index; face.higherBarriers.size() > index;) {
 			face.higherBarriers.remove(i);
 		}
 	}
