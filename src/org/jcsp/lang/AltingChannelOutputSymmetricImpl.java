@@ -25,17 +25,17 @@
 
 package org.jcsp.lang;
 
-class AltingChannelOutputSymmetricImpl extends AltingChannelOutput
+class AltingChannelOutputSymmetricImpl<T> extends AltingChannelOutput<T>
   implements MultiwaySynchronisation {
 
   private final AltingBarrier ab;
 
-  private final ChannelOutput out;
+  private final ChannelOutput<T> out;
 
   private boolean syncDone = false;
   
   public AltingChannelOutputSymmetricImpl (
-    AltingBarrier ab, ChannelOutput out) {
+    AltingBarrier ab, ChannelOutput<T> out) {
     this.ab = ab;
     this.out = out;
   }
@@ -50,7 +50,7 @@ class AltingChannelOutputSymmetricImpl extends AltingChannelOutput
     return syncDone;
   }
 
-  public void write (Object o) {
+  public void write (T o) {
     if (!syncDone) ab.sync ();
     syncDone = false;
     out.write (o);

@@ -75,15 +75,15 @@ import org.jcsp.util.*;
  * @author P.H. Welch
  */
 
-class BufferedAny2OneChannel extends Any2OneImpl
+class BufferedAny2OneChannel<T> extends Any2OneImpl<T>
 {
 	/**
      * Constructs a new BufferedAny2OneChannel with the specified ChannelDataStore.
      *
      * @param data The ChannelDataStore used to store the data for the channel
      */
-    public BufferedAny2OneChannel(ChannelDataStore data)
+    public BufferedAny2OneChannel(ChannelDataStore<T> data)
     {
-        super(new BufferedOne2OneChannel(data));
+        super(new BufferedOne2OneChannel<T>(data));
     }
 }

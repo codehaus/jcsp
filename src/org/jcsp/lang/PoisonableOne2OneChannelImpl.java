@@ -66,13 +66,13 @@ import java.io.Serializable;
  * @author P.H. Welch
  */
 
-class PoisonableOne2OneChannelImpl implements One2OneChannel, Serializable, ChannelInternals
+class PoisonableOne2OneChannelImpl<T> implements One2OneChannel<T>, Serializable, ChannelInternals<T>
 {
 	/** The monitor synchronising reader and writer on this channel */
 	  private Object rwMonitor = new Object ();
 
 	  /** The (invisible-to-users) buffer used to store the data for the channel */
-	  private Object hold;
+	  private T hold;
 
 	  /** The synchronisation flag */
 	  private boolean empty = true;
@@ -121,9 +121,9 @@ class PoisonableOne2OneChannelImpl implements One2OneChannel, Serializable, Chan
      * @return the <code>AltingChannelInput</code> object to use for this
      *          channel.
      */
-    public AltingChannelInput in()
+    public AltingChannelInput<T> in()
     {
-        return new AltingChannelInputImpl(this,immunity);
+        return new AltingChannelInputImpl<T>(this,immunity);
     }
 
     /**
@@ -135,9 +135,9 @@ class PoisonableOne2OneChannelImpl implements One2OneChannel, Serializable, Chan
      * @return the <code>ChannelOutput</code> object to use for this
      *          channel.
      */
-    public ChannelOutput out()
+    public ChannelOutput<T> out()
     {
-        return new ChannelOutputImpl(this,immunity);
+        return new ChannelOutputImpl<T>(this,immunity);
     }
 
     /*************Methods from ChannelOutput*******************************/
@@ -147,7 +147,7 @@ class PoisonableOne2OneChannelImpl implements One2OneChannel, Serializable, Chan
 	   *
 	   * @param value the object to write to the channel.
 	   */
-  public void write(Object value) {
+  public void write(T value) {
     synchronized (rwMonitor) {
       if (isPoisoned()) {
     	  throw new PoisonException(poisonStrength);
@@ -196,7 +196,7 @@ class PoisonableOne2OneChannelImpl implements One2OneChannel, Serializable, Chan
 	   *
 	   * @return the object read from the channel.
 	   */
-	  public Object read () {
+	  public T read () {
 	    synchronized (rwMonitor) {
 	      if (isPoisoned()) {
 	    	  throw new PoisonException(poisonStrength);
@@ -233,7 +233,7 @@ class PoisonableOne2OneChannelImpl implements One2OneChannel, Serializable, Chan
 	    }
 	  }
 	  
-	  public Object startRead() {
+	  public T startRead() {
 		    synchronized (rwMonitor) {
 		    	if (isPoisoned()) {
 			      throw new PoisonException(poisonStrength);

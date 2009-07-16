@@ -25,18 +25,18 @@
 
 package org.jcsp.lang;
 
-class BasicOne2OneChannelSymmetric implements One2OneChannelSymmetric {
+class BasicOne2OneChannelSymmetric<T> implements One2OneChannelSymmetric<T> {
 
   private final AltingBarrier[] ab = AltingBarrier.create (2);
 
-  private final One2OneChannel c = Channel.one2one();
+  private final One2OneChannel<T> c = Channel.one2one();
 
-  public AltingChannelInput in () {
-    return new AltingChannelInputSymmetricImpl (ab[0], c.in());
+  public AltingChannelInput<T> in () {
+    return new AltingChannelInputSymmetricImpl<T> (ab[0], c.in());
   }
 
-  public AltingChannelOutput out (){
-    return new AltingChannelOutputSymmetricImpl (ab[1], c.out());
+  public AltingChannelOutput<T> out (){
+    return new AltingChannelOutputSymmetricImpl<T> (ab[1], c.out());
   }
 
 }
