@@ -27,22 +27,22 @@
 
 package org.jcsp.lang;
 
-class One2AnyImpl implements One2AnyChannel, ChannelInternals {
+class One2AnyImpl<T> implements One2AnyChannel<T>, ChannelInternals<T> {
 
-	private ChannelInternals channel;
+	private ChannelInternals<T> channel;
 	/** The mutex on which readers must synchronize */
     private final Mutex readMutex = new Mutex();
     
-    One2AnyImpl(ChannelInternals _channel) {
+    One2AnyImpl(ChannelInternals<T> _channel) {
 		channel = _channel;
 	}
 	
-	public SharedChannelInput in() {
-		return new SharedChannelInputImpl(this,0);
+	public SharedChannelInput<T> in() {
+		return new SharedChannelInputImpl<T>(this,0);
 	}
 
-	public ChannelOutput out() { 
-		return new ChannelOutputImpl(channel,0);
+	public ChannelOutput<T> out() { 
+		return new ChannelOutputImpl<T>(channel,0);
 	}
 
 	public void endRead() {
@@ -51,7 +51,7 @@ class One2AnyImpl implements One2AnyChannel, ChannelInternals {
 
 	}
 
-	public Object read() {
+	public T read() {
 		readMutex.claim();
 		//A poison exception might be thrown, hence the try/finally:		
 		try
@@ -84,7 +84,7 @@ class One2AnyImpl implements One2AnyChannel, ChannelInternals {
 		readMutex.release();
 	}
 
-	public Object startRead() {
+	public T startRead() {
 		readMutex.claim();		
 		try
 		{
@@ -100,7 +100,7 @@ class One2AnyImpl implements One2AnyChannel, ChannelInternals {
 	}
 
 	//begin never used
-	public void write(Object obj) {
+	public void write(T obj) {
 		channel.write(obj);
 	}
 

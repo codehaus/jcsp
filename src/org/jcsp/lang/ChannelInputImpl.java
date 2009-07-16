@@ -27,9 +27,9 @@
 
 package org.jcsp.lang;
 
-class ChannelInputImpl implements ChannelInput {
+class ChannelInputImpl<T> implements ChannelInput<T> {
 
-	private ChannelInternals channel;
+	private ChannelInternals<T> channel;
 	private int immunity;
 	
 	ChannelInputImpl(ChannelInternals _channel, int _immunity) {
@@ -42,11 +42,11 @@ class ChannelInputImpl implements ChannelInput {
 
 	}
 
-	public Object read() {
+	public T read() {
 		return channel.read();
 	}
 
-	public Object startRead() {
+	public T startRead() {
 		return channel.startRead();
 	}
 

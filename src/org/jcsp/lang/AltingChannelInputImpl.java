@@ -27,12 +27,12 @@
 
 package org.jcsp.lang;
 
-class AltingChannelInputImpl extends AltingChannelInput {
+class AltingChannelInputImpl<T> extends AltingChannelInput<T> {
 
-	private ChannelInternals channel;
+	private ChannelInternals<T> channel;
 	private int immunity;
 	
-	AltingChannelInputImpl(ChannelInternals _channel, int _immunity) {
+	AltingChannelInputImpl(ChannelInternals<T> _channel, int _immunity) {
 		channel = _channel;
 		immunity = _immunity;
 	}
@@ -54,11 +54,11 @@ class AltingChannelInputImpl extends AltingChannelInput {
 		channel.endRead();
 	}
 
-	public Object read() {
+	public T read() {
 		return channel.read();
 	}
 
-	public Object startRead() {
+	public T startRead() {
 		return channel.startRead();
 	}
 

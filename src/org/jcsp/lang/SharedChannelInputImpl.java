@@ -27,12 +27,12 @@
 
 package org.jcsp.lang;
 
-class SharedChannelInputImpl implements SharedChannelInput {
+class SharedChannelInputImpl<T> implements SharedChannelInput<T> {
 
-	private ChannelInternals channel;
+	private ChannelInternals<T> channel;
 	private int immunity;
 	
-	SharedChannelInputImpl(ChannelInternals _channel, int _immunity) {
+	SharedChannelInputImpl(ChannelInternals<T> _channel, int _immunity) {
 		channel = _channel;
 		immunity = _immunity;
 	}
@@ -42,11 +42,11 @@ class SharedChannelInputImpl implements SharedChannelInput {
 
 	}
 
-	public Object read() {
+	public T read() {
 		return channel.read();
 	}
 
-	public Object startRead() {
+	public T startRead() {
 		return channel.startRead();
 	}
 

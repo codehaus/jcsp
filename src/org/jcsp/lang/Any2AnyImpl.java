@@ -27,22 +27,22 @@
 
 package org.jcsp.lang;
 
-class Any2AnyImpl implements Any2AnyChannel, ChannelInternals {
+class Any2AnyImpl<T> implements Any2AnyChannel<T>, ChannelInternals<T> {
 
-        private ChannelInternals channel;
+        private ChannelInternals<T> channel;
         /** The mutex on which readers must synchronize */
         private final Mutex readMutex = new Mutex();
         private final Object writeMonitor = new Object();
     
-        Any2AnyImpl(ChannelInternals _channel) {
+        Any2AnyImpl(ChannelInternals<T> _channel) {
                 channel = _channel;
         }
         
-        public SharedChannelInput in() {
+        public SharedChannelInput<T> in() {
                 return new SharedChannelInputImpl(this,0);
         }
 
-        public SharedChannelOutput out() { 
+        public SharedChannelOutput<T> out() { 
                 return new SharedChannelOutputImpl(this,0);
         }
 
@@ -52,7 +52,7 @@ class Any2AnyImpl implements Any2AnyChannel, ChannelInternals {
 
         }
 
-        public Object read() {
+        public T read() {
                 readMutex.claim();
 //                A poison exception might be thrown, hence the try/finally:                
                 try
@@ -85,7 +85,7 @@ class Any2AnyImpl implements Any2AnyChannel, ChannelInternals {
                 readMutex.release();
         }
 
-        public Object startRead() {
+        public T startRead() {
                 readMutex.claim();                
                 try
                 {
@@ -100,7 +100,7 @@ class Any2AnyImpl implements Any2AnyChannel, ChannelInternals {
                 
         }
 
-        public void write(Object obj) {
+        public void write(T obj) {
                 synchronized (writeMonitor) {
                         channel.write(obj);
                 }                

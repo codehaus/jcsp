@@ -64,13 +64,13 @@ package org.jcsp.lang;
  * @author P.H. Welch
  */
 
-class One2OneChannelImpl implements One2OneChannel, ChannelInternals
+class One2OneChannelImpl<T> implements One2OneChannel<T>, ChannelInternals<T>
 {
 	/** The monitor synchronising reader and writer on this channel */
 	  private Object rwMonitor = new Object ();
 
 	  /** The (invisible-to-users) buffer used to store the data for the channel */
-	  private Object hold;
+	  private T hold;
 
 	  /** The synchronisation flag */
 	  private boolean empty = true;
@@ -92,7 +92,7 @@ class One2OneChannelImpl implements One2OneChannel, ChannelInternals
      * @return the <code>AltingChannelInput</code> object to use for this
      *          channel.
      */
-    public AltingChannelInput in()
+    public AltingChannelInput<T> in()
     {
         return new AltingChannelInputImpl(this,0);
     }
@@ -106,7 +106,7 @@ class One2OneChannelImpl implements One2OneChannel, ChannelInternals
      * @return the <code>ChannelOutput</code> object to use for this
      *          channel.
      */
-    public ChannelOutput out()
+    public ChannelOutput<T> out()
     {
         return new ChannelOutputImpl(this,0);
     }
@@ -118,7 +118,7 @@ class One2OneChannelImpl implements One2OneChannel, ChannelInternals
 	   *
 	   * @param value the object to write to the channel.
 	   */
-  public void write(Object value) {
+  public void write(T value) {
     synchronized (rwMonitor) {      
       hold = value;
       if (empty) {
@@ -153,7 +153,7 @@ class One2OneChannelImpl implements One2OneChannel, ChannelInternals
 	   *
 	   * @return the object read from the channel.
 	   */
-	  public Object read () {
+	  public T read () {
 	    synchronized (rwMonitor) {          
 	      if (empty) {
 	        empty = false;
@@ -179,7 +179,7 @@ class One2OneChannelImpl implements One2OneChannel, ChannelInternals
 	    }
 	  }
 	  
-	  public Object startRead() {
+	  public T startRead() {
 		    synchronized (rwMonitor) {              
 		      if (empty) {
 		        empty = false;

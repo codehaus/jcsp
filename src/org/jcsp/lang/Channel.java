@@ -115,9 +115,9 @@ public class Channel
      *
      * @return the channel.
      */
-    public static One2OneChannel one2one()
+    public static <T> One2OneChannel<T> one2one()
     {
-    	return new One2OneChannelImpl();
+    	return new One2OneChannelImpl<T>();
     }
     
     /**
@@ -131,9 +131,9 @@ public class Channel
      *
      * @return the channel.
      */
-    public static One2AnyChannel one2any()
+    public static <T> One2AnyChannel<T> one2any()
     {
-    	return new One2AnyChannelImpl();
+    	return new One2AnyChannelImpl<T>();
     }
     
     /**
@@ -147,9 +147,9 @@ public class Channel
      *
      * @return the channel.
      */
-    public static Any2OneChannel any2one()
+    public static <T> Any2OneChannel<T> any2one()
     {
-    	return new Any2OneChannelImpl();
+    	return new Any2OneChannelImpl<T>();
     }
     
     /**
@@ -164,9 +164,9 @@ public class Channel
      *
      * @return the channel.
      */
-    public static Any2AnyChannel any2any()
+    public static <T> Any2AnyChannel<T> any2any()
     {
-    	return new Any2AnyChannelImpl();
+    	return new Any2AnyChannelImpl<T>();
     }
 
     /**
