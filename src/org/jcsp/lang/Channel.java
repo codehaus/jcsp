@@ -175,9 +175,9 @@ public class Channel
      * @param buffer defines size and policy (the channel will clone its own).
      * @return the channel.
      */
-    public static One2OneChannel one2one(ChannelDataStore buffer)
+    public static <T> One2OneChannel<T> one2one(ChannelDataStore<T> buffer)
     {
-    	return new BufferedOne2OneChannel(buffer);
+    	return new BufferedOne2OneChannel<T>(buffer);
     }
     
     /**

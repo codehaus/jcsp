@@ -61,10 +61,10 @@ import org.jcsp.util.*;
  * @author P.H. Welch
  */
 
-class BufferedOne2OneChannel implements One2OneChannel, ChannelInternals
+class BufferedOne2OneChannel<T> implements One2OneChannel<T>, ChannelInternals<T>
 {
     /** The ChannelDataStore used to store the data for the channel */
-    private final ChannelDataStore data;
+    private final ChannelDataStore<T> data;
     
     private final Object rwMonitor = new Object();
     
@@ -75,12 +75,12 @@ class BufferedOne2OneChannel implements One2OneChannel, ChannelInternals
      *
      * @param data the ChannelDataStore used to store the data for the channel
      */
-    public BufferedOne2OneChannel(ChannelDataStore data)
+    public BufferedOne2OneChannel(ChannelDataStore<T> data)
     {
         if (data == null)
             throw new IllegalArgumentException
                     ("Null ChannelDataStore given to channel constructor ...\n");
-        this.data = (ChannelDataStore) data.clone();
+        this.data = (ChannelDataStore<T>) data.clone();
     }
 
     /**
@@ -88,7 +88,7 @@ class BufferedOne2OneChannel implements One2OneChannel, ChannelInternals
      *
      * @return the object read from the channel.
      */
-    public Object read () {
+    public T read () {
       synchronized (rwMonitor) {
         if (data.getState () == ChannelDataStore.EMPTY) {
           try {
@@ -111,7 +111,7 @@ class BufferedOne2OneChannel implements One2OneChannel, ChannelInternals
       }
     }
     
-    public Object startRead() {
+    public T startRead() {
       synchronized (rwMonitor) {
         if (data.getState () == ChannelDataStore.EMPTY) {
           try {
@@ -146,7 +146,7 @@ class BufferedOne2OneChannel implements One2OneChannel, ChannelInternals
      *
      * @param value the object to write to the channel.
      */
-    public void write (Object value) {
+    public void write (T value) {
       synchronized (rwMonitor) {
         data.put (value);
         if (alt != null) {
@@ -259,9 +259,9 @@ class BufferedOne2OneChannel implements One2OneChannel, ChannelInternals
      * @return the <code>AltingChannelInput</code> object to use for this
      *          channel.
      */
-    public AltingChannelInput in()
+    public AltingChannelInput<T> in()
     {
-        return new AltingChannelInputImpl(this,0);
+        return new AltingChannelInputImpl<T>(this,0);
     }
 
     /**
@@ -273,9 +273,9 @@ class BufferedOne2OneChannel implements One2OneChannel, ChannelInternals
      * @return the <code>ChannelOutput</code> object to use for this
      *          channel.
      */
-    public ChannelOutput out()
+    public ChannelOutput<T> out()
     {
-        return new ChannelOutputImpl(this,0);
+        return new ChannelOutputImpl<T>(this,0);
     }
     
 //  No poison in these channels:

@@ -71,7 +71,7 @@ package org.jcsp.util;
  * @author P.D. Austin
  */
 
-public interface ChannelDataStore extends Cloneable
+public interface ChannelDataStore<T> extends Cloneable
 {
     /** Indicates that the <TT>ChannelDataStore</TT> is empty
      * -- it can accept only a <TT>put</TT>.
@@ -104,7 +104,7 @@ public interface ChannelDataStore extends Cloneable
      *
      * @param value the Object to put into the ChannelDataStore
      */
-    public abstract void put(Object value);
+    public abstract void put(T value);
 
     /**
      * Returns an <TT>Object</TT> from the <TT>ChannelDataStore</TT>.
@@ -113,7 +113,7 @@ public interface ChannelDataStore extends Cloneable
      *
      * @return an <TT>Object</TT> from the <TT>ChannelDataStore</TT>
      */
-    public abstract Object get();
+    public abstract T get();
     
     /**
      * Begins an extended read on the buffer, returning the data for the extended read.
@@ -135,7 +135,7 @@ public interface ChannelDataStore extends Cloneable
      *
      * @see #endGet
      */
-    public abstract Object startGet();
+    public abstract T startGet();
     
     /**
      * Ends an extended read on the buffer.
@@ -160,7 +160,7 @@ public interface ChannelDataStore extends Cloneable
      *
      * @return the cloned instance of this <TT>ChannelDataStore</TT>.
      */
-    public abstract Object clone();
+    public abstract Object clone(); // This needs some looking at...
     
     /**
      * Deletes all items in the buffer, leaving it empty. 
