@@ -57,7 +57,7 @@ import java.io.Serializable;
  * @author P.D. Austin
  */
 
-public class InfiniteBuffer implements ChannelDataStore, Serializable
+public class InfiniteBuffer<T> implements ChannelDataStore<T>, Serializable
 {
     /** The default size of the buffer */
     private static final int DEFAULT_SIZE = 8;
@@ -66,7 +66,7 @@ public class InfiniteBuffer implements ChannelDataStore, Serializable
     private int initialSize;
 
     /** The storage for the buffered Objects */
-    private Object[] buffer;
+    private T[] buffer;
 
     /** The number of Objects stored in the InfiniteBuffer */
     private int counter = 0;
@@ -100,7 +100,7 @@ public class InfiniteBuffer implements ChannelDataStore, Serializable
             throw new BufferSizeError
                     ("\n*** Attempt to create a buffered channel with an initially negative or zero capacity");
         this.initialSize = initialSize;
-        buffer = new Object[initialSize];
+        buffer = (T[]) new Object[initialSize];
     }
 
     /**
@@ -110,9 +110,9 @@ public class InfiniteBuffer implements ChannelDataStore, Serializable
      *
      * @return the oldest <TT>Object</TT> from the <TT>InfiniteBuffer</TT>
      */
-    public Object get()
+    public T get()
     {
-        Object value = buffer[firstIndex];
+        T value = buffer[firstIndex];
         buffer[firstIndex] = null;
         firstIndex = (firstIndex + 1) % buffer.length;
         counter--;
@@ -126,7 +126,7 @@ public class InfiniteBuffer implements ChannelDataStore, Serializable
      *
      * @return the oldest <TT>Object</TT> from the <TT>Buffer</TT>
      */
-    public Object startGet()
+    public T startGet()
     {
       return buffer[firstIndex];
     }
@@ -149,12 +149,12 @@ public class InfiniteBuffer implements ChannelDataStore, Serializable
      *
      * @param value the Object to put into the InfiniteBuffer
      */
-    public void put(Object value)
+    public void put(T value)
     {
         if (counter == buffer.length)
         {
-            Object[] temp = buffer;
-            buffer = new Object[buffer.length * 2];
+            T[] temp = buffer;
+            buffer = (T[]) new Object[buffer.length * 2];
             System.arraycopy(temp, firstIndex, buffer, 0, temp.length - firstIndex);
             System.arraycopy(temp, 0, buffer, temp.length - firstIndex, firstIndex);
             firstIndex = 0;

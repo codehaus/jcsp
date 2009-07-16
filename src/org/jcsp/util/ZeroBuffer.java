@@ -58,13 +58,13 @@ import java.io.Serializable;
  */
 //}}}
 
-public class ZeroBuffer implements ChannelDataStore, Serializable
+public class ZeroBuffer<T> implements ChannelDataStore<T>, Serializable
 {
     /** The current state */
     private int state = EMPTY;
 
     /** The Object */
-    private Object value;
+    private T value;
 
     /**
      * Returns the <TT>Object</TT> from the <TT>ZeroBuffer</TT>.
@@ -73,10 +73,10 @@ public class ZeroBuffer implements ChannelDataStore, Serializable
      *
      * @return the <TT>Object</TT> from the <TT>ZeroBuffer</TT>
      */
-    public Object get()
+    public T get()
     {
         state = EMPTY;
-        Object o = value;
+        T o = value;
         value = null;
         return o;
     }
@@ -89,7 +89,7 @@ public class ZeroBuffer implements ChannelDataStore, Serializable
      * 
      * @return The object in the buffer. 
      */
-    public Object startGet() {
+    public T startGet() {
       return value;     
     }
     
@@ -108,7 +108,7 @@ public class ZeroBuffer implements ChannelDataStore, Serializable
      *
      * @param value the Object to put into the ZeroBuffer
      */
-    public void put(Object value)
+    public void put(T value)
     {
         state = FULL;
         this.value = value;
