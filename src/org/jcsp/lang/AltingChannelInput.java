@@ -80,7 +80,7 @@ package org.jcsp.lang;
  * @author P.D. Austin and P.H. Welch
  */
 
-public abstract class AltingChannelInput extends Guard implements ChannelInput
+public abstract class AltingChannelInput<T> extends Guard implements ChannelInput<T>
 {
     // nothing alse to add ... except ...
 

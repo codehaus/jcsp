@@ -37,6 +37,6 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface SharedChannelInput extends ChannelInput
+public interface SharedChannelInput<T> extends ChannelInput<T>
 {
 }

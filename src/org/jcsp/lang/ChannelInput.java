@@ -116,14 +116,14 @@ package org.jcsp.lang;
  * @author P.D. Austin and P.H. Welch and N.C.C.Brown
  */
 
-public interface ChannelInput extends Poisonable
+public interface ChannelInput<T> extends Poisonable
 {
     /**
      * Read an Object from the channel.
      *
      * @return the object read from the channel
      */
-    public Object read();
+    public T read();
     
     /**
      * Begin an extended rendezvous read from the channel.
@@ -157,7 +157,7 @@ public interface ChannelInput extends Poisonable
      * 
      * @return The object read from the channel 
      */
-    public Object startRead();
+    public T startRead();
     
     /**
      * End an extended rendezvous.

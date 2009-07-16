@@ -72,7 +72,7 @@
 	
 <target name="jcsp-build">
 	<mkdir dir="${build}"/>
-	<javac srcdir="${src}" destdir="${build}" source="1.3" target="1.3" excludes="org/jcsp/test/**,jcsp-demos/**" deprecation="on">
+	<javac srcdir="${src}" destdir="${build}" source="5" target="5" excludes="org/jcsp/test/**,jcsp-demos/**" deprecation="on">
 	</javac>
 	<copy todir="${build}">
 		<fileset dir="${src}"/>

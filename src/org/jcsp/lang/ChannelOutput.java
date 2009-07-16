@@ -73,12 +73,12 @@ package org.jcsp.lang;
  * @author P.D. Austin
  */
 
-public interface ChannelOutput extends Poisonable
+public interface ChannelOutput<T> extends Poisonable
 {
     /**
      * Write an Object to the channel.
      *
      * @param object the object to write to the channel
      */
-    public void write(Object object);
+    public void write(T object);
 }
