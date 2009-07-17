@@ -98,25 +98,26 @@ public class AltableBarrier {
 		if (parentStatus == COMPLETE) {
 			System.out.println("horay we synced");
 			reset();
-		}
+		} else {
 		//}}}
-		//{{{ wait to be woken
-		// the barrier wasn't ready at the moment, wait.
-		// wait on an object which won't change throughout the
-		// synchronisation attempt, which other processes can see
-		// and which isn't the Alternative's altmonitor
-		try {
-		Object key = face.key;
-		synchronized (key) {
-			key.wait();
-			parentStatus = face.selectedBarrier.getStatus();
-			if (parentStatus == COMPLETE) {
-				System.out.println("horay we synced");
+			//{{{ wait to be woken
+			// the barrier wasn't ready at the moment, wait.
+			// wait on an object which won't change throughout the
+			// synchronisation attempt, which other processes can see
+			// and which isn't the Alternative's altmonitor
+			try {
+			Object key = face.key;
+			synchronized (key) {
+				key.wait();
+				parentStatus = face.selectedBarrier.getStatus();
+				if (parentStatus == COMPLETE) {
+					System.out.println("horay we synced");
+				}
 			}
-		}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
 		}
 		//}}}
 	}

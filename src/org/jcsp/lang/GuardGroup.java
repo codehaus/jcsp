@@ -172,9 +172,12 @@ public class GuardGroup extends Guard {
 		//FIXME start timeout if you're first to select barrier
 
 		boolean running = true;
+		System.out.println("attempting synchronisation on " + barrier);
 		barrier.attemptSynchronisation();
+		
 
 		barrier = barrier.face.selectedBarrier;
+		System.out.println("synchronisation attempted and got " + barrier);
 
 		if (barrier != null && barrier.getStatus() == barrier.COMPLETE) {
 			return barrier;
@@ -220,11 +223,14 @@ public class GuardGroup extends Guard {
 
 		eliminateUnreadyBarriers();
 		ab = selectBarrier();
+		System.out.println("selected barrier " + ab);
 		if (ab == null) {
 			// there were no immediately ready guards
 			return null;
 		}
+		System.out.println("waiting on barrier " + ab);
 		ab = waitOnBarrier(ab);
+		System.out.println("waited and got " + ab + " back");
 
 		return ab;
 	}
@@ -236,6 +242,7 @@ public class GuardGroup extends Guard {
 	boolean enable(Alternative alt) {
 		try { synchronized (Class.forName("org.jcsp.lang.AltableBarrierBase")) {
 
+			System.out.println("Guard " + this + " enabled");
 			// now has parent, assign
 			parent = alt;
 	
@@ -243,7 +250,9 @@ public class GuardGroup extends Guard {
 			expandEqualGreaterList(parent); // unique ID is the parent Alt 
 
 			// check if any Guards are ready
+			System.out.println("calling anyReady()");
 			Object o = anyReady();
+			System.out.println("got " + o + " from anyReady()");
 			if (o == null) {
 				return false;
 			} else {
