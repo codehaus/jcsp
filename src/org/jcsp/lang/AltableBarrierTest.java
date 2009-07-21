@@ -45,5 +45,6 @@ public class AltableBarrierTest {
 
 		return new Guard[] {g1, g2};
 	}
+
 }
 //}}}
