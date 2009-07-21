@@ -105,6 +105,7 @@ public class AltableBarrier {
 			// wait on an object which won't change throughout the
 			// synchronisation attempt, which other processes can see
 			// and which isn't the Alternative's altmonitor
+			AltableBarrierBase.tokenReciever.out().write(null);
 			try {
 			Object key = face.key;
 			synchronized (key) {
@@ -118,6 +119,7 @@ public class AltableBarrier {
 				e.printStackTrace();
 				System.exit(0);
 			}
+			AltableBarrierBase.tokenGiver.in().read();
 		}
 		//}}}
 	}

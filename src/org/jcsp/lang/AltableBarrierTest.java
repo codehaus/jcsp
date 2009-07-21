@@ -6,7 +6,7 @@ package org.jcsp.lang;
 //{{{ public class AltableBarrierTest
 public class AltableBarrierTest {
 	//{{{ constants
-	private static final int PROCESSES = 2;
+	private static final int PROCESSES = 9;
 
 	private static AltableBarrierBase base1 = new AltableBarrierBase();
 	private static AltableBarrierBase base2 = new AltableBarrierBase();
@@ -17,9 +17,11 @@ public class AltableBarrierTest {
 
 		for (int i = 0; i < PROCESSES; i++) {
 			final Guard[] guards = createGuards();
+			final int processNumber = i;
 
 			processes[i] = new CSProcess() {
 				public void run() {
+					System.out.println("I am process " + processNumber);
 					Alternative alt = new Alternative(guards);
 
 					int index = alt.priSelect();

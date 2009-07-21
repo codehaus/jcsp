@@ -210,6 +210,10 @@ public class GuardGroup extends Guard {
 
 	//{{{ private Object anyReady()
 	private Object anyReady() {
+		return anyReady(true);
+	}
+	
+	private Object anyReady(boolean checkBarriers) {
 		if (lastReadyGuard != null) {
 			return lastReadyGuard;
 		}
@@ -220,17 +224,19 @@ public class GuardGroup extends Guard {
 		if (g != null) {
 			return g;
 		}
-
-		eliminateUnreadyBarriers();
-		ab = selectBarrier();
-		System.out.println("selected barrier " + ab);
-		if (ab == null) {
-			// there were no immediately ready guards
-			return null;
+		
+		if (checkBarriers) {
+			eliminateUnreadyBarriers();
+			ab = selectBarrier();
+			System.out.println("selected barrier " + ab);
+			if (ab == null) {
+				// there were no immediately ready guards
+				return null;
+			}
+			System.out.println("waiting on barrier " + ab);
+			ab = waitOnBarrier(ab);
+			System.out.println("waited and got " + ab + " back");
 		}
-		System.out.println("waiting on barrier " + ab);
-		ab = waitOnBarrier(ab);
-		System.out.println("waited and got " + ab + " back");
 
 		return ab;
 	}
@@ -240,8 +246,9 @@ public class GuardGroup extends Guard {
 	//{{{ methods inherited by Guard
 	//{{{ boolean enable(Alternative alt)
 	boolean enable(Alternative alt) {
-		try { synchronized (Class.forName("org.jcsp.lang.AltableBarrierBase")) {
-
+		System.out.println("about to enable " + this);
+//		try { synchronized (Class.forName("org.jcsp.lang.AltableBarrierBase")) {
+		AltableBarrierBase.tokenGiver.in().read(); // get token
 			System.out.println("Guard " + this + " enabled");
 			// now has parent, assign
 			parent = alt;
@@ -253,17 +260,19 @@ public class GuardGroup extends Guard {
 			System.out.println("calling anyReady()");
 			Object o = anyReady();
 			System.out.println("got " + o + " from anyReady()");
-			if (o == null) {
-				return false;
-			} else {
-				lastReadyGuard = o;
-				return true;
-			}
-		}} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
+
+		AltableBarrierBase.tokenReciever.out().write(null);
+
+		if (o == null) {
+			return false;
+		} else {
+			lastReadyGuard = o;
+			return true;
 		}
-		return false;
+//		}} catch (Exception e) {
+//			e.printStackTrace();
+//			System.exit(0);
+//		}
 	}
 	//}}}
 	//{{{ boolean disable()
@@ -289,8 +298,8 @@ public class GuardGroup extends Guard {
 	 */
 	boolean disable() {
 
-		try { synchronized (Class.forName("org.jcsp.lang.AltableBarrierBase")) {
-		
+//		try { synchronized (Class.forName("org.jcsp.lang.AltableBarrierBase")) {
+		AltableBarrierBase.tokenGiver.in().read();		
 			// check if there are any ready guards
 			Object o = anyReady();
 
@@ -300,18 +309,21 @@ public class GuardGroup extends Guard {
 			// parent no longer known
 			parent = null;
 
-			// return block
-			if (o == null) {
-				return false;
-			} else {
-				lastReadyGuard = o;
-				return true;
-			}
-		}} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
+		AltableBarrierBase.tokenReciever.out().write(null);
+			
+		// return block
+		if (o == null) {
+			return false;
+		} else {
+			lastReadyGuard = o;
+			return true;
 		}
-		return false;
+			
+//		}} catch (Exception e) {
+//			e.printStackTrace();
+//			System.exit(0);
+//		}
+//		return false;
 	}
 	//}}}
 	//}}}

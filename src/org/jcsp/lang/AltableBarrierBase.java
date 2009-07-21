@@ -23,6 +23,31 @@ public class AltableBarrierBase {
 	public static final int PROBABLY_READY = 4;
 	public static final int SELECTED = 5;
 	public static final int COMPLETE = 7;
+
+	public static final One2AnyChannel tokenGiver;
+	public static final Any2OneChannel tokenReciever;
+	//}}}
+	
+	//{{{ static block
+	static {
+		tokenGiver = Channel.one2any();
+		tokenReciever = Channel.any2one();
+
+		final ChannelOutput out = tokenGiver.out();
+		final ChannelInput in = tokenReciever.in();
+
+		ProcessManager pm = new ProcessManager(
+				new CSProcess() {
+					public void run() {
+						while (true) {
+							out.write(null);
+							in.read();
+						}
+					}
+				}
+		);
+		pm.start();
+	}
 	//}}}
 
 	//{{{ private fields
@@ -243,5 +268,20 @@ public class AltableBarrierBase {
 	//}}}
 	//}}}
 
+
+	//{{{ SIGH :(
+	// Need to hold a global lock on all AltableBarrierResources to ensure
+	// that no other processes muck around with what you are doing.  But
+	// if you are waiting for all of the processes syncing on your barrier
+	// to turn up, you cannot wait on the global lock because processes
+	// waiting on different barriers may also be waiting on the same lock.
+	//
+	// This means that processes can be woken up by the wrong barrier 
+	// completing.  The proposed solution (20/07/2009) is that, instead of 
+	// processes taking out a global lock, they instead wait on a channel to
+	// the AltableBarrierBase and recieve a token which allows them the
+	// same privelges as a global lock.  They then return the lock just
+	// before they wait for the barrier to complete.
+	//}}}
 }
 //}}}
