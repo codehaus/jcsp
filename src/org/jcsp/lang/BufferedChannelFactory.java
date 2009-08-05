@@ -37,7 +37,7 @@ import org.jcsp.util.ChannelDataStore;
  * 
  * @deprecated These channel factories are deprecated in favour of the new one2one() methods in the Channel class.
  */
-public interface BufferedChannelFactory
+public interface BufferedChannelFactory<T>
 {
     /**
      * Creates a new <code>One2One</code> channel with the given buffering behaviour.
@@ -45,7 +45,7 @@ public interface BufferedChannelFactory
      * @param buffer the buffer implementation to use.
      * @return the created channel.
      */
-    public One2OneChannel createOne2One(ChannelDataStore buffer);
+    public One2OneChannel<T> createOne2One(ChannelDataStore<T> buffer);
 
     /**
      * Creates a new <code>Any2One</code> channel with the given buffering behaviour.
@@ -53,7 +53,7 @@ public interface BufferedChannelFactory
      * @param buffer the buffer implementation to use.
      * @return the created channel.
      */
-    public Any2OneChannel createAny2One(ChannelDataStore buffer);
+    public Any2OneChannel<T> createAny2One(ChannelDataStore<T> buffer);
 
     /**
      * Creates a new <code>One2Any</code> channel with the given buffering behaviour.
@@ -61,7 +61,7 @@ public interface BufferedChannelFactory
      * @param buffer the buffer implementation to use.
      * @return the created channel.
      */
-    public One2AnyChannel createOne2Any(ChannelDataStore buffer);
+    public One2AnyChannel<T> createOne2Any(ChannelDataStore<T> buffer);
 
     /**
      * Creates a new <code>Any2Any</code> channel with the given buffering behaviour.
@@ -69,5 +69,5 @@ public interface BufferedChannelFactory
      * @param buffer the buffer implementation to use.
      * @return the created channel.
      */
-    public Any2AnyChannel createAny2Any(ChannelDataStore buffer);
+    public Any2AnyChannel<T> createAny2Any(ChannelDataStore<T> buffer);
 }

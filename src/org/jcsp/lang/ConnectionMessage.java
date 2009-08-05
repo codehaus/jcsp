@@ -25,13 +25,11 @@
     //                                                                  //
     //                                                                  //
     //////////////////////////////////////////////////////////////////////
-
 package org.jcsp.lang;
 
-/**
- * @author Quickstone Technologies Limited
- */
-class ConnectionClientOpenMessage<T> extends ConnectionClientMessage<T>
+import java.io.Serializable;
+
+class ConnectionMessage<T> implements Serializable
 {
-    ChannelOutput<ConnectionMessage<T>> replyChannel;
+    T data;
 }

@@ -36,12 +36,12 @@ import org.jcsp.util.Buffer;
  *
  * @author Quickstone Technologies Limited
  */
-class Any2AnyConnectionImpl extends AbstractConnectionImpl implements Any2AnyConnection
+class Any2AnyConnectionImpl<T> extends AbstractConnectionImpl implements Any2AnyConnection<T>
 {
-    private One2OneChannel chanToServer;
-    private One2OneChannel chanFromServer;
-    private Any2OneChannel chanClientSynch;
-    private Any2OneChannel chanServerSynch;
+    private One2OneChannel<T> chanToServer;
+    private One2OneChannel<T> chanFromServer;
+    private Any2OneChannel<T> chanClientSynch;
+    private Any2OneChannel<T> chanServerSynch;
 
     /**
      * Initializes all the attributes to necessary values.
@@ -53,10 +53,10 @@ class Any2AnyConnectionImpl extends AbstractConnectionImpl implements Any2AnyCon
     public Any2AnyConnectionImpl()
     {
         super();
-        chanToServer = ConnectionServer.FACTORY.createOne2One(new Buffer(1));
-        chanFromServer = ConnectionServer.FACTORY.createOne2One(new Buffer(1));
-        chanClientSynch = ConnectionServer.FACTORY.createAny2One(new Buffer(1));
-        chanServerSynch = ConnectionServer.FACTORY.createAny2One(new Buffer(1));
+        chanToServer = (One2OneChannel<T>) ConnectionServer.FACTORY.createOne2One(new Buffer(1));
+        chanFromServer = (One2OneChannel<T>) ConnectionServer.FACTORY.createOne2One(new Buffer(1));
+        chanClientSynch = (Any2OneChannel<T>) ConnectionServer.FACTORY.createAny2One(new Buffer(1));
+        chanServerSynch = (Any2OneChannel<T>) ConnectionServer.FACTORY.createAny2One(new Buffer(1));
     }
 
     /**

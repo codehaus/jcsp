@@ -35,33 +35,33 @@ package org.jcsp.lang;
  * 
  * @deprecated These channel factories are deprecated in favour of the new one2one() methods in the Channel class.
  */
-public interface ChannelFactory
+public interface ChannelFactory<T>
 {
     /**
      * Creates a new <code>One2One</code> channel.
      *
      * @return the created channel.
      */
-    public One2OneChannel createOne2One();
+    public One2OneChannel<T> createOne2One();
 
     /**
      * Creates a new <code>Any2One</code> channel.
      *
      * @return the created channel.
      */
-    public Any2OneChannel createAny2One();
+    public Any2OneChannel<T> createAny2One();
 
     /**
      * Creates a new <code>One2Any</code> channel.
      *
      * @return the created channel.
      */
-    public One2AnyChannel createOne2Any();
+    public One2AnyChannel<T> createOne2Any();
 
     /**
      * Creates a new <code>Any2Any</code> channel.
      *
      * @return the created channel.
      */
-    public Any2AnyChannel createAny2Any();
+    public Any2AnyChannel<T> createAny2Any();
 }

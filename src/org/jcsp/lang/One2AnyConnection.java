@@ -34,15 +34,15 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface One2AnyConnection extends ConnectionWithSharedAltingServer
+public interface One2AnyConnection<T> extends ConnectionWithSharedAltingServer<T>
 {
     /**
      * Returns the client part of the connection.
      */
-    public AltingConnectionClient client();
+    public AltingConnectionClient<T> client();
 
     /**
      * Returns the server part of the connection.
      */
-    public SharedConnectionServer server();
+    public SharedConnectionServer<T> server();
 }

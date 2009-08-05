@@ -33,7 +33,7 @@ import java.io.Serializable;
 /**
  * @author Quickstone Technologies Limited
  */
-class ConnectionClientMessage implements Serializable
+class ConnectionClientMessage<T> extends ConnectionMessage<T> implements Serializable
 {
-    Object data;
+	// nothing to add
 }

@@ -34,7 +34,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public class AltingConnectionServerImpl extends AltingConnectionServer
+public class AltingConnectionServerImpl<T> extends AltingConnectionServer<T>
 {
 
     /**
@@ -63,22 +63,25 @@ public class AltingConnectionServerImpl extends AltingConnectionServer
 
     private int currentServerState;
 
-    private AltingChannelInput openIn;
+	// These do not really *need* to be of type ConnectionMessage<T>, but it
+	// makes fiddling about later on easier... Have left the other classes as
+	// plain (Object carrying) channels and all still appears to work...
+    private AltingChannelInput<ConnectionMessage<T>> openIn;
 
-    private AltingChannelInput furtherRequestIn;
+    private AltingChannelInput<ConnectionMessage<T>> furtherRequestIn;
 
-    private ChannelInput currentInputChannel;
+    private ChannelInput<ConnectionMessage<T>> currentInputChannel;
 
-    private ChannelOutput toClient = null;
+    private ChannelOutput<ConnectionMessage<T>> toClient = null;
 
-    private ConnectionServerMessage msg = null;
+    private ConnectionServerMessage<T> msg = null;
 
     /**
      * Constructs a new server instance. This must be called by a subclass which is responsible for
      * creating the channels.
      */
-    protected AltingConnectionServerImpl(AltingChannelInput openIn,
-                                         AltingChannelInput furtherRequestIn)
+    protected AltingConnectionServerImpl(AltingChannelInput<ConnectionMessage<T>> openIn,
+                                         AltingChannelInput<ConnectionMessage<T>> furtherRequestIn)
     {
         super(openIn);
         this.openIn = openIn;
@@ -95,26 +98,26 @@ public class AltingConnectionServerImpl extends AltingConnectionServer
      *
      * @return the <code>Object</code> sent by the client.
      */
-    public Object request() throws IllegalStateException
+    public T request() throws IllegalStateException
     {
         if (currentServerState == SERVER_STATE_RECEIVED)
             throw new IllegalStateException
                     ("Cannot call request() twice on ConnectionServer without replying to the client first.");
-        ConnectionClientMessage msg = (ConnectionClientMessage)currentInputChannel.read();
-
+//        ConnectionClientMessage<T> msg = (ConnectionClientMessage)currentInputChannel.read();
+        ConnectionMessage<T> msg = currentInputChannel.read();
         if (currentServerState == SERVER_STATE_CLOSED)
         {
             if (msg instanceof ConnectionClientOpenMessage)
             {
                 //channel to use to reply to client
-                toClient = ((ConnectionClientOpenMessage) msg).replyChannel;
+                toClient = ((ConnectionClientOpenMessage<T>) msg).replyChannel;
                 setAltingChannel(furtherRequestIn);
                 currentInputChannel = furtherRequestIn;
 
                 //create a new msg for connection established
                 //don't know if client implementation will have finished with
                 //message after connection closed
-                this.msg = new ConnectionServerMessage();
+                this.msg = new ConnectionServerMessage<T>();
             }
             else
                 throw new IllegalStateException("Invalid message received from client");
@@ -131,7 +134,7 @@ public class AltingConnectionServerImpl extends AltingConnectionServer
      *
      * @param	data	the data to send to the client.
      */
-    public void reply(Object data) throws IllegalStateException
+    public void reply(T data) throws IllegalStateException
     {
         reply(data, false);
     }
@@ -147,7 +150,7 @@ public class AltingConnectionServerImpl extends AltingConnectionServer
      * @param  close   <code>boolean</code> indicating whether or not the
      *                  connection should be closed.
      */
-    public void reply(Object data, boolean close) throws IllegalStateException
+    public void reply(T data, boolean close) throws IllegalStateException
     {
         if (currentServerState != SERVER_STATE_RECEIVED)
             throw new IllegalStateException
@@ -182,7 +185,7 @@ public class AltingConnectionServerImpl extends AltingConnectionServer
      *
      * @param data	the data to send back to client.
      */
-    public void replyAndClose(Object data) throws IllegalStateException
+    public void replyAndClose(T data) throws IllegalStateException
     {
         reply(data, true);
     }

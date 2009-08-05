@@ -50,7 +50,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface ConnectionServer
+public interface ConnectionServer<T>
 {
     /**
      * The factory for creating channels within servers.
@@ -69,7 +69,7 @@ public interface ConnectionServer
      *
      * @return the <code>Object</code> sent by the client.
      */
-    public Object request() throws IllegalStateException;
+    public T request() throws IllegalStateException;
 
     /**
      * <p>Sends some data back to the client after a request
@@ -83,7 +83,7 @@ public interface ConnectionServer
      *
      * @param	data	the data to send to the client.
      */
-    public void reply(Object data) throws IllegalStateException;
+    public void reply(T data) throws IllegalStateException;
 
 
     /**
@@ -99,7 +99,7 @@ public interface ConnectionServer
      *                iff the connection should be dropped after the reply
      *                has been sent.
      */
-    public void reply(Object data, boolean close);
+    public void reply(T data, boolean close);
 
     /**
      * <p>Sends some data back to the client and closes the connection.</p>
@@ -110,5 +110,5 @@ public interface ConnectionServer
      *
      * @param data	the data to send back to client.
      */
-    public void replyAndClose(Object data) throws IllegalStateException;
+    public void replyAndClose(T data) throws IllegalStateException;
 }

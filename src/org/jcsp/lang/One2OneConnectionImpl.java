@@ -36,10 +36,10 @@ import org.jcsp.util.Buffer;
  *
  * @author Quickstone Technologies Limited
  */
-class One2OneConnectionImpl extends AbstractConnectionImpl implements One2OneConnection
+class One2OneConnectionImpl<T> extends AbstractConnectionImpl implements One2OneConnection<T>
 {
-    private AltingConnectionClient client;
-    private AltingConnectionServer server;
+    private AltingConnectionClient<T> client;
+    private AltingConnectionServer<T> server;
 
     /**
      * Initializes all the attributes to necessary values.
@@ -51,15 +51,18 @@ class One2OneConnectionImpl extends AbstractConnectionImpl implements One2OneCon
     public One2OneConnectionImpl()
     {
         super();
-        One2OneChannel chanToServer = ConnectionServer.FACTORY.createOne2One(new Buffer(1));
-        One2OneChannel chanFromServer = ConnectionServer.FACTORY.createOne2One(new Buffer(1));
+
+// Okay, we can't use the static ConnectionServer.FACTORY any more if we want
+// total type-safety...unless we want warnings. Going to leave as-is for now.
+        One2OneChannel<ConnectionMessage<T>> chanToServer = (One2OneChannel<ConnectionMessage<T>>) ConnectionServer.FACTORY.createOne2One(new Buffer(1));
+        One2OneChannel<ConnectionMessage<T>> chanFromServer = (One2OneChannel<ConnectionMessage<T>>) ConnectionServer.FACTORY.createOne2One(new Buffer(1));
 
         //create the client and server objects
-        client = new AltingConnectionClientImpl(chanFromServer.in(),
+        client = new AltingConnectionClientImpl<T>(chanFromServer.in(),
                                                 chanToServer.out(),
                                                 chanToServer.out(),
                                                 chanFromServer.out());
-        server = new AltingConnectionServerImpl(chanToServer.in(),
+        server = new AltingConnectionServerImpl<T>(chanToServer.in(),
                                                 chanToServer.in());
     }
 
@@ -73,7 +76,7 @@ class One2OneConnectionImpl extends AbstractConnectionImpl implements One2OneCon
      *
      * @return the <code>AltingConnectionClient</code> object.
      */
-    public AltingConnectionClient client()
+    public AltingConnectionClient<T> client()
     {
         return client;
     }
@@ -88,7 +91,7 @@ class One2OneConnectionImpl extends AbstractConnectionImpl implements One2OneCon
      *
      * @return the <code>AltingConnectionServer</code> object.
      */
-    public AltingConnectionServer server()
+    public AltingConnectionServer<T> server()
     {
         return server;
     }

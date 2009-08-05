@@ -38,7 +38,7 @@ import org.jcsp.util.*;
  * 
  * @deprecated These channel factories are deprecated in favour of the new one2one() methods in the Channel class.
  */
-public interface BufferedChannelArrayFactory
+public interface BufferedChannelArrayFactory<T>
 {
     /**
      * Creates a populated array of <code>n</code> <code>One2One</code> channels with the
@@ -48,7 +48,7 @@ public interface BufferedChannelArrayFactory
      * @param n the size of the array.
      * @return the created array of channels.
      */
-    public One2OneChannel[] createOne2One(ChannelDataStore buffer, int n);
+    public One2OneChannel<T>[] createOne2One(ChannelDataStore<T> buffer, int n);
 
     /**
      * Creates a populated array of <code>n</code> <code>Any2One</code> channels with the specified
@@ -58,7 +58,7 @@ public interface BufferedChannelArrayFactory
      * @param n the size of the array.
      * @return the created array of channels.
      */
-    public Any2OneChannel[] createAny2One(ChannelDataStore buffer, int n);
+    public Any2OneChannel<T>[] createAny2One(ChannelDataStore<T> buffer, int n);
 
     /**
      * Creates a populated array of <code>n</code> <code>One2Any</code> channels with the specified
@@ -68,7 +68,7 @@ public interface BufferedChannelArrayFactory
      * @param n the size of the array.
      * @return the created array of channels.
      */
-    public One2AnyChannel[] createOne2Any(ChannelDataStore buffer, int n);
+    public One2AnyChannel<T>[] createOne2Any(ChannelDataStore<T> buffer, int n);
 
     /**
      * Creates a populated array of <code>n</code> <code>Any2Any</code> channels with the specified
@@ -78,5 +78,5 @@ public interface BufferedChannelArrayFactory
      * @param n the size of the array.
      * @return the created array of channels.
      */
-    public Any2AnyChannel[] createAny2Any(ChannelDataStore buffer, int n);
+    public Any2AnyChannel<T>[] createAny2Any(ChannelDataStore<T> buffer, int n);
 }

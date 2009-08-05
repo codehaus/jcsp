@@ -34,7 +34,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public class AltingConnectionClientImpl extends AltingConnectionClient
+public class AltingConnectionClientImpl<T> extends AltingConnectionClient<T>
 {
     private int currentClientState;
 
@@ -42,7 +42,8 @@ public class AltingConnectionClientImpl extends AltingConnectionClient
     private static final int CLIENT_STATE_MADE_REQ = 2;
     private static final int CLIENT_STATE_OPEN = 3;
 
-    private AltingChannelInput fromServer;
+	// Seems to be safe-ish without 
+    private AltingChannelInput<ConnectionMessage<T>> fromServer;
 
     private ChannelOutput openToServer;
     private ChannelOutput reqToServer;
@@ -74,7 +75,7 @@ public class AltingConnectionClientImpl extends AltingConnectionClient
      *
      * @param data	the <code>Object</code> to send to the server.
      */
-    public void request(Object data) throws IllegalStateException
+    public void request(T data) throws IllegalStateException
     {
         if (currentClientState == CLIENT_STATE_MADE_REQ)
             throw new IllegalStateException
@@ -101,12 +102,13 @@ public class AltingConnectionClientImpl extends AltingConnectionClient
      *
      * @return the <code>Object</code> sent from the server.
      */
-    public Object reply() throws IllegalStateException
+    public T reply() throws IllegalStateException
     {
         if (currentClientState != CLIENT_STATE_MADE_REQ)
             throw new IllegalStateException
                     ("Cannot call reply() on a ConnectionClient that is not waiting for a reply.");
-        ConnectionServerMessage serverReply = (ConnectionServerMessage)fromServer.read();
+        ConnectionServerMessage<T> serverReply = (ConnectionServerMessage<T>) fromServer.read();
+		// I think this could be done more neatly!
 
         //check whether the server closed the connection
         currentClientState = serverReply.open ? CLIENT_STATE_OPEN : CLIENT_STATE_CLOSED;
@@ -117,7 +119,9 @@ public class AltingConnectionClientImpl extends AltingConnectionClient
             currentClientState = CLIENT_STATE_CLOSED;
             release();
         }
-        return serverReply.data;
+
+// This should not need a cast!
+        return (T) serverReply.data;
     }
 
     /**

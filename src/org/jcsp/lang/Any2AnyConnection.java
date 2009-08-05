@@ -33,16 +33,16 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface Any2AnyConnection extends ConnectionWithSharedAltingClient,
-        ConnectionWithSharedAltingServer
+public interface Any2AnyConnection<T> extends ConnectionWithSharedAltingClient<T>,
+        ConnectionWithSharedAltingServer<T>
 {
     /**
      * Returns a reference to the client end of the connection for use by the client processes.
      */
-    public SharedAltingConnectionClient client();
+    public SharedAltingConnectionClient<T> client();
 
     /**
      * Returns a reference to the server end of the connection for use by the server processes.
      */
-    public SharedConnectionServer server();
+    public SharedConnectionServer<T> server();
 }

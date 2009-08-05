@@ -33,15 +33,15 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface One2OneConnection
+public interface One2OneConnection<T>
 {
     /**
      * Returns the client end of the connection.
      */
-    public AltingConnectionClient client();
+    public AltingConnectionClient<T> client();
 
     /**
      * Returns the server end of the connection.
      */
-    public AltingConnectionServer server();
+    public AltingConnectionServer<T> server();
 }

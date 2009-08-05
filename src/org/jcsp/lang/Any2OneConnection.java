@@ -38,7 +38,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface Any2OneConnection extends ConnectionWithSharedAltingClient
+public interface Any2OneConnection<T> extends ConnectionWithSharedAltingClient<T>
 {
     /**
      * Returns a client end of the connection. This may only be
@@ -47,12 +47,12 @@ public interface Any2OneConnection extends ConnectionWithSharedAltingClient
      *
      * @return a new <code>SharedAltingConnectionClient</code> object.
      */
-    public SharedAltingConnectionClient client();
+    public SharedAltingConnectionClient<T> client();
 
     /**
      * Returns the server end of the connection.
      *
      * @return the instance of the <code>AltingConnectionServer</code>.
      */
-    public AltingConnectionServer server();
+    public AltingConnectionServer<T> server();
 }

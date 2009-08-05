@@ -35,7 +35,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface ConnectionFactory
+public interface ConnectionFactory<T>
 {
     /**
      * Constructs and returns an implementation of
@@ -43,7 +43,7 @@ public interface ConnectionFactory
      *
      * @return	the constructed <code>One2OneConnection</code> object.
      */
-    public One2OneConnection createOne2One();
+    public <T> One2OneConnection<T> createOne2One();
 
     /**
      * Constructs and returns an implementation of
@@ -51,7 +51,7 @@ public interface ConnectionFactory
      *
      * @return	the constructed <code>Any2OneConnection</code> object.
      */
-    public Any2OneConnection createAny2One();
+    public <T> Any2OneConnection<T> createAny2One();
 
     /**
      * Constructs and returns an implementation of
@@ -59,7 +59,7 @@ public interface ConnectionFactory
      *
      * @return	the constructed <code>One2AnyConnection</code> object.
      */
-    public One2AnyConnection createOne2Any();
+    public <T> One2AnyConnection<T> createOne2Any();
 
     /**
      * Constructs and returns an implementation of
@@ -67,5 +67,5 @@ public interface ConnectionFactory
      *
      * @return	the constructed <code>Any2AnyConnection</code> object.
      */
-    public Any2AnyConnection createAny2Any();
+    public <T> Any2AnyConnection<T> createAny2Any();
 }

@@ -36,12 +36,12 @@ import org.jcsp.util.Buffer;
  *
  * @author Quickstone Technologies Limited
  */
-class One2AnyConnectionImpl implements One2AnyConnection
+class One2AnyConnectionImpl<T> implements One2AnyConnection<T>
 {
     private AltingConnectionClient client;
-    private One2OneChannel chanToServer;
-    private One2OneChannel chanFromServer;
-    private Any2OneChannel chanSynch;
+    private One2OneChannel<T> chanToServer;
+    private One2OneChannel<T> chanFromServer;
+    private Any2OneChannel<T> chanSynch;
 
     /**
      * Initializes all the attributes to necessary values.
@@ -53,9 +53,9 @@ class One2AnyConnectionImpl implements One2AnyConnection
     public One2AnyConnectionImpl()
     {
         super();
-        chanToServer = ConnectionServer.FACTORY.createOne2One(new Buffer(1));
-        chanFromServer = ConnectionServer.FACTORY.createOne2One(new Buffer(1));
-        chanSynch = ConnectionServer.FACTORY.createAny2One(new Buffer(1));
+        chanToServer = (One2OneChannel<T>) ConnectionServer.FACTORY.createOne2One(new Buffer(1));
+        chanFromServer = (One2OneChannel<T>) ConnectionServer.FACTORY.createOne2One(new Buffer(1));
+        chanSynch = (Any2OneChannel<T>) ConnectionServer.FACTORY.createAny2One(new Buffer(1));
 
         //create the client and server objects
         client = new AltingConnectionClientImpl(chanFromServer.in(),

@@ -33,8 +33,7 @@ import java.io.Serializable;
 /**
  * @author Quickstone Technologies Limited
  */
-class ConnectionServerMessage implements Serializable
+class ConnectionServerMessage<T> extends ConnectionMessage implements Serializable
 {
 	boolean open;
-	Object data;
 }

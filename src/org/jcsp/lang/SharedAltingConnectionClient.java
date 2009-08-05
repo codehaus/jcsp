@@ -45,9 +45,9 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public class SharedAltingConnectionClient
-        extends AltingConnectionClientImpl
-        implements SharedConnectionClient
+public class SharedAltingConnectionClient<T>
+        extends AltingConnectionClientImpl<T>
+        implements SharedConnectionClient<T>
 {
     private ChannelInput synchIn;
     private ChannelOutput synchOut;

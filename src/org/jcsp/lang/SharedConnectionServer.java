@@ -40,7 +40,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface SharedConnectionServer extends ConnectionServer
+public interface SharedConnectionServer<T> extends ConnectionServer<T>
 {
 	/**
 	 * <p>
@@ -51,5 +51,5 @@ public interface SharedConnectionServer extends ConnectionServer
 	 * 			object.
 	 *
 	 */
-	public SharedConnectionServer duplicate();
+	public SharedConnectionServer<T> duplicate();
 }

@@ -46,7 +46,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface SharedConnectionClient extends ConnectionClient
+public interface SharedConnectionClient<T> extends ConnectionClient<T>
 {
     /**
      * Returns a duplicates <code>SharedConnectionClient</code> object
@@ -54,5 +54,5 @@ public interface SharedConnectionClient extends ConnectionClient
      *
      * @return a duplicate <code>SharedConnectionClient</code> object.
      */
-    public SharedConnectionClient duplicate();
+    public SharedConnectionClient<T> duplicate();
 }
