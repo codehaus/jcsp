@@ -33,7 +33,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface ConnectionArrayFactory<T>
+public interface ConnectionArrayFactory
 {
     /**
      * Constructs and returns an array of instances of an implementation of
@@ -45,7 +45,7 @@ public interface ConnectionArrayFactory<T>
      * @return	the constructed array of <code>One2OneConnection</code>
      *          objects.
      */
-    public One2OneConnection<T>[] createOne2One(int n);
+    public <T> One2OneConnection<T>[] createOne2One(int n);
 
     /**
      * Constructs and returns an array of instances of an implementation of
@@ -57,7 +57,7 @@ public interface ConnectionArrayFactory<T>
      * @return	the constructed array of <code>Any2OneConnection</code>
      *          objects.
      */
-    public Any2OneConnection<T>[] createAny2One(int n);
+    public <T> Any2OneConnection<T>[] createAny2One(int n);
 
     /**
      * Constructs and returns an array of instances of an implementation of
@@ -69,7 +69,7 @@ public interface ConnectionArrayFactory<T>
      * @return	the constructed array of <code>One2AnyConnection</code>
      * 			objects.
      */
-    public One2AnyConnection<T>[] createOne2Any(int n);
+    public <T> One2AnyConnection<T>[] createOne2Any(int n);
 
     /**
      * Constructs and returns an array of instances of an implementation of
@@ -81,5 +81,5 @@ public interface ConnectionArrayFactory<T>
      * @return	the constructed array of <code>Any2AnyConnection</code>
      * 			objects.
      */
-    public Any2AnyConnection<T>[] createAny2Any(int n);
+    public <T> Any2AnyConnection<T>[] createAny2Any(int n);
 }

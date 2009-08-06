@@ -35,13 +35,13 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public class StandardConnectionFactory<T>
-        implements ConnectionFactory<T>, ConnectionArrayFactory<T>
+public class StandardConnectionFactory
+        implements ConnectionFactory, ConnectionArrayFactory
 {
     /**
      * @see ConnectionFactory#createOne2One
      */
-    public One2OneConnection<T> createOne2One()
+    public <T> One2OneConnection<T> createOne2One()
     {
         return new One2OneConnectionImpl<T>();
     }
@@ -49,7 +49,7 @@ public class StandardConnectionFactory<T>
     /**
      * @see ConnectionFactory#createAny2One
      */
-    public Any2OneConnection<T> createAny2One()
+    public <T> Any2OneConnection<T> createAny2One()
     {
         return new Any2OneConnectionImpl<T>();
     }
@@ -57,7 +57,7 @@ public class StandardConnectionFactory<T>
     /**
      * @see ConnectionFactory#createOne2Any
      */
-    public One2AnyConnection<T> createOne2Any()
+    public <T> One2AnyConnection<T> createOne2Any()
     {
         return new One2AnyConnectionImpl<T>();
     }
@@ -65,7 +65,7 @@ public class StandardConnectionFactory<T>
     /**
      * @see ConnectionFactory#createAny2Any
      */
-    public Any2AnyConnection<T> createAny2Any()
+    public <T> Any2AnyConnection<T> createAny2Any()
     {
         return new Any2AnyConnectionImpl<T>();
     }
@@ -73,7 +73,7 @@ public class StandardConnectionFactory<T>
     /**
      * @see ConnectionArrayFactory#createOne2One
      */
-    public One2OneConnection<T>[] createOne2One(int n)
+    public <T> One2OneConnection<T>[] createOne2One(int n)
     {
         One2OneConnection<T>[] toReturn = (One2OneConnection<T>[]) new One2OneConnection[n];
         for (int i = 0; i < n; i++)
@@ -84,7 +84,7 @@ public class StandardConnectionFactory<T>
     /**
      * @see ConnectionArrayFactory#createAny2One
      */
-    public Any2OneConnection<T>[] createAny2One(int n)
+    public <T> Any2OneConnection<T>[] createAny2One(int n)
     {
         Any2OneConnection<T>[] toReturn = (Any2OneConnection<T>[]) new Any2OneConnection[n];
         for (int i = 0; i < n; i++)
@@ -95,7 +95,7 @@ public class StandardConnectionFactory<T>
     /**
      * @see ConnectionArrayFactory#createOne2Any
      */
-    public One2AnyConnection<T>[] createOne2Any(int n)
+    public <T> One2AnyConnection<T>[] createOne2Any(int n)
     {
         One2AnyConnection<T>[] toReturn = (One2AnyConnection<T>[]) new One2AnyConnection[n];
         for (int i = 0; i < n; i++)
@@ -106,7 +106,7 @@ public class StandardConnectionFactory<T>
     /**
      * @see ConnectionArrayFactory#createAny2Any
      */
-    public Any2AnyConnection<T>[] createAny2Any(int n)
+    public <T> Any2AnyConnection<T>[] createAny2Any(int n)
     {
         Any2AnyConnection<T>[] toReturn = (Any2AnyConnection<T>[]) new Any2AnyConnection[n];
         for (int i = 0; i < n; i++)

@@ -35,7 +35,7 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public interface ConnectionFactory<T>
+public interface ConnectionFactory
 {
     /**
      * Constructs and returns an implementation of
