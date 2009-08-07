@@ -196,10 +196,13 @@ public class AltableBarrierBase {
 			if (face != null) {
 				Vector higher = face.higherBarriers;
 				for (int j = 0; j < higher.size(); j++) {
-					AltableBarrier bar2 = (AltableBarrier) higher.get(j);
-					// switch if this barrier is in the process's list of higher barriers
-					if (bar.equals(bar2)) {
-						switchOver(face.selectedBarrier, bar);
+					Vector v = (Vector) higher.get(j);
+					for (int k = 0; k < v.size(); k++) {
+						AltableBarrier bar2 = (AltableBarrier) v.get(k);
+						// switch if this barrier is in the process's list of higher barriers
+						if (bar.equals(bar2)) {
+							switchOver(face.selectedBarrier, bar);
+						}
 					}
 				}
 			}
@@ -260,10 +263,26 @@ public class AltableBarrierBase {
 
 		BarrierFace face = from.face;  // doesn't matter which barrier
 						// its from, is same object
+		Vector higher = face.higherBarriers;
+		int toPriLevel = -1;
+		for (int i = 0; i < higher.size(); i++) {
+			Vector v = (Vector) higher.get(i);
+			int index = v.indexOf(to);
+			if (index != -1) {
+				// we found the new barrier
+				toPriLevel = i;
+				break;
+			}
+		}
+		for (int i = toPriLevel+1; higher.size() > toPriLevel;) {
+			face.lowerBarriers.add(higher.remove(i));
+		}
+		/*
 		int index = face.higherBarriers.indexOf(to);
 		for (int i = index; face.higherBarriers.size() > index;) {
 			face.higherBarriers.remove(i);
 		}
+		*/
 	}
 	//}}}
 	//}}}

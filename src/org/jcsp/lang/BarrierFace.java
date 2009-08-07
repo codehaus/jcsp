@@ -20,14 +20,15 @@ import java.util.*;
 public class BarrierFace {
 
 	//{{{ fields
-	public Vector higherBarriers;
+	public Vector higherBarriers, lowerBarriers;
 	public AltableBarrier selectedBarrier;
 	public Object key;
 	//}}}
 
 	//{{{ public BarrierFace(higherBarriers, selectedBarrier, key)
-	public BarrierFace(Vector higherBarriers, AltableBarrier selectedBarrier, Object key) {
+	public BarrierFace(Vector higherBarriers, Vector lowerBarriers, AltableBarrier selectedBarrier, Object key) {
 		this.higherBarriers = higherBarriers;
+		this.lowerBarriers = lowerBarriers;
 		this.selectedBarrier = selectedBarrier;
 		this.key = key;
 	}

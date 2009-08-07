@@ -86,14 +86,17 @@ public class GuardGroup extends Guard {
 
 		BarrierFace face = (BarrierFace) processBarrierList.get(id);
 		if (face == null) {
-			face = new BarrierFace(new Vector(), null, id);
+			face = new BarrierFace(new Vector(),new Vector(), null, id);
 			processBarrierList.put(id, face);
 		}
 
+		Vector v = new Vector(); // list of barriers at this priority
 		for (int i = 0; i < barriers.length; i++) {
 			barriers[i].setFace(face);
-			face.higherBarriers.add(barriers[i]);
+//			face.higherBarriers.add(barriers[i]);
+			v.add(barriers[i]);
 		}
+		face.higherBarriers.add(v);
 	}
 	//}}}
 	//{{{ 2 private void clearEqualGreaterList(Object id)
