@@ -11,8 +11,8 @@ import org.jcsp.lang.ChannelInput;
  * @see NetChannel
  * @author Kevin Chalmers (updated from Quickstone Technologies)
  */
-public interface NetChannelInput
-    extends ChannelInput, Networked
+public interface NetChannelInput<T>
+    extends ChannelInput<T>, Networked
 {
     /**
      * Sets the underlying decoder for the channel

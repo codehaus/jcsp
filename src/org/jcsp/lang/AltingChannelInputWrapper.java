@@ -46,13 +46,13 @@ package org.jcsp.lang;
  *
  * @author Quickstone Technologies Limited
  */
-public class AltingChannelInputWrapper extends AltingChannelInput
+public class AltingChannelInputWrapper<T> extends AltingChannelInput<T>
 {
     /**
      * Creates a new AltingChannelInputWrapper which wraps the specified
      * channel.
      */
-    public AltingChannelInputWrapper(AltingChannelInput channel)
+    public AltingChannelInputWrapper(AltingChannelInput<T> channel)
     {
         this.channel = channel;
     }
@@ -75,7 +75,7 @@ public class AltingChannelInputWrapper extends AltingChannelInput
      * when sub-classes wanted to be serializable. Added a
      * protected mutator.
      */
-    private AltingChannelInput channel;
+    private AltingChannelInput<T> channel;
 
     /**
      * Get the real channel.
@@ -92,7 +92,7 @@ public class AltingChannelInputWrapper extends AltingChannelInput
      *
      * @param chan the real channel to be used.
      */
-    protected void setChannel(AltingChannelInput chan)
+    protected void setChannel(AltingChannelInput<T> chan)
     {
         this.channel = chan;
     }
@@ -102,7 +102,7 @@ public class AltingChannelInputWrapper extends AltingChannelInput
      *
      * @return the object read from the channel
      */
-    public Object read()
+    public T read()
     {
         return channel.read();
     }
@@ -113,7 +113,7 @@ public class AltingChannelInputWrapper extends AltingChannelInput
      * @see ChannelInput.startRead
      * @return The object read from the channel
      */
-    public Object startRead()
+    public T startRead()
     {
     	return channel.startRead();
     }

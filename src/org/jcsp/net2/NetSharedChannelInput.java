@@ -11,8 +11,8 @@ import org.jcsp.lang.SharedChannelInput;
  * @see NetChannel
  * @author Kevin Chalmers (updated from Quickstone Technologies)
  */
-public interface NetSharedChannelInput
-    extends SharedChannelInput, NetChannelInput
+public interface NetSharedChannelInput<T>
+    extends SharedChannelInput<T>, NetChannelInput<T>
 {
     // Nothing new to declare
 }

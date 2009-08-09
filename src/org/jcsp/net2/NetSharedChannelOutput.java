@@ -11,8 +11,8 @@ import org.jcsp.lang.SharedChannelOutput;
  * @see NetChannel
  * @author Kevin Chalmers (updated from Quickstone Technologies)
  */
-public interface NetSharedChannelOutput
-    extends NetChannelOutput, SharedChannelOutput
+public interface NetSharedChannelOutput<T>
+    extends NetChannelOutput<T>, SharedChannelOutput<T>
 {
     // Nothing to add
 }

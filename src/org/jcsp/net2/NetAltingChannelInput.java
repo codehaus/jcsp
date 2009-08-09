@@ -14,9 +14,9 @@ import org.jcsp.lang.AltingChannelInputWrapper;
  * @see NetChannel
  * @author Quickstone Technologies
  */
-public abstract class NetAltingChannelInput
-    extends AltingChannelInputWrapper
-    implements NetChannelInput
+public abstract class NetAltingChannelInput<T>
+    extends AltingChannelInputWrapper<T>
+    implements NetChannelInput<T>
 {
 
     /**
@@ -25,7 +25,7 @@ public abstract class NetAltingChannelInput
      * @param in
      *            The channel that is used within the alternative
      */
-    protected NetAltingChannelInput(AltingChannelInput in)
+    protected NetAltingChannelInput(AltingChannelInput<T> in)
     {
         super(in);
     }

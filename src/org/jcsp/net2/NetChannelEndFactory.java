@@ -14,7 +14,7 @@ public interface NetChannelEndFactory
      * 
      * @return A new NetAltingChannelInput
      */
-    public NetAltingChannelInput net2one();
+    public <T> NetAltingChannelInput<T> net2one();
 
     /**
      * Creates a new NetAltingChannelInput with the given immunity level for poison
@@ -23,7 +23,7 @@ public interface NetChannelEndFactory
      *            The immunity level for poison
      * @return A new NetAltingChannelInput
      */
-    public NetAltingChannelInput net2one(int immunityLevel);
+    public <T> NetAltingChannelInput<T> net2one(int immunityLevel);
 
     /**
      * Creates a new NetAltingChannelInput which uses the given filter to decode incoming messages
@@ -32,7 +32,7 @@ public interface NetChannelEndFactory
      *            The filter used to decode incoming messages
      * @return A new NetAltingChannelInput
      */
-    public NetAltingChannelInput net2one(NetworkMessageFilter.FilterRx filter);
+    public <T> NetAltingChannelInput<T> net2one(NetworkMessageFilter.FilterRx filter);
 
     /**
      * Creates a new NetAltingChannelInput with the given poison immunity level which uses the given filter to decode
@@ -44,14 +44,14 @@ public interface NetChannelEndFactory
      *            The filter used to decode incoming messages
      * @return A new NetAltingChannelInput
      */
-    public NetAltingChannelInput net2one(int immunityLevel, NetworkMessageFilter.FilterRx filter);
+    public <T> NetAltingChannelInput<T> net2one(int immunityLevel, NetworkMessageFilter.FilterRx filter);
 
     /**
      * Creates a new NetSharedChannelInput
      * 
      * @return A new NetSharedChannelInput
      */
-    public NetSharedChannelInput net2any();
+    public <T> NetSharedChannelInput<T> net2any();
 
     /**
      * Creates a new NetSharedChannelInput with the given poison immunity level
@@ -60,7 +60,7 @@ public interface NetChannelEndFactory
      *            The immunity level to poison for this channel
      * @return A new NetSharedChannelInput
      */
-    public NetSharedChannelInput net2any(int immunityLevel);
+    public <T> NetSharedChannelInput<T> net2any(int immunityLevel);
 
     /**
      * Creates a new NetSharedChannelInput which uses the given filter to decode incoming messages
@@ -69,7 +69,7 @@ public interface NetChannelEndFactory
      *            The filter used to decode incoming messages
      * @return A new NetSharedChannelInput
      */
-    public NetSharedChannelInput net2any(NetworkMessageFilter.FilterRx filter);
+    public <T> NetSharedChannelInput<T> net2any(NetworkMessageFilter.FilterRx filter);
 
     /**
      * Creates a new NetSharedChannelInput with the given poison immunity level, which uses the given filter to decode
@@ -81,7 +81,7 @@ public interface NetChannelEndFactory
      *            The filter used to decode incoming messages
      * @return A new NetSharedChannelInput
      */
-    public NetSharedChannelInput net2any(int immunityLevel, NetworkMessageFilter.FilterRx filter);
+    public <T> NetSharedChannelInput<T> net2any(int immunityLevel, NetworkMessageFilter.FilterRx filter);
 
     /**
      * Creates a new NetAltingChannelInput with the given index
@@ -92,7 +92,7 @@ public interface NetChannelEndFactory
      * @throws IllegalArgumentException
      *             Thrown if a channel with the given index already exists
      */
-    public NetAltingChannelInput numberedNet2One(int index)
+    public <T> NetAltingChannelInput<T> numberedNet2One(int index)
         throws IllegalArgumentException;
 
     /**
@@ -106,7 +106,7 @@ public interface NetChannelEndFactory
      * @throws IllegalArgumentException
      *             Thrown if a channel with the given index already exists
      */
-    public NetAltingChannelInput numberedNet2One(int index, int immunityLevel)
+    public <T> NetAltingChannelInput<T> numberedNet2One(int index, int immunityLevel)
         throws IllegalArgumentException;
 
     /**
@@ -120,7 +120,7 @@ public interface NetChannelEndFactory
      * @throws IllegalArgumentException
      *             Thrown if a channel with the given index already exists
      */
-    public NetAltingChannelInput numberedNet2One(int index, NetworkMessageFilter.FilterRx filter)
+    public <T> NetAltingChannelInput<T> numberedNet2One(int index, NetworkMessageFilter.FilterRx filter)
         throws IllegalArgumentException;
 
     /**
@@ -137,7 +137,7 @@ public interface NetChannelEndFactory
      * @throws IllegalArgumentException
      *             Thrown if a channel with the given index already exists
      */
-    public NetAltingChannelInput numberedNet2One(int index, int immunityLevel, NetworkMessageFilter.FilterRx filter)
+    public <T> NetAltingChannelInput<T> numberedNet2One(int index, int immunityLevel, NetworkMessageFilter.FilterRx filter)
         throws IllegalArgumentException;
 
     /**
@@ -149,7 +149,7 @@ public interface NetChannelEndFactory
      * @throws IllegalArgumentException
      *             Thrown if a channel with the given index already exists
      */
-    public NetSharedChannelInput numberedNet2Any(int index)
+    public <T> NetSharedChannelInput<T> numberedNet2Any(int index)
         throws IllegalArgumentException;
 
     /**
@@ -163,7 +163,7 @@ public interface NetChannelEndFactory
      * @throws IllegalArgumentException
      *             Thrown if a channel with the given index already exists
      */
-    public NetSharedChannelInput numberedNet2Any(int index, int immunityLevel)
+    public <T> NetSharedChannelInput<T> numberedNet2Any(int index, int immunityLevel)
         throws IllegalArgumentException;
 
     /**
@@ -177,7 +177,7 @@ public interface NetChannelEndFactory
      * @throws IllegalArgumentException
      *             Thrown if a channel with the given index already exists
      */
-    public NetSharedChannelInput numberedNet2Any(int index, NetworkMessageFilter.FilterRx filter)
+    public <T> NetSharedChannelInput<T> numberedNet2Any(int index, NetworkMessageFilter.FilterRx filter)
         throws IllegalArgumentException;
 
     /**
@@ -194,7 +194,7 @@ public interface NetChannelEndFactory
      * @throws IllegalArgumentException
      *             Thrown if a channel with the given index already exists.
      */
-    public NetSharedChannelInput numberedNet2Any(int index, int immunityLevel, NetworkMessageFilter.FilterRx filter)
+    public <T> NetSharedChannelInput<T> numberedNet2Any(int index, int immunityLevel, NetworkMessageFilter.FilterRx filter)
         throws IllegalArgumentException;
 
     /**
@@ -206,7 +206,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NetChannelLocation loc)
+    public <T> NetChannelOutput<T> one2net(NetChannelLocation loc)
         throws JCSPNetworkException;
 
     /**
@@ -221,7 +221,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NetChannelLocation loc, int immunityLevel)
+    public <T> NetChannelOutput<T> one2net(NetChannelLocation loc, int immunityLevel)
         throws JCSPNetworkException;
 
     /**
@@ -236,7 +236,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NetChannelLocation loc, NetworkMessageFilter.FilterTx filter)
+    public <T> NetChannelOutput<T> one2net(NetChannelLocation loc, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
     /**
@@ -253,7 +253,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NetChannelLocation loc, int immunityLevel, NetworkMessageFilter.FilterTx filter)
+    public <T> NetChannelOutput<T> one2net(NetChannelLocation loc, int immunityLevel, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
     /**
@@ -265,7 +265,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NetChannelLocation loc)
+    public <T> NetSharedChannelOutput<T> any2net(NetChannelLocation loc)
         throws JCSPNetworkException;
 
     /**
@@ -280,7 +280,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NetChannelLocation loc, int immunityLevel)
+    public <T> NetSharedChannelOutput<T> any2net(NetChannelLocation loc, int immunityLevel)
         throws JCSPNetworkException;
 
     /**
@@ -295,7 +295,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NetChannelLocation loc, NetworkMessageFilter.FilterTx filter)
+    public <T> NetSharedChannelOutput<T> any2net(NetChannelLocation loc, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
     /**
@@ -312,7 +312,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NetChannelLocation loc, int immunityLevel,
+    public <T> NetSharedChannelOutput<T> any2net(NetChannelLocation loc, int immunityLevel,
             NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
@@ -327,7 +327,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NodeID nodeID, int vcn)
+    public <T> NetChannelOutput<T> one2net(NodeID nodeID, int vcn)
         throws JCSPNetworkException;
 
     /**
@@ -344,7 +344,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NodeID nodeID, int vcn, int immunityLevel)
+    public <T> NetChannelOutput<T> one2net(NodeID nodeID, int vcn, int immunityLevel)
         throws JCSPNetworkException;
 
     /**
@@ -361,7 +361,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong with the underlying architecture
      */
-    public NetChannelOutput one2net(NodeID nodeID, int vcn, NetworkMessageFilter.FilterTx filter)
+    public <T> NetChannelOutput<T> one2net(NodeID nodeID, int vcn, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
     /**
@@ -380,7 +380,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong with the underlying architecture
      */
-    public NetChannelOutput one2net(NodeID nodeID, int vcn, int immunityLevel, NetworkMessageFilter.FilterTx filter)
+    public <T> NetChannelOutput<T> one2net(NodeID nodeID, int vcn, int immunityLevel, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
     /**
@@ -394,7 +394,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NodeID nodeID, int vcn)
+    public <T> NetSharedChannelOutput<T> any2net(NodeID nodeID, int vcn)
         throws JCSPNetworkException;
 
     /**
@@ -411,7 +411,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NodeID nodeID, int vcn, int immunityLevel)
+    public <T> NetSharedChannelOutput<T> any2net(NodeID nodeID, int vcn, int immunityLevel)
         throws JCSPNetworkException;
 
     /**
@@ -428,7 +428,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NodeID nodeID, int vcn, NetworkMessageFilter.FilterTx filter)
+    public <T> NetSharedChannelOutput<T> any2net(NodeID nodeID, int vcn, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
     /**
@@ -447,7 +447,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NodeID nodeID, int vcn, int immunityLevel,
+    public <T> NetSharedChannelOutput<T> any2net(NodeID nodeID, int vcn, int immunityLevel,
             NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
@@ -462,7 +462,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NodeAddress nodeAddr, int vcn)
+    public <T> NetChannelOutput<T> one2net(NodeAddress nodeAddr, int vcn)
         throws JCSPNetworkException;
 
     /**
@@ -479,7 +479,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NodeAddress nodeAddr, int vcn, int immunityLevel)
+    public <T> NetChannelOutput<T> one2net(NodeAddress nodeAddr, int vcn, int immunityLevel)
         throws JCSPNetworkException;
 
     /**
@@ -496,7 +496,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NodeAddress nodeAddr, int vcn, NetworkMessageFilter.FilterTx filter)
+    public <T> NetChannelOutput<T> one2net(NodeAddress nodeAddr, int vcn, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
     /**
@@ -515,7 +515,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetChannelOutput one2net(NodeAddress nodeAddr, int vcn, int immunityLevel,
+    public <T> NetChannelOutput<T> one2net(NodeAddress nodeAddr, int vcn, int immunityLevel,
             NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
@@ -530,7 +530,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NodeAddress nodeAddr, int vcn)
+    public <T> NetSharedChannelOutput<T> any2net(NodeAddress nodeAddr, int vcn)
         throws JCSPNetworkException;
 
     /**
@@ -547,7 +547,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NodeAddress nodeAddr, int vcn, int immunityLevel)
+    public <T> NetSharedChannelOutput<T> any2net(NodeAddress nodeAddr, int vcn, int immunityLevel)
         throws JCSPNetworkException;
 
     /**
@@ -564,7 +564,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NodeAddress nodeAddr, int vcn, NetworkMessageFilter.FilterTx filter)
+    public <T> NetSharedChannelOutput<T> any2net(NodeAddress nodeAddr, int vcn, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 
     /**
@@ -583,7 +583,7 @@ public interface NetChannelEndFactory
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public NetSharedChannelOutput any2net(NodeAddress nodeAddr, int vcn, int immunityLevel,
+    public <T> NetSharedChannelOutput<T> any2net(NodeAddress nodeAddr, int vcn, int immunityLevel,
             NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException;
 

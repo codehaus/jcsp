@@ -10,8 +10,8 @@ import org.jcsp.net2.NetworkMessageFilter.FilterTx;
  * @see org.jcsp.net2.NetSharedChannelOutput
  * @author Kevin Chalmers (updated from Quickstone Technologies Limited)
  */
-final class Any2NetChannel
-    implements NetSharedChannelOutput
+final class Any2NetChannel<T>
+    implements NetSharedChannelOutput<T>
 {
 
     /**
@@ -33,11 +33,11 @@ final class Any2NetChannel
      * @throws JCSPNetworkException
      *             Thrown if a connection to the Node cannot be made.
      */
-    static Any2NetChannel create(NetChannelLocation loc, int immunity, NetworkMessageFilter.FilterTx filter)
+    static <T2> Any2NetChannel<T2> create(NetChannelLocation loc, int immunity, NetworkMessageFilter.FilterTx filter)
         throws JCSPNetworkException
     {
         One2NetChannel channel = One2NetChannel.create(loc, immunity, filter);
-        return new Any2NetChannel(channel);
+        return new Any2NetChannel<T2>(channel);
     }
 
     /**
@@ -85,7 +85,7 @@ final class Any2NetChannel
      * @throws PoisonException
      *             Thrown if the channel has been poisoned.
      */
-    public void write(Object object)
+    public void write(T object)
         throws JCSPNetworkException, PoisonException
     {
         synchronized (this)
@@ -104,7 +104,7 @@ final class Any2NetChannel
      * @throws PoisonException
      *             Thrown is the channel has been poisoned
      */
-    public void asyncWrite(Object object)
+    public void asyncWrite(T object)
         throws JCSPNetworkException, PoisonException
     {
         synchronized (this)
