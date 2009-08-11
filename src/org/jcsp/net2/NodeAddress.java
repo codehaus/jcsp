@@ -144,7 +144,9 @@ public abstract class NodeAddress
         ProtocolID protocol = (ProtocolID)NodeAddress.installedProtocols.get(str.substring(0, index));
         if (protocol != null)
         {
-            return protocol.parse(str.substring(index+4));
+            // return protocol.parse(str.substring(index+4)); <-- This kills the IP address :-(
+			// ProtocolID's parse expects the string, including slashes (e.g. \\127.0.0.1:1234)
+			return protocol.parse (str.substring (index));
         }
         throw new IllegalArgumentException("Unknown protocol used for parsing NodeAddress");
     }

@@ -53,6 +53,7 @@ public final class TCPIPProtocolID
         index = temp.indexOf(":");
         String address = temp.substring(0, index);
         int port = Integer.parseInt(temp.substring(index + 1, temp.length()));
+
         return new TCPIPNodeAddress(address, port);
     }
 

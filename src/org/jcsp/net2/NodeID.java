@@ -201,6 +201,7 @@ public final class NodeID
         long mem = Long.parseLong(pieces[1]);
         int hashCode = Integer.parseInt(pieces[2]);
         String name = pieces[3];
+
         // Parse the address
         NodeAddress addr = NodeAddress.parse(pieces[4]);
 
