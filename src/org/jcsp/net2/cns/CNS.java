@@ -468,7 +468,7 @@ public class CNS
                                 {
                                     // Name is not already registered.
                                     // Log successful registration
-                                    Node.log.log(this.getClass(), "Registration of " + message.name + "succeded");
+                                    Node.log.log(this.getClass(), "Registration of " + message.name + " succeded");
 
                                     // Now check if any client end is waiting for this name
                                     ArrayList pending = (ArrayList)this.waitingResolves.get(message.name);
@@ -788,7 +788,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetAltingChannelInput net2one(String name)
+    public static <T> NetAltingChannelInput<T> net2one(String name)
         throws IllegalStateException, IllegalArgumentException
     {
         // Check if the CNS connection is initialised
@@ -796,7 +796,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetAltingChannelInput toReturn = NetChannel.net2one();
+        NetAltingChannelInput<T> toReturn = NetChannel.net2one();
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -820,7 +820,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetAltingChannelInput net2one(String name, int immunityLevel)
+    public static <T> NetAltingChannelInput<T> net2one(String name, int immunityLevel)
         throws IllegalArgumentException, IllegalStateException
     {
         // Check if the CNS connection is initialised
@@ -828,7 +828,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetAltingChannelInput toReturn = NetChannel.net2one(immunityLevel);
+        NetAltingChannelInput<T> toReturn = NetChannel.net2one(immunityLevel);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -852,7 +852,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetAltingChannelInput net2one(String name, NetworkMessageFilter.FilterRx filter)
+    public static <T> NetAltingChannelInput<T> net2one(String name, NetworkMessageFilter.FilterRx filter)
         throws IllegalArgumentException, IllegalStateException
     {
         // Check if the CNS connection is initialised
@@ -860,7 +860,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetAltingChannelInput toReturn = NetChannel.net2one(filter);
+        NetAltingChannelInput<T> toReturn = NetChannel.net2one(filter);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -886,7 +886,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetAltingChannelInput net2one(String name, int immunityLevel, NetworkMessageFilter.FilterRx filter)
+    public static <T> NetAltingChannelInput<T> net2one(String name, int immunityLevel, NetworkMessageFilter.FilterRx filter)
         throws IllegalArgumentException, IllegalStateException
     {
         // Check if the CNS connection is initialised
@@ -894,7 +894,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetAltingChannelInput toReturn = NetChannel.net2one(immunityLevel, filter);
+        NetAltingChannelInput<T> toReturn = NetChannel.net2one(immunityLevel, filter);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -916,7 +916,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetSharedChannelInput net2any(String name)
+    public static <T> NetSharedChannelInput<T> net2any(String name)
         throws IllegalArgumentException, IllegalStateException
     {
         // Check if the CNS connection is initialised
@@ -924,7 +924,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetSharedChannelInput toReturn = NetChannel.net2any();
+        NetSharedChannelInput<T> toReturn = NetChannel.net2any();
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -948,7 +948,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetSharedChannelInput net2any(String name, int immunityLevel)
+    public static <T> NetSharedChannelInput<T> net2any(String name, int immunityLevel)
         throws IllegalArgumentException, IllegalStateException
     {
         // Check if the CNS connection is initialised
@@ -956,7 +956,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetSharedChannelInput toReturn = NetChannel.net2any(immunityLevel);
+        NetSharedChannelInput<T> toReturn = NetChannel.net2any(immunityLevel);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -965,8 +965,7 @@ public class CNS
         // Failed to register channel. Destroy the channel and throw exception
         toReturn.destroy();
         throw new IllegalArgumentException("Failed to register " + name + " with the CNS");
-    }
-
+    }
     /**
      * Creates a new NetSharedChannelInput registered with the given name
      * 
@@ -980,7 +979,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetSharedChannelInput net2any(String name, NetworkMessageFilter.FilterRx filter)
+    public static <T> NetSharedChannelInput<T> net2any(String name, NetworkMessageFilter.FilterRx filter)
         throws IllegalArgumentException, IllegalStateException
     {
         // Check if the CNS connection is initialised
@@ -988,7 +987,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetSharedChannelInput toReturn = NetChannel.net2any(filter);
+        NetSharedChannelInput<T> toReturn = NetChannel.net2any(filter);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1014,7 +1013,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetSharedChannelInput net2any(String name, int immunityLevel, NetworkMessageFilter.FilterRx filter)
+    public static <T> NetSharedChannelInput<T> net2any(String name, int immunityLevel, NetworkMessageFilter.FilterRx filter)
         throws IllegalArgumentException, IllegalStateException
     {
         // Check if the CNS connection is initialised
@@ -1022,7 +1021,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetSharedChannelInput toReturn = NetChannel.net2any(immunityLevel, filter);
+        NetSharedChannelInput<T> toReturn = NetChannel.net2any(immunityLevel, filter);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1046,7 +1045,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetAltingChannelInput numberedNet2One(String name, int index)
+    public static <T> NetAltingChannelInput<T> numberedNet2One(String name, int index)
         throws IllegalStateException, IllegalArgumentException
     {
         // Check if the CNS connection is initialised
@@ -1054,7 +1053,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetAltingChannelInput toReturn = NetChannel.numberedNet2One(index);
+        NetAltingChannelInput<T> toReturn = NetChannel.numberedNet2One(index);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1080,7 +1079,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetAltingChannelInput numberedNet2One(String name, int index, int immunityLevel)
+    public static <T> NetAltingChannelInput<T> numberedNet2One(String name, int index, int immunityLevel)
         throws IllegalStateException, IllegalArgumentException
     {
         // Check if the CNS connection is initialised
@@ -1088,7 +1087,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetAltingChannelInput toReturn = NetChannel.numberedNet2One(index, immunityLevel);
+        NetAltingChannelInput<T> toReturn = NetChannel.numberedNet2One(index, immunityLevel);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1114,7 +1113,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetAltingChannelInput numberedNet2One(String name, int index, NetworkMessageFilter.FilterRx filter)
+    public static <T> NetAltingChannelInput<T> numberedNet2One(String name, int index, NetworkMessageFilter.FilterRx filter)
         throws IllegalStateException, IllegalArgumentException
     {
         // Check if the CNS connection is initialised
@@ -1122,7 +1121,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetAltingChannelInput toReturn = NetChannel.numberedNet2One(index, filter);
+        NetAltingChannelInput<T> toReturn = NetChannel.numberedNet2One(index, filter);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1150,7 +1149,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetAltingChannelInput numberedNet2One(String name, int index, int immunityLevel,
+    public static <T> NetAltingChannelInput<T> numberedNet2One(String name, int index, int immunityLevel,
             NetworkMessageFilter.FilterRx filter)
         throws IllegalStateException, IllegalArgumentException
     {
@@ -1159,7 +1158,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetAltingChannelInput toReturn = NetChannel.numberedNet2One(index, immunityLevel, filter);
+        NetAltingChannelInput<T> toReturn = NetChannel.numberedNet2One(index, immunityLevel, filter);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1183,7 +1182,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetSharedChannelInput numberedNet2Any(String name, int index)
+    public static <T> NetSharedChannelInput<T> numberedNet2Any(String name, int index)
         throws IllegalStateException, IllegalArgumentException
     {
         // Check if the CNS connection is initialised
@@ -1191,7 +1190,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetSharedChannelInput toReturn = NetChannel.numberedNet2Any(index);
+        NetSharedChannelInput<T> toReturn = NetChannel.numberedNet2Any(index);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1217,7 +1216,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetSharedChannelInput numberedNet2Any(String name, int index, int immunityLevel)
+    public static <T> NetSharedChannelInput<T> numberedNet2Any(String name, int index, int immunityLevel)
         throws IllegalStateException, IllegalArgumentException
     {
         // Check if the CNS connection is initialised
@@ -1225,7 +1224,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetSharedChannelInput toReturn = NetChannel.numberedNet2Any(index, immunityLevel);
+        NetSharedChannelInput<T> toReturn = NetChannel.numberedNet2Any(index, immunityLevel);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1251,7 +1250,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetSharedChannelInput numberedNet2Any(String name, int index, NetworkMessageFilter.FilterRx filter)
+    public static <T> NetSharedChannelInput<T> numberedNet2Any(String name, int index, NetworkMessageFilter.FilterRx filter)
         throws IllegalStateException, IllegalArgumentException
     {
         // Check if the CNS connection is initialised
@@ -1259,7 +1258,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetSharedChannelInput toReturn = NetChannel.numberedNet2Any(index, filter);
+        NetSharedChannelInput<T> toReturn = NetChannel.numberedNet2Any(index, filter);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1287,7 +1286,7 @@ public class CNS
      * @throws IllegalArgumentException
      *             Thrown if the channel name is already registered
      */
-    public static NetSharedChannelInput numberedNet2Any(String name, int index, int immunityLevel,
+    public static <T> NetSharedChannelInput<T> numberedNet2Any(String name, int index, int immunityLevel,
             NetworkMessageFilter.FilterRx filter)
         throws IllegalStateException, IllegalArgumentException
     {
@@ -1296,7 +1295,7 @@ public class CNS
             throw new IllegalStateException("The connection to the CNS has not been initialised");
 
         // Create a new channel
-        NetSharedChannelInput toReturn = NetChannel.numberedNet2Any(index, immunityLevel, filter);
+        NetSharedChannelInput<T> toReturn = NetChannel.numberedNet2Any(index, immunityLevel, filter);
 
         // Attempt to register
         if (CNS.service.register(name, toReturn))
@@ -1318,7 +1317,7 @@ public class CNS
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public static NetChannelOutput one2net(String name)
+    public static <T> NetChannelOutput<T> one2net(String name)
         throws IllegalStateException, JCSPNetworkException
     {
         // Check if the CNS connection is initialised
@@ -1345,7 +1344,7 @@ public class CNS
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public static NetChannelOutput one2net(String name, int immunityLevel)
+    public static <T> NetChannelOutput<T> one2net(String name, int immunityLevel)
         throws IllegalStateException, JCSPNetworkException
     {
         // Check if the CNS connection is initialised
@@ -1372,7 +1371,7 @@ public class CNS
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public static NetChannelOutput one2net(String name, NetworkMessageFilter.FilterTx filter)
+    public static <T> NetChannelOutput<T> one2net(String name, NetworkMessageFilter.FilterTx filter)
         throws IllegalStateException, JCSPNetworkException
     {
         // Check if the CNS connection is initialised
@@ -1401,7 +1400,7 @@ public class CNS
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public static NetChannelOutput one2net(String name, int immunityLevel, NetworkMessageFilter.FilterTx filter)
+    public static <T> NetChannelOutput<T> one2net(String name, int immunityLevel, NetworkMessageFilter.FilterTx filter)
         throws IllegalStateException, JCSPNetworkException
     {
         // Check if the CNS connection is initialised
@@ -1426,7 +1425,7 @@ public class CNS
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public static NetSharedChannelOutput any2net(String name)
+    public static <T> NetSharedChannelOutput<T> any2net(String name)
         throws IllegalStateException, JCSPNetworkException
     {
         // Check if the CNS connection is initialised
@@ -1453,7 +1452,7 @@ public class CNS
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public static NetSharedChannelOutput any2net(String name, int immunityLevel)
+    public static <T> NetSharedChannelOutput<T> any2net(String name, int immunityLevel)
         throws IllegalStateException, JCSPNetworkException
     {
         // Check if the CNS connection is initialised
@@ -1480,7 +1479,7 @@ public class CNS
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public static NetSharedChannelOutput any2net(String name, NetworkMessageFilter.FilterTx filter)
+    public static <T> NetSharedChannelOutput<T> any2net(String name, NetworkMessageFilter.FilterTx filter)
         throws IllegalStateException, JCSPNetworkException
     {
         // Check if the CNS connection is initialised
@@ -1509,7 +1508,7 @@ public class CNS
      * @throws JCSPNetworkException
      *             Thrown if something goes wrong in the underlying architecture
      */
-    public static NetSharedChannelOutput any2net(String name, int immunityLevel, NetworkMessageFilter.FilterTx filter)
+    public static <T> NetSharedChannelOutput<T> any2net(String name, int immunityLevel, NetworkMessageFilter.FilterTx filter)
         throws IllegalStateException, JCSPNetworkException
     {
         // Check if the CNS connection is initialised
