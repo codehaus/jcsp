@@ -274,7 +274,7 @@ public class AltableBarrierBase {
 				break;
 			}
 		}
-		for (int i = toPriLevel+1; higher.size() > toPriLevel;) {
+		for (int i = toPriLevel+1; higher.size() > i;) {
 			face.lowerBarriers.add(higher.remove(i));
 		}
 		/*
