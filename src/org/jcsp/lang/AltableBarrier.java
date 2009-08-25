@@ -33,7 +33,7 @@ public class AltableBarrier {
 	//}}}
 	//{{{ public fields
 	public int status;
-	private AltableBarrierBase parent;
+	public  AltableBarrierBase parent;
 	public GuardGroup guardGroup;
 
 	public AltingChannelInput in; // the end the alting process uses

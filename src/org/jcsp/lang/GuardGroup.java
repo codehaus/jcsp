@@ -183,7 +183,15 @@ public class GuardGroup extends Guard {
 		System.out.println("synchronisation attempted and got " + barrier);
 
 		if (barrier != null && barrier.getStatus() == barrier.COMPLETE) {
-			return barrier;
+			if (Arrays.asList(barriers).contains(barrier)) {
+				// barrier was in this guard group
+				return barrier;
+			} else {
+				System.out.println("synced on a different barrier");
+				// set the lastReadyguard up in the guard group
+				// that this barrier does belong to
+				barrier.guardGroup.lastReadyGuard = barrier;
+			}
 		}
 
 		//{{{
