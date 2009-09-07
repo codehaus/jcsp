@@ -131,7 +131,7 @@ public class GuardGroup extends Guard {
 		readyBarriers = new Vector();
 		for (int i = 0; i < barriers.length; i++) {
 			readyBarriers.add(barriers[i]);
-			barriers[i].status = AltableBarrier.PREPARED; 
+			barriers[i].setStatus(AltableBarrier.PREPARED); 
 		}
 		//}}}
 
