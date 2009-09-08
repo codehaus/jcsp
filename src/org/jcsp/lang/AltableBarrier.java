@@ -110,16 +110,22 @@ public class AltableBarrier {
 			Object key = face.key;
 			synchronized (key) {
 				key.wait();
-				parentStatus = face.selectedBarrier.getStatus();
-				if (parentStatus == COMPLETE) {
-					System.out.println("horay we synced");
-				}
-			}
+		
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(0);
 			}
 			AltableBarrierBase.tokenGiver.in().read();
+
+			//{{{ check if sync attempt was aborted
+			parentStatus = face.selectedBarrier.getStatus();
+			if (parentStatus == COMPLETE) {
+				System.out.println("horay we synced");
+			} else if (parentStatus == NOT_SYNCING_NOW) {
+				System.out.println("aborting");
+				abort();
+			}		
+			//}}}
 		}
 		//}}}
 	}
@@ -131,6 +137,10 @@ public class AltableBarrier {
 	public int setStatus(int status) {
 		this.status = status;
 //		return parent.checkStatus(this);
+		if (getStatus() == NOT_SYNCING_NOW) {
+			System.out.println("aborting");
+			abort();
+		}
 		return status;
 	}
 	//}}}
@@ -162,6 +172,19 @@ public class AltableBarrier {
 	// happens with its barrier sync at this point).
 	private void reset() {
 		parent.reset(this);
+	}
+	//}}}
+	//{{{ private void abort()
+	private void abort() {
+		//FIXME this abort sequence will need to deal with the
+		// possibility of a timeout and will later need to deal
+		// with a process 'falling back' through barriers which
+		// have already been enabled but which were lower priority
+		// than the guard just aborted.
+
+		// {{{ wake up all waiting barriers
+		// possibly a call to reset would work???
+		// }}}
 	}
 	//}}}
 }
