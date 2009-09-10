@@ -110,7 +110,7 @@ public class AltableBarrier {
 			Object key = face.key;
 			synchronized (key) {
 				key.wait();
-		
+			}	
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(0);
@@ -123,6 +123,7 @@ public class AltableBarrier {
 				System.out.println("horay we synced");
 			} else if (parentStatus == NOT_SYNCING_NOW) {
 				System.out.println("aborting");
+				this.face.selectedBarrier = null;
 				abort();
 			}		
 			//}}}
@@ -183,7 +184,8 @@ public class AltableBarrier {
 		// than the guard just aborted.
 
 		// {{{ wake up all waiting barriers
-		// possibly a call to reset would work???
+		// trying reset
+		reset();
 		// }}}
 	}
 	//}}}

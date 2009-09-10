@@ -15,7 +15,7 @@ public class AltableBarrierTest {
 	public static void main (String[] args) {
 		CSProcess[] processes = new CSProcess[PROCESSES];
 
-		for (int i = 0; i < PROCESSES; i++) {
+		for (int i = 0; i < PROCESSES-1; i++) {
 			final Guard[] guards = createGuards();
 			final int processNumber = i;
 
@@ -31,6 +31,29 @@ public class AltableBarrierTest {
 			};
 			
 		}
+		//{{{ create a process which won't sync on the first guard
+		processes[PROCESSES-1] = new CSProcess() {
+			public void run() {
+				final Guard[] guards = createGuards();
+				final Guard[] myGuards = new Guard[] {guards[1]};
+				//{{{ let everyone no that the first barrier is not going to be synced on
+				AltableBarrierBase.tokenGiver.in().read();
+				
+				GuardGroup gg = (GuardGroup) guards[0];
+				AltableBarrier noSync = gg.barriers[0];
+				
+				noSync.setStatus(AltableBarrier.UNPREPARED);
+
+				AltableBarrierBase.tokenReciever.out().write(null);	
+				//}}}
+				System.out.println("I am the spoiler");
+
+				Alternative alt = new Alternative(myGuards);
+				int index = alt.priSelect();
+				System.out.println("spoiler picked " + index);	
+			}	
+		};
+		//}}}
 
 		Parallel par = new Parallel(processes);
 		par.run();

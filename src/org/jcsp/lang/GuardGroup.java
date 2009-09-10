@@ -21,7 +21,7 @@ public class GuardGroup extends Guard {
 
 	//{{{ private fields
 	private Guard[] guards;
-	private AltableBarrier[] barriers;
+	public AltableBarrier[] barriers;
 	private Alternative parent;
 	private Object lastReadyGuard;
 
