@@ -230,14 +230,17 @@ public class AltableBarrierBase {
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
 			BarrierFace face = ab.face;
-			Object key = face.key;
-			try {
-			synchronized (key) {
-				key.notify();
-			}
-			} catch(Exception e) {
-				e.printStackTrace();
-				System.exit(0);
+			if (face != null) {
+				// may not have entered an ALT yet
+				Object key = face.key;
+				try {
+				synchronized (key) {
+					key.notify();
+				}
+				} catch(Exception e) {
+					e.printStackTrace();
+					System.exit(0);
+				}
 			}
 		}
 		//}}}
