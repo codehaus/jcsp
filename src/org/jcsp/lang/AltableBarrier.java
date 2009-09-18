@@ -124,7 +124,7 @@ public class AltableBarrier {
 			} else if (parentStatus == NOT_SYNCING_NOW) {
 				System.out.println("aborting");
 				this.face.selectedBarrier = null;
-				abort();
+				abort(false);
 			}		
 			//}}}
 		}
@@ -140,7 +140,7 @@ public class AltableBarrier {
 //		return parent.checkStatus(this);
 		if (getStatus() == NOT_SYNCING_NOW) {
 			System.out.println("aborting");
-			abort();
+			abort(true);
 		}
 		return status;
 	}
@@ -176,7 +176,8 @@ public class AltableBarrier {
 	}
 	//}}}
 	//{{{ private void abort()
-	private void abort() {
+	private void abort() {abort(false);}
+	private void abort(boolean wakeOthers) {
 		//FIXME this abort sequence will need to deal with the
 		// possibility of a timeout and will later need to deal
 		// with a process 'falling back' through barriers which
@@ -185,7 +186,9 @@ public class AltableBarrier {
 
 		// {{{ wake up all waiting barriers
 		// trying reset
-		reset();
+		if (wakeOthers) {
+			reset();
+		}
 		// }}}
 	}
 	//}}}
