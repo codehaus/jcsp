@@ -230,7 +230,17 @@ public class AltableBarrierBase {
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
 			BarrierFace face = ab.face;
-			if (face != null) {
+			/*
+ 			 * check that the process has entered an ALT, i.e. the
+ 			 * face is not null.  Check you aren't trying to wake
+ 			 * the process that invoked the reset (its not waiting
+ 			 * in the first place).  Check you aren't waking up
+ 			 * enrolled processes which are legitimately syncing on
+ 			 * another barrier, i.e. that the process is associated
+ 			 * with a face which says that it is syncing on the
+ 			 * barrier which you are currently waking up.
+ 			 */
+			if (face != null && ab != invoker && ab == face.selectedBarrier) {
 				// may not have entered an ALT yet
 				Object key = face.key;
 				try {
@@ -241,6 +251,8 @@ public class AltableBarrierBase {
 					e.printStackTrace();
 					System.exit(0);
 				}
+			} else {
+				System.out.println("eliminated invoker" + face + " " + ab);
 			}
 		}
 		//}}}

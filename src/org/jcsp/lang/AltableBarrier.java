@@ -122,7 +122,7 @@ public class AltableBarrier {
 			if (parentStatus == COMPLETE) {
 				System.out.println("horay we synced");
 			} else if (parentStatus == NOT_SYNCING_NOW) {
-				System.out.println("aborting");
+				System.out.println("aborting from wait");
 				this.face.selectedBarrier = null;
 				abort(false);
 			}		
@@ -136,11 +136,15 @@ public class AltableBarrier {
 	 * get back status of the AltableBarrierBase
 	 */
 	public int setStatus(int status) {
+		int oldStatus = getStatus();
 		this.status = status;
+
 //		return parent.checkStatus(this);
-		if (getStatus() == NOT_SYNCING_NOW) {
+		if (getStatus() == NOT_SYNCING_NOW && oldStatus != NOT_SYNCING_NOW) {
 			System.out.println("aborting");
 			abort(true);
+		} else if (getStatus() == NOT_SYNCING_NOW) {
+			System.out.println("caught a false case");
 		}
 		return status;
 	}

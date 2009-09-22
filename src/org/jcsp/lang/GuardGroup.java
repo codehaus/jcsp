@@ -272,14 +272,13 @@ public class GuardGroup extends Guard {
 			Object o = anyReady();
 			System.out.println("got " + o + " from anyReady()");
 
+		if (o != null) {
+			lastReadyGuard = o;
+		}
 		AltableBarrierBase.tokenReciever.out().write(null);
 
-		if (o == null) {
-			return false;
-		} else {
-			lastReadyGuard = o;
-			return true;
-		}
+		return (o != null);
+
 //		}} catch (Exception e) {
 //			e.printStackTrace();
 //			System.exit(0);
