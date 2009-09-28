@@ -260,6 +260,32 @@ public class AltableBarrierBase {
 
 	}
 	//}}}
+	//{{{ public void timeout()
+	public void timeout() {
+		//{{{ check timeout not unneccesary
+		int status = getStatus();
+		if (status == NOT_READY || status == NOT_SYNCING_NOW) {
+			// already aborted or otherwise no-one waiting
+			// warning, FIXME may cause timeouts to occur
+			// if a successful sync happens and another sync
+			// attempt starts afterwards but before the timeout
+			// must safeguard against this somehow
+			return;
+		}
+		//}}}
+		//{{{ mark as UNPREPARED any processes not currently waiting
+		// this will automatically trigger an abort for the first
+		// absent process
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
+			BarrierFace face = ab.face;
+			if (face == null || face.selectedBarrier != ab) {
+				ab.setStatus(ab.UNPREPARED);
+			}
+		}
+		//}}}
+	}
+	//}}}
 	//}}}
 	//{{{ private methods
 	//{{{ public void switchOver (AltableBarrier from, to)
