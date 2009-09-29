@@ -24,6 +24,9 @@ public class AltableBarrierBase {
 	public static final int SELECTED = 5;
 	public static final int COMPLETE = 7;
 
+	public static final long BASE_DELAY = 500; // base time for timer to
+	// wait for a synchronisation to happen (ms)
+
 	public static final One2AnyChannel tokenGiver;
 	public static final Any2OneChannel tokenReciever;
 	//}}}
@@ -58,6 +61,8 @@ public class AltableBarrierBase {
 	private Vector currentlyAlting;
 
 	private int lastStatus = 0;
+
+	public AltableBarrierTimeout timer;	
 	//}}}
 
 	//{{{ constructors
@@ -69,6 +74,8 @@ public class AltableBarrierBase {
 		currentlyAlting = new Vector();	
 
 		lastStatus = getStatus();
+
+		timer = null;
 	}
 	//}}}
 
@@ -211,6 +218,13 @@ public class AltableBarrierBase {
 	//}}}
 	//{{{ public void reset(AltableBarrier invoker)
 	public void reset (AltableBarrier invoker) {
+		//{{{ cancel timeout
+		if (timer != null) {
+			timer.kill();
+			timer = null;
+		}
+		//}}}
+
 		//{{{ wake up committedBarriers
 		for (int i = 0; i < committedBarriers.size(); i++) {
 			AltableBarrier cb = (AltableBarrier) committedBarriers.get(i);
@@ -284,6 +298,23 @@ public class AltableBarrierBase {
 			}
 		}
 		//}}}
+
+	}
+	//}}}
+	//{{{ public void startTimer()
+	/*
+	 * This method checks if there is a timer, if there isn't
+	 * a new one is started.  It is intended for use with a
+	 * call to attemptSynchronisation(), thus only the first
+	 * process to wait on the barrier will start the timeout
+	 */
+	public void startTimer() {
+		if (timer == null) {
+			timer = new AltableBarrierTimeout(
+			this, BASE_DELAY * altableBarriers.size());
+
+			(new ProcessManager(timer)).start();	
+		}
 	}
 	//}}}
 	//}}}

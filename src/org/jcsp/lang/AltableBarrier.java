@@ -89,6 +89,10 @@ public class AltableBarrier {
 		//{{{ attempt to steal processes from other barriers.
 		parent.steal();
 		//}}}
+		//{{{ if first process, then start a timeout for the
+		//synchronisation
+		parent.startTimer();
+		//}}}
 		//{{{ check if complete (then reset) otherwise wait
 		// Note check the barrier indictated by the face
 		// not the barrier you started syncing on
