@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+   JCSP - CSP for Java: an implementation of Communicating Sequential Processes (CSP) for Java.
+ 
+   Copyright © 2010 Russel Winder <russel@russel.org.uk>
+ 
+   This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser
+   General Public License as published by the Free Software Foundation; either version 2.1 of the License,
+   or (at your option) any later version.
+   
+   This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+   the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General
+   Public License for more details.
+   
+   You should have received a copy of the GNU Lesser General Public License along with this library; if not,
+   write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+-->
+
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.jcsp</groupId>
+  <artifactId>jcsp</artifactId>
+  <packaging>bundle</packaging>
+  <version>1.1-rc5-SNAPSHOT</version>
+  <name>The JCSP Library</name>
+  <description>
+    This library contains classes realizing Communicating Sequential Processes (CSP) for use in Java code.
+  </description>
+  <url>http://www.cs.kent.ac.uk/projects/ofa/jcsp</url>
+  <inceptionYear>1996</inceptionYear>
+  <licenses>
+    <license>
+      <name>LGPLv2.1</name>
+      <url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:svn:http://projects.cs.kent.ac.uk/projects/jcsp/svn/jcsp/trunk</connection>
+  </scm>
+  
+  <distributionManagement>
+    <repository>
+      <id>codehaus.org</id>
+      <name>JCSP Central Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/jcsp</url>
+    </repository>
+    <snapshotRepository>
+      <id>codehaus.org</id>
+      <name>JCSP Snapshot Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/jcsp</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
+  <repositories>
+    <repository>
+      <id>Codehaus</id>
+      <url>http://repository.codehaus.org</url>
+    </repository>
+    <repository>
+      <id>CodehausSnapshot</id>
+      <url>http://snapshots.repository.codehaus.org</url>
+    </repository>
+  </repositories>
+  
+ <build>
+    <sourceDirectory>${basedir}/src</sourceDirectory>
+    <defaultGoal>install</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>5</source>
+          <target>5</target>
+          <debug>on</debug>
+          <excludes>
+            <exclude>
+              jcsp-demos/**
+            </exclude>
+            <exclude>
+              org/jcsp/test/**
+            </exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>org.devjavasoft.ads,org.devjavasoft.ads.*</Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <overview>overview.html</overview>
+          <author>true</author>
+          <version>true</version>
+          <use>true</use>
+          <locale>en_GB</locale>
+          <encoding>UTF-8</encoding>
+          <source>5</source>
+          <windowtitle>${name}</windowtitle>
+          <doctitle>${name}</doctitle>
+          <header>${name}</header>
+          <!--  Copyright symbol is &copy; or &#169; -->
+          <!--  N-dash symbol is &ndash; or &#8211; -->
+          <!--  Hummm... this is XML so we have to extra escaping of HTML entities. -->
+          <footer>Copyright &amp;#169; 1997&amp;#8211;2010 P.D.Austin and P.H.Welch.  All rights reserved.</footer>
+          <bottom>Copyright &amp;#169; 1997&amp;#8211;2010 P.D.Austin and P.H.Welch.  All rights reserved.</bottom>
+          <charset>UTF-8</charset>
+          <excludePackageNames>jcsp-demos.*</excludePackageNames>
+        </configuration>
+      </plugin>          
+      <plugin>  
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-jxr-plugin</artifactId>  
+      </plugin>  
+      <plugin>  
+        <groupId>org.codehaus.mojo</groupId>  
+        <artifactId>taglist-maven-plugin</artifactId>  
+      </plugin>  
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId> 
+        <artifactId>maven-surefire-report-plugin</artifactId> 
+      </plugin>
+      <plugin>  
+        <groupId>org.codehaus.mojo</groupId>  
+        <artifactId>cobertura-maven-plugin</artifactId>  
+      </plugin>  
+      <plugin>  
+        <groupId>org.codehaus.mojo</groupId>  
+        <artifactId>jdepend-maven-plugin</artifactId>  
+      </plugin>        
+      <plugin>  
+        <groupId>org.codehaus.mojo</groupId>  
+        <artifactId>findbugs-maven-plugin</artifactId>          
+        <configuration>  
+          <threshold>Low</threshold>  
+          <effort>Max</effort>  
+        </configuration>  
+      </plugin>  
+      <plugin>  
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-pmd-plugin</artifactId>  
+        <configuration>  
+          <linkXref>true</linkXref>  
+          <sourceEncoding>utf-8</sourceEncoding>  
+          <minimumTokens>100</minimumTokens>  
+          <targetJdk>1.6</targetJdk>  
+        </configuration>  
+      </plugin>  
+      <plugin>  
+        <groupId>org.codehaus.mojo</groupId>  
+        <artifactId>rat-maven-plugin</artifactId>  
+      </plugin>      
+    </plugins>
+  </reporting>
+  
+</project>
