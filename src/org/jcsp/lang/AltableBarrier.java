@@ -200,5 +200,22 @@ public class AltableBarrier {
 		// }}}
 	}
 	//}}}
+	//{{{ private boolean fallThrough()
+	/*
+	 * This method is called whenever a method is about to be woken up due
+	 * to an abort.  In the event that a process passes a high priority 
+	 * barrier, selects a lower priority one, is stolen when the high 
+	 * priority barrier becomes ready and the high priority barrier aborts 
+	 * or times out, this method exists to re-evaluate the already visited 
+	 * barriers below it.  To put it another way, stealing causes the 
+	 * process jump back up the priority structure, fallThrough exists in 
+	 * case the process needs to go back down the priority structure to 
+	 * reach the place it was stolen from.
+	 * It returns whether or not there was a suitable barrier to go back to.
+	 */
+	private boolean fallThrough() {
+		return false;
+	}
+	//}}}
 }
 //}}}
