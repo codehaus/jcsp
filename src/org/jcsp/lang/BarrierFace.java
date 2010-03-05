@@ -1,36 +1,55 @@
 //{{{ package and import statements
-package org.jcsp.lang;
+package org.jcsp.picoms;
 
 import java.util.*;
+import org.jcsp.lang.*;
 //}}}
-//{{{ description
-/*
- * A class for storing information about which barriers are currently
- * high priority for a given process as well as which barrier a process
- * is currently enrolled on.
- *
- * whenever a barrier is enabled, a BarrierFace object should be given to
- * the that barrier's front-end so that (if and when that barrier is actually
- * selected by a process) the information about transfering a process from
- * one barrier sync to another is readily available.  When a barrier is
- * disabled again its BarrierFace object should be set to null.
- */
-//}}}
+
 //{{{ public class BarrierFace
 public class BarrierFace {
 
-	//{{{ fields
-	public Vector higherBarriers, lowerBarriers;
-	public AltableBarrier selectedBarrier;
-	public Object key;
+	//{{{ static block
+	static {
+		faces = new HashMap();
+	}
 	//}}}
 
-	//{{{ public BarrierFace(higherBarriers, selectedBarrier, key)
-	public BarrierFace(Vector higherBarriers, Vector lowerBarriers, AltableBarrier selectedBarrier, Object key) {
-		this.higherBarriers = higherBarriers;
-		this.lowerBarriers = lowerBarriers;
-		this.selectedBarrier = selectedBarrier;
-		this.key = key;
+	//{{{ public static fields
+	public static HashMap faces;
+	//}}}
+
+	//{{{ fields
+	public Vector guardGroups;
+	public Object key;
+	public AltableBarrier selected;
+	public Object lock;
+
+	public int topIndex, bottomIndex;
+	//}}}
+	
+
+	//{{{ public BarrierFace (Alternative alt)
+	public BarrierFace(Alternative alt) {
+		key = alt;
+		guardGroups = new Vector();
+		for (int i = 0; i < alt.guard.length; i++) {
+			if (alt.guard[i] instanceof GuardGroup) {
+				guardGroups.add(alt.guard[i]);
+			}
+		}
+		faces.put(key, this);
+
+		selected = null;
+		lock = null;
+
+		topIndex = 0;
+		bottomIndex = 0;
+	}
+	//}}}
+	
+	//{{{ public void dispose() 
+	public void dispose() {
+		faces.remove(key);
 	}
 	//}}}
 }

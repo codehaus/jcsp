@@ -575,7 +575,7 @@ public class Alternative
   private int state = inactive;
 
   /** The array of guard events from which we are selecting. */
-  private final Guard[] guard;
+  public final Guard[] guard;
 
   /** The index of the guard with highest priority for the next select. */
   private int favourite = 0;  // invariant: 0 <= favourite < guard.length
