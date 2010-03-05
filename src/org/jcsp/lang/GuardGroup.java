@@ -16,6 +16,9 @@ public class GuardGroup extends Guard {
 	
 	//{{{ extends Guard
 	//{{{ public boolean enable(Alternative alt)
+	boolean enable(Alternative alt) {
+		return false;
+	}
 	//}}}
 	//{{{ public boolean disable()
 	boolean disable() {
