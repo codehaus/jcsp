@@ -1,5 +1,5 @@
 //{{{ package and import statements
-package org.jcsp.picoms;
+package org.jcsp.lang;
 
 import java.util.*;
 import org.jcsp.lang.*;
