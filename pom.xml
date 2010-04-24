@@ -95,7 +95,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Export-Package>org.devjavasoft.ads,org.devjavasoft.ads.*</Export-Package>
+            <Export-Package>org.jcsp,org.jcsp.*</Export-Package>
           </instructions>
         </configuration>
       </plugin>
@@ -122,9 +122,8 @@
           <!--  N-dash symbol is &ndash; or &#8211; -->
           <!--  Hummm... this is XML so we have to extra escaping of HTML entities. -->
           <footer>Copyright &amp;#169; 1997&amp;#8211;2010 P.D.Austin and P.H.Welch.  All rights reserved.</footer>
-          <bottom>Copyright &amp;#169; 1997&amp;#8211;2010 P.D.Austin and P.H.Welch.  All rights reserved.</bottom>
           <charset>UTF-8</charset>
-          <excludePackageNames>jcsp-demos.*</excludePackageNames>
+          <excludePackageNames>jcsp-demos.*,org.jcsp.test.*</excludePackageNames>
         </configuration>
       </plugin>          
       <plugin>  
