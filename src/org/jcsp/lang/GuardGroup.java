@@ -39,6 +39,10 @@ public class GuardGroup extends Guard {
 
 		// select a barrier between top and bottomIndexes
 		AltableBarrier ab = selectBarrier();
+		if (ab != null) {
+			setBarrier(ab);
+			ab.attemptSyncrhonisation();
+		}
 
 		return false;
 	}
@@ -93,6 +97,7 @@ public class GuardGroup extends Guard {
 		bf = null;
 	}
 	//}}}
+	//{{{ private AltableBarrier selectBarrier() 
 	private AltableBarrier selectBarrier() {
 		Vector guardGroups = bf.guardGroups();
 		
@@ -108,10 +113,51 @@ public class GuardGroup extends Guard {
 		}
 		return null;
 	}
+	//}}}
 
+	//{{{ private AltableBarrier selectBarrier(GuardGroup gg)
+	/*
+	 * This method goes through all of the AltableBarriers in a GuardGroup,
+	 * enables them by setting their status to PREPARED and checking which
+	 * are PROBABLY_READY prioritising the first of which which has already
+	 * been selected by another process
+	 */
 	private AltableBarrier selectBarrier (GuardGroup gg) {
-		
+		AltableBarrier ab = null;
+		// set status of all to prepared
+		for (int i = 0; i < gg.guards.length; i++) {
+			AltableBarrier ab = gg.guards[i];
+			ab.setStatus(PREPARED);
+		}
+		// check for preselected barriers
+		for (int i = 0; i < gg.guards.length; i++) {
+			ab = gg.guards[i];
+			if (ab.isSelected()) {
+				return ab;
+			}	
+		}
+		// no barriers were preselected, select the first
+		// barrier which is PROBABLY_READY
+		for (int i = 0; i < gg.guards.length; i++) {
+			ab = gg.guards[i];
+			if (ab.getState() == PROBABLY_READY) {
+				return ab;
+			}
+		}
+		// if here then no barriers were PROBABLY_READY
+		// return nothing
+		return null;
 	}
+	//}}}
+	//{{{ private void setBarrier(AltableBarrier ab)
+	/*
+	 * This method Alters the BarrierFace object to reflect the selection
+	 * of the AltableBarrier ab.
+	 */
+	private void setBarrier(AltalbeBarrier ab) {
+		bf.selected = ab;	
+	}
+	//}}}
 	//}}}
 	
 }

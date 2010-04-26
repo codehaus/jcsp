@@ -217,5 +217,6 @@ public class AltableBarrier {
 		return false;
 	}
 	//}}}
+
 }
 //}}}

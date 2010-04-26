@@ -36,7 +36,7 @@ public class AltableBarrierTest {
 			public void run() {
 				final Guard[] guards = createGuards();
 				final Guard[] myGuards = new Guard[] {guards[1]};
-				//{{{ let everyone no that the first barrier is not going to be synced on
+				//{{{ let everyone know that the first barrier is not going to be synced on
 				AltableBarrierBase.tokenGiver.in().read();
 				
 				GuardGroup gg = (GuardGroup) guards[0];
