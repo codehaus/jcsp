@@ -5,7 +5,7 @@ import java.util.*;
 import org.jcsp.lang.*;
 //}}}
 //{{{ public class GuardGroup extends Guard
-public class GuardGroup extends Guard {
+public class GuardGroup extends Guard implements ABConstants {
 
 	//{{{ constants
 	//}}}
@@ -16,6 +16,8 @@ public class GuardGroup extends Guard {
 
 	public AltableBarrier[] guards;
 	public Object lock;
+
+
 	//}}}
 	
 	//{{{ constructor
@@ -37,13 +39,32 @@ public class GuardGroup extends Guard {
 
 		createBarrierFace(); //create BarrierFace if neccesary
 
-		// select a barrier between top and bottomIndexes
-		AltableBarrier ab = selectBarrier();
-		if (ab != null) {
-			setBarrier(ab);
-			ab.attemptSyncrhonisation();
+		boolean checking = true;
+		AltableBarrier ab = null;
+		// stop checking if a barrier syncrhonisation is successful
+		// or if the selectBarrier method can't find anything to
+		// preemptively wait on
+		while (checking) {
+			// select a barrier between top and bottomIndexes
+			ab = selectBarrier();
+			if (ab != null) {
+				setBarrier(ab);
+				// attempt synchronisation and get back whatever
+				// barrier (if any) was selected
+				ab = ab.attemptSynchronisation();
+				if (ab != null) {
+					checking = false;
+				}
+			} else {
+				checking = false;
+			}
 		}
+		// if ab is not null make sure the correct GuardGroup knows
+		// about it 
 
+		// report true if there was a successful syncrhonisation
+		// it will be up to the disable() methods to report which
+		// guard group actually successfully syncrhonised.
 		return false;
 	}
 	//}}}
@@ -70,13 +91,13 @@ public class GuardGroup extends Guard {
 	private void releaseLock(){}
 	//}}}
 	//{{{ private void createBarrierFace()
-	private void getBarrierFace() {
+	private void createBarrierFace() {
 		// get the BarrierFace associated with the parent ALT
-		bf = BarrierFace.faces.get(parent);
+		bf = (BarrierFace) BarrierFace.faces.get(parent);
 
 		if (bf == null) {
 			// new BarrierFace needs to be created
-			bf = BarrierFace(parent);
+			bf = new BarrierFace(parent);
 			bf.topIndex = 0;
 			bf.bottomIndex = 0;
 		} else {
@@ -99,7 +120,7 @@ public class GuardGroup extends Guard {
 	//}}}
 	//{{{ private AltableBarrier selectBarrier() 
 	private AltableBarrier selectBarrier() {
-		Vector guardGroups = bf.guardGroups();
+		Vector guardGroups = bf.guardGroups;
 		
 		for (int i = bf.topIndex; i <= bf.bottomIndex; i++) {
 			GuardGroup gg = (GuardGroup) guardGroups.get(i);
@@ -126,7 +147,7 @@ public class GuardGroup extends Guard {
 		AltableBarrier ab = null;
 		// set status of all to prepared
 		for (int i = 0; i < gg.guards.length; i++) {
-			AltableBarrier ab = gg.guards[i];
+			ab = gg.guards[i];
 			ab.setStatus(PREPARED);
 		}
 		// check for preselected barriers
@@ -140,7 +161,7 @@ public class GuardGroup extends Guard {
 		// barrier which is PROBABLY_READY
 		for (int i = 0; i < gg.guards.length; i++) {
 			ab = gg.guards[i];
-			if (ab.getState() == PROBABLY_READY) {
+			if (ab.getStatus() == PROBABLY_READY) {
 				return ab;
 			}
 		}
@@ -154,7 +175,7 @@ public class GuardGroup extends Guard {
 	 * This method Alters the BarrierFace object to reflect the selection
 	 * of the AltableBarrier ab.
 	 */
-	private void setBarrier(AltalbeBarrier ab) {
+	private void setBarrier(AltableBarrier ab) {
 		bf.selected = ab;	
 	}
 	//}}}

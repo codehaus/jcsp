@@ -4,7 +4,7 @@ package org.jcsp.lang;
 import java.util.*;
 //}}}
 //{{{ public class AltableBarrierBase
-public class AltableBarrierBase {
+public class AltableBarrierBase implements ABConstants {
 
 	//{{{ constants
 	/*
@@ -14,6 +14,8 @@ public class AltableBarrierBase {
 	public static final int SELECTED = 3;
 	public static final int READY = 4;
 	*/
+	/*
+	// these are in ABConstants now
 	public static final int PREPARED = 0;
 	public static final int UNPREPARED = 1;
 	public static final int PICKED = 6;
@@ -23,6 +25,7 @@ public class AltableBarrierBase {
 	public static final int PROBABLY_READY = 4;
 	public static final int SELECTED = 5;
 	public static final int COMPLETE = 7;
+	*/
 
 	public static final long BASE_DELAY = 500; // base time for timer to
 	// wait for a synchronisation to happen (ms)
@@ -194,7 +197,8 @@ public class AltableBarrierBase {
 	// any which are currently syncing on another process but have
 	// this barrier in their list of higher barriers should be switched
 	// to this one.
-	public void steal() {
+	public void steal() { 
+		/*
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier bar = (AltableBarrier) altableBarriers.get(i);
 
@@ -208,8 +212,42 @@ public class AltableBarrierBase {
 						AltableBarrier bar2 = (AltableBarrier) v.get(k);
 						// switch if this barrier is in the process's list of higher barriers
 						if (bar.equals(bar2)) {
-							switchOver(face.selectedBarrier, bar);
+							switchOver(face.selected, bar);
 						}
+					}
+				}
+			}
+		}
+		*/
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			boolean stolen = false; // make this true if and when the process is stolen
+			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
+			BarrierFace face = (BarrierFace) ab.face;
+			AltableBarrier current = null;
+			if (face != null) {
+				current = face.selected;
+			}
+
+			if (face != null && current != null && !face.waking) {
+				// if the barrier we are switching to occurs before or at the
+				// same time as the previously selected barrier then switch
+				// topIndex at this point is the same as the index of the
+				// currently selected events
+				Vector ggs = face.guardGroups;
+				for (int j = 0; j <= face.topIndex; j++) {
+					GuardGroup gg = (GuardGroup) ggs.get(j);
+					for (int k = 0; k < gg.guards.length; k++) {
+						AltableBarrier bar = gg.guards[k];
+						if (bar == ab) {
+							// the new barrier is equal or higher priority to the
+							// the old one
+							ab.select();
+							stolen = true;
+							break;
+						}
+					}
+					if (stolen) {
+						break;
 					}
 				}
 			}
@@ -254,7 +292,7 @@ public class AltableBarrierBase {
  			 * with a face which says that it is syncing on the
  			 * barrier which you are currently waking up.
  			 */
-			if (face != null && ab != invoker && ab == face.selectedBarrier) {
+			if (face != null && ab != invoker && ab == face.selected) {
 				// may not have entered an ALT yet
 				Object key = face.key;
 				try {
@@ -272,6 +310,18 @@ public class AltableBarrierBase {
 		//}}}
 
 
+	}
+	//}}}
+	//{{{ public void synchronise(AltableBarrier caller)
+	public void synchronise(AltableBarrier caller) {
+		// let everyone know that the synchronisation happened
+		/*
+		 * At the moment it seems that the waking process can assume 
+		 * that it has syncrhonised because its 'current' barrier hasn't
+		 * been set to zero.
+		 */
+		// wake everyone up
+		wake(caller, true);
 	}
 	//}}}
 	//{{{ public void timeout()
@@ -293,7 +343,7 @@ public class AltableBarrierBase {
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
 			BarrierFace face = ab.face;
-			if (face == null || face.selectedBarrier != ab) {
+			if (face == null || face.selected != ab) {
 				ab.setStatus(ab.UNPREPARED);
 			}
 		}
@@ -317,12 +367,41 @@ public class AltableBarrierBase {
 		}
 	}
 	//}}}
+	//{{{ public boolean isSelected()
+	public boolean isSelected() {
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
+			// has this process selected this barrier?
+			if (ab.face.selected.parent == this) {
+				return true;
+			}
+		}
+		return false;
+	}
+	//}}}
 	//}}}
 	//{{{ private methods
+	//{{{ private void wake(AltableBarrier caller, boolean wakeAll)
+	private void wake(AltableBarrier caller, boolean wakeAll) {
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
+
+			BarrierFace face = ab.face;
+			if (face != null && face.lock != null && ab != caller) {
+				if (wakeAll||face.lock instanceof Alternative){
+				synchronized (face.lock) {
+					face.waking = true;
+					face.lock.notify();
+				}
+				}
+			}
+		}
+	}
+	//}}}
 	//{{{ public void switchOver (AltableBarrier from, to)
 	public void switchOver (AltableBarrier from, AltableBarrier to) {
 		from.setStatus(PREPARED); // i.e. no longer picked
-		from.face.selectedBarrier = to;
+		from.face.selected = to;
 		to.setStatus(PICKED);
 		// remove barriers of lower prioirty than the new
 		// barrier

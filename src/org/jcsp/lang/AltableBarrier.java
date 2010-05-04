@@ -2,7 +2,7 @@
 package org.jcsp.lang;
 //}}}
 //{{{ public class AltableBarrier
-public class AltableBarrier {
+public class AltableBarrier implements ABConstants {
 
 	//{{{ constants
 	/*
@@ -16,7 +16,8 @@ public class AltableBarrier {
 	public static final int IMPLICIT_NOT_READY = 6;
 	public static final int EXPLICIT_NOT_READY = 7; //trumps all but 5
 	*/
-
+	/*
+	 // this is now in ABConstants
 	public static final int PREPARED = 0;
 	public static final int UNPREPARED = 1;
 	public static final int PICKED = 6;
@@ -30,6 +31,7 @@ public class AltableBarrier {
 	public static final Object SUCCESS = new Object();
 	public static final Object FAILURE = new Object();
 	public static final Object TIMEOUT = new Object();
+	*/
 	//}}}
 	//{{{ public fields
 	public int status;
@@ -60,7 +62,8 @@ public class AltableBarrier {
 
 	//{{{ public methods
 	//{{{ public void attemptSynchronisation()
-	public void attemptSynchronisation() {
+	public AltableBarrier attemptSynchronisation() {
+		//{{{ comments
 		// FIXME Ignore this, read the one after
 		/*
  		 * wait() on the AltableBarrier class if not everyone
@@ -81,10 +84,10 @@ public class AltableBarrier {
 		 * complete, the barrier you were on was switched or the 
 		 * timeout elapsed.
 		 */
+		//}}}
 
 		//{{{ update status, inc. self, face, etc
-		setStatus(PICKED);
-		face.selectedBarrier = this;
+		select();
 		//}}}
 		//{{{ attempt to steal processes from other barriers.
 		parent.steal();
@@ -98,10 +101,10 @@ public class AltableBarrier {
 		// not the barrier you started syncing on
 		// this is because the barrier you are syncing on
 		// could have changed
-		int parentStatus = face.selectedBarrier.getStatus();
+		int parentStatus = face.selected.getStatus();
 		if (parentStatus == COMPLETE) {
 			System.out.println("horay we synced");
-			reset();
+			synchronise();
 		} else {
 		//}}}
 			//{{{ wait to be woken
@@ -109,11 +112,11 @@ public class AltableBarrier {
 			// wait on an object which won't change throughout the
 			// synchronisation attempt, which other processes can see
 			// and which isn't the Alternative's altmonitor
-			AltableBarrierBase.tokenReciever.out().write(null);
 			try {
-			Object key = face.key;
-			synchronized (key) {
-				key.wait();
+			face.lock = face.key;
+			synchronized (face.lock) {
+				AltableBarrierBase.tokenReciever.out().write(null);
+				face.lock.wait();
 			}	
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -122,14 +125,13 @@ public class AltableBarrier {
 			AltableBarrierBase.tokenGiver.in().read();
 
 			//{{{ check if sync attempt was aborted
-			parentStatus = face.selectedBarrier.getStatus();
-			if (parentStatus == COMPLETE) {
+			parentStatus = face.selected.getStatus();
+			if (this.face.selected != null) {
 				System.out.println("horay we synced");
-			} else if (parentStatus == NOT_SYNCING_NOW) {
+			} else {
 				System.out.println("aborting from wait");
-				this.face.selectedBarrier = null;
-				abort(false);
-			}		
+			}	
+			return face.selected;	
 			//}}}
 		}
 		//}}}
@@ -161,6 +163,23 @@ public class AltableBarrier {
 	//{{{ public void setFace(BarrierFace face)
 	public void setFace(BarrierFace face) {
 		this.face = face;
+	}
+	//}}}
+	//{{{ public boolean isSelected()
+	public boolean isSelected() {
+		return parent.isSelected();
+	}
+	//}}}
+	//{{{ public void select()
+	public void select() {
+		if (face.selected != null) {
+			// change status of old one from PICKED to prepared
+			face.selected.setStatus(PREPARED);
+		}
+
+		setStatus(PICKED);
+		face.selected = this;
+		face.topIndex = findMyIndex();	
 	}
 	//}}}
 	//}}}
@@ -217,6 +236,24 @@ public class AltableBarrier {
 		return false;
 	}
 	//}}}
-
+	//{{{ public static int findMyIndex(AltableBarrier ab) 
+	public int findMyIndex() {
+		for (int i = 0; i < face.guardGroups.size(); i++) {
+			GuardGroup gg = (GuardGroup)face.guardGroups.get(i);
+			if (gg == guardGroup) {
+				// if the guardGroup being examined is the
+				// same as the one to which this AltableBarrier
+				// belongs, then return that guardGroup's index
+				return i;
+			}
+		}
+		return -1;
+	}
+	//}}}
+	//{{{ private void synchronise()
+	public void synchronise() {
+		parent.synchronise(this);
+	}
+	//}}}
 }
 //}}}

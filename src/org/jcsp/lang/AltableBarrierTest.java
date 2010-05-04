@@ -4,7 +4,7 @@ package org.jcsp.lang;
 //}}}
 
 //{{{ public class AltableBarrierTest
-public class AltableBarrierTest {
+public class AltableBarrierTest implements ABConstants {
 	//{{{ constants
 	private static final int PROCESSES = 4;
 
@@ -40,7 +40,7 @@ public class AltableBarrierTest {
 				AltableBarrierBase.tokenGiver.in().read();
 				
 				GuardGroup gg = (GuardGroup) guards[0];
-				AltableBarrier noSync = gg.barriers[0];
+				AltableBarrier noSync = gg.guards[0];
 				
 				noSync.setStatus(AltableBarrier.UNPREPARED);
 
@@ -63,8 +63,8 @@ public class AltableBarrierTest {
 		AltableBarrier bar1 = new AltableBarrier(base1);
 		AltableBarrier bar2 = new AltableBarrier(base2);
 
-		GuardGroup g1 = new GuardGroup(new Guard[]{}, new AltableBarrier[]{bar1});
-		GuardGroup g2 = new GuardGroup(new Guard[]{}, new AltableBarrier[]{bar2});
+		GuardGroup g1 = new GuardGroup(new AltableBarrier[]{bar1});
+		GuardGroup g2 = new GuardGroup(new AltableBarrier[]{bar2});
 
 		return new Guard[] {g1, g2};
 	}

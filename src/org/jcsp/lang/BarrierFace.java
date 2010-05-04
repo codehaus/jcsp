@@ -6,7 +6,7 @@ import org.jcsp.lang.*;
 //}}}
 
 //{{{ public class BarrierFace
-public class BarrierFace {
+public class BarrierFace implements ABConstants {
 
 	//{{{ static block
 	static {
@@ -25,6 +25,11 @@ public class BarrierFace {
 	public Object lock;
 
 	public int topIndex, bottomIndex;
+
+	// flag to prevent stealing during either the syncrhonising or aborting
+	// sequence, set to true between the times when a process is awoken and
+	// the time when it claims the global lock, false at other times.
+	public boolean waking;
 	//}}}
 	
 
@@ -44,6 +49,8 @@ public class BarrierFace {
 
 		topIndex = 0;
 		bottomIndex = 0;
+
+		waking = false;
 	}
 	//}}}
 	
