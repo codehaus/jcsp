@@ -17,7 +17,7 @@ public class GuardGroup extends Guard implements ABConstants {
 	public AltableBarrier[] guards;
 	public Object lock;
 
-
+	public AltableBarrier lastSynchronised;
 	//}}}
 	
 	//{{{ constructor
@@ -28,6 +28,8 @@ public class GuardGroup extends Guard implements ABConstants {
 		parent = null;
 		lock = null;
 		bf = null;
+
+		lastSynchronised = null;
 	}
 	//}}}
 	
@@ -60,12 +62,16 @@ public class GuardGroup extends Guard implements ABConstants {
 			}
 		}
 		// if ab is not null make sure the correct GuardGroup knows
-		// about it 
+		// about it
+		if (ab != null) {
+			ab.guardGroup.lastSynchronised = ab;
+		}
 
 		// report true if there was a successful syncrhonisation
 		// it will be up to the disable() methods to report which
 		// guard group actually successfully syncrhonised.
-		return false;
+		releaseLock();
+		return (ab != null);
 	}
 	//}}}
 	//{{{ public boolean disable()
@@ -75,23 +81,37 @@ public class GuardGroup extends Guard implements ABConstants {
 		removeBarrierFace(); //remove BarrierFace if this is last Guard
 					//group
 		
-		parent = null;		
+		parent = null;
+		AltableBarrier temp = lastSynchronised;
 		releaseLock();
-		return false;
+		return (lastSynchronised != null);
+	}
+	//}}}
+	//{{{ public AltableBarrier lastSynchronised()
+	public AltableBarrier lastsynchronised() {
+		AltableBarrier temp = lastSynchronised;
+		lastSynchronised = null;
+		return temp;
 	}
 	//}}}
 	//}}}
 	
 	//{{{ private methods
 	//{{{ private void claimLock() 
-	private void claimLock() {
+	public static void claimLock() {
+		AltableBarrierBase.tokenGiver.in().read();
 	}
 	//}}}
 	//{{{ private void releaseLock()
-	private void releaseLock(){}
+	public static void releaseLock(){
+		AltableBarrierBase.tokenReciever.out().write(null);
+	}
 	//}}}
 	//{{{ private void createBarrierFace()
 	private void createBarrierFace() {
+		//make sure the lastSyncrhonised barrier has been set to null
+		lastSynchronised = null;
+
 		// get the BarrierFace associated with the parent ALT
 		bf = (BarrierFace) BarrierFace.faces.get(parent);
 

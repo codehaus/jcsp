@@ -115,14 +115,16 @@ public class AltableBarrier implements ABConstants {
 			try {
 			face.lock = face.key;
 			synchronized (face.lock) {
-				AltableBarrierBase.tokenReciever.out().write(null);
+//				AltableBarrierBase.tokenReciever.out().write(null);
+				GuardGroup.releaseLock();
 				face.lock.wait();
+				GuardGroup.claimLock();
 			}	
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(0);
 			}
-			AltableBarrierBase.tokenGiver.in().read();
+//			AltableBarrierBase.tokenGiver.in().read();
 
 			//{{{ check if sync attempt was aborted
 			parentStatus = face.selected.getStatus();
@@ -137,7 +139,7 @@ public class AltableBarrier implements ABConstants {
 		//}}}
 	}
 	//}}}
-	//{{{ public void setState(int state)
+	//{{{ public void setStatus(int state)
 	/*
 	 * get back status of the AltableBarrierBase
 	 */
@@ -205,18 +207,7 @@ public class AltableBarrier implements ABConstants {
 	//{{{ private void abort()
 	private void abort() {abort(false);}
 	private void abort(boolean wakeOthers) {
-		//FIXME this abort sequence will need to deal with the
-		// possibility of a timeout and will later need to deal
-		// with a process 'falling back' through barriers which
-		// have already been enabled but which were lower priority
-		// than the guard just aborted.
-
-		// {{{ wake up all waiting barriers
-		// trying reset
-		if (wakeOthers) {
-			reset();
-		}
-		// }}}
+		parent.abort(this);
 	}
 	//}}}
 	//{{{ private boolean fallThrough()

@@ -197,7 +197,8 @@ public class AltableBarrierBase implements ABConstants {
 	// any which are currently syncing on another process but have
 	// this barrier in their list of higher barriers should be switched
 	// to this one.
-	public void steal() { 
+	public void steal() {
+		//{{{ old code 
 		/*
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier bar = (AltableBarrier) altableBarriers.get(i);
@@ -219,6 +220,7 @@ public class AltableBarrierBase implements ABConstants {
 			}
 		}
 		*/
+		//}}}
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			boolean stolen = false; // make this true if and when the process is stolen
 			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
@@ -320,8 +322,31 @@ public class AltableBarrierBase implements ABConstants {
 		 * that it has syncrhonised because its 'current' barrier hasn't
 		 * been set to zero.
 		 */
+		// make sure timer is killed
 		// wake everyone up
 		wake(caller, true);
+	}
+	//}}}
+	//{{{ public void abort(AltableBarrier caller)
+	public void abort (AltableBarrier caller) {
+		//{{{ make sure everyone knows the sync attempt has failed
+		// this means for all waiting barriers which consider this
+		// barrier 'selected' change their state to PREPARED and
+		// set their selected barrier to null
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
+			BarrierFace face = ab.face;
+			// if the process is currently waiting on this barrier
+			if (face != null && face.selected.parent == this) {
+			ab.setStatus(PREPARED); // stop being PICKED return to
+						// being prepared
+			face.selected = null;
+			}
+		}
+		//}}}
+		//{{{ wake everyone (*NOT* waiting on altmonitor) up
+		wake(caller, false);
+		//}}}
 	}
 	//}}}
 	//{{{ public void timeout()
