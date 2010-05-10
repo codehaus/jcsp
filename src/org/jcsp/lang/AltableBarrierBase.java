@@ -351,6 +351,7 @@ public class AltableBarrierBase implements ABConstants {
 	//}}}
 	//{{{ public void timeout()
 	public void timeout() {
+	//{{{ old timeout behaviour
 		//{{{ check timeout not unneccesary
 		int status = getStatus();
 		if (status == NOT_READY || status == NOT_SYNCING_NOW) {
@@ -373,7 +374,52 @@ public class AltableBarrierBase implements ABConstants {
 			}
 		}
 		//}}}
-
+	//}}}
+		// assume that the timer itself knows whether or not to timeout
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
+			BarrierFace face = ab.face;
+			//{{{ if not currently evaluating ALT, set process to UNPREPARED
+			if (face == null) {
+				ab.setStatus(UNPREPARED);
+			}
+			//}}}
+			//{{{ same if evaluating ALT, but not reached ALT monitor
+			else if (!(face.lock instanceof Alternative)) {
+				ab.setStatus(UNPREPARED);
+			}
+			//}}}
+			//{{{ same if reached ALT monitor but ALT does not contain bar
+			else {
+			boolean containsMe = false;
+			for (int j = 0; j < face.guardGroups.size(); j++){
+			boolean done = false;
+			GuardGroup gg = (GuardGroup) face.guardGroups.get(j);
+			for (int k = 0; k < gg.guards.length; k++) {
+				if (gg.guards[k].parent == this) {
+					done = true;
+					containsMe = true;
+					break;
+				}
+			}
+			if (done) {
+				break;
+			}
+			}
+			if (!containsMe) {
+				ab.setStatus(UNPREPARED);
+			}
+			}
+			//}}}
+		}	
+		//{{{ trigger abort if not already triggered.
+		if (getStatus() != NOT_SYNCING_NOW) {
+			System.out.println("timeout failed to terminate sync");
+			System.out.println("aborting anyway");
+			abort(null);
+		}
+		//}}}
+		
 	}
 	//}}}
 	//{{{ public void startTimer()
@@ -408,6 +454,17 @@ public class AltableBarrierBase implements ABConstants {
 	//{{{ private methods
 	//{{{ private void wake(AltableBarrier caller, boolean wakeAll)
 	private void wake(AltableBarrier caller, boolean wakeAll) {
+		// any situation involving waking processes, whether for an
+		// abort or successful synchronisation should cancel any
+		// timeouts which may still be running
+		//{{{ cancel timeout
+		if (timer != null) {
+			System.out.println("killing timer " + timer);
+			timer.kill();
+			timer = null;
+		}
+		//}}}
+
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
 

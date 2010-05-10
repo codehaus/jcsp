@@ -28,14 +28,18 @@ public class AltableBarrierTimeout implements CSProcess {
 		}
 
 		// get token
-		AltableBarrierBase.tokenGiver.in().read();
+//		AltableBarrierBase.tokenGiver.in().read();
+		GuardGroup.claimLock();
 
 		if (shouldTimeout) {
 			parent.timeout();
+		} else {
+			System.out.println("I was killed " + this);
 		}	
 
 		// return token
-		AltableBarrierBase.tokenReciever.out().write(null);
+//		AltableBarrierBase.tokenReciever.out().write(null);
+		GuardGroup.releaseLock();
 	}
 	//}}}
 	

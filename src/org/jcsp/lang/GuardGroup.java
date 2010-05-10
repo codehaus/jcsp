@@ -9,7 +9,7 @@ public class GuardGroup extends Guard implements ABConstants {
 
 	//{{{ constants
 	//}}}
-	//{{{ fields
+	//{{{ field
 	public AltableBarrier selectedBarrier;
 	public Alternative parent;
 	public BarrierFace bf;
