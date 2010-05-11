@@ -143,14 +143,21 @@ public class AltableBarrier implements ABConstants {
 	/*
 	 * get back status of the AltableBarrierBase
 	 */
-	public int setStatus(int status) {
+	public void setStatus(int state) {
+		// normal calls to this method aren't done by a timeout
+		setStatus(state, false);
+	}
+	// this method has extra parameter to say whether the caller of the
+	// method is a timeout.  This has a bearing on whether this process
+	// should be woken up in case of an abort.
+	public int setStatus(int status, boolean isTimeout) {
 		int oldStatus = getStatus();
 		this.status = status;
 
 //		return parent.checkStatus(this);
 		if (getStatus() == NOT_SYNCING_NOW && oldStatus != NOT_SYNCING_NOW) {
 			System.out.println("aborting");
-			abort(true);
+			abort(isTimeout);
 		} else if (getStatus() == NOT_SYNCING_NOW) {
 			System.out.println("caught a false case");
 		}
@@ -206,8 +213,16 @@ public class AltableBarrier implements ABConstants {
 	//}}}
 	//{{{ private void abort()
 	private void abort() {abort(false);}
-	private void abort(boolean wakeOthers) {
-		parent.abort(this);
+	// if the abort is triggered by a timeout then the process which owns
+	// this AltableBarrier needs to be woken up too.  This means that it
+	// shouldn't be excluded from the abort process.  Thus, 'this' 
+	// AltableBarrier is only passed on if the caller *wasn't* a timeout.
+	private void abort(boolean isTimeout) {
+		if (isTimeout) {
+			parent.abort(null);
+		} else {
+			parent.abort(this);
+		}
 	}
 	//}}}
 	//{{{ private boolean fallThrough()

@@ -381,12 +381,12 @@ public class AltableBarrierBase implements ABConstants {
 			BarrierFace face = ab.face;
 			//{{{ if not currently evaluating ALT, set process to UNPREPARED
 			if (face == null) {
-				ab.setStatus(UNPREPARED);
+				ab.setStatus(UNPREPARED, true);
 			}
 			//}}}
 			//{{{ same if evaluating ALT, but not reached ALT monitor
 			else if (!(face.lock instanceof Alternative)) {
-				ab.setStatus(UNPREPARED);
+				ab.setStatus(UNPREPARED, true);
 			}
 			//}}}
 			//{{{ same if reached ALT monitor but ALT does not contain bar
@@ -407,7 +407,7 @@ public class AltableBarrierBase implements ABConstants {
 			}
 			}
 			if (!containsMe) {
-				ab.setStatus(UNPREPARED);
+				ab.setStatus(UNPREPARED, true);
 			}
 			}
 			//}}}
