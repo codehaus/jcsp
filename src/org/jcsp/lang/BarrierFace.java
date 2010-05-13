@@ -59,5 +59,35 @@ public class BarrierFace implements ABConstants {
 		faces.remove(key);
 	}
 	//}}}
+
+	//{{{ public static methods
+	//{{{ public static void beginWait()
+	public static void beginWait(Alternative caller) {
+	// hmmm, may need to do one last pass over before final wait
+	// otherwise need to ensure that lock is not given up between
+	// the enable() call to the last AltableBarrier and the end of
+	// this method.
+		BarrierFace face = (BarrierFace) faces.get(caller);
+
+		GuardGroup.claimLock(face.key);
+		for (int i = 0; i < face.guardGroups.size(); i++) {
+			GuardGroup gg = (GuardGroup) face.guardGroups.get(i);
+			for (int j = 0; j < gg.guards.length; j++) {
+				gg.guards[j].setStatus(PREPARED);
+			}
+		}
+		
+		face.lock = caller.altMonitor;
+		face.selected = null;
+
+		GuardGroup.releaseLock(face.key);
+	}
+	//}}}
+	//{{{ public static void endWait()
+	public static void endWait() {
+		// this may not need to do anything
+	}
+	//}}}
+	//}}}
 }
 //}}}

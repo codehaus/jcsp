@@ -29,7 +29,7 @@ public class AltableBarrierTimeout implements CSProcess {
 
 		// get token
 //		AltableBarrierBase.tokenGiver.in().read();
-		GuardGroup.claimLock();
+		GuardGroup.claimLock(this);
 
 		if (shouldTimeout) {
 			parent.timeout();
@@ -39,7 +39,7 @@ public class AltableBarrierTimeout implements CSProcess {
 
 		// return token
 //		AltableBarrierBase.tokenReciever.out().write(null);
-		GuardGroup.releaseLock();
+		GuardGroup.releaseLock(this);
 	}
 	//}}}
 	

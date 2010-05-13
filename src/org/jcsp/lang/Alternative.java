@@ -564,7 +564,7 @@ package org.jcsp.lang;
 public class Alternative
 {
   /** The monitor synchronising the writers and alting reader */
-  protected Object altMonitor = new Object ();
+  public Object altMonitor = new Object ();
   
   private static final int enabling = 0;
   private static final int waiting = 1;
@@ -595,6 +595,14 @@ public class Alternative
   /** The index of a selected AltingBarrier. */
   private int barrierSelected;
   
+  //{{{ fields associated with managing AltableBarriers (dnw3)
+  /** flag indicating whether or not there are any AltableBarriers*/
+  private boolean anyPICOMS = false;
+
+  /** index of the selected AltableBarrier*/
+  private int selectedPICOMS;
+  //}}}
+
   /**
    * This is the index variable used during the enable/disable sequences.
    * This has been made global to simplify the call-back (setTimeout) from
@@ -636,9 +644,13 @@ public class Alternative
 	    	{
 		        barrierPresent = true;
 				return;
-      		}
+      		} else if (guard[i] instanceof GuardGroup) {
+			anyPICOMS = true;
+			return;
+		}
     	}
 	    barrierPresent = false;
+	    anyPICOMS = false;
 	}
 
   /**
@@ -872,7 +884,8 @@ public class Alternative
         //   System.out.println ("CHANNEL ENABLE " + enableIndex + " FAIL");
 	// } else {
         //   System.out.println ("ENABLE " + enableIndex + " FAIL");
-	// }
+	
+// }
       // }
     }
     // System.out.println ("ENABLE ALL FAIL");

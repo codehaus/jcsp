@@ -19,6 +19,8 @@ public class GuardGroup extends Guard implements ABConstants {
 
 	public AltableBarrier lastSynchronised;
 	//}}}
+
+	private static Object lockOwner = null;
 	
 	//{{{ constructor
 	public GuardGroup(AltableBarrier[] guards) {
@@ -36,7 +38,7 @@ public class GuardGroup extends Guard implements ABConstants {
 	//{{{ extends Guard
 	//{{{ public boolean enable(Alternative alt)
 	boolean enable(Alternative alt) {
-		claimLock();
+		claimLock(alt);
 		parent = alt;
 
 		createBarrierFace(); //create BarrierFace if neccesary
@@ -70,20 +72,21 @@ public class GuardGroup extends Guard implements ABConstants {
 		// report true if there was a successful syncrhonisation
 		// it will be up to the disable() methods to report which
 		// guard group actually successfully syncrhonised.
-		releaseLock();
+		releaseLock(alt);
 		return (ab != null);
 	}
 	//}}}
 	//{{{ public boolean disable()
 	boolean disable() {
-
+		Object key = parent;
+		claimLock(key);
 		// do other stuff
 		removeBarrierFace(); //remove BarrierFace if this is last Guard
 					//group
 		
 		parent = null;
 		AltableBarrier temp = lastSynchronised;
-		releaseLock();
+		releaseLock(key);
 		return (lastSynchronised != null);
 	}
 	//}}}
@@ -98,13 +101,19 @@ public class GuardGroup extends Guard implements ABConstants {
 	
 	//{{{ private methods
 	//{{{ private void claimLock() 
-	public static void claimLock() {
-		AltableBarrierBase.tokenGiver.in().read();
+	public static void claimLock(Object claimant) {
+		if (lockOwner != claimant) {
+			AltableBarrierBase.tokenGiver.in().read();
+			lockOwner = claimant;
+		}
 	}
 	//}}}
 	//{{{ private void releaseLock()
-	public static void releaseLock(){
-		AltableBarrierBase.tokenReciever.out().write(null);
+	public static void releaseLock(Object claimant){
+		if (lockOwner == claimant) {
+			AltableBarrierBase.tokenReciever.out().write(null);
+			claimant = null;
+		}
 	}
 	//}}}
 	//{{{ private void createBarrierFace()
