@@ -84,7 +84,7 @@ public class BarrierFace implements ABConstants {
 	}
 	//}}}
 	//{{{ public static void endWait()
-	public static void endWait() {
+	public static void endWait(Alternative caller) {
 		// this may not need to do anything
 	}
 	//}}}

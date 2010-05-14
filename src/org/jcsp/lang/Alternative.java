@@ -680,6 +680,7 @@ public class Alternative
     synchronized (altMonitor) {
       if (state == enabling) {
         state = waiting;
+	BarrierFace.beginWait(this);
         try {
           if (timeout) {
             long delay = msecs - System.currentTimeMillis ();
@@ -732,6 +733,7 @@ public class Alternative
 	    "*** Thrown from Alternative.priSelect ()\n" + e.toString ()
 	  );
         }
+	BarrierFace.endWait(this);
         state = ready;
       }
     }
@@ -852,7 +854,9 @@ public class Alternative
 	} else if (barrierPresent) {
 	  // System.out.println ("ENABLE " + enableIndex + " NON-BARRIER SUCCEED");
           AltingBarrierCoordinate.finishEnable ();
-        }
+        } else if (guard[enableIndex] instanceof GuardGroup) {
+	  selectedPICOMS = enableIndex;
+	}
         return;
       } // else {
         // if (guard[enableIndex] instanceof AltingChannelInput) {
@@ -877,7 +881,9 @@ public class Alternative
 	} else if (barrierPresent) {
 	  // System.out.println ("ENABLE " + enableIndex + " NON-BARRIER SUCCEED");
           AltingBarrierCoordinate.finishEnable ();
-        }
+        } else if (guard[enableIndex] instanceof GuardGroup) {
+	  selectedPICOMS = enableIndex;
+	}
         return;
       } // else {
         // if (guard[enableIndex] instanceof AltingChannelInput) {
@@ -915,6 +921,8 @@ public class Alternative
 	      }
 	      barrierSelected = selected;
               barrierTrigger = false;
+	    } else if (guard[i] instanceof GuardGroup) {
+	      selectedPICOMS = i;
 	    }
           }
         }
@@ -932,6 +940,8 @@ public class Alternative
 	    }
 	    barrierSelected = selected;
             barrierTrigger = false;
+	  } else if (guard[i] instanceof GuardGroup) {
+	    selectedPICOMS = i;
 	  }
         }
       }
@@ -945,6 +955,8 @@ public class Alternative
     if (barrierSelected != NONE_SELECTED) {        // We must choose a barrier sync
       selected = barrierSelected;                  // if one is ready - so that all
       AltingBarrierCoordinate.finishDisable ();    // parties make the same choice.
+    } else if (anyPICOMS) {
+      selected = selectedPICOMS;
     }
   }
 

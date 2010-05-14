@@ -105,6 +105,7 @@ public class AltableBarrier implements ABConstants {
 		if (parentStatus == COMPLETE) {
 			System.out.println("horay we synced");
 			synchronise();
+			return face.selected;
 		} else {
 		//}}}
 			//{{{ wait to be woken

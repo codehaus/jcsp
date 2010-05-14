@@ -72,9 +72,12 @@ public class GuardGroup extends Guard implements ABConstants {
 		// report true if there was a successful syncrhonisation
 		// it will be up to the disable() methods to report which
 		// guard group actually successfully syncrhonised.
-		releaseLock(alt);
+		if (!isLastGroup()) {
+			releaseLock(alt);
+		}
 		return (ab != null);
 	}
+
 	//}}}
 	//{{{ public boolean disable()
 	boolean disable() {
@@ -206,6 +209,15 @@ public class GuardGroup extends Guard implements ABConstants {
 	 */
 	private void setBarrier(AltableBarrier ab) {
 		bf.selected = ab;	
+	}
+	//}}}
+	//{{{ private boolean isLastGroup()
+	private boolean isLastGroup() {
+		boolean isLast = (bf.bottomIndex >= bf.guardGroups.size());
+		if (isLast) {
+			System.out.println(this + " is last.");
+		}
+		return isLast;
 	}
 	//}}}
 	//}}}

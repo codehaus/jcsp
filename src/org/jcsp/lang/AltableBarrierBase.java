@@ -481,6 +481,9 @@ public class AltableBarrierBase implements ABConstants {
 	}
 	//}}}
 	//{{{ public void switchOver (AltableBarrier from, to)
+	/* switchOver is deprecated
+	 */
+	/*
 	public void switchOver (AltableBarrier from, AltableBarrier to) {
 		from.setStatus(PREPARED); // i.e. no longer picked
 		from.face.selected = to;
@@ -510,13 +513,14 @@ public class AltableBarrierBase implements ABConstants {
 		for (int i = toPriLevel+1; higher.size() > i;) {
 			face.lowerBarriers.add(higher.remove(i));
 		}
-		/*
-		int index = face.higherBarriers.indexOf(to);
-		for (int i = index; face.higherBarriers.size() > index;) {
-			face.higherBarriers.remove(i);
-		}
-		*/
+		
+		//int index = face.higherBarriers.indexOf(to);
+		//for (int i = index; face.higherBarriers.size() > index;) {
+		//	face.higherBarriers.remove(i);
+		//}
+		
 	}
+	*/
 	//}}}
 	//}}}
 
