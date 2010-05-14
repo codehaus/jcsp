@@ -25,7 +25,11 @@ public class AltableBarrierTest implements ABConstants {
 					Alternative alt = new Alternative(guards);
 
 					int index = alt.priSelect();
-
+					if (guards[index] instanceof GuardGroup) {
+						GuardGroup gg = (GuardGroup) guards[index];
+						AltableBarrier ab = gg.lastSynchronised();
+						System.out.println("the barrier was " + ab);
+					}
 					System.out.println("picked number " + index);
 				}
 			};
@@ -37,20 +41,26 @@ public class AltableBarrierTest implements ABConstants {
 				final Guard[] guards = createGuards();
 				final Guard[] myGuards = new Guard[] {guards[1]};
 				//{{{ let everyone know that the first barrier is not going to be synced on
-				AltableBarrierBase.tokenGiver.in().read();
+//				AltableBarrierBase.tokenGiver.in().read();
 				
 				GuardGroup gg = (GuardGroup) guards[0];
 				AltableBarrier noSync = gg.guards[0];
+				Alternative alt = new Alternative(myGuards);
+
+				GuardGroup.claimLock(alt);
 				
 				noSync.setStatus(AltableBarrier.UNPREPARED);
 
-				AltableBarrierBase.tokenReciever.out().write(null);	
+				GuardGroup.releaseLock(alt);
+
+//				AltableBarrierBase.tokenReciever.out().write(null);	
 				//}}}
 				System.out.println("I am the spoiler");
 
-				Alternative alt = new Alternative(myGuards);
 				int index = alt.priSelect();
-				System.out.println("spoiler picked " + index);	
+				System.out.println("spoiler picked " + index);
+				GuardGroup picked = (GuardGroup) guards[index];
+				System.out.println(picked.lastSynchronised());	
 			}	
 		};
 		//}}}

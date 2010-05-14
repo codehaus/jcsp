@@ -37,6 +37,7 @@ public class AltableBarrier implements ABConstants {
 	public int status;
 	public  AltableBarrierBase parent;
 	public GuardGroup guardGroup;
+	public int defaultStatus;
 
 	public AltingChannelInput in; // the end the alting process uses
 	public ChannelOutput out; // the end the barrier uses.
@@ -44,11 +45,14 @@ public class AltableBarrier implements ABConstants {
 	public BarrierFace face;
 	//}}}
 
-
 	//{{{ constructors
 	public AltableBarrier (AltableBarrierBase parent) {
+		this (parent, PREPARED);
+	}
+	public AltableBarrier (AltableBarrierBase parent, int defaultStatus) {
 		this.parent = parent;
-		status = PREPARED;
+		status = defaultStatus;
+		this.defaultStatus = defaultStatus;
 
 		parent.enroll(this);
 

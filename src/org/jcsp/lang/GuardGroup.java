@@ -89,12 +89,13 @@ public class GuardGroup extends Guard implements ABConstants {
 		
 		parent = null;
 		AltableBarrier temp = lastSynchronised;
+		resetBarriers();
 		releaseLock(key);
 		return (lastSynchronised != null);
 	}
 	//}}}
 	//{{{ public AltableBarrier lastSynchronised()
-	public AltableBarrier lastsynchronised() {
+	public AltableBarrier lastSynchronised() {
 		AltableBarrier temp = lastSynchronised;
 		lastSynchronised = null;
 		return temp;
@@ -218,6 +219,13 @@ public class GuardGroup extends Guard implements ABConstants {
 			System.out.println(this + " is last.");
 		}
 		return isLast;
+	}
+	//}}}
+	//{{{ private void resetBarriers()
+	private void resetBarriers() {
+		for (int i = 0; i < guards.length; i++)	{
+			guards[i].setStatus(guards[i].defaultStatus);
+		}
 	}
 	//}}}
 	//}}}
