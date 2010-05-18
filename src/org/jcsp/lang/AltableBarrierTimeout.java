@@ -22,7 +22,7 @@ public class AltableBarrierTimeout implements CSProcess {
 	//{{{ CSProcess method
 	public void run() {
 		try{
-			Thread.currentThread().wait(delay);
+			Thread.sleep(delay);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

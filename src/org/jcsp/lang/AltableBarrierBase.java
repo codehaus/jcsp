@@ -443,7 +443,10 @@ public class AltableBarrierBase implements ABConstants {
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
 			// has this process selected this barrier?
-			if (ab.face.selected.parent == this) {
+			boolean checkProcess = true;
+			checkProcess = checkProcess && (ab.face !=null);
+			checkProcess = checkProcess && (ab.face.selected != null);
+			if (checkProcess && (ab.face.selected.parent == this)) {
 				return true;
 			}
 		}

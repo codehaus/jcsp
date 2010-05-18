@@ -132,7 +132,6 @@ public class AltableBarrier implements ABConstants {
 //			AltableBarrierBase.tokenGiver.in().read();
 
 			//{{{ check if sync attempt was aborted
-			parentStatus = face.selected.getStatus();
 			if (this.face.selected != null) {
 				System.out.println("horay we synced");
 			} else {
@@ -186,7 +185,7 @@ public class AltableBarrier implements ABConstants {
 	//}}}
 	//{{{ public void select()
 	public void select() {
-		if (face.selected != null) {
+		if ((face != null) && (face.selected != null)) {
 			// change status of old one from PICKED to prepared
 			face.selected.setStatus(PREPARED);
 		}

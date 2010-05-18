@@ -38,6 +38,12 @@ public class GuardGroup extends Guard implements ABConstants {
 	//{{{ extends Guard
 	//{{{ public boolean enable(Alternative alt)
 	boolean enable(Alternative alt) {
+		//{{{ make sure all AltableBarriers know they belong to this gg
+		for (int i = 0; i < guards.length; i++) {
+			guards[i].guardGroup = this;
+		}
+		//}}}
+
 		claimLock(alt);
 		parent = alt;
 
@@ -136,6 +142,10 @@ public class GuardGroup extends Guard implements ABConstants {
 		} else {
 			bf.topIndex = 0;
 			bf.bottomIndex++;
+		}
+
+		for (int i = 0; i < guards.length; i++)	{
+			guards[i].face = bf;
 		}
 	}
 	//}}}
