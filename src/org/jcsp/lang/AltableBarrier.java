@@ -160,11 +160,9 @@ public class AltableBarrier implements ABConstants {
 
 //		return parent.checkStatus(this);
 		if (getStatus() == NOT_SYNCING_NOW && oldStatus != NOT_SYNCING_NOW) {
-			System.out.println("aborting");
+			System.out.println("aborting " + this);
 			abort(isTimeout);
-		} else if (getStatus() == NOT_SYNCING_NOW) {
-			System.out.println("caught a false case");
-		}
+		} 
 		return status;
 	}
 	//}}}
@@ -265,5 +263,8 @@ public class AltableBarrier implements ABConstants {
 		parent.synchronise(this);
 	}
 	//}}}
+	public String toString() {
+		return super.toString() + " of " + parent.name;
+	}
 }
 //}}}

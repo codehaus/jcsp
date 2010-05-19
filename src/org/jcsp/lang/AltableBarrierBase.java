@@ -56,7 +56,7 @@ public class AltableBarrierBase implements ABConstants {
 	}
 	//}}}
 
-	//{{{ private fields
+	//{{{ fields
 	private Vector committedBarriers;
 	private Vector altableBarriers;
 
@@ -65,11 +65,15 @@ public class AltableBarrierBase implements ABConstants {
 
 	private int lastStatus = 0;
 
-	public AltableBarrierTimeout timer;	
+	public AltableBarrierTimeout timer;
+	public String name;
 	//}}}
 
 	//{{{ constructors
 	public AltableBarrierBase() {
+		this("");
+	}
+	public AltableBarrierBase(String name) {
 		committedBarriers = new Vector();
 		altableBarriers = new Vector();
 
@@ -79,6 +83,7 @@ public class AltableBarrierBase implements ABConstants {
 		lastStatus = getStatus();
 
 		timer = null;
+		this.name = name;
 	}
 	//}}}
 

@@ -6,10 +6,10 @@ package org.jcsp.lang;
 //{{{ public class AltableBarrierTest
 public class AltableBarrierTest implements ABConstants {
 	//{{{ constants
-	private static final int PROCESSES = 4;
+	private static final int PROCESSES = 2;
 
-	private static AltableBarrierBase base1 = new AltableBarrierBase();
-	private static AltableBarrierBase base2 = new AltableBarrierBase();
+	private static AltableBarrierBase base1 = new AltableBarrierBase("Barrier #1");
+	private static AltableBarrierBase base2 = new AltableBarrierBase("Barrier #2");
 	//}}}
 
 	public static void main (String[] args) {
