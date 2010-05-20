@@ -67,6 +67,7 @@ public class BarrierFace implements ABConstants {
 	// otherwise need to ensure that lock is not given up between
 	// the enable() call to the last AltableBarrier and the end of
 	// this method.
+		System.out.println("waiting on altmonitor");
 		BarrierFace face = (BarrierFace) faces.get(caller);
 
 		GuardGroup.claimLock(face.key);

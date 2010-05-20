@@ -78,9 +78,10 @@ public class GuardGroup extends Guard implements ABConstants {
 		// report true if there was a successful syncrhonisation
 		// it will be up to the disable() methods to report which
 		// guard group actually successfully syncrhonised.
-		if (!isLastGroup()) {
+		if ((!isLastGroup()) || (ab != null)) {
 			releaseLock(alt);
 		}
+		System.out.println(this + " is returning " + (ab != null));
 		return (ab != null);
 	}
 
