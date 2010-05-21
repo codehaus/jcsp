@@ -20,7 +20,7 @@ public class GuardGroup extends Guard implements ABConstants {
 	public AltableBarrier lastSynchronised;
 	//}}}
 
-	private static Object lockOwner = null;
+	public static Object lockOwner = null;
 	
 	//{{{ constructor
 	public GuardGroup(AltableBarrier[] guards) {
@@ -114,18 +114,18 @@ public class GuardGroup extends Guard implements ABConstants {
 	//{{{ private methods
 	//{{{ private void claimLock() 
 	public static void claimLock(Object claimant) {
-		if (lockOwner != claimant) {
+//		if (lockOwner != claimant) {
 			AltableBarrierBase.tokenGiver.in().read();
 			lockOwner = claimant;
-		}
+//		}
 	}
 	//}}}
 	//{{{ private void releaseLock()
 	public static void releaseLock(Object claimant){
-		if (lockOwner == claimant) {
+//		if (lockOwner == claimant) {
 			AltableBarrierBase.tokenReciever.out().write(null);
 			claimant = null;
-		}
+//		}
 	}
 	//}}}
 	//{{{ private void createBarrierFace()
