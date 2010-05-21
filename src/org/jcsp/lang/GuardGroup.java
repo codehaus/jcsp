@@ -38,6 +38,7 @@ public class GuardGroup extends Guard implements ABConstants {
 	//{{{ extends Guard
 	//{{{ public boolean enable(Alternative alt)
 	boolean enable(Alternative alt) {
+		System.out.println("enable has been called on " + this);
 		//{{{ make sure all AltableBarriers know they belong to this gg
 		for (int i = 0; i < guards.length; i++) {
 			guards[i].guardGroup = this;
