@@ -82,7 +82,7 @@ public class GuardGroup extends Guard implements ABConstants {
 		if ((!isLastGroup()) || (ab != null)) {
 			releaseLock(alt);
 		}
-		System.out.println(this + " is returning " + (ab != null));
+		System.out.println(this + " is returning " + (ab != null) + ab);
 		return (ab != null);
 	}
 
@@ -99,6 +99,7 @@ public class GuardGroup extends Guard implements ABConstants {
 		AltableBarrier temp = lastSynchronised;
 		resetBarriers();
 		releaseLock(key);
+		System.out.println(this + " disable method has " + lastSynchronised + " as picked");
 		return (lastSynchronised != null);
 	}
 	//}}}
