@@ -59,7 +59,7 @@ public class AltableBarrierTest implements ABConstants {
 
 				int index = alt.priSelect();
 				System.out.println("spoiler picked " + index);
-				GuardGroup picked = (GuardGroup) guards[index];
+				GuardGroup picked = (GuardGroup) myGuards[index];
 				System.out.println(picked + " " + picked.lastSynchronised());	
 			}	
 		};
