@@ -47,9 +47,9 @@ public class AltableBarrierBase implements ABConstants {
 					public void run() {
 						while (true) {
 							out.write(null);
-							System.out.println("claimed by " + GuardGroup.lockOwner);
+//							System.out.println("claimed by " + GuardGroup.lockOwner);
 							in.read();
-							System.out.println("released to" + GuardGroup.lockOwner);
+//							System.out.println("released to" + GuardGroup.lockOwner);
 						}
 					}
 				}

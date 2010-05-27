@@ -6,7 +6,7 @@ package org.jcsp.lang;
 //{{{ public class AltableBarrierTest
 public class AltableBarrierTest implements ABConstants {
 	//{{{ constants
-	private static final int PROCESSES = 2;
+	private static final int PROCESSES = 100;
 
 	private static AltableBarrierBase base1 = new AltableBarrierBase("Barrier #1");
 	private static AltableBarrierBase base2 = new AltableBarrierBase("Barrier #2");
@@ -36,9 +36,9 @@ public class AltableBarrierTest implements ABConstants {
 			
 		}
 		//{{{ create a process which won't sync on the first guard
+		final Guard[] guards = createGuards();
 		processes[PROCESSES-1] = new CSProcess() {
 			public void run() {
-				final Guard[] guards = createGuards();
 				final Guard[] myGuards = new Guard[] {guards[1]};
 				//{{{ let everyone know that the first barrier is not going to be synced on
 //				AltableBarrierBase.tokenGiver.in().read();
