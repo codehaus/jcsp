@@ -3,6 +3,7 @@ package org.jcsp.lang;
 
 import java.util.*;
 import org.jcsp.lang.*;
+import java.util.concurrent.locks.*;
 //}}}
 //{{{ public class GuardGroup extends Guard
 public class GuardGroup extends Guard implements ABConstants {
@@ -21,6 +22,7 @@ public class GuardGroup extends Guard implements ABConstants {
 	//}}}
 
 	public static Object lockOwner = null;
+	private static ReentrantLock globalLock = new ReentrantLock();
 	
 	//{{{ constructor
 	public GuardGroup(AltableBarrier[] guards) {
@@ -115,18 +117,28 @@ public class GuardGroup extends Guard implements ABConstants {
 	//{{{ private methods
 	//{{{ private void claimLock() 
 	public static void claimLock(Object claimant) {
+	/*
 //		if (lockOwner != claimant) {
 			AltableBarrierBase.tokenGiver.in().read();
 			lockOwner = claimant;
 //		}
+	*/
+		globalLock.lock();
+		lockOwner = claimant;
 	}
 	//}}}
 	//{{{ private void releaseLock()
 	public static void releaseLock(Object claimant){
+	/*
 //		if (lockOwner == claimant) {
 			AltableBarrierBase.tokenReciever.out().write(null);
 			claimant = null;
 //		}
+	*/
+		lockOwner = null;
+		while (globalLock.getHoldCount() > 0) {
+			globalLock.unlock();
+		}
 	}
 	//}}}
 	//{{{ private void createBarrierFace()
