@@ -81,19 +81,16 @@ public class GuardGroup extends Guard implements ABConstants {
 		// report true if there was a successful syncrhonisation
 		// it will be up to the disable() methods to report which
 		// guard group actually successfully syncrhonised.
-		if ((!isLastGroup()) || (ab != null)) {
-			releaseLock(alt);
-		}
-		System.out.println(this + " is returning " + (ab != null) + ab);
-		// if this guard returns true then Alternative won't call its
-		// disable method (which is retarded *sigh*).  Anyway, if this
-		// method returns true.  regardless of whether or not the 
-		// selected barrier belonged to this group, call the disable
-		// method.
 		boolean returnThis = (ab != null);
 		if (returnThis) {
 			disable();
+		} else if (!isLastGroup()) {
+			releaseLock(alt);
+		} else {
+			// not returning true and is last guard group
+			// don't release lock.  Do nothing
 		}
+		System.out.println(this + " is returning " + (ab != null) + ab);
 		return (returnThis);
 	}
 
