@@ -6,7 +6,8 @@ package org.jcsp.lang;
 //{{{ public class AltableBarrierTest
 public class AltableBarrierTest implements ABConstants {
 	//{{{ constants
-	private static final int PROCESSES = 20;
+	private static final int PROCESSES = 2;
+	private static final int ITERATIONS = 3;
 
 	private static AltableBarrierBase base1 = new AltableBarrierBase("Barrier #1");
 	private static AltableBarrierBase base2 = new AltableBarrierBase("Barrier #2");
@@ -21,6 +22,7 @@ public class AltableBarrierTest implements ABConstants {
 
 			processes[i] = new CSProcess() {
 				public void run() {
+				for (int x = 0; x < ITERATIONS; x++){
 					System.out.println("I am process " + processNumber);
 					Alternative alt = new Alternative(guards);
 
@@ -32,6 +34,7 @@ public class AltableBarrierTest implements ABConstants {
 					}
 					System.out.println("picked number " + index);
 				}
+				}
 			};
 			
 		}
@@ -42,7 +45,7 @@ public class AltableBarrierTest implements ABConstants {
 				final Guard[] myGuards = new Guard[] {guards[1]};
 				//{{{ let everyone know that the first barrier is not going to be synced on
 //				AltableBarrierBase.tokenGiver.in().read();
-				
+				for (int x = 0; x < ITERATIONS; x++) {	
 				GuardGroup gg = (GuardGroup) guards[0];
 				AltableBarrier noSync = gg.guards[0];
 				Alternative alt = new Alternative(myGuards);
@@ -61,6 +64,7 @@ public class AltableBarrierTest implements ABConstants {
 				System.out.println("spoiler picked " + index);
 				GuardGroup picked = (GuardGroup) myGuards[index];
 				System.out.println(picked + " " + picked.lastSynchronised());	
+				}
 			}	
 		};
 		//}}}

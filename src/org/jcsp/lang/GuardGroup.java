@@ -85,7 +85,16 @@ public class GuardGroup extends Guard implements ABConstants {
 			releaseLock(alt);
 		}
 		System.out.println(this + " is returning " + (ab != null) + ab);
-		return (ab != null);
+		// if this guard returns true then Alternative won't call its
+		// disable method (which is retarded *sigh*).  Anyway, if this
+		// method returns true.  regardless of whether or not the 
+		// selected barrier belonged to this group, call the disable
+		// method.
+		boolean returnThis = (ab != null);
+		if (returnThis) {
+			disable();
+		}
+		return (returnThis);
 	}
 
 	//}}}
