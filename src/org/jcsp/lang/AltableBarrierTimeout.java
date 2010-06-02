@@ -21,12 +21,13 @@ public class AltableBarrierTimeout implements CSProcess {
 	
 	//{{{ CSProcess method
 	public void run() {
+		System.out.println(this + " has begun running");
 		try{
 			Thread.sleep(delay);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		System.out.println(this + " timeout has elapsed");
 		// get token
 //		AltableBarrierBase.tokenGiver.in().read();
 		GuardGroup.claimLock(this);

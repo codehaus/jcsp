@@ -100,6 +100,7 @@ public class GuardGroup extends Guard implements ABConstants {
 		Object key = parent;
 		claimLock(key);
 		// do other stuff
+		bf.selected = null;
 		removeBarrierFace(); //remove BarrierFace if this is last Guard
 					//group
 		
