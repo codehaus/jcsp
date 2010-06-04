@@ -100,12 +100,35 @@ public class GuardGroup extends Guard implements ABConstants {
 		Object key = parent;
 		claimLock(key);
 		// do other stuff
+		// set face.waking to false (process has finished being 
+		// woken up)
+
+		AltableBarrier temp = lastSynchronised;
+		if (temp != null) {
+			bf.waking = false;
+		} else if (bf.waking == true) {
+			boolean wokenByThis = false;
+			for (int i = 0; i < guards.length; i++) {
+				if (guards[i] == bf.selected) {
+					wokenByThis = true;
+					break;
+				}
+			}
+			// this means the process was woken up while waiting on
+			// the altMonitor so its lastSynchronised field won't
+			// be set to the selected barrier
+			if (wokenByThis) {
+				temp = bf.selected;
+				lastSynchronised = temp;
+				bf.waking = false;
+			}
+		}
+
 		bf.selected = null;
 		removeBarrierFace(); //remove BarrierFace if this is last Guard
 					//group
 		
 		parent = null;
-		AltableBarrier temp = lastSynchronised;
 		resetBarriers();
 		releaseLock(key);
 		System.out.println(this + " disable method has " + lastSynchronised + " as picked");
