@@ -43,6 +43,7 @@ public class AltableBarrier implements ABConstants {
 	public ChannelOutput out; // the end the barrier uses.
 
 	public BarrierFace face;
+	public Barrier gateKeeper;
 	//}}}
 
 	//{{{ constructors
@@ -60,6 +61,7 @@ public class AltableBarrier implements ABConstants {
 
 		in = chan.in();
 		out = chan.out();
+
 	}
 	//}}}
 

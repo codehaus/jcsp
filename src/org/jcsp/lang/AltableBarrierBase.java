@@ -69,6 +69,13 @@ public class AltableBarrierBase implements ABConstants {
 
 	public AltableBarrierTimeout timer;
 	public String name;
+
+	// the gateKeeper barrier is shared between all enrolled AltableBarriers
+	// it is sync'ed on when the 'disable' method is called on a GuardGroup
+	// which contains a recently selected AltableBarrier.  This ensures that
+	// no process can attempt to re-synchronise on that AltableBarrier until
+	// all enrolled processes have been woken up (4/6/2010).
+	public Barrier gateKeeper = null;
 	//}}}
 
 	//{{{ constructors
@@ -86,6 +93,8 @@ public class AltableBarrierBase implements ABConstants {
 
 		timer = null;
 		this.name = name;
+
+		gateKeeper = new Barrier(0);
 	}
 	//}}}
 
@@ -144,6 +153,9 @@ public class AltableBarrierBase implements ABConstants {
 	//{{{ public void enroll(AltableBarrier child)
 	public void enroll(AltableBarrier child) {
 		altableBarriers.add(child);
+
+		gateKeeper.enroll();
+		child.gateKeeper = gateKeeper;
 	}
 	//}}}
 	//{{{ public void resign(AltableBarrier child) 
@@ -153,6 +165,9 @@ public class AltableBarrierBase implements ABConstants {
 		if (index != -1) {
 			altableBarriers.remove(child);
 		}
+
+		gateKeeper.resign();
+		child.gateKeeper = null;
 	}
 	//}}}
 	//{{{ public void setStatus(AltableBarrier child, int status) 

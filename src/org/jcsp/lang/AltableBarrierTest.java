@@ -6,7 +6,7 @@ package org.jcsp.lang;
 //{{{ public class AltableBarrierTest
 public class AltableBarrierTest implements ABConstants {
 	//{{{ constants
-	private static final int PROCESSES = 2;
+	private static final int PROCESSES = 20;
 	private static final int ITERATIONS = 3;
 
 	private static AltableBarrierBase base1 = new AltableBarrierBase("Barrier #1");
