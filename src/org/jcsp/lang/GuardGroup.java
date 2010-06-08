@@ -69,6 +69,7 @@ public class GuardGroup extends Guard implements ABConstants {
 					checking = false;
 				}
 			} else {
+				bf.waking = false;
 				checking = false;
 			}
 		}
