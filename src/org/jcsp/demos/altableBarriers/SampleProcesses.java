@@ -24,6 +24,10 @@ public class SampleProcesses {
 	public static CSProcess kybProc(AltableBarrierBase base) {
 		return (new WaitingProcess(base));
 	}
+
+	public static CSProcess timProc(long timeout, AltableBarrierBase base) {
+		return (new TimeoutProcess(timeout, base));
+	}
 }
 //}}}
 //{{{ class PriorityProcess implments CSProcess
@@ -117,6 +121,37 @@ class WaitingProcess implements CSProcess {
 			System.out.println("Got input");
 			alt.priSelect();
 			System.out.println("Barrier synced");
+		}
+	}
+	//}}}
+}
+//}}}
+
+//{{{ class TimeoutProcess implements CSProcess
+class TimeoutProcess implements CSProcess {
+
+	long timeout;
+	Alternative alt;
+
+	//{{{ TimoutProcess (long timeout, AltableBarrierBase base)
+	TimeoutProcess (long timeout, AltableBarrierBase base) {
+		this.timeout = timeout;
+
+		AltableBarrier ab = new AltableBarrier(base, ABConstants.UNPREPARED);
+		GuardGroup gg = new GuardGroup(new AltableBarrier[] {ab});
+		alt = new Alternative(new Guard[] {gg});
+	}
+	//}}}
+	//{{{ public void run() 
+	public void run() {
+		while (true) {
+			try {
+				Thread.sleep(timeout);
+			} catch (Exception e) {}
+
+			System.out.println("timeout passed");
+			alt.priSelect();
+			System.out.println("synced on barrier");
 		}
 	}
 	//}}}

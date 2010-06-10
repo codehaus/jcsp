@@ -359,7 +359,7 @@ public class AltableBarrierBase implements ABConstants {
 			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
 			BarrierFace face = ab.face;
 			// if the process is currently waiting on this barrier
-			if (face != null && face.selected.parent == this) {
+			if (face != null && face.selected != null && face.selected.parent == this) {
 			ab.setStatus(PREPARED); // stop being PICKED return to
 						// being prepared
 			face.selected = null;
