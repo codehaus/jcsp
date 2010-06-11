@@ -157,3 +157,41 @@ class TimeoutProcess implements CSProcess {
 	//}}}
 }
 //}}}
+//{{{ class GuardedCodeProcess implements CSProcess
+class GuardedCodeProcess implements CSProcess {
+
+	GuardedCode[] gcs;
+	Alternative alt;
+	GuardGroup[] ggs;
+
+	GuardedCodeProcess (GuardedCode[] gcs) {
+		this.gcs = gcs;
+
+		ggs = new GuardGroup[gcs.length];
+		for (int i = 0; i < ggs.length; i++) {
+			AltableBarrier ab = new AltableBarrier(gcs[i].guard);
+			ggs[i] = new GuardGroup(new AltableBarrier[] {ab});
+		}
+		alt = new Alternative(ggs);
+	}
+
+
+	//{{{ public void run 
+	public void run() {
+		while (true) {
+			int index = alt.priSelect();
+
+			GuardGroup gg = ggs[index];
+			AltableBarrier ab = gg.lastSynchronised();
+
+			for (int i = 0; i < gcs.length; i++) {
+				if (ab.parent == gcs[i].guard) {
+					gcs[i].code.run();
+					break;
+				}
+			}
+		}
+	}
+	//}}}
+}
+//}}}
