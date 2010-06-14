@@ -28,6 +28,11 @@ public class SampleProcesses {
 	public static CSProcess timProc(long timeout, AltableBarrierBase base) {
 		return (new TimeoutProcess(timeout, base));
 	}
+
+	public static CSProcess guardedProc(GuardedCode[] code) {
+		return (new GuardedCodeProcess(code));
+	}
+	
 }
 //}}}
 //{{{ class PriorityProcess implments CSProcess
