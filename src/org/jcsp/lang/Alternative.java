@@ -680,7 +680,9 @@ public class Alternative
     synchronized (altMonitor) {
       if (state == enabling) {
         state = waiting;
-	BarrierFace.beginWait(this);
+	if (anyPICOMS) {
+		BarrierFace.beginWait(this);
+	}
         try {
           if (timeout) {
             long delay = msecs - System.currentTimeMillis ();
@@ -733,7 +735,9 @@ public class Alternative
 	    "*** Thrown from Alternative.priSelect ()\n" + e.toString ()
 	  );
         }
-	BarrierFace.endWait(this);
+	if (anyPICOMS) {
+		BarrierFace.endWait(this);
+	}
         state = ready;
       }
     }
