@@ -27,7 +27,7 @@ public class AltableBarrierTimeout implements CSProcess {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(this + " timeout has elapsed");
+		//System.out.println(this + " timeout has elapsed");
 		// get token
 //		AltableBarrierBase.tokenGiver.in().read();
 		GuardGroup.claimLock(this);
@@ -35,7 +35,7 @@ public class AltableBarrierTimeout implements CSProcess {
 		if (shouldTimeout) {
 			parent.timeout();
 		} else {
-			System.out.println("I was killed " + this);
+			//System.out.println("I was killed " + this);
 		}	
 
 		// return token
