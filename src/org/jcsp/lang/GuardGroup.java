@@ -293,6 +293,7 @@ public class GuardGroup extends Guard implements ABConstants {
 	//{{{ private void resetBarriers()
 	private void resetBarriers() {
 		for (int i = 0; i < guards.length; i++)	{
+			//System.out.println("this is where the problem is");
 			guards[i].setStatus(guards[i].defaultStatus);
 		}
 	}
