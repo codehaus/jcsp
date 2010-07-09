@@ -56,6 +56,7 @@ public class BarrierFace implements ABConstants {
 	
 	//{{{ public void dispose() 
 	public void dispose() {
+//		System.out.println("\n\n\ngetting rid of " + this + "\n\n");
 		faces.remove(key);
 	}
 	//}}}

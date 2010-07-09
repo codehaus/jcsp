@@ -109,7 +109,7 @@ public class AltableBarrier implements ABConstants {
 		// could have changed
 		int parentStatus = face.selected.getStatus();
 		if (parentStatus == COMPLETE) {
-			System.out.println("horay we synced");
+			System.out.println("horay we synced on " + face.selected);
 			synchronise();
 			return face.selected;
 		} else {
@@ -135,7 +135,7 @@ public class AltableBarrier implements ABConstants {
 
 			//{{{ check if sync attempt was aborted
 			if (this.face.selected != null) {
-				System.out.println("horay we synced");
+				System.out.println("horay we synced on " + face.selected);
 			} else {
 				System.out.println("aborting from wait");
 			}	

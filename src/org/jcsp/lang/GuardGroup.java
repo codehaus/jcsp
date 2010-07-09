@@ -64,9 +64,16 @@ public class GuardGroup extends Guard implements ABConstants {
 				setBarrier(ab);
 				// attempt synchronisation and get back whatever
 				// barrier (if any) was selected
+				System.out.println("initially selected " + ab);
 				ab = ab.attemptSynchronisation();
 				if (ab != null) {
 					checking = false;
+				} else {
+					// if you attempted a synchronisation
+					// and you get null back it means there
+					// was an abort / timeout.  You should
+					// reset the waking flag to false
+					bf.waking = false;
 				}
 			} else {
 				bf.waking = false;
