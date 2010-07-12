@@ -86,6 +86,16 @@
     <sourceDirectory>${basedir}/src</sourceDirectory>
     <testSourceDirectory>${basedir}/src</testSourceDirectory>
     <defaultGoal>install</defaultGoal>
+    <!-- It seems this has to be here to avoid incorrect checksums being created on deployment.
+       cf. http://jira.codehaus.org/browse/MNG-4301 -->
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+        <version>1.0-beta-2</version>
+      </extension>
+    </extensions>
+    <!-- -->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
