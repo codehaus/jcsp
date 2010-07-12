@@ -108,7 +108,7 @@ configure ( install.repositories.mavenInstaller ) {
 
 task wrapper ( type : Wrapper ) {
     jarPath = 'wrapper'
-    gradleVersion = '0.9-20100409151905+1000'
+    gradleVersion = '0.9-20100623131307+1000'
 }
 
 defaultTasks 'install'
