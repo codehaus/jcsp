@@ -137,7 +137,11 @@ public class GuardGroup extends Guard implements ABConstants {
 					//group
 		
 		parent = null;
-		resetBarriers();
+		if (lastSynchronised != null) {
+			lastSynchronised.setStatus(PREPARED);
+		} else {
+			resetBarriers();
+		}
 		releaseLock(key);
 		System.out.println(this + " disable method has " + lastSynchronised + " as picked");
 
@@ -145,7 +149,12 @@ public class GuardGroup extends Guard implements ABConstants {
 			System.out.println("SYNCING ON GATEKEEPER");
 			lastSynchronised.gateKeeper.sync();
 			System.out.println("SYNCED ON GATEKEEPER");
+
+			claimLock(key);
+			resetBarriers();		
+			releaseLock(key);
 		}
+
 		return (lastSynchronised != null);
 	}
 	//}}}

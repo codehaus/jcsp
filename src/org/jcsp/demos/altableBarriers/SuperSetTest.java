@@ -20,8 +20,8 @@ public class SuperSetTest {
 	//}}}
 	
 	//{{{ constants
-	public static final int NUM_B = 10;
-	public static final int NUM_C = 10;
+	public static final int NUM_B = 100;
+	public static final int NUM_C = 100;
 	public static final int NUM_SKIP = 0;
 	public static final int TOTAL;
 
