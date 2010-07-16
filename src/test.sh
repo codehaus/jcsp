@@ -1,2 +1,2 @@
 . ./comile.sh
-java org.jcsp.demos.altableBarriers.SuperSetTest
+java org.jcsp.demos.altableBarriers.CycleTest
