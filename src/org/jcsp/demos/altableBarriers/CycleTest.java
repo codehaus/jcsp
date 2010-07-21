@@ -7,8 +7,8 @@ import org.jcsp.lang.*;
 //{{{ public class CycleTest
 public class CycleTest {
 	//{{{ constants
-	public static final int CYCLE_BARRIERS = 5;
-	public static final int PROCESSES_PER_COMBO = 2;
+	public static final int CYCLE_BARRIERS = 400;
+	public static final int PROCESSES_PER_COMBO = 1;
 	public static final int TOTAL;
 
 	static {
@@ -41,7 +41,7 @@ public class CycleTest {
 	}
 	//}}}
 	
-	//{{{
+	//{{{ public static CSProcess CycleProc()
 	private static CSProcess cycleProc(AltableBarrierBase p,
 	  AltableBarrierBase l, AltableBarrierBase h) {
 		final AltableBarrier pause  = new AltableBarrier(p);

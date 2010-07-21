@@ -47,7 +47,9 @@ public class GuardGroup extends Guard implements ABConstants {
 		}
 		//}}}
 
+		System.out.println("lock to be claimed");
 		claimLock(alt);
+		System.out.println("lock has been claimed");
 		parent = alt;
 
 		createBarrierFace(); //create BarrierFace if neccesary
@@ -76,6 +78,7 @@ public class GuardGroup extends Guard implements ABConstants {
 					bf.waking = false;
 				}
 			} else {
+				System.out.println("None were ready in " + this);
 				bf.waking = false;
 				checking = false;
 			}
