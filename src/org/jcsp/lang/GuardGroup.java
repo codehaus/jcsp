@@ -98,6 +98,7 @@ public class GuardGroup extends Guard implements ABConstants {
 		} else if (!isLastGroup()) {
 			releaseLock(alt);
 		} else {
+			System.out.println("\n\n\n" + this + "is about to wait on the altMonitor ...");
 			// not returning true and is last guard group
 			// don't release lock.  Do nothing
 		}
