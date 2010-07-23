@@ -496,10 +496,15 @@ public class AltableBarrierBase implements ABConstants {
 			BarrierFace face = ab.face;
 			if (face != null && face.lock != null && ab != caller) {
 				if (wakeAll||face.lock instanceof Alternative){
+				System.out.println("trying to wake " + face.lock);
+				if (face.spuriousCheck) {
 				synchronized (face.lock) {
 					face.waking = true;
+					face.spuriousCheck = false;
 					face.lock.notify();
 				}
+				}
+				System.out.println("woke " + face.lock);
 				}
 			}
 		}

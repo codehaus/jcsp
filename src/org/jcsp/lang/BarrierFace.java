@@ -30,6 +30,7 @@ public class BarrierFace implements ABConstants {
 	// sequence, set to true between the times when a process is awoken and
 	// the time when it claims the global lock, false at other times.
 	public boolean waking;
+	public boolean spuriousCheck;
 	//}}}
 	
 
@@ -51,6 +52,7 @@ public class BarrierFace implements ABConstants {
 		bottomIndex = 0;
 
 		waking = false;
+		spuriousCheck = true;
 	}
 	//}}}
 	
@@ -68,10 +70,10 @@ public class BarrierFace implements ABConstants {
 	// otherwise need to ensure that lock is not given up between
 	// the enable() call to the last AltableBarrier and the end of
 	// this method.
-		System.out.println("waiting on altmonitor " + caller);
+		System.out.println("\n\n\n\nwaiting on altmonitor " + caller);
 		BarrierFace face = (BarrierFace) faces.get(caller);
 
-		GuardGroup.claimLock(face.key);
+		GuardGroup.claimLock(caller);
 		for (int i = 0; i < face.guardGroups.size(); i++) {
 			GuardGroup gg = (GuardGroup) face.guardGroups.get(i);
 			for (int j = 0; j < gg.guards.length; j++) {
@@ -82,7 +84,7 @@ public class BarrierFace implements ABConstants {
 		face.lock = caller.altMonitor;
 		face.selected = null;
 
-		GuardGroup.releaseLock(face.key);
+		GuardGroup.releaseLock(caller);
 	}
 	//}}}
 	//{{{ public static void endWait()

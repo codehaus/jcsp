@@ -124,8 +124,13 @@ public class AltableBarrier implements ABConstants {
 			synchronized (face.lock) {
 //				AltableBarrierBase.tokenReciever.out().write(null);
 				GuardGroup.releaseLock(face.key);
-				face.lock.wait();
+				while (face.spuriousCheck) {
+					face.lock.wait();
+				}
+				System.out.println("woke up " + this);
 				GuardGroup.claimLock(face.key);
+				System.out.println("woke and claimed lock " + this);
+				face.spuriousCheck = true;
 			}	
 			} catch (Exception e) {
 				e.printStackTrace();

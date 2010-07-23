@@ -32,14 +32,17 @@ public class AltableBarrierTimeout implements CSProcess {
 //		AltableBarrierBase.tokenGiver.in().read();
 		GuardGroup.claimLock(this);
 
+
 		if (shouldTimeout) {
+			System.out.println("tried to call parent timeout "+ this);
 			parent.timeout();
 		} else {
-			//System.out.println("I was killed " + this);
+			System.out.println("I was killed " + this);
 		}	
 
 		// return token
 //		AltableBarrierBase.tokenReciever.out().write(null);
+		System.out.println("about to release " + this);
 		GuardGroup.releaseLock(this);
 	}
 	//}}}

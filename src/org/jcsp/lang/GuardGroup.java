@@ -171,8 +171,8 @@ public class GuardGroup extends Guard implements ABConstants {
 	//}}}
 	//}}}
 	
-	//{{{ private methods
-	//{{{ private void claimLock() 
+	//{{{ public static methods
+	//{{{ public static void claimLock() 
 	public static void claimLock(Object claimant) {
 	/*
 //		if (lockOwner != claimant) {
@@ -182,9 +182,10 @@ public class GuardGroup extends Guard implements ABConstants {
 	*/
 		globalLock.lock();
 		lockOwner = claimant;
+		System.out.println("\nclaimed by " + claimant + "\n");
 	}
 	//}}}
-	//{{{ private void releaseLock()
+	//{{{ public static void releaseLock()
 	public static void releaseLock(Object claimant){
 	/*
 //		if (lockOwner == claimant) {
@@ -192,12 +193,15 @@ public class GuardGroup extends Guard implements ABConstants {
 			claimant = null;
 //		}
 	*/
+		System.out.println("\nreleased by" + claimant + "\n");
 		lockOwner = null;
 		while (globalLock.getHoldCount() > 0) {
 			globalLock.unlock();
 		}
 	}
 	//}}}
+	//}}}
+	//{{{ private methods
 	//{{{ private void createBarrierFace()
 	private void createBarrierFace() {
 		//make sure the lastSyncrhonised barrier has been set to null
