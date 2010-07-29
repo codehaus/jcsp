@@ -494,7 +494,10 @@ public class AltableBarrierBase implements ABConstants {
 			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
 
 			BarrierFace face = ab.face;
-			if (face != null && face.lock != null && ab != caller) {
+			boolean wakeAbort = (face != null && face.lock != null && ab != caller && face.selected == null);
+			boolean wakeSync = (face != null && face.lock != null && ab != caller && face.selected != null && face.selected.parent == caller.parent);
+//			if (face != null && face.lock != null && face.selected != null && face.selected.parent == caller.parent && ab != caller) {
+			if (wakeAbort || wakeSync) {
 				if (wakeAll||face.lock instanceof Alternative){
 				System.out.println("trying to wake " + face.lock);
 				if (face.spuriousCheck) {
@@ -503,6 +506,8 @@ public class AltableBarrierBase implements ABConstants {
 					face.spuriousCheck = false;
 					face.lock.notify();
 				}
+				} else if (face.selected != null) {
+					throw (new RuntimeException("erk " + face.selected));
 				}
 				System.out.println("woke " + face.lock);
 				}
