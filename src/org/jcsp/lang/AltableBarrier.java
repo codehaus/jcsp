@@ -119,6 +119,10 @@ public class AltableBarrier implements ABConstants {
 			// wait on an object which won't change throughout the
 			// synchronisation attempt, which other processes can see
 			// and which isn't the Alternative's altmonitor
+			//{{{ debug how many missing
+			parent.howManyMissing();
+			//}}}
+
 			try {
 			face.lock = face.key;
 			synchronized (face.lock) {
@@ -131,6 +135,7 @@ public class AltableBarrier implements ABConstants {
 				GuardGroup.claimLock(face.key);
 				System.out.println("woke and claimed lock " + this);
 				face.spuriousCheck = true;
+				face.lock = null;
 			}	
 			} catch (Exception e) {
 				e.printStackTrace();

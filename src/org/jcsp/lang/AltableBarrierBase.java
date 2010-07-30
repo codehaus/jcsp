@@ -252,7 +252,7 @@ public class AltableBarrierBase implements ABConstants {
 				current = face.selected;
 			}
 
-			if (face != null && current != null && !face.waking) {
+			if (face != null && face.lock != null && !face.waking) {
 				// if the barrier we are switching to occurs before or at the
 				// same time as the previously selected barrier then switch
 				// topIndex at this point is the same as the index of the
@@ -496,6 +496,8 @@ public class AltableBarrierBase implements ABConstants {
 			BarrierFace face = ab.face;
 			boolean wakeAbort = (face != null && face.lock != null && ab != caller && face.selected == null);
 			boolean wakeSync = (face != null && face.lock != null && ab != caller && face.selected != null && face.selected.parent == caller.parent);
+			System.out.print("wakeAbort " + wakeAbort);
+			System.out.println(" wakeSync " + wakeSync);
 //			if (face != null && face.lock != null && face.selected != null && face.selected.parent == caller.parent && ab != caller) {
 			if (wakeAbort || wakeSync) {
 				if (wakeAll||face.lock instanceof Alternative){
@@ -557,6 +559,26 @@ public class AltableBarrierBase implements ABConstants {
 	}
 	*/
 	//}}}
+	public void howManyMissing() {
+		int count = 0;
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier)altableBarriers.get(i);
+			if (ab.status != PICKED) {
+				BarrierFace f = ab.face;
+				AltableBarrier current = null;
+				Object lock = null;
+				boolean waking = false;
+				if (f != null) {
+					lock = f.lock;
+					current = f.selected;
+					waking = f.waking;	
+				}
+				System.out.println("missing " + ab + " face is "+ f +" currently on " + current + " lock is " + lock + " waking? " + waking + " status = " + ab.status);
+				count++;
+			}
+		}
+		System.out.println("count = " + count);
+	}
 	//}}}
 
 
