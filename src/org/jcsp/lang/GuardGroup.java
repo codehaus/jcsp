@@ -23,6 +23,7 @@ public class GuardGroup extends Guard implements ABConstants {
 
 	public static Object lockOwner = null;
 	private static ReentrantLock globalLock = new ReentrantLock();
+	private static Vector waitingList = new Vector();
 	
 	//{{{ constructor
 	public GuardGroup(AltableBarrier[] guards) {
@@ -48,8 +49,12 @@ public class GuardGroup extends Guard implements ABConstants {
 		//}}}
 
 		System.out.println("lock to be claimed");
+		if (bf != null) {
+			bf.trace = WAIT_FOR_LOCK; 
+		}
 		claimLock(alt);
 		System.out.println("lock has been claimed");
+
 		parent = alt;
 
 		createBarrierFace(); //create BarrierFace if neccesary
@@ -76,6 +81,8 @@ public class GuardGroup extends Guard implements ABConstants {
 					// was an abort / timeout.  You should
 					// reset the waking flag to false
 					bf.waking = false;
+					// make sure it goes from PICKED to PREPARED ......
+
 				}
 			} else {
 				System.out.println("None were ready in " + this);
@@ -93,6 +100,7 @@ public class GuardGroup extends Guard implements ABConstants {
 		// it will be up to the disable() methods to report which
 		// guard group actually successfully syncrhonised.
 		boolean returnThis = (ab != null);
+		bf.trace = BETWEEN_GGS;
 		if (returnThis) {
 			disable();
 		} else if (!isLastGroup()) {
@@ -180,6 +188,7 @@ public class GuardGroup extends Guard implements ABConstants {
 			lockOwner = claimant;
 //		}
 	*/
+//		waitingList.add(claimant);
 		globalLock.lock();
 		lockOwner = claimant;
 		System.out.println("\nclaimed by " + claimant + "\n");
@@ -198,6 +207,15 @@ public class GuardGroup extends Guard implements ABConstants {
 		while (globalLock.getHoldCount() > 0) {
 			globalLock.unlock();
 		}
+		/*
+		while (waitingList.indexOf(claimant) > -1) {
+			waitingList.remove(claimant);
+		}
+		System.out.println(waitingList.size() + " is the size of the waiting list");
+		for (int i=0; (waitingList.size() < 15) && (i < waitingList.size()); i++) {
+			System.out.println(waitingList.get(i));
+		}
+		*/
 	}
 	//}}}
 	//}}}

@@ -18,6 +18,13 @@ public interface ABConstants {
 	public static final Object SUCCESS = new Object();
 	public static final Object FAILURE = new Object();
 	public static final Object TIMEOUT = new Object();
+
+	public static final int WAIT_FOR_LOCK = -1;
+	public static final int STEALING = -2;
+	public static final int WAITING = -3;
+	public static final int BETWEEN_GGS = -4;
+	public static final int ALT_MONITOR = -5;
+	public static final int POST_ALT_MONITOR = -6;
 	//}}}
 
 }

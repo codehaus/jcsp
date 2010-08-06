@@ -8,7 +8,7 @@ import org.jcsp.lang.*;
 public class CycleTest {
 	//{{{ constants
 	public static final int CYCLE_BARRIERS = 400;
-	public static final int PROCESSES_PER_COMBO = 1;
+	public static final int PROCESSES_PER_COMBO = 2;
 	public static final int TOTAL;
 
 	static {

@@ -360,6 +360,9 @@ public class AltableBarrierBase implements ABConstants {
 			BarrierFace face = ab.face;
 			// if the process is currently waiting on this barrier
 			if (face != null && face.selected != null && face.selected.parent == this) {
+			if (face.lock == null && ab != caller) {
+				throw (new RuntimeException("WHY IS THIS HAPPENNING???"));
+			}
 			ab.setStatus(PREPARED); // stop being PICKED return to
 						// being prepared
 			face.selected = null;
@@ -495,7 +498,8 @@ public class AltableBarrierBase implements ABConstants {
 
 			BarrierFace face = ab.face;
 			boolean wakeAbort = (face != null && face.lock != null && ab != caller && face.selected == null);
-			boolean wakeSync = (face != null && face.lock != null && ab != caller && face.selected != null && face.selected.parent == caller.parent);
+			boolean syncing = (face != null && face.lock != null && face.selected != null && face.selected.parent == caller.parent);
+			boolean wakeSync = syncing && ab != caller;
 			System.out.print("wakeAbort " + wakeAbort);
 			System.out.println(" wakeSync " + wakeSync);
 //			if (face != null && face.lock != null && face.selected != null && face.selected.parent == caller.parent && ab != caller) {
@@ -506,13 +510,22 @@ public class AltableBarrierBase implements ABConstants {
 				synchronized (face.lock) {
 					face.waking = true;
 					face.spuriousCheck = false;
-					face.lock.notify();
+					if (face.lock instanceof Alternative) {
+						face.lock.notify();
+					} else {
+						// waiting on altMonitor
+						Alternative alt = (Alternative) face.key;
+						alt.schedule();
+					}
 				}
 				} else if (face.selected != null) {
 					throw (new RuntimeException("erk " + face.selected));
 				}
 				System.out.println("woke " + face.lock);
 				}
+			} else if (wakeAll && !syncing && ab != caller) {
+				System.out.print("face " + face + " barrier " + face.selected + " waking is " + face.waking + " parent " + face.selected.parent + " caller " + caller + " lock " + face.lock + " key " + face.key);
+				throw (new RuntimeException("hmmmmmmm"));
 			}
 		}
 	}
@@ -566,14 +579,17 @@ public class AltableBarrierBase implements ABConstants {
 			if (ab.status != PICKED) {
 				BarrierFace f = ab.face;
 				AltableBarrier current = null;
-				Object lock = null;
+				Object lock = null;//, key = null;
 				boolean waking = false;
+				int trace = 1000;
 				if (f != null) {
 					lock = f.lock;
 					current = f.selected;
-					waking = f.waking;	
+					waking = f.waking;
+					trace = f.trace;
+//					key = f.key;
 				}
-				System.out.println("missing " + ab + " face is "+ f +" currently on " + current + " lock is " + lock + " waking? " + waking + " status = " + ab.status);
+				System.out.println("missing " + ab + " face is "+ f +" currently on " + current + " lock is " + lock + " waking? " + waking + " status = " + ab.status + " trace = " + trace);// + " key" + key);
 				count++;
 			}
 		}

@@ -31,6 +31,7 @@ public class BarrierFace implements ABConstants {
 	// the time when it claims the global lock, false at other times.
 	public boolean waking;
 	public boolean spuriousCheck;
+	public int trace;
 	//}}}
 	
 
@@ -53,6 +54,7 @@ public class BarrierFace implements ABConstants {
 
 		waking = false;
 		spuriousCheck = true;
+		trace = 0;
 	}
 	//}}}
 	
@@ -72,8 +74,8 @@ public class BarrierFace implements ABConstants {
 	// this method.
 		System.out.println("\n\n\n\nwaiting on altmonitor " + caller);
 		BarrierFace face = (BarrierFace) faces.get(caller);
-
 		GuardGroup.claimLock(caller);
+		face.trace = ALT_MONITOR;
 		for (int i = 0; i < face.guardGroups.size(); i++) {
 			GuardGroup gg = (GuardGroup) face.guardGroups.get(i);
 			for (int j = 0; j < gg.guards.length; j++) {
@@ -90,6 +92,10 @@ public class BarrierFace implements ABConstants {
 	//{{{ public static void endWait()
 	public static void endWait(Alternative caller) {
 		// this may not need to do anything
+		BarrierFace face = (BarrierFace) faces.get(caller);
+		GuardGroup.claimLock(caller);
+		face.trace = POST_ALT_MONITOR;
+		GuardGroup.releaseLock(caller);
 	}
 	//}}}
 	//}}}

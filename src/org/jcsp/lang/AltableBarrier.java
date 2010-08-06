@@ -96,6 +96,7 @@ public class AltableBarrier implements ABConstants {
 		select();
 		//}}}
 		//{{{ attempt to steal processes from other barriers.
+		face.trace = STEALING;
 		parent.steal();
 		//}}}
 		//{{{ if first process, then start a timeout for the
@@ -120,18 +121,20 @@ public class AltableBarrier implements ABConstants {
 			// synchronisation attempt, which other processes can see
 			// and which isn't the Alternative's altmonitor
 			//{{{ debug how many missing
-			parent.howManyMissing();
+//			parent.howManyMissing();
 			//}}}
 
 			try {
-			face.lock = face.key;
-			synchronized (face.lock) {
+			synchronized (face.key) {
+				face.lock = face.key;
 //				AltableBarrierBase.tokenReciever.out().write(null);
 				GuardGroup.releaseLock(face.key);
+				face.trace = WAITING;
 				while (face.spuriousCheck) {
 					face.lock.wait();
 				}
 				System.out.println("woke up " + this);
+				face.trace = WAIT_FOR_LOCK;
 				GuardGroup.claimLock(face.key);
 				System.out.println("woke and claimed lock " + this);
 				face.spuriousCheck = true;
