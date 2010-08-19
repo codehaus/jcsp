@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 //}}}
 //{{{ public class KeyTest
-public class KeyEvent {
+public class KeyTest {
 
 	public static void main(String[] args) {
 		final Frame frame = new Frame("KeyTest");
@@ -18,12 +18,52 @@ public class KeyEvent {
 		});
 
 		int nums = KeyEvent.VK_Z - KeyEvent.VK_A + 1;
-		final One2OneChannel chans = new One2OneChannel[nums];
+		final One2OneChannel[] chans = new One2OneChannel[nums];
+		final ChannelOutput[] outs = new ChannelOutput[nums];
 		final int[] keys = new int[nums];
 		for (int i = 0; i < nums; i++) {
-			int keys[i] = KeyEvent.VK_A + i;
+			keys[i] = KeyEvent.VK_A + i;
 			chans[i] = Channel.createOne2One();
+			outs[i] = chans[i].out();
 		}
+		final One2OneChannel keyDis = Channel.createOne2One();
+		KeyEventDistributor ked = new KeyEventDistributor(
+		 keyDis.in(), outs, keys);
+		frame.add(new Label("hi"));
+		frame.setSize(500, 500);
+		frame.show();
+
+		KeyboardFocusManager kfm =
+		 KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		kfm.addKeyEventPostProcessor(new KeyEventPostProcessor() {
+			public boolean postProcessKeyEvent(KeyEvent e) {
+				keyDis.out().write(e);
+				return false;
+			}
+		});
+
+		AltableBarrierBase pause = new AltableBarrierBase("PAUSE");
+		AltableBarrierBase[] bars = new AltableBarrierBase[nums];
+		CSProcess[] procs = new CSProcess[nums];
+
+		for (int i = 0; i < nums; i++) {
+			bars[i] = new AltableBarrierBase("BAR"+i);
+		}
+		for (int i = 0; i < nums; i++) {
+			AltableBarrier ab1 = new AltableBarrier(bars[i]);
+			AltableBarrier ab2 = new AltableBarrier(bars[(i+1)%nums]);
+			AltableBarrier kill = new AltableBarrier(pause);
+
+			procs[i] = new HighMidLow(kill, chans[i].in(),
+			 new AltableBarrier[] {ab1, ab2});
+		}
+		
+		(new Parallel(new CSProcess[] {
+			new Parallel(procs),
+			ked,
+			SampleProcesses.timProc(5000, pause)
+			
+		})).run();		
 	}
 }
 //}}}
@@ -31,7 +71,7 @@ public class KeyEvent {
 class KeyEventDistributor implements CSProcess {
 	public ChannelInput in;
 	public ChannelOutput[] outs;
-	public int[] keys[];
+	public int[] keys;
 
 	public KeyEventDistributor(ChannelInput in,
 	 ChannelOutput[] outs, int[] keys) {
@@ -58,11 +98,11 @@ class KeyEventDistributor implements CSProcess {
 class HighMidLow implements CSProcess {
 
 	private AltableBarrier high;
-	private ChannelInpit mid;
+	private AltingChannelInput mid;
 	private AltableBarrier[] lows;
 
 	HighMidLow(AltableBarrier high,
-	 ChannelInput mid, AltableBarrier[] lows) {
+	 AltingChannelInput mid, AltableBarrier[] lows) {
 		this.high = high;
 		this.mid = mid;
 		this.lows = lows;
@@ -70,14 +110,25 @@ class HighMidLow implements CSProcess {
 
 	public void run() {
 		GuardGroup h = new GuardGroup(new AltableBarrier[] {high});
-		GuardGroup l = new guardGroup(lows);
+		GuardGroup l = new GuardGroup(lows);
 		Alternative alt = new Alternative(new Guard[] {
-			h, mid, low
+			h, mid, l
 		});
 
 		while (true) {
 			int index = alt.priSelect();
 			
+			Guard selected = alt.guard[index];
+			if (selected instanceof GuardGroup) {
+				AltableBarrier ab = ((GuardGroup)selected).lastSynchronised();
+				System.out.println(ab);
+				if (ab.equals(high)) {
+					System.exit(0);
+				}
+			} else {
+				Object o = mid.read();
+				System.out.println(o);
+			}
 		}
 	}
 }

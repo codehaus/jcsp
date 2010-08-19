@@ -1,1 +1,1 @@
-java org.jcsp.demos.altableBarriers.CycleTest
+java org.jcsp.demos.altableBarriers.KeyTest
