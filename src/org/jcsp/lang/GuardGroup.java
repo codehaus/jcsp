@@ -61,6 +61,7 @@ public class GuardGroup extends Guard implements ABConstants {
 
 		boolean checking = true;
 		AltableBarrier ab = null;
+		lastSynchronised = null;
 		// stop checking if a barrier syncrhonisation is successful
 		// or if the selectBarrier method can't find anything to
 		// preemptively wait on
@@ -191,7 +192,7 @@ public class GuardGroup extends Guard implements ABConstants {
 //		waitingList.add(claimant);
 		globalLock.lock();
 		lockOwner = claimant;
-		System.out.println("\nclaimed by " + claimant + "\n");
+//		System.out.println("\nclaimed by " + claimant + "\n");
 	}
 	//}}}
 	//{{{ public static void releaseLock()
@@ -202,7 +203,7 @@ public class GuardGroup extends Guard implements ABConstants {
 			claimant = null;
 //		}
 	*/
-		System.out.println("\nreleased by" + claimant + "\n");
+//		System.out.println("\nreleased by" + claimant + "\n");
 		lockOwner = null;
 		while (globalLock.getHoldCount() > 0) {
 			globalLock.unlock();

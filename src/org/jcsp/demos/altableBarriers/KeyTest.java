@@ -26,10 +26,12 @@ public class KeyTest {
 			chans[i] = Channel.createOne2One();
 			outs[i] = chans[i].out();
 		}
-		final One2OneChannel keyDis = Channel.createOne2One();
+		final Any2OneChannel keyDis = Channel.createAny2One();
+		final One2OneChannel buttonChannel = Channel.createOne2One();
+		final ActiveButton button = new ActiveButton(null, buttonChannel.out(), "Button");
 		KeyEventDistributor ked = new KeyEventDistributor(
 		 keyDis.in(), outs, keys);
-		frame.add(new Label("hi"));
+		frame.add(button);
 		frame.setSize(500, 500);
 		frame.show();
 
@@ -54,12 +56,19 @@ public class KeyTest {
 			AltableBarrier ab2 = new AltableBarrier(bars[(i+1)%nums]);
 			AltableBarrier kill = new AltableBarrier(pause);
 
-			procs[i] = new HighMidLow(kill, chans[i].in(),
-			 new AltableBarrier[] {ab1, ab2});
+			if (i != 20) {
+				procs[i] = new HighMidLow(kill, chans[i].in(),
+				 new AltableBarrier[] {ab1, ab2});
+			} else {
+				procs[i] = new HighMidLow(kill,
+				 buttonChannel.in(),
+				 new AltableBarrier[] {ab1, ab2});
+			}
 		}
 		
 		(new Parallel(new CSProcess[] {
 			new Parallel(procs),
+			button,
 			ked,
 			SampleProcesses.timProc(5000, pause)
 			

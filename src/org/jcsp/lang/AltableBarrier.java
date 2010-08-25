@@ -121,7 +121,7 @@ public class AltableBarrier implements ABConstants {
 			// synchronisation attempt, which other processes can see
 			// and which isn't the Alternative's altmonitor
 			//{{{ debug how many missing
-//			parent.howManyMissing();
+			parent.howManyMissing();
 			//}}}
 
 			try {
