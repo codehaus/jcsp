@@ -17,7 +17,8 @@ public class KeyTest {
 			}
 		});
 
-		int nums = KeyEvent.VK_Z - KeyEvent.VK_A + 1;
+//		int nums = KeyEvent.VK_Z - KeyEvent.VK_A + 1;
+		int nums = 5;
 		final One2OneChannel[] chans = new One2OneChannel[nums];
 		final ChannelOutput[] outs = new ChannelOutput[nums];
 		final int[] keys = new int[nums];
@@ -56,7 +57,7 @@ public class KeyTest {
 			AltableBarrier ab2 = new AltableBarrier(bars[(i+1)%nums]);
 			AltableBarrier kill = new AltableBarrier(pause);
 
-			if (i != 20) {
+			if (i != 1) {
 				procs[i] = new HighMidLow(kill, chans[i].in(),
 				 new AltableBarrier[] {ab1, ab2});
 			} else {
@@ -130,13 +131,22 @@ class HighMidLow implements CSProcess {
 			Guard selected = alt.guard[index];
 			if (selected instanceof GuardGroup) {
 				AltableBarrier ab = ((GuardGroup)selected).lastSynchronised();
-				System.out.println(ab);
+				System.out.println(selected + " " + ab);
 				if (ab.equals(high)) {
 					System.exit(0);
+				} else {
+					try {
+						Thread.sleep(500);
+					} catch (Exception e) {}
 				}
 			} else {
 				Object o = mid.read();
 				System.out.println(o);
+				try {
+					Thread.sleep(500);
+					System.exit(0);
+				} catch (Exception e) {
+				}
 			}
 		}
 	}

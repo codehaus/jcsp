@@ -25,6 +25,14 @@ public interface ABConstants {
 	public static final int BETWEEN_GGS = -4;
 	public static final int ALT_MONITOR = -5;
 	public static final int POST_ALT_MONITOR = -6;
+	public static final int PRE_GATEKEEPER = -7;
+	public static final int POST_GATEKEEPER = -8;
+	public static final int PRE_DISABLE = -9;
+	public static final int IN_DISABLE = -10;
+	public static final int END_DISABLE = -11;
+	public static final int RESET_BARRIERS = -12;
+	public static final int REMOVE_FACE = -13;
+	public static final int RETURN_DISABLE = -14;
 	//}}}
 
 }

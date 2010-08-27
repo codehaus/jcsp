@@ -119,7 +119,9 @@ public class GuardGroup extends Guard implements ABConstants {
 	//{{{ public boolean disable()
 	boolean disable() {
 		Object key = parent;
+		bf.trace = PRE_DISABLE;
 		claimLock(key);
+		bf.trace = IN_DISABLE;
 		// do other stuff
 		// set face.waking to false (process has finished being 
 		// woken up)
@@ -144,6 +146,7 @@ public class GuardGroup extends Guard implements ABConstants {
 				bf.waking = false;
 			}
 		}
+		bf.trace = REMOVE_FACE;
 
 		bf.selected = null;
 		removeBarrierFace(); //remove BarrierFace if this is last Guard
@@ -152,21 +155,34 @@ public class GuardGroup extends Guard implements ABConstants {
 		parent = null;
 		if (lastSynchronised != null) {
 			lastSynchronised.setStatus(PREPARED);
+			if (bf != null) {
+				bf.trace = PRE_GATEKEEPER;
+			}
 		} else {
+			if (bf != null) {
+				bf.trace = RESET_BARRIERS;
+			}
 			resetBarriers();
+		}
+		if (bf != null) {
+			bf.trace = END_DISABLE;
 		}
 		releaseLock(key);
 		System.out.println(this + " disable method has " + lastSynchronised + " as picked");
 
 		if (lastSynchronised != null) {
-			System.out.println("SYNCING ON GATEKEEPER");
+			System.out.println(this + " SYNCING ON GATEKEEPER");
 			lastSynchronised.gateKeeper.sync();
-			System.out.println("SYNCED ON GATEKEEPER");
+			System.out.println(this + " SYNCED ON GATEKEEPER");
 
 			claimLock(key);
+			if (bf != null) {
+				bf.trace = POST_GATEKEEPER;
+			}
 			resetBarriers();		
 			releaseLock(key);
 		}
+		bf.trace = RETURN_DISABLE;
 
 		return (lastSynchronised != null);
 	}
@@ -253,7 +269,7 @@ public class GuardGroup extends Guard implements ABConstants {
 			bf.dispose();
 		}
 		
-		bf = null;
+//		bf = null;
 	}
 	//}}}
 	//{{{ private AltableBarrier selectBarrier() 
