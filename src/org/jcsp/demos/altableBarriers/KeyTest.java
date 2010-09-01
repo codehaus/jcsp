@@ -131,7 +131,7 @@ class HighMidLow implements CSProcess {
 			Guard selected = alt.guard[index];
 			if (selected instanceof GuardGroup) {
 				AltableBarrier ab = ((GuardGroup)selected).lastSynchronised();
-				System.out.println(selected + " " + ab);
+				System.out.println(selected + " " + ab + " marker");
 				if (ab.equals(high)) {
 					System.exit(0);
 				} else {
