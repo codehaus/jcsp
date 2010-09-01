@@ -676,6 +676,9 @@ public class Alternative
     // }
     state = enabling;
     favourite = 0;
+    if (anyPICOMS) {
+    	selectedPICOMS = -1;
+    }
     enableGuards ();
     synchronized (altMonitor) {
       if (state == enabling) {
@@ -959,7 +962,7 @@ public class Alternative
     if (barrierSelected != NONE_SELECTED) {        // We must choose a barrier sync
       selected = barrierSelected;                  // if one is ready - so that all
       AltingBarrierCoordinate.finishDisable ();    // parties make the same choice.
-    } else if (anyPICOMS) {
+    } else if (anyPICOMS && (selectedPICOMS > -1) ) {
       selected = selectedPICOMS;
     }
   }

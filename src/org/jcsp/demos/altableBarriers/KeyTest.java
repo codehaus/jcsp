@@ -141,12 +141,14 @@ class HighMidLow implements CSProcess {
 				}
 			} else {
 				Object o = mid.read();
-				System.out.println(o);
+				System.out.println("\n\n"+o+"\n\n");
+/*
 				try {
 					Thread.sleep(500);
 					System.exit(0);
 				} catch (Exception e) {
 				}
+*/
 			}
 		}
 	}
