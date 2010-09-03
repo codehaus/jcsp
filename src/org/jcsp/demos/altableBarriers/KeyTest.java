@@ -17,8 +17,8 @@ public class KeyTest {
 			}
 		});
 
-//		int nums = KeyEvent.VK_Z - KeyEvent.VK_A + 1;
-		int nums = 5;
+		int nums = KeyEvent.VK_Z - KeyEvent.VK_A + 1;
+//		int nums = 5;
 		final One2OneChannel[] chans = new One2OneChannel[nums];
 		final ChannelOutput[] outs = new ChannelOutput[nums];
 		final int[] keys = new int[nums];
@@ -32,7 +32,8 @@ public class KeyTest {
 		final ActiveButton button = new ActiveButton(null, buttonChannel.out(), "Button");
 		KeyEventDistributor ked = new KeyEventDistributor(
 		 keyDis.in(), outs, keys);
-		frame.add(button);
+//		frame.add(button);
+		frame.add(new Label("HI"));
 		frame.setSize(500, 500);
 		frame.show();
 
@@ -57,7 +58,7 @@ public class KeyTest {
 			AltableBarrier ab2 = new AltableBarrier(bars[(i+1)%nums]);
 			AltableBarrier kill = new AltableBarrier(pause);
 
-			if (i != 1) {
+			if (i != -1) {
 				procs[i] = new HighMidLow(kill, chans[i].in(),
 				 new AltableBarrier[] {ab1, ab2});
 			} else {
@@ -142,13 +143,13 @@ class HighMidLow implements CSProcess {
 			} else {
 				Object o = mid.read();
 				System.out.println("\n\n"+o+"\n\n");
+
 /*
 				try {
-					Thread.sleep(500);
 					System.exit(0);
-				} catch (Exception e) {
-				}
+				} catch (Exception e) {}
 */
+
 			}
 		}
 	}
