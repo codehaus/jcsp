@@ -22,6 +22,86 @@ public class VisualDemo implements CSProcess {
 
 	//{{{ public static void main()
 	public static void main(String[] args) {
+		final ActiveClosingFrame acf = 
+		 new ActiveClosingFrame("Vis. Demo");
+		final Frame frame = acf.getActiveFrame();
+
+		int HEIGHT = 4;
+		int WIDTH = 4;
+		int nums = WIDTH * HEIGHT;
+		final AltableBarrierBase pause = new AltableBarrierBase("PAUSE");
+		AltableBarrierBase[] bars = new AltableBarrierBase[nums];
+		ActiveCanvas[] canvasProcs = new ActiveCanvas[nums];
+		CSProcess[] procs = new CSProcess[nums];
+		CSProcess[] randoms = new CSProcess[nums];
+		final One2OneChannel[] chans = new One2OneChannel[nums];
+		final One2OneChannel buttonChan = Channel.createOne2One();
+		final ActiveButton button = new ActiveButton(
+		 null, buttonChan.out(), "Pause");
+		Panel canvasContainer = new Panel(new GridLayout(WIDTH,HEIGHT));
+
+		for (int i = 0; i < nums; i++) {
+			bars[i] = new AltableBarrierBase("BAR"+i);
+			chans[i] = Channel.createOne2One();
+		}
+		for (int i = 0; i < nums; i++) {
+			AltableBarrierBase ab1 = bars[i];
+			AltableBarrierBase ab2 = bars[(i+1)%nums];
+			canvasProcs[i] = new ActiveCanvas();
+			DisplayList dl = new DisplayList();
+			canvasProcs[i].setPaintable(dl);
+			canvasProcs[i].setSize(100,100);
+			canvasContainer.add(canvasProcs[i]);
+
+			procs[i] = new VisualDemo(pause,
+			 ab1, ab2,
+			 (AltingChannelInput)chans[i].in(),
+			 dl
+			);
+			final ChannelOutput out = chans[i].out();
+			randoms[i] = new CSProcess() {
+				public void run() {
+				Random r = new Random();
+				while (true) {
+					try {
+					Thread.sleep(r.nextInt(2000));
+					} catch (Exception e) {}
+					out.write("blah");
+				}
+				}
+			};
+		}
+		frame.setLayout(new BorderLayout());
+		frame.add(canvasContainer, BorderLayout.CENTER);
+		frame.add(button, BorderLayout.SOUTH);
+		frame.pack();
+		frame.setVisible(true);
+		frame.show();
+	
+		(new Parallel(new CSProcess[] {
+			new Parallel(procs),
+			new Parallel(randoms),
+			new Parallel(canvasProcs),
+			button,
+			//{{{ pause button
+			new CSProcess() {
+				public void run() {
+				ChannelInput in = buttonChan.in();
+				AltableBarrier ab = new AltableBarrier(
+				 pause, ABConstants.UNPREPARED);
+				Alternative alt = new Alternative(new Guard[] {
+				 new GuardGroup(new AltableBarrier[]{ab})
+				});
+
+				while (true) {
+					System.out.println("\n\n\n\n\n\n\n\n");
+					in.read();
+					alt.priSelect();
+				}
+				}
+			}
+			//}}}
+		})).run();
 	}
 	//}}}
 
@@ -39,9 +119,10 @@ public class VisualDemo implements CSProcess {
 		this.dl = dl;
 
 		alt = new Alternative(new Guard[] {
-			new GuardGroup(new AltableBarrier[] {high}),
+			new GuardGroup(new AltableBarrier[] {this.high}),
 			mid,
-			new GuardGroup(new AltableBarrier[] {left, right})
+			new GuardGroup(new AltableBarrier[] {
+			 this.left, this.right})
 		});
 
 		graphicsMap = new HashMap();
@@ -99,12 +180,20 @@ public class VisualDemo implements CSProcess {
 			Object selected = guard;
 			if (guard instanceof GuardGroup) {
 				selected = ((GuardGroup) guard).lastSynchronised();
+			} else {
+				((ChannelInput) selected).read();
 			}
-
+			
 			GraphicsCommand[] commands =
 			 (GraphicsCommand[]) graphicsMap.get(selected);
-
-			
+			dl.set(commands);
+			try {	
+			Thread.sleep(500);
+			} catch(Exception e) {}
+			dl.set(new GraphicsCommand[] {
+				new GraphicsCommand.SetColor(Color.white),
+				new GraphicsCommand.FillRect(0,0,100,100)
+			});
 		}
 	}
 	//}}}
