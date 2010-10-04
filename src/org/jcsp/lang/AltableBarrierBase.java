@@ -361,6 +361,7 @@ public class AltableBarrierBase implements ABConstants {
 			// if the process is currently waiting on this barrier
 			if (face != null && face.selected != null && face.selected.parent == this) {
 			if (face.lock == null && ab != caller) {
+				reportAB(ab);
 				throw (new RuntimeException("WHY IS THIS HAPPENNING???"));
 			}
 			ab.setStatus(PREPARED); // stop being PICKED return to
@@ -519,6 +520,7 @@ public class AltableBarrierBase implements ABConstants {
 					}
 				}
 				} else if (face.selected != null) {
+					reportAB(ab);
 					throw (new RuntimeException("erk " + face.selected));
 				}
 				System.out.println("woke " + face.lock);
@@ -577,8 +579,17 @@ public class AltableBarrierBase implements ABConstants {
 		for (int i = 0; i < altableBarriers.size(); i++) {
 			AltableBarrier ab = (AltableBarrier)altableBarriers.get(i);
 			if (ab.status != PICKED) {
+				reportAB(ab);
+				count++;
+			}
+		}
+		System.out.println("count = " + count);
+	}
+	//}}}
+	//{{{ public void reportAB(AltableBarrier ab)
+	public void reportAB(AltableBarrier ab) {
 				BarrierFace f = ab.face;
-				AltableBarrier current = null;
+				AltableBarrier current = null, sync = null;
 				Object lock = null;//, key = null;
 				boolean waking = false;
 				int trace = 1000;
@@ -587,13 +598,11 @@ public class AltableBarrierBase implements ABConstants {
 					current = f.selected;
 					waking = f.waking;
 					trace = f.trace;
+//					sync = f.lastSynchronised;
 //					key = f.key;
 				}
-				System.out.println("missing " + ab + " face is "+ f +" currently on " + current + " lock is " + lock + " waking? " + waking + " status = " + ab.status + " trace = " + trace);// + " key" + key);
-				count++;
-			}
-		}
-		System.out.println("count = " + count);
+				System.out.println("missing " + ab + " face is "+ f +" currently on " + current + " lastSynchronised " + sync +" lock is " + lock + " waking? " + waking + " status = " + ab.status + " trace = " + trace);// + " key" + key);
+
 	}
 	//}}}
 

@@ -82,8 +82,6 @@ public class GuardGroup extends Guard implements ABConstants {
 					// was an abort / timeout.  You should
 					// reset the waking flag to false
 					bf.waking = false;
-					// make sure it goes from PICKED to PREPARED ......
-
 				}
 			} else {
 				System.out.println("None were ready in " + this);
@@ -95,6 +93,7 @@ public class GuardGroup extends Guard implements ABConstants {
 		// about it
 		if (ab != null) {
 			ab.guardGroup.lastSynchronised = ab;
+//			ab.face.selected = null; // don't need this anymore
 		}
 
 		// report true if there was a successful syncrhonisation
@@ -144,11 +143,14 @@ public class GuardGroup extends Guard implements ABConstants {
 				temp = bf.selected;
 				lastSynchronised = temp;
 				bf.waking = false;
+				bf.selected = null;
 			}
 		}
 		bf.trace = REMOVE_FACE;
 
-		bf.selected = null;
+//		bf.selected = null; // I think this screws up if the process 
+				    // was on the altmonitor but the selected
+				    // barrier wasn't in the last GuardGroup
 		removeBarrierFace(); //remove BarrierFace if this is last Guard
 					//group
 		

@@ -38,7 +38,9 @@ public class VisualDemo implements CSProcess {
 		final One2OneChannel buttonChan = Channel.createOne2One();
 		final ActiveButton button = new ActiveButton(
 		 null, buttonChan.out(), "Pause");
-		Panel canvasContainer = new Panel(new GridLayout(WIDTH,HEIGHT));
+		ActiveContainer canvasContainer =
+		 new ActiveContainer();
+		canvasContainer.setLayout(new GridLayout(WIDTH,HEIGHT));
 
 		for (int i = 0; i < nums; i++) {
 			bars[i] = new AltableBarrierBase("BAR"+i);
@@ -77,13 +79,18 @@ public class VisualDemo implements CSProcess {
 		frame.pack();
 		frame.setVisible(true);
 		frame.show();
-	
+
+		CSProcess pauseProc = SampleProcesses.timProc(5000, pause);	
 		(new Parallel(new CSProcess[] {
 			new Parallel(procs),
 			new Parallel(randoms),
 			new Parallel(canvasProcs),
 			button,
+//			canvasContainer,
+			pauseProc,
+			acf,
 			//{{{ pause button
+			/*
 			new CSProcess() {
 				public void run() {
 				ChannelInput in = buttonChan.in();
@@ -100,6 +107,7 @@ public class VisualDemo implements CSProcess {
 				}
 				}
 			}
+			*/
 			//}}}
 		})).run();
 	}
@@ -131,10 +139,10 @@ public class VisualDemo implements CSProcess {
 		commands = new GraphicsCommand[] {
 			new GraphicsCommand.SetColor(Color.black),
 			new GraphicsCommand.DrawRect(0,0,100,100),
-			new GraphicsCommand.DrawString(high.toString(),50,0),
+			new GraphicsCommand.DrawString(high.name,0,50),
 			new GraphicsCommand.SetColor(
 			 (Color) uniqueBarriers.get(high)),
-			new GraphicsCommand.FillRect(0,0,50,100)
+			new GraphicsCommand.FillRect(0,0,100,25)
 		};
 		graphicsMap.put(this.high, commands);
 		//}}}
@@ -142,8 +150,9 @@ public class VisualDemo implements CSProcess {
 		commands = new GraphicsCommand[] {
 			new GraphicsCommand.SetColor(Color.black),
 			new GraphicsCommand.DrawRect(0,0,100,100),
-			new GraphicsCommand.DrawString(high.toString(),50,0),
-			new GraphicsCommand.FillRect(40,75,60,100)
+			new GraphicsCommand.DrawString("MID", 0,50),
+			new GraphicsCommand.SetColor(Color.blue),
+			new GraphicsCommand.FillRect(45,75,55,100)
 		};
 		graphicsMap.put(this.mid, commands);
 		//}}}
@@ -151,7 +160,7 @@ public class VisualDemo implements CSProcess {
 		commands = new GraphicsCommand[] {
 			new GraphicsCommand.SetColor(Color.black),
 			new GraphicsCommand.DrawRect(0,0,100,100),
-			new GraphicsCommand.DrawString(high.toString(),50,0),
+			new GraphicsCommand.DrawString(left.name,0,50),
 			new GraphicsCommand.SetColor(
 			 (Color) uniqueBarriers.get(left)),
 			new GraphicsCommand.FillRect(0,75,40,100)
@@ -162,7 +171,7 @@ public class VisualDemo implements CSProcess {
 		commands = new GraphicsCommand[] {
 			new GraphicsCommand.SetColor(Color.black),
 			new GraphicsCommand.DrawRect(0,0,100,100),
-			new GraphicsCommand.DrawString(high.toString(),50,0),
+			new GraphicsCommand.DrawString(right.name,0,50),
 			new GraphicsCommand.SetColor(
 			 (Color) uniqueBarriers.get(right)),
 			new GraphicsCommand.FillRect(60,75,100,100)
@@ -175,11 +184,21 @@ public class VisualDemo implements CSProcess {
 	//{{{ public void run()
 	public void run() {
 		while(true) {
+			dl.set(new GraphicsCommand[] {
+				new GraphicsCommand.SetColor(Color.white),
+				new GraphicsCommand.FillRect(0,0,100,100)
+			});
+
 			int index = alt.priSelect();
 			Guard guard = alt.guard[index];
 			Object selected = guard;
 			if (guard instanceof GuardGroup) {
-				selected = ((GuardGroup) guard).lastSynchronised();
+				AltableBarrier temp;
+				temp = ((GuardGroup) guard).lastSynchronised();
+				selected = temp;
+				if (temp.face != null) {
+					throw (new RuntimeException("argh face"));
+				}
 			} else {
 				((ChannelInput) selected).read();
 			}
@@ -190,10 +209,6 @@ public class VisualDemo implements CSProcess {
 			try {	
 			Thread.sleep(500);
 			} catch(Exception e) {}
-			dl.set(new GraphicsCommand[] {
-				new GraphicsCommand.SetColor(Color.white),
-				new GraphicsCommand.FillRect(0,0,100,100)
-			});
 		}
 	}
 	//}}}
