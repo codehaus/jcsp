@@ -40,7 +40,7 @@ public class VisualDemo implements CSProcess {
 		 null, buttonChan.out(), "Pause");
 		ActiveContainer canvasContainer =
 		 new ActiveContainer();
-		canvasContainer.setLayout(new GridLayout(WIDTH,HEIGHT));
+		canvasContainer.setLayout(new GridLayout(HEIGHT,WIDTH));
 
 		for (int i = 0; i < nums; i++) {
 			bars[i] = new AltableBarrierBase("BAR"+i);
@@ -66,7 +66,7 @@ public class VisualDemo implements CSProcess {
 				Random r = new Random();
 				while (true) {
 					try {
-					Thread.sleep(r.nextInt(2000));
+					Thread.sleep(r.nextInt(10000));
 					} catch (Exception e) {}
 					out.write("blah");
 				}
@@ -152,7 +152,7 @@ public class VisualDemo implements CSProcess {
 			new GraphicsCommand.DrawRect(0,0,100,100),
 			new GraphicsCommand.DrawString("MID", 0,50),
 			new GraphicsCommand.SetColor(Color.blue),
-			new GraphicsCommand.FillRect(45,75,55,100)
+			new GraphicsCommand.FillRect(45,50,10,25)
 		};
 		graphicsMap.put(this.mid, commands);
 		//}}}
@@ -163,7 +163,7 @@ public class VisualDemo implements CSProcess {
 			new GraphicsCommand.DrawString(left.name,0,50),
 			new GraphicsCommand.SetColor(
 			 (Color) uniqueBarriers.get(left)),
-			new GraphicsCommand.FillRect(0,75,40,100)
+			new GraphicsCommand.FillRect(0,75,40,25)
 		};
 		graphicsMap.put(this.left, commands);
 		//}}}
@@ -174,7 +174,7 @@ public class VisualDemo implements CSProcess {
 			new GraphicsCommand.DrawString(right.name,0,50),
 			new GraphicsCommand.SetColor(
 			 (Color) uniqueBarriers.get(right)),
-			new GraphicsCommand.FillRect(60,75,100,100)
+			new GraphicsCommand.FillRect(60,75,40,25)
 		};
 		graphicsMap.put(this.right, commands);
 		//}}}
@@ -186,7 +186,9 @@ public class VisualDemo implements CSProcess {
 		while(true) {
 			dl.set(new GraphicsCommand[] {
 				new GraphicsCommand.SetColor(Color.white),
-				new GraphicsCommand.FillRect(0,0,100,100)
+				new GraphicsCommand.FillRect(0,0,100,100),
+				new GraphicsCommand.SetColor(Color.black),
+				new GraphicsCommand.DrawRect(0,0,100,100)
 			});
 
 			int index = alt.priSelect();

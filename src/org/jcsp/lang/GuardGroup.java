@@ -184,7 +184,9 @@ public class GuardGroup extends Guard implements ABConstants {
 			resetBarriers();		
 			releaseLock(key);
 		}
-		bf.trace = RETURN_DISABLE;
+		if (bf != null) {
+			bf.trace = RETURN_DISABLE;
+		}
 
 		return (lastSynchronised != null);
 	}
@@ -270,8 +272,11 @@ public class GuardGroup extends Guard implements ABConstants {
 			// no more GuardGroups to disable in ALT, dispose of bf
 			bf.dispose();
 		}
+		for (int i = 0; i < guards.length; i++) {
+			guards[i].face = null;
+		}
 		
-//		bf = null;
+		bf = null;
 	}
 	//}}}
 	//{{{ private AltableBarrier selectBarrier() 
