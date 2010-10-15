@@ -26,8 +26,8 @@ public class VisualDemo implements CSProcess {
 		 new ActiveClosingFrame("Vis. Demo");
 		final Frame frame = acf.getActiveFrame();
 
-		int HEIGHT = 4;
-		int WIDTH = 4;
+		int HEIGHT = 10;
+		int WIDTH = 17;
 		int nums = WIDTH * HEIGHT;
 		final AltableBarrierBase pause = new AltableBarrierBase("PAUSE");
 		AltableBarrierBase[] bars = new AltableBarrierBase[nums];
@@ -188,7 +188,8 @@ public class VisualDemo implements CSProcess {
 				new GraphicsCommand.SetColor(Color.white),
 				new GraphicsCommand.FillRect(0,0,100,100),
 				new GraphicsCommand.SetColor(Color.black),
-				new GraphicsCommand.DrawRect(0,0,100,100)
+				new GraphicsCommand.DrawRect(0,0,100,100),
+				GraphicsCommand.NULL
 			});
 
 			int index = alt.priSelect();

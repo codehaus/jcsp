@@ -64,6 +64,26 @@ public class BarrierFace implements ABConstants {
 		faces.remove(key);
 	}
 	//}}}
+	//{{{ public int findIndex()
+	public int findIndex() {
+		int index = -1;
+		for (int i=0;(i<guardGroups.size())&&(selected!=null);i++) {
+			GuardGroup gg = (GuardGroup)guardGroups.get(i);
+			boolean done = false;
+			index = i;
+			for (int j=0;j < gg.guards.length;j++){
+				if (gg.guards[i] == selected){
+					done = true;
+					break;
+				}
+			}
+			if (done) {
+				break;
+			}
+		}
+		return index;
+	}
+	//}}}
 
 	//{{{ public static methods
 	//{{{ public static void beginWait()

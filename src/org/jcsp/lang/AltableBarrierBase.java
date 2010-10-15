@@ -257,8 +257,9 @@ public class AltableBarrierBase implements ABConstants {
 				// same time as the previously selected barrier then switch
 				// topIndex at this point is the same as the index of the
 				// currently selected events
+				int currentGroup = face.findIndex();
 				Vector ggs = face.guardGroups;
-				for (int j = 0; j <= face.topIndex; j++) {
+				for (int j = 0; j <= currentGroup; j++) {
 					GuardGroup gg = (GuardGroup) ggs.get(j);
 					for (int k = 0; k < gg.guards.length; k++) {
 						AltableBarrier bar = gg.guards[k];

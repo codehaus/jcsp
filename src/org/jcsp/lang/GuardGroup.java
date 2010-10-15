@@ -283,13 +283,12 @@ public class GuardGroup extends Guard implements ABConstants {
 	private AltableBarrier selectBarrier() {
 		Vector guardGroups = bf.guardGroups;
 		
-		for (int i = bf.topIndex; i <= bf.bottomIndex; i++) {
+		for (int i = 0; i <= findIndex(); i++) {
 			GuardGroup gg = (GuardGroup) guardGroups.get(i);
 
 			AltableBarrier ab = selectBarrier(gg);
 
 			if (ab != null) {
-				bf.topIndex = i;
 				return ab;
 			}
 		}
@@ -355,6 +354,20 @@ public class GuardGroup extends Guard implements ABConstants {
 			//System.out.println("this is where the problem is");
 			guards[i].setStatus(guards[i].defaultStatus);
 		}
+	}
+	//}}}
+	//{{{ private int findIndex
+	private int findIndex() {
+		int index = -1;
+		for (int i = 0; i < bf.guardGroups.size(); i++) {
+			GuardGroup gg = (GuardGroup)bf.guardGroups.get(i);
+
+			index = i;
+			if (gg == this) {
+				break;
+			}
+		}
+		return index;	
 	}
 	//}}}
 	//}}}
