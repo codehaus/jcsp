@@ -72,7 +72,7 @@ public class BarrierFace implements ABConstants {
 			boolean done = false;
 			index = i;
 			for (int j=0;j < gg.guards.length;j++){
-				if (gg.guards[i] == selected){
+				if (gg.guards[j] == selected){
 					done = true;
 					break;
 				}
@@ -80,6 +80,9 @@ public class BarrierFace implements ABConstants {
 			if (done) {
 				break;
 			}
+		}
+		if (index == -1) {
+			index = guardGroups.size() -1;
 		}
 		return index;
 	}

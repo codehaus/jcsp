@@ -7,15 +7,15 @@ import java.util.*;
 import java.awt.*;
 //}}}
 
-//{{{ public class VisualDemo implements CSProcess
-public class VisualDemo implements CSProcess {
+//{{{ public class VisualDemo2 implements CSProcess
+public class VisualDemo2 implements CSProcess {
 
-	//{{{ constants
+	//{{{ fields 
 	public static HashMap uniqueBarriers = new HashMap(); // maps barriers to colours
 
 	public AltableBarrier high, left, right;
 	public Guard mid;
-	public Alternative alt;
+	public Alternative alt, unpause;
 	public HashMap graphicsMap; // maps AltableBarriers to graphics commands
 	public DisplayList dl;
 	//}}}
@@ -26,8 +26,8 @@ public class VisualDemo implements CSProcess {
 		 new ActiveClosingFrame("Vis. Demo");
 		final Frame frame = acf.getActiveFrame();
 
-		int HEIGHT = 10;
-		int WIDTH = 17;
+		int HEIGHT = 1;
+		int WIDTH = 2;
 		int nums = WIDTH * HEIGHT;
 		final AltableBarrierBase pause = new AltableBarrierBase("PAUSE");
 		AltableBarrierBase[] bars = new AltableBarrierBase[nums];
@@ -55,7 +55,7 @@ public class VisualDemo implements CSProcess {
 			canvasProcs[i].setSize(100,100);
 			canvasContainer.add(canvasProcs[i]);
 
-			procs[i] = new VisualDemo(pause,
+			procs[i] = new VisualDemo2(pause,
 			 ab1, ab2,
 			 (AltingChannelInput)chans[i].in(),
 			 dl
@@ -80,13 +80,32 @@ public class VisualDemo implements CSProcess {
 		frame.setVisible(true);
 		frame.show();
 
-		CSProcess pauseProc = SampleProcesses.timProc(5000, pause);	
+		//CSProcess pauseProc = SampleProcesses.timProc(5000, pause);
+		class PauseProc implements CSProcess {
+			ChannelInput in;
+			AltableBarrier ab;
+			Alternative alt;
+			PauseProc() {
+				in = buttonChan.in();
+				ab = new AltableBarrier(
+				  pause, ABConstants.UNPREPARED);
+				alt = new Alternative(new Guard[]{
+				  new GuardGroup(new AltableBarrier[]{ab})
+				});
+			}
+			public void run() {
+				while (true) {
+					in.read();
+					alt.priSelect();
+				}
+			}
+		}
+		CSProcess pauseProc = new PauseProc();
 		(new Parallel(new CSProcess[] {
 			new Parallel(procs),
 			new Parallel(randoms),
 			new Parallel(canvasProcs),
 			button,
-//			canvasContainer,
 			pauseProc,
 			acf,
 			//{{{ pause button
@@ -113,8 +132,8 @@ public class VisualDemo implements CSProcess {
 	}
 	//}}}
 
-	//{{{ public VisualDemo()
-	public VisualDemo(AltableBarrierBase high, AltableBarrierBase left,
+	//{{{ public VisualDemo2()
+	public VisualDemo2(AltableBarrierBase high, AltableBarrierBase left,
 	 AltableBarrierBase right, Guard mid, DisplayList dl) {
 		addBarrier(high, Color.RED);
 		addBarrier(left);
@@ -131,6 +150,9 @@ public class VisualDemo implements CSProcess {
 			mid,
 			new GuardGroup(new AltableBarrier[] {
 			 this.left, this.right})
+		});
+		unpause = new Alternative(new Guard[] {
+			new GuardGroup(new AltableBarrier[] {this.high})
 		});
 
 		graphicsMap = new HashMap();
@@ -209,6 +231,12 @@ public class VisualDemo implements CSProcess {
 			GraphicsCommand[] commands =
 			 (GraphicsCommand[]) graphicsMap.get(selected);
 			dl.set(commands);
+
+			if (temp == high) {
+				// we are paused, wait for unpause
+				index = unpause.priSelect();
+				// unpaused
+			}
 
 			try {	
 			Thread.sleep(500);

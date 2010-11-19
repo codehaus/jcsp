@@ -8,8 +8,8 @@ import org.jcsp.lang.*;
 public class ConflictTest {
 
 	public static void main(String[] args) {
-		AltableBarrierBase a = new AltableBarrierBase();
-		AltableBarrierBase b = new AltableBarrierBase();
+		AltableBarrierBase a = new AltableBarrierBase("\n\nA\n\n");
+		AltableBarrierBase b = new AltableBarrierBase("\n\nB\n\n");
 
 		int as = 1;
 		int bs = 1;
