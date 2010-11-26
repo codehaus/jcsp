@@ -26,8 +26,8 @@ public class VisualDemo2 implements CSProcess {
 		 new ActiveClosingFrame("Vis. Demo");
 		final Frame frame = acf.getActiveFrame();
 
-		int HEIGHT = 1;
-		int WIDTH = 2;
+		int HEIGHT = 10;
+		int WIDTH = 12;
 		int nums = WIDTH * HEIGHT;
 		final AltableBarrierBase pause = new AltableBarrierBase("PAUSE");
 		AltableBarrierBase[] bars = new AltableBarrierBase[nums];

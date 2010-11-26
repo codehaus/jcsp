@@ -15,7 +15,7 @@ public class VisualDemo implements CSProcess {
 
 	public AltableBarrier high, left, right;
 	public Guard mid;
-	public Alternative alt;
+	public Alternative alt, unpause;
 	public HashMap graphicsMap; // maps AltableBarriers to graphics commands
 	public DisplayList dl;
 	//}}}
@@ -132,6 +132,9 @@ public class VisualDemo implements CSProcess {
 			new GuardGroup(new AltableBarrier[] {
 			 this.left, this.right})
 		});
+		unpause = new Alternative(new Guard[] {
+			new GuardGroup(new AltableBarrier[] {this.high})
+		});
 
 		graphicsMap = new HashMap();
 		GraphicsCommand[] commands;
@@ -209,6 +212,10 @@ public class VisualDemo implements CSProcess {
 			GraphicsCommand[] commands =
 			 (GraphicsCommand[]) graphicsMap.get(selected);
 			dl.set(commands);
+
+			if (temp == high) {
+				unpause.priSelect();
+			}
 
 			try {	
 			Thread.sleep(500);

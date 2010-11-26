@@ -172,6 +172,9 @@ public class AltableBarrier implements ABConstants {
 	public int setStatus(int status, boolean isTimeout) {
 		int oldStatus = getStatus();
 		this.status = status;
+		if (status == PICKED && this.face == null) {
+			throw new RuntimeException("Can't be picked if not ALTing!!!");
+		}
 
 //		return parent.checkStatus(this);
 		if (getStatus() == NOT_SYNCING_NOW && oldStatus != NOT_SYNCING_NOW) {

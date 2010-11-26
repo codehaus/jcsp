@@ -508,7 +508,10 @@ public class AltableBarrierBase implements ABConstants {
 			if (wakeAbort || wakeSync) {
 				if (wakeAll||face.lock instanceof Alternative){
 				System.out.println("trying to wake " + face.lock);
-				if (face.spuriousCheck) {
+				if (face.spuriousCheck) { 
+				System.out.println("waiting to grab face-lock");
+				/*
+				// I believe that this code is deadlock prone, rewriting
 				synchronized (face.lock) {
 					face.waking = true;
 					face.spuriousCheck = false;
@@ -519,6 +522,36 @@ public class AltableBarrierBase implements ABConstants {
 						Alternative alt = (Alternative) face.key;
 						alt.schedule();
 					}
+				}
+				*/
+				face.waking = true;
+				face.spuriousCheck = false;
+				if (face.lock instanceof Alternative) {
+					synchronized (face.lock) {
+						face.lock.notify();
+					}
+				} else {
+					// spawn another process to notify the altmonitor as the 
+					// process may have already woken up and therefore leave
+					// the whole system deadlock prone
+					class Notifier implements CSProcess {
+						private Object toNotify;
+						private Alternative alt;
+						Notifier(Object o, Alternative alt) {
+							toNotify = o;
+							this.alt = alt;
+						}
+						public void run() {
+							synchronized(toNotify) {
+								alt.schedule();
+							}
+						}
+					}
+					Object o = face.lock;
+					Alternative alt = (Alternative) face.key;
+					Notifier not = new Notifier(o, alt);
+					System.out.println("starting " + not);
+					(new ProcessManager(not)).start();	
 				}
 				} else if (face.selected != null) {
 					reportAB(ab);

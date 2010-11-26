@@ -118,6 +118,11 @@ public class BarrierFace implements ABConstants {
 		BarrierFace face = (BarrierFace) faces.get(caller);
 		GuardGroup.claimLock(caller);
 		face.trace = POST_ALT_MONITOR;
+		// regardless, whether or not the process was woken by a
+		// barrier or a regular guard, the barrier face no longer
+		// has a lock ...
+		face.lock = null;
+		
 		GuardGroup.releaseLock(caller);
 	}
 	//}}}
