@@ -127,6 +127,7 @@ public class GuardGroup extends Guard implements ABConstants {
 
 		AltableBarrier temp = lastSynchronised;
 		if (temp != null) {
+
 			//bf.waking = false;
 		} else if (bf.success == true) {
 			boolean wokenByThis = false;
