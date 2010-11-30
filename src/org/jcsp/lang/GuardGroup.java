@@ -127,8 +127,8 @@ public class GuardGroup extends Guard implements ABConstants {
 
 		AltableBarrier temp = lastSynchronised;
 		if (temp != null) {
-			bf.waking = false;
-		} else if (bf.waking == true) {
+			//bf.waking = false;
+		} else if (bf.success == true) {
 			boolean wokenByThis = false;
 			for (int i = 0; i < guards.length; i++) {
 				if (guards[i] == bf.selected) {
@@ -142,7 +142,7 @@ public class GuardGroup extends Guard implements ABConstants {
 			if (wokenByThis) {
 				temp = bf.selected;
 				lastSynchronised = temp;
-				bf.waking = false;
+				//bf.waking = false;
 				bf.selected = null;
 			}
 		}

@@ -29,7 +29,7 @@ public class BarrierFace implements ABConstants {
 	// flag to prevent stealing during either the syncrhonising or aborting
 	// sequence, set to true between the times when a process is awoken and
 	// the time when it claims the global lock, false at other times.
-	public boolean waking;
+	public boolean waking, success;
 	public boolean spuriousCheck;
 	public int trace;
 	//}}}
@@ -53,6 +53,7 @@ public class BarrierFace implements ABConstants {
 		bottomIndex = 0;
 
 		waking = false;
+		success = false;
 		spuriousCheck = true;
 		trace = 0;
 	}
@@ -122,6 +123,7 @@ public class BarrierFace implements ABConstants {
 		// barrier or a regular guard, the barrier face no longer
 		// has a lock ...
 		face.lock = null;
+		face.waking = true;
 		
 		GuardGroup.releaseLock(caller);
 	}

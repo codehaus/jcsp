@@ -526,6 +526,9 @@ public class AltableBarrierBase implements ABConstants {
 				*/
 				face.waking = true;
 				face.spuriousCheck = false;
+				if (wakeSync) {
+					face.success = true;
+				}
 				if (face.lock instanceof Alternative) {
 					synchronized (face.lock) {
 						face.lock.notify();
