@@ -562,6 +562,9 @@ public class AltableBarrierBase implements ABConstants {
 				}
 				System.out.println("woke " + face.lock);
 				}
+			} else if (!(wakeAll || wakeAbort)) {
+				reportAB(ab);
+				throw (new RuntimeException("Trying to wake process that cannot be!!!"));
 			} else if (wakeAll && !syncing && ab != caller) {
 				System.out.print("face " + face + " barrier " + face.selected + " waking is " + face.waking + " parent " + face.selected.parent + " caller " + caller + " lock " + face.lock + " key " + face.key);
 				throw (new RuntimeException("hmmmmmmm"));
