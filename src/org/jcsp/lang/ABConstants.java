@@ -9,6 +9,7 @@ public interface ABConstants {
 	public static final int UNPREPARED = 1;
 	public static final int PICKED = 6;
 
+
 	public static final int NOT_READY = 10;
 	public static final int NOT_SYNCING_NOW = 100;
 	public static final int PROBABLY_READY = 11;
