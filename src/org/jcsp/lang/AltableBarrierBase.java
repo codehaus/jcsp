@@ -504,6 +504,7 @@ public class AltableBarrierBase implements ABConstants {
 			boolean wakeSync = syncing && ab != caller;
 			System.out.print("wakeAbort " + wakeAbort);
 			System.out.println(" wakeSync " + wakeSync);
+			reportAB(ab);
 //			if (face != null && face.lock != null && face.selected != null && face.selected.parent == caller.parent && ab != caller) {
 			if (wakeAbort || wakeSync) {
 				if (wakeAll||face.lock instanceof Alternative){
