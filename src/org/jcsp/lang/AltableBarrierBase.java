@@ -525,13 +525,26 @@ public class AltableBarrierBase implements ABConstants {
 					}
 				}
 				*/
+				/*
+				 * These 3 lines removed as there is a gap between when a
+				 * process releases the global lock and when he waits on a
+				 * local one, thus these variables can be changed after the
+				 * global lock is released but before the waiting process makes
+				 * its spurious check meaning the process is never woken up
+				 * properly ... I think, will check (14/12/2010)
 				face.waking = true;
 				face.spuriousCheck = false;
 				if (wakeSync) {
 					face.success = true;
 				}
+				*/
 				if (face.lock instanceof Alternative) {
 					synchronized (face.lock) {
+						face.waking = true;
+						face.spuriousCheck = false;
+						if (wakeSync) {
+							face.success = true;
+						}
 						face.lock.notify();
 					}
 				} else {
@@ -541,19 +554,29 @@ public class AltableBarrierBase implements ABConstants {
 					class Notifier implements CSProcess {
 						private Object toNotify;
 						private Alternative alt;
-						Notifier(Object o, Alternative alt) {
+						private BarrierFace face;
+						private boolean syncing;
+						Notifier(Object o, Alternative alt,
+							BarrierFace face, boolean syncing) {
 							toNotify = o;
 							this.alt = alt;
+							this.face = face;
+							this.syncing = syncing;
 						}
 						public void run() {
 							synchronized(toNotify) {
+								face.waking = true;
+								face.spuriousCheck = false;
+								if (syncing) {
+									face.success = true;
+								}
 								alt.schedule();
 							}
 						}
 					}
 					Object o = face.lock;
 					Alternative alt = (Alternative) face.key;
-					Notifier not = new Notifier(o, alt);
+					Notifier not = new Notifier(o, alt,face,wakeSync);
 					System.out.println("starting " + not);
 					(new ProcessManager(not)).start();	
 				}
