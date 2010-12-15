@@ -62,6 +62,7 @@ public class GuardGroup extends Guard implements ABConstants {
 		boolean checking = true;
 		AltableBarrier ab = null;
 		lastSynchronised = null;
+		bf.waking = false;
 		// stop checking if a barrier syncrhonisation is successful
 		// or if the selectBarrier method can't find anything to
 		// preemptively wait on

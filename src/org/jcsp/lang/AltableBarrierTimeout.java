@@ -1,9 +1,17 @@
 //{{{ package and import statements
 package org.jcsp.lang;
+
+import java.io.*;
 //}}}
 
 //{{{ public class AltableBarrierTimeout implements CSProcess
 public class AltableBarrierTimeout implements CSProcess {
+
+	//{{{ static fields
+	public static final String PATH="./log.txt";
+
+	private static final PrintStream logOut;
+	//}}}
 
 	//{{{ fields
 	private long delay;
@@ -16,6 +24,20 @@ public class AltableBarrierTimeout implements CSProcess {
 		this.parent = parent;
 		this.delay = delay;
 		shouldTimeout = true;
+	}
+	//}}}
+
+	//{{{ static block
+	static {
+		File f = new File(PATH);
+		OutputStream o = null;
+		try {
+			o = new FileOutputStream(f, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		logOut = new PrintStream(o);
 	}
 	//}}}
 	
@@ -35,6 +57,12 @@ public class AltableBarrierTimeout implements CSProcess {
 
 		if (shouldTimeout) {
 //			System.out.println("tried to call parent timeout "+ this);
+			// do some logging here
+			if (parent.barrierSize() > 2) {
+				parent.reportABs(logOut);
+				logOut.println("##########################");
+			}
+			// timeout here
 			parent.timeout();
 		} else {
 //			System.out.println("I was killed " + this);

@@ -2,6 +2,7 @@
 package org.jcsp.lang;
 
 import java.util.*;
+import java.io.*;
 //}}}
 //{{{ public class AltableBarrierBase
 public class AltableBarrierBase implements ABConstants {
@@ -505,6 +506,21 @@ public class AltableBarrierBase implements ABConstants {
 			System.out.print("wakeAbort " + wakeAbort);
 			System.out.println(" wakeSync " + wakeSync);
 			reportAB(ab);
+			// these following lines must be executed whether or not the process
+			// needs to be woken or not.  This is to stop anomolous behaviour
+			// for processes waking others and for processes waiting on the 
+			// altmonitor which have already been woken up (15/12/2010)
+			// but only if they're actually evaluating an ALT (15/12/2010) hence
+			// inclusion of face!=null test
+			if (face != null) {
+				face.waking = true;
+				if (wakeSync) {
+					face.success = true;
+				}
+			}
+			// end of above comment
+
+
 //			if (face != null && face.lock != null && face.selected != null && face.selected.parent == caller.parent && ab != caller) {
 			if (wakeAbort || wakeSync) {
 				if (wakeAll||face.lock instanceof Alternative){
@@ -540,11 +556,8 @@ public class AltableBarrierBase implements ABConstants {
 				*/
 				if (face.lock instanceof Alternative) {
 					synchronized (face.lock) {
-						face.waking = true;
+
 						face.spuriousCheck = false;
-						if (wakeSync) {
-							face.success = true;
-						}
 						face.lock.notify();
 					}
 				} else {
@@ -565,11 +578,7 @@ public class AltableBarrierBase implements ABConstants {
 						}
 						public void run() {
 							synchronized(toNotify) {
-								face.waking = true;
 								face.spuriousCheck = false;
-								if (syncing) {
-									face.success = true;
-								}
 								alt.schedule();
 							}
 						}
@@ -587,8 +596,10 @@ public class AltableBarrierBase implements ABConstants {
 				System.out.println("woke " + face.lock);
 				}
 			} else if (wakeAll && !syncing && ab != caller) {
-				reportAB(ab);
-				throw (new RuntimeException("hmmmmmmm"));
+				// this case is legitimate if the process has been woken from
+				// the altmonitor by a non-barrier guard
+				//reportAB(ab);
+				//throw (new RuntimeException("hmmmmmmm"));
 			}
 		}
 	}
@@ -648,7 +659,16 @@ public class AltableBarrierBase implements ABConstants {
 	}
 	//}}}
 	//{{{ public void reportAB(AltableBarrier ab)
+	public void reportABs(PrintStream out) {
+		for (int i = 0; i < altableBarriers.size(); i++) {
+			AltableBarrier ab = (AltableBarrier) altableBarriers.get(i);
+			reportAB(ab, out);
+		}
+	}
 	public void reportAB(AltableBarrier ab) {
+		reportAB(ab, System.out);
+	}
+	public void reportAB(AltableBarrier ab, PrintStream out) {
 				BarrierFace f = ab.face;
 				AltableBarrier current = null, sync = null;
 				Object lock = null;//, key = null;
@@ -662,11 +682,19 @@ public class AltableBarrierBase implements ABConstants {
 //					sync = f.lastSynchronised;
 //					key = f.key;
 				}
-				System.out.println("missing " + ab + " face is "+ f +" currently on " + current + " lastSynchronised " + sync +" lock is " + lock + " waking? " + waking + " status = " + ab.status + " trace = " + trace);// + " key" + key);
+				out.println("missing " + ab + " face is "+ f +" currently on " + current + " lastSynchronised " + sync +" lock is " + lock + " waking? " + waking + " status = " + ab.status + " trace = " + trace);// + " key" + key);
 
 	}
 	//}}}
-
+	//{{{ public int barrierSize()
+	public int barrierSize() {
+		int i = -1;
+		if (altableBarriers == null) {
+			i = altableBarriers.size();
+		}
+		return i;
+	}
+	//}}}
 
 	//{{{ SIGH :(
 	// Need to hold a global lock on all AltableBarrierResources to ensure
