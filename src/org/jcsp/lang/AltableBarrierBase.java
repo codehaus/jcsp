@@ -512,7 +512,11 @@ public class AltableBarrierBase implements ABConstants {
 			// altmonitor which have already been woken up (15/12/2010)
 			// but only if they're actually evaluating an ALT (15/12/2010) hence
 			// inclusion of face!=null test
-			if (face != null) {
+			// an exception for waking is where the barrier in question is waiting
+			// on the altmonitor and its previous sync attempt was aborted, in that
+			// case waking shouldn't be set, this is because those processes aren't
+			// woken up. in truth this method could do with a rewrite in future.
+			if (face != null && !(wakeAbort && !(face.lock instanceof Alternative))) {
 				face.waking = true;
 				if (wakeSync) {
 					face.success = true;
