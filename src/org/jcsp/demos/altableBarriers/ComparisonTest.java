@@ -4,8 +4,8 @@ package org.jcsp.demos.altableBarriers;
 import org.jcsp.lang.*;
 //}}}
 //{{{ public class ConflictTest
-public class ConflictTest {
-	public static final int ITERATIONS = 1000;
+public class ComparisonTest {
+	public static final int ITERATIONS = 100;
 
 	public static final int PROCESSES = 100;
 	public static final int OVERLAP = 4;
@@ -13,33 +13,13 @@ public class ConflictTest {
 	public static final boolean USE_PCOMS = true;
 	public static final int DEFAULT = ABConstants.PREPARED;
 
-	//{{{ barrier resolver
-	class BarrierResolver implements CSProcess{
-	
-		Alternative alt;
-		boolean isRecorder;
-		BarrierResolver (Alternative alt, boolean isRecorder) {
-			this.alt = alt;
-			this.isRecorder = isRecorder
-		}
+	static Alternative[] alts;
 
-		public void run() {
-			long start = System.currentTimeMillis();
-			for (int i = 0; i < ITERATIONS; i++) {
-				alt.priSelect();
-			}
-			long end = System.currentTimeMillis();
-			if (isRecorder) {
-				System.out.println("time was " end - start);
-				System.exit(0);
-			}
-		}
-	}
-	//}}}
+
 
 	public static void main(String[] args) {
 		CSProcess[] procs = new CSProcess[PROCESSES];
-		Alternative alts = new Alternative[PROCESSES];
+		alts = new Alternative[PROCESSES];
 
 		createAlts();
 
@@ -50,7 +30,7 @@ public class ConflictTest {
 
 		Parallel par = new Parallel(procs);
 
-		par.start();
+		par.run();
 	}
 
 	public static void createAlts() {
@@ -90,7 +70,7 @@ public class ConflictTest {
 			abbs[i] = new AltableBarrierBase("BAR"+i);
 		}
 		for (int i = 0; i < PROCESSES; i++) {
-			AltalbeBarrier[] abs = new AltableBarrier[OVERLAP];
+			AltableBarrier[] abs = new AltableBarrier[OVERLAP];
 			for (int j = 0; j < OVERLAP; j++) {
 				abs[j] = new AltableBarrier(
 					abbs[(i+j)%PROCESSES], DEFAULT);
@@ -104,3 +84,32 @@ public class ConflictTest {
 
 }
 //}}}
+
+	//{{{ barrier resolver
+	class BarrierResolver implements CSProcess{
+
+		static final int ITERATIONS = ComparisonTest.ITERATIONS;
+	
+		Alternative alt;
+		boolean isRecorder;
+		BarrierResolver (Alternative alt, boolean isRecorder) {
+			this.alt = alt;
+			this.isRecorder = isRecorder;
+		}
+
+		public void run() {
+			long start = System.currentTimeMillis();
+			for (int i = 0; i < 2*ITERATIONS; i++) {
+				alt.priSelect();
+				if (i >= ITERATIONS && isRecorder) {
+					break;
+				}
+			}
+			long end = System.currentTimeMillis();
+			if (isRecorder) {
+				System.out.println("time was " + (end - start));
+				System.exit(0);
+			}
+		}
+	}
+	//}}}
