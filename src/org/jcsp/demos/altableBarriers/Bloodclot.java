@@ -26,6 +26,8 @@ public class Bloodclot implements CSProcess {
 	public AltableBarrier[] pass;
 	public AltableBarrier tock;
 	public int state = EMPTY;
+
+	public GraphicsCommand[] empty, full;
 	//}}}
 
 	//{{{ public static void main()
@@ -38,11 +40,11 @@ public class Bloodclot implements CSProcess {
 		int WIDTH = 17;
 		int nums = WIDTH * HEIGHT;
 		final AltableBarrierBase pause = new AltableBarrierBase("PAUSE");
-		AltableBarrierBase[] bars = new AltableBarrierBase[nums];
+		final AltableBarrierBase tick = new AltableBarrierBase("TOCK");
+		AltableBarrierBase[] bars = new AltableBarrierBase[nums+2];
 		ActiveCanvas[] canvasProcs = new ActiveCanvas[nums];
 		CSProcess[] procs = new CSProcess[nums];
 		CSProcess[] randoms = new CSProcess[nums];
-		final One2OneChannel[] chans = new One2OneChannel[nums];
 		final One2OneChannel buttonChan = Channel.createOne2One();
 		final ActiveButton button = new ActiveButton(
 		 null, buttonChan.out(), "Pause");
@@ -50,9 +52,8 @@ public class Bloodclot implements CSProcess {
 		 new ActiveContainer();
 		canvasContainer.setLayout(new GridLayout(HEIGHT,WIDTH));
 
-		for (int i = 0; i < nums; i++) {
-			bars[i] = new AltableBarrierBase("BAR"+i);
-			chans[i] = Channel.createOne2One();
+		for (int i = 0; i < nums+2; i++) {
+			bars[i] = new AltableBarrierBase("PASS"+i);
 		}
 		for (int i = 0; i < nums; i++) {
 			AltableBarrierBase ab1 = bars[i];
@@ -62,24 +63,14 @@ public class Bloodclot implements CSProcess {
 			canvasProcs[i].setPaintable(dl);
 			canvasProcs[i].setSize(100,100);
 			canvasContainer.add(canvasProcs[i]);
-
-			procs[i] = new VisualDemo(pause,
-			 ab1, ab2,
-			 (AltingChannelInput)chans[i].in(),
-			 dl
-			);
-			final ChannelOutput out = chans[i].out();
-			randoms[i] = new CSProcess() {
-				public void run() {
-				Random r = new Random();
-				while (true) {
-					try {
-					Thread.sleep(r.nextInt(10000));
-					} catch (Exception e) {}
-					out.write("blah");
-				}
-				}
+			AltableBarrierBase[] myPasses = 
+			  new AltableBarrierBase[]{
+			  bars[i], bars[i+1], bars[i+2]
 			};
+
+			procs[i] = new Bloodclot(myPasses,
+			 tick, dl
+			);
 		}
 		frame.setLayout(new BorderLayout());
 		frame.add(canvasContainer, BorderLayout.CENTER);
@@ -91,7 +82,6 @@ public class Bloodclot implements CSProcess {
 		CSProcess pauseProc = SampleProcesses.timProc(5000, pause);	
 		(new Parallel(new CSProcess[] {
 			new Parallel(procs),
-			new Parallel(randoms),
 			new Parallel(canvasProcs),
 			button,
 //			canvasContainer,
@@ -121,36 +111,60 @@ public class Bloodclot implements CSProcess {
 	}
 	//}}}
 
-	//{{{ public VisualDemo()
-	public Bloodclot(AltableBarrierBase high, AltableBarrierBase left,
-	 AltableBarrierBase right, Guard mid, DisplayList dl) {
-		addBarrier(high, Color.RED);
-		addBarrier(left);
-		addBarrier(right);
+	//{{{ public Bloodclot()
+	public Bloodclot(AltableBarrierBase[] passes, AltableBarrierBase tick,
+	  DisplayList dl) {
+		addBarrier(tick, Color.RED);
+		addBarrier(passes[0]);
+		addBarrier(passes[1]);
+		addBarrier(passes[2]);
 
-		this.high = new AltableBarrier(high);
-		this.left = new AltableBarrier(left);
-		this.right= new AltableBarrier(right);
-		this.mid = mid;
+		for (int i = 0; i < passes.length; i++) {
+			this.pass[i] = new AltableBarrier(passes[i]);
+		}
+		this.tock = new AltableBarrier(tick);
+//		this.high = new AltableBarrier(high);
+//		this.left = new AltableBarrier(left);
+//		this.right= new AltableBarrier(right);
+//		this.mid = mid;
 		this.dl = dl;
 
-		alt = new Alternative(new Guard[] {
-			new GuardGroup(new AltableBarrier[] {this.high}),
-			mid,
-			new GuardGroup(new AltableBarrier[] {
-			 this.left, this.right})
-		});
-		unpause = new Alternative(new Guard[] {
-			new GuardGroup(new AltableBarrier[] {this.high})
-		});
+//		alt = new Alternative(new Guard[] {
+//			new GuardGroup(new AltableBarrier[] {this.high}),
+//			mid,
+//			new GuardGroup(new AltableBarrier[] {
+//			 this.left, this.right})
+
+//		});
+//		unpause = new Alternative(new Guard[] {
+//			new GuardGroup(new AltableBarrier[] {this.high})
+//		});
 
 		graphicsMap = new HashMap();
 		GraphicsCommand[] commands;
+		//{{{ EMPTY
+		commands = new GraphicsCommand[] {
+			new GraphicsCommand.SetColor(Color.black),
+			new GraphicsCommand.DrawRect(0,0,100,100),
+			new GraphicsCommand.SetColor(Color.white),
+			new GraphicsCommand.FillRect(1,1,99,99)
+		};
+		empty = commands;
+		//}}}
+		//{{{ FULL
+		commands = new GraphicsCommand[] {
+			new GraphicsCommand.SetColor(Color.black),
+			new GraphicsCommand.DrawRect(0,0,100,100),
+			new GraphicsCommand.SetColor(Color.red),
+			new GraphicsCommand.FillRect(1,1,99,99)
+		};
+		full = commands;
+		//}}}
 		//{{{ high
 		commands = new GraphicsCommand[] {
 			new GraphicsCommand.SetColor(Color.black),
 			new GraphicsCommand.DrawRect(0,0,100,100),
-			new GraphicsCommand.DrawString(high.name,0,50),
+			new GraphicsCommand.DrawString("",0,50),
 			new GraphicsCommand.SetColor(
 			 (Color) uniqueBarriers.get(high)),
 			new GraphicsCommand.FillRect(0,0,100,25)
@@ -171,7 +185,7 @@ public class Bloodclot implements CSProcess {
 		commands = new GraphicsCommand[] {
 			new GraphicsCommand.SetColor(Color.black),
 			new GraphicsCommand.DrawRect(0,0,100,100),
-			new GraphicsCommand.DrawString(left.name,0,50),
+			new GraphicsCommand.DrawString("",0,50),
 			new GraphicsCommand.SetColor(
 			 (Color) uniqueBarriers.get(left)),
 			new GraphicsCommand.FillRect(0,75,40,25)
@@ -182,7 +196,7 @@ public class Bloodclot implements CSProcess {
 		commands = new GraphicsCommand[] {
 			new GraphicsCommand.SetColor(Color.black),
 			new GraphicsCommand.DrawRect(0,0,100,100),
-			new GraphicsCommand.DrawString(right.name,0,50),
+			new GraphicsCommand.DrawString("",0,50),
 			new GraphicsCommand.SetColor(
 			 (Color) uniqueBarriers.get(right)),
 			new GraphicsCommand.FillRect(60,75,40,25)
@@ -195,39 +209,13 @@ public class Bloodclot implements CSProcess {
 	//{{{ public void run()
 	public void run() {
 		while(true) {
-			dl.set(new GraphicsCommand[] {
-				new GraphicsCommand.SetColor(Color.white),
-				new GraphicsCommand.FillRect(0,0,100,100),
-				new GraphicsCommand.SetColor(Color.black),
-				new GraphicsCommand.DrawRect(0,0,100,100),
-				GraphicsCommand.NULL
-			});
-
-			int index = alt.priSelect();
-			Guard guard = alt.guard[index];
-			Object selected = guard;
-			AltableBarrier temp = null;
-			if (guard instanceof GuardGroup) {
-				temp = ((GuardGroup) guard).lastSynchronised();
-				selected = temp;
-				if (temp.face != null) {
-					throw (new RuntimeException("argh face"));
-				}
+			if (state == FULL) {
+				FULL();
+			} else if (state == EMPTY) {
+				EMPTY();
 			} else {
-				((ChannelInput) selected).read();
+				ALMOST();
 			}
-			
-			GraphicsCommand[] commands =
-			 (GraphicsCommand[]) graphicsMap.get(selected);
-			dl.set(commands);
-
-			if (temp == high) {
-				unpause.priSelect();
-			}
-
-			try {	
-			Thread.sleep(500);
-			} catch(Exception e) {}
 		}
 	}
 	//}}}
@@ -307,7 +295,13 @@ public class Bloodclot implements CSProcess {
 	//}}}
 
 	//{{{ private void draw()
-	public void draw() {}
+	public void draw() {
+		if (state == FULL) {
+			dl.set(full);
+		} else {
+			dl.set(empty);
+		}
+	}
 	//}}}
 
 	// {{{ private static void addBarrier()
@@ -321,6 +315,40 @@ public class Bloodclot implements CSProcess {
 		if (uniqueBarriers.get(bar) == null) {
 			uniqueBarriers.put(bar, col);
 		}		
+	}
+	//}}}
+
+}
+//}}}
+//{{{ class SpawnProcess extends CSProcess
+class SpawnProcess extends CSProcess {
+
+	//{{{ fields
+	AltableBarrier[] pass;
+	AltableBarrier tock;
+
+	Random r;
+	//}}}
+
+	//{{{ SpawnProcess
+	//}}}
+
+	//{{{ public void run()
+	public void run(){
+		passNew();
+		int count = 0;
+		while (true) {
+			
+		}
+	}
+	//}}}
+
+	//{{{ private void passNew()
+	private void passNew() {
+		GuardGroup gg = new GuardGroup(new AltableBarrier[]{pass[0]});
+		Alternative alt = new Alternative(new Guard[]{gg});
+
+		gg.lastSynchronised(); // don't need result
 	}
 	//}}}
 
