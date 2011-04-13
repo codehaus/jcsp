@@ -79,10 +79,15 @@ public class Bloodclot implements CSProcess {
 		frame.setVisible(true);
 		frame.show();
 
+		AltableBarrierBase[] spawnBars = new AltableBarrierBase[]{
+		  bars[0], bars[1]
+		};
+		CSProcess spawn = new SpawnProcess(spawnBars, tick);
 		CSProcess pauseProc = SampleProcesses.timProc(5000, pause);	
 		(new Parallel(new CSProcess[] {
 			new Parallel(procs),
 			new Parallel(canvasProcs),
+			spawn,
 			button,
 //			canvasContainer,
 			pauseProc,
@@ -321,24 +326,51 @@ public class Bloodclot implements CSProcess {
 }
 //}}}
 //{{{ class SpawnProcess extends CSProcess
-class SpawnProcess extends CSProcess {
-
+class SpawnProcess implements CSProcess {
 	//{{{ fields
 	AltableBarrier[] pass;
 	AltableBarrier tock;
 
 	Random r;
+	boolean canPass = true;
 	//}}}
-
 	//{{{ SpawnProcess
+	SpawnProcess(AltableBarrierBase[] passes, AltableBarrierBase tick){
+		pass = new AltableBarrier[passes.length];
+
+		this.tock = new AltableBarrier(tick);
+		for(int i = 0; i < passes.length; i++) {
+			pass[i] = new AltableBarrier(passes[i]);
+		}
+
+		r = new Random();
+	}
 	//}}}
 
 	//{{{ public void run()
 	public void run(){
 		passNew();
 		int count = 0;
+		int threshold = r.nextInt(10) + 2;
+		GuardGroup gg = new GuardGroup(new AltableBarrier[]{
+			pass[1], tock
+		});
+		Alternative alt = new Alternative(new Guard[]{gg});
 		while (true) {
-			
+			int index = alt.priSelect();	
+			AltableBarrier bar = gg.lastSynchronised();
+			if (bar == pass[1]) {
+				canPass = true;
+			} else {
+				// nothing special for tock
+			}
+			count++;
+	
+			if (count > threshold && canPass) {
+				passNew();
+				count = 0;
+				threshold = r.nextInt(10) + 2;
+			}
 		}
 	}
 	//}}}
@@ -349,6 +381,7 @@ class SpawnProcess extends CSProcess {
 		Alternative alt = new Alternative(new Guard[]{gg});
 
 		gg.lastSynchronised(); // don't need result
+		canPass = false;
 	}
 	//}}}
 
