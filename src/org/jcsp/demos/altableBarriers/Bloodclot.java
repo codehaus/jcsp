@@ -7,7 +7,7 @@ import java.util.*;
 import java.awt.*;
 //}}}
 
-//{{{ public class VisualDemo implements CSProcess
+//{{{ public class Bloodclot implements CSProcess
 public class Bloodclot implements CSProcess {
 
 	//{{{ fields
@@ -28,6 +28,20 @@ public class Bloodclot implements CSProcess {
 	public int state = EMPTY;
 
 	public GraphicsCommand[] empty, full;
+
+	/*
+	 * All processes have identical Random number generators, each cycle
+	 * a new number is generated and it corresponds to one (and only one)
+	 * ID of one of the processes.  If 'you' are the process selected in 
+	 * this cycle then you prioritise 'tock' over other events.  In this 
+	 * way 'pass' events are usually favoured (being listed first in their
+	 * GuardGroups) but when the selected process is scheduled then it (and
+	 * and by extension all other remaining processes) favour the 'tock'
+	 * event.
+	 */
+	public int ID, NUM_PROCS, picked;
+	public final long seed;
+	Random r;
 	//}}}
 
 	//{{{ public static void main()
@@ -36,8 +50,8 @@ public class Bloodclot implements CSProcess {
 		 new ActiveClosingFrame("Vis. Demo");
 		final Frame frame = acf.getActiveFrame();
 
-		int HEIGHT = 10;
-		int WIDTH = 17;
+		int HEIGHT = 5;
+		int WIDTH = 5;
 		int nums = WIDTH * HEIGHT;
 		final AltableBarrierBase pause = new AltableBarrierBase("PAUSE");
 		final AltableBarrierBase tick = new AltableBarrierBase("TOCK");
@@ -51,6 +65,7 @@ public class Bloodclot implements CSProcess {
 		ActiveContainer canvasContainer =
 		 new ActiveContainer();
 		canvasContainer.setLayout(new GridLayout(HEIGHT,WIDTH));
+		final long seed = System.currentTimeMillis();
 
 		for (int i = 0; i < nums+2; i++) {
 			bars[i] = new AltableBarrierBase("PASS"+i);
@@ -69,7 +84,7 @@ public class Bloodclot implements CSProcess {
 			};
 
 			procs[i] = new Bloodclot(myPasses,
-			 tick, dl
+			 tick, dl, i, seed, nums
 			);
 		}
 		frame.setLayout(new BorderLayout());
@@ -118,12 +133,13 @@ public class Bloodclot implements CSProcess {
 
 	//{{{ public Bloodclot()
 	public Bloodclot(AltableBarrierBase[] passes, AltableBarrierBase tick,
-	  DisplayList dl) {
+	  DisplayList dl, int ID, long seed, int NUM_PROCS) {
 		addBarrier(tick, Color.RED);
 		addBarrier(passes[0]);
 		addBarrier(passes[1]);
 		addBarrier(passes[2]);
 
+		pass = new AltableBarrier[passes.length];
 		for (int i = 0; i < passes.length; i++) {
 			this.pass[i] = new AltableBarrier(passes[i]);
 		}
@@ -133,6 +149,11 @@ public class Bloodclot implements CSProcess {
 //		this.right= new AltableBarrier(right);
 //		this.mid = mid;
 		this.dl = dl;
+		this.ID = ID;
+		this.NUM_PROCS = NUM_PROCS;
+		this.seed = seed;
+		r = new Random(seed);
+		picked = -1;
 
 //		alt = new Alternative(new Guard[] {
 //			new GuardGroup(new AltableBarrier[] {this.high}),
@@ -214,6 +235,8 @@ public class Bloodclot implements CSProcess {
 	//{{{ public void run()
 	public void run() {
 		while(true) {
+			picked = r.nextInt(NUM_PROCS);
+
 			if (state == FULL) {
 				FULL();
 			} else if (state == EMPTY) {
@@ -227,14 +250,29 @@ public class Bloodclot implements CSProcess {
 
 	//{{{ private void FULL()
 	private void FULL() {
-		GuardGroup gg = new GuardGroup(new AltableBarrier[]{
-			pass[1],
-			pass[2],
-			tock
-		});
-		Alternative alt = new Alternative(new Guard[]{gg});
+		GuardGroup[] gg = new GuardGroup[]{
+			new GuardGroup(new AltableBarrier[]{
+				pass[1],
+				pass[2],
+				tock
+			})
+		};
+		//{{{ change if picked
+		if (false) {
+			gg = new GuardGroup[]{
+				new GuardGroup(new AltableBarrier[]{
+					tock
+				}),
+				new GuardGroup(new AltableBarrier[]{
+					pass[1], pass[2]
+				})
+			};
+		} 
+		//}}}
+		Alternative alt = new Alternative(gg);
+
 		int index = alt.priSelect();
-		AltableBarrier selected = gg.lastSynchronised();
+		AltableBarrier selected = gg[index].lastSynchronised();
 
 		if (selected == pass[1]) {
 			state = EMPTY;
@@ -249,11 +287,11 @@ public class Bloodclot implements CSProcess {
 			return;
 		}
 
-		gg = new GuardGroup(new AltableBarrier[]{pass[1]});
-		alt = new Alternative(new GuardGroup[]{gg});
+		GuardGroup ggrp = new GuardGroup(new AltableBarrier[]{pass[1]});
+		alt = new Alternative(new GuardGroup[]{ggrp});
 		index = alt.priSelect();
 		
-		gg.lastSynchronised();
+		ggrp.lastSynchronised();
 		// lastSynchronised will be pass[1]
 
 		state = EMPTY;
@@ -301,6 +339,14 @@ public class Bloodclot implements CSProcess {
 
 	//{{{ private void draw()
 	public void draw() {
+		dl.set(new GraphicsCommand[]{
+			new GraphicsCommand.SetColor(Color.gray),
+			new GraphicsCommand.FillRect(1,1,99,99)
+		});
+		try {
+			Thread.sleep(500);
+		} catch (Exception e){}
+
 		if (state == FULL) {
 			dl.set(full);
 		} else {
