@@ -7,17 +7,22 @@ import java.util.*;
 import java.awt.*;
 //}}}
 
-//{{{ public class VisualDemo2 implements CSProcess
-public class VisualDemo2 implements CSProcess {
+//{{{ public class VisualDemo implements CSProcess
+public class VisualDemo3 implements CSProcess {
 
-	//{{{ fields 
+	//{{{ constants
 	public static HashMap uniqueBarriers = new HashMap(); // maps barriers to colours
 
+	public static int OVERLAP = 3;
+
 	public AltableBarrier high, left, right;
+	public AltableBarrier[] mids;
 	public Guard mid;
 	public Alternative alt, unpause;
 	public HashMap graphicsMap; // maps AltableBarriers to graphics commands
 	public DisplayList dl;
+
+	public ChannelOutput toReporter;
 	//}}}
 
 	//{{{ public static void main()
@@ -27,7 +32,7 @@ public class VisualDemo2 implements CSProcess {
 		final Frame frame = acf.getActiveFrame();
 
 		int HEIGHT = 6;
-		int WIDTH = 8;
+		int WIDTH = 6;
 		int nums = WIDTH * HEIGHT;
 		final AltableBarrierBase pause = new AltableBarrierBase("PAUSE");
 		AltableBarrierBase[] bars = new AltableBarrierBase[nums];
@@ -38,15 +43,24 @@ public class VisualDemo2 implements CSProcess {
 		final One2OneChannel buttonChan = Channel.createOne2One();
 		final ActiveButton button = new ActiveButton(
 		 null, buttonChan.out(), "Pause");
+		final Any2OneChannel toSyncCounter = Channel.createAny2One();
 		ActiveContainer canvasContainer =
 		 new ActiveContainer();
 		canvasContainer.setLayout(new GridLayout(HEIGHT,WIDTH));
+
+		SyncCounter syncCounter = new SyncCounter(toSyncCounter.in());
+		ChannelOutput outToSyncCounter = toSyncCounter.out();
 
 		for (int i = 0; i < nums; i++) {
 			bars[i] = new AltableBarrierBase("BAR"+i);
 			chans[i] = Channel.createOne2One();
 		}
 		for (int i = 0; i < nums; i++) {
+			AltableBarrierBase[] abs =
+			 new AltableBarrierBase[OVERLAP];
+			for (int j = 0; j < abs.length; j++) {
+				abs[j] = bars[(i+j)%nums];
+			}
 			AltableBarrierBase ab1 = bars[i];
 			AltableBarrierBase ab2 = bars[(i+1)%nums];
 			canvasProcs[i] = new ActiveCanvas();
@@ -55,10 +69,10 @@ public class VisualDemo2 implements CSProcess {
 			canvasProcs[i].setSize(100,100);
 			canvasContainer.add(canvasProcs[i]);
 
-			procs[i] = new VisualDemo2(pause,
-			 ab1, ab2,
+			procs[i] = new VisualDemo3(pause,
+			 abs[0], abs[OVERLAP-1], abs,
 			 (AltingChannelInput)chans[i].in(),
-			 dl
+			 dl, outToSyncCounter
 			);
 			final ChannelOutput out = chans[i].out();
 			randoms[i] = new CSProcess() {
@@ -76,37 +90,20 @@ public class VisualDemo2 implements CSProcess {
 		frame.setLayout(new BorderLayout());
 		frame.add(canvasContainer, BorderLayout.CENTER);
 		frame.add(button, BorderLayout.SOUTH);
+		frame.add(syncCounter, BorderLayout.EAST);
 		frame.pack();
 		frame.setVisible(true);
 		frame.show();
 
-		//CSProcess pauseProc = SampleProcesses.timProc(5000, pause);
-		class PauseProc implements CSProcess {
-			ChannelInput in;
-			AltableBarrier ab;
-			Alternative alt;
-			PauseProc() {
-				in = buttonChan.in();
-				ab = new AltableBarrier(
-				  pause, ABConstants.UNPREPARED);
-				alt = new Alternative(new Guard[]{
-				  new GuardGroup(new AltableBarrier[]{ab})
-				});
-			}
-			public void run() {
-				while (true) {
-					in.read();
-					alt.priSelect();
-				}
-			}
-		}
-		CSProcess pauseProc = new PauseProc();
+		CSProcess pauseProc = SampleProcesses.timProc(5000, pause);	
 		(new Parallel(new CSProcess[] {
 			new Parallel(procs),
-			new Parallel(randoms),
+			//new Parallel(randoms),
 			new Parallel(canvasProcs),
+			syncCounter,
 			button,
-			pauseProc,
+//			canvasContainer,
+			//pauseProc,
 			acf,
 			//{{{ pause button
 			/*
@@ -132,9 +129,11 @@ public class VisualDemo2 implements CSProcess {
 	}
 	//}}}
 
-	//{{{ public VisualDemo2()
-	public VisualDemo2(AltableBarrierBase high, AltableBarrierBase left,
-	 AltableBarrierBase right, Guard mid, DisplayList dl) {
+	//{{{ public VisualDemo3()
+	public VisualDemo3(AltableBarrierBase high, AltableBarrierBase left,
+	 AltableBarrierBase right, AltableBarrierBase[] bars, 
+	 Guard mid, DisplayList dl,
+	 ChannelOutput toReporter) {
 		addBarrier(high, Color.RED);
 		addBarrier(left);
 		addBarrier(right);
@@ -142,15 +141,30 @@ public class VisualDemo2 implements CSProcess {
 		this.high = new AltableBarrier(high);
 		this.left = new AltableBarrier(left);
 		this.right= new AltableBarrier(right);
+		this.mids = new AltableBarrier[bars.length];
+		for (int i = 0; i < mids.length; i++) {
+			if (bars[i] == left) {
+				mids[i] = this.left;
+			} else if (bars[i] == right) {
+				mids[i] = this.right;
+			} else {
+				mids[i] = new AltableBarrier(bars[i]);
+			}
+			addBarrier(bars[i]);
+		}
 		this.mid = mid;
 		this.dl = dl;
+		this.toReporter = toReporter;
 
+		recalculateAlt();
+/*
 		alt = new Alternative(new Guard[] {
-			new GuardGroup(new AltableBarrier[] {this.high}),
-			mid,
+			//new GuardGroup(new AltableBarrier[] {this.high}),
+			//mid,
 			new GuardGroup(new AltableBarrier[] {
 			 this.left, this.right})
 		});
+*/
 		unpause = new Alternative(new Guard[] {
 			new GuardGroup(new AltableBarrier[] {this.high})
 		});
@@ -177,6 +191,19 @@ public class VisualDemo2 implements CSProcess {
 			new GraphicsCommand.FillRect(45,50,10,25)
 		};
 		graphicsMap.put(this.mid, commands);
+		//}}}
+		//{{{ mids
+		for (int i = 0; i < mids.length; i++) {
+			commands = new GraphicsCommand[] {
+				new GraphicsCommand.SetColor(Color.black),
+				new GraphicsCommand.DrawRect(0,0,100,100),
+				new GraphicsCommand.DrawString(bars[i].name,0,50),
+				new GraphicsCommand.SetColor(
+				 (Color) uniqueBarriers.get(bars[i])),
+				new GraphicsCommand.FillRect(0,75,100,25)
+			};
+			graphicsMap.put(mids[i], commands);
+		}
 		//}}}
 		//{{{ left
 		commands = new GraphicsCommand[] {
@@ -233,14 +260,52 @@ public class VisualDemo2 implements CSProcess {
 			dl.set(commands);
 
 			if (temp == high) {
-				// we are paused, wait for unpause
-				index = unpause.priSelect();
-				// unpaused
+				unpause.priSelect();
+			} else if (temp != null) {
+				// communicate to aggregator
+
+				// set the low priority barrier to the
+				// last selected.
+				recalculateAlt(temp);
+				toReporter.write(temp.parent.name);				
 			}
 
 			try {	
 			Thread.sleep(500);
 			} catch(Exception e) {}
+		}
+	}
+	//}}}
+
+	//{{{ private void recalculateAlt(AltableBarrier lastSelected)
+	private void recalculateAlt() {
+		recalculateAlt(null);
+	}
+	private void recalculateAlt(AltableBarrier lastSelected) {
+		Vector topBarriers = new Vector();
+		for (int i = 0; i < mids.length; i++) {
+			topBarriers.add(mids[i]);
+		}
+		if (lastSelected != null) {
+			topBarriers.remove(lastSelected);
+		}
+
+		AltableBarrier[] bars = new AltableBarrier[topBarriers.size()];
+		for (int i = 0; i < bars.length; i++) {
+			bars[i] = (AltableBarrier) topBarriers.get(i);
+		}
+
+
+
+		if (lastSelected != null) {
+			alt = new Alternative(new Guard[]{
+			  new GuardGroup(bars),
+			  new GuardGroup(new AltableBarrier[]{lastSelected})
+			});
+		} else {
+			alt = new Alternative(new Guard[]{
+			  new GuardGroup(bars)
+			});
 		}
 	}
 	//}}}
@@ -259,5 +324,97 @@ public class VisualDemo2 implements CSProcess {
 	}
 	//}}}
 
+}
+//}}}
+
+//{{{ class SyncCounter extends ActiveContainer
+class SyncCounter extends ActiveContainer {
+
+	ChannelInput in;
+	HashMap barCount;
+	
+
+	final int NUM_LABELS = 80;
+	Label[] labels;
+
+	SyncCounter (ChannelInput in) {
+
+		this.in = in;
+
+		this.barCount = new HashMap();
+
+		setLayout(new GridLayout((NUM_LABELS / 4), 4));
+		initialiseGrid();
+	}
+
+	public void run() {
+		CSProcess proc = new CSProcess(){
+			public void run() {
+				try {
+				run2();
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(0);
+				}
+			}
+		};
+		ProcessManager manager = new ProcessManager(proc);
+		manager.start();
+
+		super.run();		
+	}
+
+	public void run2() {
+		final int COM_THRESHOLD = 300;
+		int com_counter = 0;
+		while (true) {
+			String s = (String) in.read();
+			com_counter++;
+
+			Integer count = (Integer) barCount.get(s);
+	
+			if (count == null) {
+				barCount.put(s, new Integer(1));
+			} else {
+				int i = count.intValue();
+				i++;
+				barCount.put(s, new Integer(i));
+			}
+
+
+			if (com_counter > COM_THRESHOLD) {
+				com_counter = 0;
+				updateGrid();
+			}
+		}
+	}
+
+
+	private void initialiseGrid() {
+		labels = new Label[NUM_LABELS];
+		for (int i = 0; i < NUM_LABELS; i++) {
+			labels[i] = new Label("##########");
+			add(labels[i]);
+		}
+	}
+
+	private void updateGrid() {
+		Object[] keys = barCount.keySet().toArray();
+
+		int keyCount = 0;
+		for (int i = 0; i < NUM_LABELS; i = i + 2) {
+			if (keyCount < keys.length) {
+				String key = (String) keys[keyCount];
+				Integer value = 
+				  (Integer) barCount.get(key);
+				labels[i].setText(key);
+				labels[i+1].setText(value.toString());
+			} else {
+				labels[i].setText("");
+				labels[i+1].setText("");
+			}
+			keyCount++;
+		}
+	}
 }
 //}}}
