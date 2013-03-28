@@ -22,7 +22,6 @@ version = '1.1-rc6-SNAPSHOT'
 apply plugin : 'java'
 apply plugin : 'osgi'
 apply plugin : 'maven'
-apply plugin : 'code-quality'
 
 archivesBaseName = artefactBaseName
 
