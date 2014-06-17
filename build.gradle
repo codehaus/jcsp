@@ -1,6 +1,6 @@
 //  JCSP — CSP for Java: an implementation of Communicating Sequential Processes (CSP) for Java.
 //
-//   Copyright © 2010, 2013  Russel Winder <russel@winder.org.uk>
+//   Copyright © 2010, 2013, 2014  Russel Winder <russel@winder.org.uk>
 //
 //   This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser
 //   General Public License as published by the Free Software Foundation; either version 2.1 of the License,
@@ -85,18 +85,18 @@ jar {
 def projectTitleForDocumentation = projectTitle + ' ' + version
 
 javadoc {
-  options.overview ( 'overview.html' )
-  options.showAll ( )
-  options.encoding ( 'UTF-8' )
-  options.setUse ( true )
-  options.author ( true )
-  options.version ( true )
-  options.source ( sourceCompatibility.toString ( ) )
-  options.windowTitle ( projectTitleForDocumentation )
-  options.docTitle ( projectTitleForDocumentation )
-  //options.header ( projectTitleForDocumentation )
-  options.footer ( 'Copyright &#169; 1997&#8211;2010  P.D.Austin and P.H.Welch.  All Rights Reserved.' )
-  //options.excludePackageNames ( 'jcsp-demos.*,org.jcsp.test.*' )
+  options.overview('overview.html')
+  options.showAll()
+  options.encoding('UTF-8')
+  options.setUse(true)
+  options.author(true)
+  options.version(true)
+  options.source(sourceCompatibility.toString())
+  options.windowTitle(projectTitleForDocumentation)
+  options.docTitle(projectTitleForDocumentation)
+  //options.header(projectTitleForDocumentation)
+  options.footer('Copyright &#169; 1997&#8211;2014  P.D.Austin and P.H.Welch.  All Rights Reserved.')
+  //options.excludePackageNames('jcsp-demos.*,org.jcsp.test.*')
 }
 javadoc.doFirst {
   javadoc.title = projectTitleForDocumentation
@@ -106,12 +106,12 @@ javadoc.doFirst {
 //  The Maven plugin uses project.name as the default artefact id, force the artefact id to be the one it
 //  should be.
 
-configure ( install.repositories.mavenInstaller ) {
+configure(install.repositories.mavenInstaller) {
   pom.artifactId = artefactBaseName
 }
 
-task wrapper ( type : Wrapper ) {
-    gradleVersion = '1.5'
+task wrapper(type : Wrapper) {
+    gradleVersion = '1.12'
 }
 
 defaultTasks 'install'
