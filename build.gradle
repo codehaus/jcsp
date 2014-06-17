@@ -25,8 +25,8 @@ apply plugin : 'maven'
 
 archivesBaseName = artefactBaseName
 
-sourceCompatibility = 5
-targetCompatibility = 5
+sourceCompatibility = 7
+targetCompatibility = 7
 
 sourceSets {
   main {
